@@ -1,7 +1,6 @@
 {
   "2026-11-02": {
     "week": "2026-11-02",
-    "refreshedAt": "2026-11-13T04:52:00.000Z",
     "events": [
       {
         "id": "tsy-13w-bill-2026-11-02",
@@ -80,7 +79,8 @@
         "status": "confirmed",
         "source": "bea",
         "url": "https://www.bea.gov/news/schedule/full",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-22",
+        "resultUrl": "https://www.bea.gov/news/2026/us-international-trade-goods-and-services-september-2026"
       },
       {
         "id": "census-u-s-international-trade-in-goods-and-services-september-2026-2026-11-04",
@@ -94,7 +94,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "tsy-17w-bill-2026-11-04",
@@ -187,7 +187,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-20"
       },
       {
         "id": "bls-employment-situation-for-october-2026-2026-11-06",
@@ -201,7 +201,30 @@
         "status": "confirmed",
         "source": "bls",
         "url": "https://www.bls.gov/schedule/2026/11_sched_list.htm",
-        "officialDate": "2026-11-03"
+        "officialDate": "2026-11-03",
+        "resultUrl": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+        "readings": [
+          {
+            "label": "非农新增就业",
+            "value": 165,
+            "unit": "千人"
+          },
+          {
+            "label": "失业率",
+            "value": 4.1,
+            "unit": "%"
+          },
+          {
+            "label": "平均时薪月率",
+            "value": 0.4,
+            "unit": "%"
+          },
+          {
+            "label": "前两月非农合计修订",
+            "value": 84,
+            "unit": "千人"
+          }
+        ]
       },
       {
         "id": "fed-bowman-2026-11-06-1215",
@@ -215,94 +238,154 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-20"
       }
     ],
     "sources": [
       {
         "id": "treasury",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
+        "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "tentative",
-        "state": "reference",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-04",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
+        "officialUpdate": "2026-11-05",
         "count": 0
       },
       {
         "id": "bls",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
         "officialUpdate": "2026-11-03",
         "count": 3
       },
       {
         "id": "bea",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
+        "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "census",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
+        "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "fed",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
+        "officialUpdate": "2026-11-20",
         "count": 2
       },
       {
         "id": "fomc",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
+        "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
         "count": 0
       },
       {
         "id": "cme",
-        "state": "reference",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
         "count": 0
       },
       {
         "id": "curve",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:53.641Z",
+        "officialUpdate": "2026-11-06",
         "count": 0
       }
     ],
     "curve": [
+      {
+        "date": "2026-10-26",
+        "values": [
+          4.68,
+          4.79,
+          4.84,
+          4.91,
+          5,
+          5.35,
+          5.31
+        ]
+      },
+      {
+        "date": "2026-10-27",
+        "values": [
+          4.7,
+          4.8,
+          4.82,
+          4.91,
+          4.99,
+          5.34,
+          5.3
+        ]
+      },
+      {
+        "date": "2026-10-28",
+        "values": [
+          4.67,
+          4.8,
+          4.85,
+          4.95,
+          5.05,
+          5.41,
+          5.37
+        ]
+      },
+      {
+        "date": "2026-10-29",
+        "values": [
+          4.61,
+          4.73,
+          4.78,
+          4.87,
+          4.98,
+          5.35,
+          5.32
+        ]
+      },
+      {
+        "date": "2026-10-30",
+        "values": [
+          4.56,
+          4.65,
+          4.71,
+          4.8,
+          4.94,
+          5.34,
+          5.31
+        ]
+      },
       {
         "date": "2026-11-02",
         "values": [
@@ -363,11 +446,11 @@
           5.26
         ]
       }
-    ]
+    ],
+    "refreshedAt": "2026-11-23T05:57:53.641Z"
   },
   "2026-11-09": {
     "week": "2026-11-09",
-    "refreshedAt": "2026-11-15T22:58:12.447Z",
     "events": [
       {
         "id": "fed-bowman-2026-11-09-0840",
@@ -381,7 +464,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-13"
+        "officialDate": "2026-11-20"
       },
       {
         "id": "census-monthly-wholesale-trade-sales-and-inventories-september-2026-2026-11-09",
@@ -395,7 +478,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-15"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "tsy-13w-bill-2026-11-09",
@@ -477,7 +560,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-13"
+        "officialDate": "2026-11-20"
       },
       {
         "id": "bls-consumer-price-index-for-october-2026-2026-11-10",
@@ -493,7 +576,24 @@
         "url": "https://www.bls.gov/schedule/2026/11_sched_list.htm",
         "officialDate": "2026-11-03",
         "actual": "10 月总 CPI 环比 +0.4% · 核心 CPI 环比 +0.3%",
-        "resultUrl": "https://www.bls.gov/news.release/archives/cpi_11102026.htm"
+        "resultUrl": "https://www.bls.gov/news.release/archives/cpi_11102026.htm",
+        "readings": [
+          {
+            "label": "核心 CPI 月率",
+            "value": 0.3,
+            "unit": "%"
+          },
+          {
+            "label": "整体 CPI 月率",
+            "value": 0.4,
+            "unit": "%"
+          },
+          {
+            "label": "住房月率",
+            "value": 0.3,
+            "unit": "%"
+          }
+        ]
       },
       {
         "id": "tsy-10y-nominal-2026-11-10",
@@ -524,7 +624,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-13"
+        "officialDate": "2026-11-20"
       },
       {
         "id": "fed-bowman-2026-11-10-1830",
@@ -538,7 +638,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-13"
+        "officialDate": "2026-11-20"
       },
       {
         "id": "sifma-2026-11-11",
@@ -620,7 +720,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-13"
+        "officialDate": "2026-11-20"
       },
       {
         "id": "tsy-4w-bill-2026-11-12",
@@ -702,7 +802,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-13"
+        "officialDate": "2026-11-20"
       },
       {
         "id": "bls-producer-price-index-for-october-2026-2026-11-13",
@@ -716,7 +816,20 @@
         "status": "confirmed",
         "source": "bls",
         "url": "https://www.bls.gov/schedule/2026/11_sched_list.htm",
-        "officialDate": "2026-11-03"
+        "officialDate": "2026-11-03",
+        "resultUrl": "https://www.bls.gov/news.release/archives/ppi_11132026.htm",
+        "readings": [
+          {
+            "label": "最终需求 PPI 月率",
+            "value": 0.3,
+            "unit": "%"
+          },
+          {
+            "label": "剔除食品、能源和贸易服务月率",
+            "value": 0.5,
+            "unit": "%"
+          }
+        ]
       },
       {
         "id": "fed-bowman-2026-11-13-1050",
@@ -730,7 +843,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-13"
+        "officialDate": "2026-11-20"
       },
       {
         "id": "fed-jefferson-2026-11-13-1900",
@@ -744,89 +857,89 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-november.htm",
-        "officialDate": "2026-11-13"
+        "officialDate": "2026-11-20"
       }
     ],
     "sources": [
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
         "officialUpdate": "2026-11-12",
         "count": 9
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
         "officialUpdate": "2026-11-05",
         "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
         "officialUpdate": "2026-11-03",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
-        "officialUpdate": "2026-11-15",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
+        "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
-        "officialUpdate": "2026-11-15",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
+        "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
-        "officialUpdate": "2026-11-13",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
+        "officialUpdate": "2026-11-20",
         "count": 8
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
-        "officialUpdate": "2026-11-12",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
+        "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
         "officialUpdate": "2026-11-12",
         "count": 1
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
         "count": 2
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-15T22:58:12.447Z",
+        "checkedAt": "2026-11-23T05:57:54.140Z",
         "officialUpdate": "2026-11-13",
         "count": 0
       }
@@ -940,7 +1053,8 @@
           5.47
         ]
       }
-    ]
+    ],
+    "refreshedAt": "2026-11-23T05:57:54.140Z"
   },
   "2026-11-16": {
     "week": "2026-11-16",
@@ -1653,7 +1767,12 @@
         "status": "confirmed",
         "source": "bea",
         "url": "https://www.bea.gov/news/schedule/full",
-        "officialDate": "2026-11-22"
+        "officialDate": "2026-11-22",
+        "reference": {
+          "value": 0.27,
+          "period": "2026-10",
+          "asOf": "2026-11-20"
+        }
       },
       {
         "id": "dol-claims-2026-11-25",
@@ -1924,82 +2043,82 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-11-19",
         "count": 8
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-11-05",
         "count": 11
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-11-03",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-11-20",
         "count": 2
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-11-12",
         "count": 2
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "count": 2
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "count": 2
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "checkedAt": "2026-11-23T05:57:55.057Z",
         "officialUpdate": "2026-11-20",
         "count": 0
       }
@@ -2066,7 +2185,7 @@
         ]
       }
     ],
-    "refreshedAt": "2026-11-23T05:46:44.871Z"
+    "refreshedAt": "2026-11-23T05:57:55.057Z"
   },
   "2026-11-30": {
     "week": "2026-11-30",
@@ -2222,92 +2341,91 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "officialUpdate": "2026-11-20",
         "count": 1
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
         "count": 0
       },
       {
         "id": "curve",
-        "count": 0,
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12"
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:55.570Z",
+        "officialUpdate": "2026-11-12",
+        "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T05:46:45.252Z"
+    "refreshedAt": "2026-11-23T05:57:55.570Z"
   },
   "2026-12-07": {
     "week": "2026-12-07",
-    "refreshedAt": "2026-11-13T04:52:00.000Z",
     "events": [
       {
         "id": "tsy-3y-nominal-2026-12-07",
@@ -2321,7 +2439,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "3y-nominal"
       },
       {
@@ -2336,7 +2454,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "13w-bill"
       },
       {
@@ -2351,7 +2469,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "26w-bill"
       },
       {
@@ -2365,7 +2483,7 @@
         "impact": 3,
         "status": "confirmed",
         "source": "bls",
-        "url": "https://www.bls.gov/schedule/",
+        "url": "https://www.bls.gov/schedule/2026/12_sched_list.htm",
         "officialDate": "2026-11-09"
       },
       {
@@ -2380,7 +2498,7 @@
         "status": "confirmed",
         "source": "bea",
         "url": "https://www.bea.gov/news/schedule/full",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "census-u-s-international-trade-in-goods-and-services-october-2026-2026-12-08",
@@ -2394,7 +2512,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "tsy-10y-nominal-2026-12-08",
@@ -2408,7 +2526,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "10y-nominal"
       },
       {
@@ -2423,7 +2541,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "6w-bill"
       },
       {
@@ -2438,7 +2556,7 @@
         "status": "confirmed",
         "source": "fomc",
         "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-18"
       },
       {
         "id": "census-monthly-wholesale-trade-sales-and-inventories-october-2026-2026-12-09",
@@ -2452,7 +2570,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "fomc-decision-2026-12-09",
@@ -2466,7 +2584,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-december.htm",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-03-13"
       },
       {
         "id": "fed-press-conference-2026-12-09",
@@ -2480,7 +2598,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-december.htm",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-03-13"
       },
       {
         "id": "tsy-17w-bill-2026-12-09",
@@ -2494,7 +2612,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "17w-bill"
       },
       {
@@ -2508,8 +2626,13 @@
         "impact": 5,
         "status": "confirmed",
         "source": "bls",
-        "url": "https://www.bls.gov/schedule/",
-        "officialDate": "2026-11-09"
+        "url": "https://www.bls.gov/schedule/2026/12_sched_list.htm",
+        "officialDate": "2026-11-09",
+        "reference": {
+          "value": 0.21,
+          "period": "2026-11",
+          "asOf": "2026-11-20"
+        }
       },
       {
         "id": "dol-claims-2026-12-10",
@@ -2537,7 +2660,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-december.htm",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-03-13"
       },
       {
         "id": "tsy-30y-nominal-2026-12-10",
@@ -2551,7 +2674,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "30y-nominal"
       },
       {
@@ -2566,7 +2689,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "4w-bill"
       },
       {
@@ -2581,99 +2704,99 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "8w-bill"
       }
     ],
     "sources": [
       {
         "id": "treasury",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
-        "state": "reference",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-04",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
+        "officialUpdate": "2026-11-05",
         "count": 9
       },
       {
         "id": "bls",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-03",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
+        "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
+        "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "census",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
+        "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "fed",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
+        "officialUpdate": "2026-03-13",
         "count": 3
       },
       {
         "id": "fomc",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
-        "count": 1
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
+        "officialUpdate": "2026-11-18",
+        "count": 2
       },
       {
         "id": "dol",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
         "count": 0
       },
       {
         "id": "cme",
-        "state": "reference",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
         "count": 0
       },
       {
         "id": "curve",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.079Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       }
     ],
-    "curve": []
+    "curve": [],
+    "refreshedAt": "2026-11-23T05:57:56.079Z"
   },
   "2026-12-14": {
     "week": "2026-12-14",
-    "refreshedAt": "2026-11-13T04:52:00.000Z",
     "events": [
       {
         "id": "tsy-13w-bill-2026-12-14",
@@ -2687,7 +2810,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "13w-bill"
       },
       {
@@ -2702,7 +2825,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "26w-bill"
       },
       {
@@ -2716,7 +2839,7 @@
         "impact": 4,
         "status": "confirmed",
         "source": "bls",
-        "url": "https://www.bls.gov/schedule/",
+        "url": "https://www.bls.gov/schedule/2026/12_sched_list.htm",
         "officialDate": "2026-11-09"
       },
       {
@@ -2731,7 +2854,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "6w-bill"
       },
       {
@@ -2746,7 +2869,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "fed-g-17-industrial-production-and-capacity-utilization-2026-12-16",
@@ -2760,7 +2883,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-december.htm",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-03-13"
       },
       {
         "id": "census-manufacturing-and-trade-inventories-and-sales-october-2026-2026-12-16",
@@ -2774,7 +2897,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "tsy-17w-bill-2026-12-16",
@@ -2788,7 +2911,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "17w-bill"
       },
       {
@@ -2817,7 +2940,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "bls-u-s-import-and-export-price-indexes-for-november-2026-2026-12-17",
@@ -2830,7 +2953,7 @@
         "impact": 2,
         "status": "confirmed",
         "source": "bls",
-        "url": "https://www.bls.gov/schedule/",
+        "url": "https://www.bls.gov/schedule/2026/12_sched_list.htm",
         "officialDate": "2026-11-09"
       },
       {
@@ -2845,7 +2968,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-december.htm",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-03-13"
       },
       {
         "id": "tsy-4w-bill-2026-12-17",
@@ -2859,7 +2982,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "4w-bill"
       },
       {
@@ -2874,7 +2997,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "8w-bill"
       },
       {
@@ -2888,94 +3011,2169 @@
         "impact": 2,
         "status": "confirmed",
         "source": "bls",
-        "url": "https://www.bls.gov/schedule/",
+        "url": "https://www.bls.gov/schedule/2026/12_sched_list.htm",
         "officialDate": "2026-11-09"
       }
     ],
     "sources": [
       {
         "id": "treasury",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
-        "state": "reference",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-04",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
+        "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "bls",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-03",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
+        "officialUpdate": "2026-11-09",
         "count": 3
       },
       {
         "id": "bea",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
+        "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
+        "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
+        "officialUpdate": "2026-03-13",
         "count": 2
       },
       {
         "id": "fomc",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
+        "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
         "count": 0
       },
       {
         "id": "cme",
-        "state": "reference",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
         "count": 0
       },
       {
         "id": "curve",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.594Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       }
     ],
-    "curve": []
+    "curve": [],
+    "refreshedAt": "2026-11-23T05:57:56.594Z"
+  },
+  "2026-10-26": {
+    "week": "2026-10-26",
+    "events": [
+      {
+        "id": "tsy-13w-bill-2026-10-26",
+        "date": "2026-10-26",
+        "time": "11:30",
+        "title": "13 周 T-bill 拍卖",
+        "detail": "$95bn · 续发 · 结算 2026-10-29 · CUSIP 912797VU8",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_2.pdf",
+        "officialDate": "2026-10-26",
+        "actual": "最高贴现率 4.050% · 投标倍数 3.07×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_1.pdf",
+        "auctionKey": "13w-bill"
+      },
+      {
+        "id": "tsy-26w-bill-2026-10-26",
+        "date": "2026-10-26",
+        "time": "11:30",
+        "title": "26 周 T-bill 拍卖",
+        "detail": "$82bn · 新发 · 结算 2026-10-29 · CUSIP 912797WW3",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_3.pdf",
+        "officialDate": "2026-10-26",
+        "actual": "最高贴现率 4.210% · 投标倍数 2.63×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_2.pdf",
+        "auctionKey": "26w-bill"
+      },
+      {
+        "id": "tsy-2y-nominal-2026-10-26",
+        "date": "2026-10-26",
+        "time": "13:00",
+        "title": "2 年期国债拍卖",
+        "detail": "$69bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRU7",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_6.pdf",
+        "officialDate": "2026-10-26",
+        "actual": "中标收益率 4.708% · 投标倍数 2.59×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_3.pdf",
+        "auctionKey": "2y-nominal"
+      },
+      {
+        "id": "census-advance-report-on-durable-goods-manufacturers-shipments-inventories-and-orders-september-2026-2026-10-27",
+        "date": "2026-10-27",
+        "time": "08:30",
+        "title": "耐用品订单初值",
+        "detail": "Advance Report on Durable Goods--Manufacturers' Shipments, Inventories, and Orders · September 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "census-new-residential-sales-september-2026-2026-10-27",
+        "date": "2026-10-27",
+        "time": "10:00",
+        "title": "新屋销售",
+        "detail": "New Residential Sales · September 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "tsy-52w-bill-2026-10-27",
+        "date": "2026-10-27",
+        "time": "11:30",
+        "title": "52 周 T-bill 拍卖",
+        "detail": "$54bn · 新发 · 结算 2026-10-29 · CUSIP 912797WT0",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_4.pdf",
+        "officialDate": "2026-10-27",
+        "actual": "最高贴现率 4.290% · 投标倍数 3.15×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261027_1.pdf",
+        "auctionKey": "52w-bill"
+      },
+      {
+        "id": "tsy-6w-bill-2026-10-27",
+        "date": "2026-10-27",
+        "time": "11:30",
+        "title": "6 周 T-bill 拍卖",
+        "detail": "$95bn · 续发 · 结算 2026-10-29 · CUSIP 912797VG9",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_1.pdf",
+        "officialDate": "2026-10-27",
+        "actual": "最高贴现率 3.950% · 投标倍数 2.83×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261027_2.pdf",
+        "auctionKey": "6w-bill"
+      },
+      {
+        "id": "tsy-5y-nominal-2026-10-27",
+        "date": "2026-10-27",
+        "time": "13:00",
+        "title": "5 年期国债拍卖",
+        "detail": "$70bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRT0",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_7.pdf",
+        "officialDate": "2026-10-27",
+        "actual": "中标收益率 4.845% · 投标倍数 2.33×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261027_3.pdf",
+        "auctionKey": "5y-nominal"
+      },
+      {
+        "id": "fomc-start-2026-10-27",
+        "date": "2026-10-27",
+        "time": null,
+        "title": "FOMC 政策会议开始",
+        "detail": "两天会议 · 决议发布日 2026-10-28",
+        "category": "fed",
+        "kind": "policy",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "fomc",
+        "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+        "officialDate": "2026-11-18"
+      },
+      {
+        "id": "census-advance-economic-indicators-report-international-trade-retail-wholesale-september-2026-2026-10-28",
+        "date": "2026-10-28",
+        "time": "08:30",
+        "title": "美国预估经济指标",
+        "detail": "Advance Economic Indicators Report (International Trade, Retail, & Wholesale) · September 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "tsy-17w-bill-2026-10-28",
+        "date": "2026-10-28",
+        "time": "11:30",
+        "title": "17 周 T-bill 拍卖",
+        "detail": "$75bn · 新发 · 结算 2026-11-03 · CUSIP 912797XB8",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261027_3.pdf",
+        "officialDate": "2026-10-28",
+        "actual": "最高贴现率 4.140% · 投标倍数 3.08×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261028_2.pdf",
+        "auctionKey": "17w-bill"
+      },
+      {
+        "id": "tsy-2y-frn-2026-10-28",
+        "date": "2026-10-28",
+        "time": "11:30",
+        "title": "2 年期 FRN 拍卖",
+        "detail": "$30bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRS2",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_5.pdf",
+        "officialDate": "2026-10-28",
+        "actual": "最高折扣利差 0.038% · 投标倍数 3.05×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261028_1.pdf",
+        "auctionKey": "2y-frn"
+      },
+      {
+        "id": "fomc-decision-2026-10-28",
+        "date": "2026-10-28",
+        "time": "14:00",
+        "title": "FOMC 利率决议",
+        "detail": "Two-day meeting, October 27 - 28 · Press Conference",
+        "category": "fed",
+        "kind": "policy",
+        "impact": 5,
+        "status": "confirmed",
+        "source": "fed",
+        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+        "officialDate": "2026-10-14"
+      },
+      {
+        "id": "fed-press-conference-2026-10-28",
+        "date": "2026-10-28",
+        "time": "14:30",
+        "title": "FOMC 记者会",
+        "detail": "FOMC Press Conference · 关注政策阐释与问答",
+        "category": "fed",
+        "kind": "policy",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "fed",
+        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+        "officialDate": "2026-10-14"
+      },
+      {
+        "id": "bea-personal-income-and-outlays-september-2026-2026-10-29",
+        "date": "2026-10-29",
+        "time": "08:30",
+        "title": "PCE 物价 / 个人收支",
+        "detail": "Personal Income and Outlays, September 2026",
+        "category": "macro",
+        "kind": "inflation",
+        "impact": 5,
+        "status": "confirmed",
+        "source": "bea",
+        "url": "https://www.bea.gov/news/schedule/full",
+        "officialDate": "2026-11-22",
+        "resultUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-september-2026",
+        "readings": [
+          {
+            "label": "核心 PCE 月率",
+            "value": 0.3,
+            "unit": "%"
+          },
+          {
+            "label": "整体 PCE 月率",
+            "value": 0.5,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "bea-gdp-advance-estimate-2026-10-29",
+        "date": "2026-10-29",
+        "time": "08:30",
+        "title": "美国 GDP",
+        "detail": "GDP (Advance Estimate), 3rd Quarter 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "bea",
+        "url": "https://www.bea.gov/news/schedule/full",
+        "officialDate": "2026-11-22",
+        "resultUrl": "https://www.bea.gov/news/2026/gdp-advance-estimate-3rd-quarter-2026",
+        "readings": [
+          {
+            "label": "实际 GDP 季环比折年率",
+            "value": 3.4,
+            "unit": "%"
+          },
+          {
+            "label": "私人国内最终销售折年率",
+            "value": 4.9,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "dol-claims-2026-10-29",
+        "date": "2026-10-29",
+        "time": "08:30",
+        "title": "初请失业金",
+        "detail": "Unemployment Insurance Weekly Claims · 劳工部每周日程",
+        "category": "macro",
+        "kind": "claims",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "dol",
+        "url": "https://oui.doleta.gov/unemploy/claims_arch.asp",
+        "officialDate": "2026-09-11"
+      },
+      {
+        "id": "tsy-4w-bill-2026-10-29",
+        "date": "2026-10-29",
+        "time": "11:30",
+        "title": "4 周 T-bill 拍卖",
+        "detail": "$115bn · 续发 · 结算 2026-11-03 · CUSIP 912797VZ7",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261027_1.pdf",
+        "officialDate": "2026-10-29",
+        "actual": "最高贴现率 3.910% · 投标倍数 3.10×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_1.pdf",
+        "auctionKey": "4w-bill"
+      },
+      {
+        "id": "tsy-8w-bill-2026-10-29",
+        "date": "2026-10-29",
+        "time": "11:30",
+        "title": "8 周 T-bill 拍卖",
+        "detail": "$110bn · 续发 · 结算 2026-11-03 · CUSIP 912797WH6",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261027_2.pdf",
+        "officialDate": "2026-10-29",
+        "actual": "最高贴现率 4.020% · 投标倍数 2.63×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_2.pdf",
+        "auctionKey": "8w-bill"
+      },
+      {
+        "id": "tsy-7y-nominal-2026-10-29",
+        "date": "2026-10-29",
+        "time": "13:00",
+        "title": "7 年期国债拍卖",
+        "detail": "$44bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRV5",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_8.pdf",
+        "officialDate": "2026-10-29",
+        "actual": "中标收益率 4.894% · 投标倍数 2.46×",
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_3.pdf",
+        "auctionKey": "7y-nominal"
+      },
+      {
+        "id": "fed-h41-2026-10-29",
+        "date": "2026-10-29",
+        "time": "16:30",
+        "title": "美联储资产负债表 H.4.1",
+        "detail": "Factors Affecting Reserve Balances",
+        "category": "fed",
+        "kind": "funding",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "fed",
+        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+        "officialDate": "2026-10-14"
+      },
+      {
+        "id": "bls-employment-cost-index-for-third-quarter-2026-2026-10-30",
+        "date": "2026-10-30",
+        "time": "08:30",
+        "title": "就业成本指数（ECI）",
+        "detail": "Employment Cost Index for Third Quarter 2026",
+        "category": "macro",
+        "kind": "jobs",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "bls",
+        "url": "https://www.bls.gov/schedule/2026/10_sched_list.htm",
+        "officialDate": "2026-02-18"
+      }
+    ],
+    "sources": [
+      {
+        "id": "treasury",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "officialUpdate": "2026-10-29",
+        "count": 11
+      },
+      {
+        "id": "tentative",
+        "count": 0,
+        "state": "reference",
+        "checkedAt": null
+      },
+      {
+        "id": "bls",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "officialUpdate": "2026-11-03",
+        "count": 1
+      },
+      {
+        "id": "bea",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "officialUpdate": "2026-11-22",
+        "count": 2
+      },
+      {
+        "id": "census",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "officialUpdate": "2026-11-22",
+        "count": 3
+      },
+      {
+        "id": "fed",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "officialUpdate": "2026-11-20",
+        "count": 3
+      },
+      {
+        "id": "fomc",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "officialUpdate": "2026-11-18",
+        "count": 2
+      },
+      {
+        "id": "dol",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "officialUpdate": "2026-09-11",
+        "count": 1
+      },
+      {
+        "id": "sifma",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "count": 0
+      },
+      {
+        "id": "nyse",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "count": 0
+      },
+      {
+        "id": "cme",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "count": 0
+      },
+      {
+        "id": "curve",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:52.194Z",
+        "officialUpdate": "2026-10-30",
+        "count": 0
+      }
+    ],
+    "curve": [
+      {
+        "date": "2026-10-19",
+        "values": [
+          4.77,
+          4.85,
+          4.94,
+          5.04,
+          5.15,
+          5.53,
+          5.48
+        ]
+      },
+      {
+        "date": "2026-10-20",
+        "values": [
+          4.79,
+          4.86,
+          4.94,
+          5.02,
+          5.12,
+          5.47,
+          5.42
+        ]
+      },
+      {
+        "date": "2026-10-21",
+        "values": [
+          4.81,
+          4.89,
+          4.95,
+          5.03,
+          5.13,
+          5.47,
+          5.42
+        ]
+      },
+      {
+        "date": "2026-10-22",
+        "values": [
+          4.65,
+          4.72,
+          4.78,
+          4.86,
+          4.96,
+          5.32,
+          5.29
+        ]
+      },
+      {
+        "date": "2026-10-23",
+        "values": [
+          4.69,
+          4.75,
+          4.82,
+          4.89,
+          5,
+          5.37,
+          5.33
+        ]
+      },
+      {
+        "date": "2026-10-26",
+        "values": [
+          4.68,
+          4.79,
+          4.84,
+          4.91,
+          5,
+          5.35,
+          5.31
+        ]
+      },
+      {
+        "date": "2026-10-27",
+        "values": [
+          4.7,
+          4.8,
+          4.82,
+          4.91,
+          4.99,
+          5.34,
+          5.3
+        ]
+      },
+      {
+        "date": "2026-10-28",
+        "values": [
+          4.67,
+          4.8,
+          4.85,
+          4.95,
+          5.05,
+          5.41,
+          5.37
+        ]
+      },
+      {
+        "date": "2026-10-29",
+        "values": [
+          4.61,
+          4.73,
+          4.78,
+          4.87,
+          4.98,
+          5.35,
+          5.32
+        ]
+      },
+      {
+        "date": "2026-10-30",
+        "values": [
+          4.56,
+          4.65,
+          4.71,
+          4.8,
+          4.94,
+          5.34,
+          5.31
+        ]
+      }
+    ],
+    "refreshedAt": "2026-11-23T05:57:52.194Z"
+  },
+  "2026-12-21": {
+    "week": "2026-12-21",
+    "events": [
+      {
+        "id": "tsy-13w-bill-2026-12-21",
+        "date": "2026-12-21",
+        "time": null,
+        "title": "13 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-17 · 预计结算 2026-12-24",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "13w-bill"
+      },
+      {
+        "id": "tsy-26w-bill-2026-12-21",
+        "date": "2026-12-21",
+        "time": null,
+        "title": "26 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-17 · 预计结算 2026-12-24",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "26w-bill"
+      },
+      {
+        "id": "tsy-20y-nominal-2026-12-22",
+        "date": "2026-12-22",
+        "time": null,
+        "title": "20 年期国债拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-17 · 预计结算 2026-12-28",
+        "category": "auction",
+        "kind": "longAuction",
+        "impact": 5,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "20y-nominal"
+      },
+      {
+        "id": "tsy-52w-bill-2026-12-22",
+        "date": "2026-12-22",
+        "time": null,
+        "title": "52 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-17 · 预计结算 2026-12-24",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "52w-bill"
+      },
+      {
+        "id": "tsy-6w-bill-2026-12-22",
+        "date": "2026-12-22",
+        "time": null,
+        "title": "6 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-17 · 预计结算 2026-12-24",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "6w-bill"
+      },
+      {
+        "id": "bea-personal-income-and-outlays-november-2026-2026-12-23",
+        "date": "2026-12-23",
+        "time": "08:30",
+        "title": "PCE 物价 / 个人收支",
+        "detail": "Personal Income and Outlays, November 2026",
+        "category": "macro",
+        "kind": "inflation",
+        "impact": 5,
+        "status": "confirmed",
+        "source": "bea",
+        "url": "https://www.bea.gov/news/schedule/full",
+        "officialDate": "2026-11-22",
+        "reference": {
+          "value": 0.26,
+          "period": "2026-11",
+          "asOf": "2026-11-20"
+        }
+      },
+      {
+        "id": "bea-gdp-third-estimate-industries-corporate-profits-state-gdp-and-state-personal-income-2026-12-23",
+        "date": "2026-12-23",
+        "time": "08:30",
+        "title": "美国 GDP",
+        "detail": "GDP (Third Estimate), Industries, Corporate Profits, State GDP, and State Personal Income, 3rd Quarter 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "bea",
+        "url": "https://www.bea.gov/news/schedule/full",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "census-advance-report-on-durable-goods-manufacturers-shipments-inventories-and-orders-november-2026-2026-12-23",
+        "date": "2026-12-23",
+        "time": "08:30",
+        "title": "耐用品订单初值",
+        "detail": "Advance Report on Durable Goods--Manufacturers' Shipments, Inventories, and Orders · November 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "census-new-residential-sales-november-2026-2026-12-23",
+        "date": "2026-12-23",
+        "time": "10:00",
+        "title": "新屋销售",
+        "detail": "New Residential Sales · November 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "tsy-5y-tips-2026-12-23",
+        "date": "2026-12-23",
+        "time": null,
+        "title": "5 年期 TIPS 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-17 · 预计结算 2026-12-31",
+        "category": "auction",
+        "kind": "tips",
+        "impact": 4,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "5y-tips"
+      },
+      {
+        "id": "tsy-17w-bill-2026-12-23",
+        "date": "2026-12-23",
+        "time": null,
+        "title": "17 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-22 · 预计结算 2026-12-29",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "17w-bill"
+      },
+      {
+        "id": "tsy-2y-frn-2026-12-23",
+        "date": "2026-12-23",
+        "time": null,
+        "title": "2 年期 FRN 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-17 · 预计结算 2026-12-28",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "2y-frn"
+      },
+      {
+        "id": "dol-claims-2026-12-24",
+        "date": "2026-12-24",
+        "time": "08:30",
+        "title": "初请失业金",
+        "detail": "Unemployment Insurance Weekly Claims · 劳工部每周日程",
+        "category": "macro",
+        "kind": "claims",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "dol",
+        "url": "https://oui.doleta.gov/unemploy/claims_arch.asp",
+        "officialDate": "2026-09-11"
+      },
+      {
+        "id": "nyse-2026-12-24",
+        "date": "2026-12-24",
+        "time": "13:00",
+        "title": "NYSE提前收市",
+        "detail": "Christmas Day · 圣诞节 · 股票常规时段",
+        "category": "market",
+        "kind": "earlyClose",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "nyse",
+        "url": "https://www.nyse.com/trade/hours-calendars"
+      },
+      {
+        "id": "cme-globex-2026-12-24-1315-closed",
+        "date": "2026-12-24",
+        "time": "13:15",
+        "title": "CME 美债期货提前收市",
+        "detail": "ZT / ZF / ZN / TN / ZB / UB / TWE · Globex 撮合时段",
+        "category": "market",
+        "kind": "earlyClose",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "cme",
+        "url": "https://www.cmegroup.com/trading-hours.html#trading-holiday-hours"
+      },
+      {
+        "id": "sifma-2026-12-24",
+        "date": "2026-12-24",
+        "time": "14:00",
+        "title": "UST 现券提前收市",
+        "detail": "Christmas Day · 圣诞节 · SIFMA 建议",
+        "category": "market",
+        "kind": "earlyClose",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "sifma",
+        "url": "https://www.sifma.org/resources/guidelines/holiday-schedule"
+      },
+      {
+        "id": "fed-h41-2026-12-24",
+        "date": "2026-12-24",
+        "time": "16:30",
+        "title": "美联储资产负债表 H.4.1",
+        "detail": "Factors Affecting Reserve Balances",
+        "category": "fed",
+        "kind": "funding",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "fed",
+        "url": "https://www.federalreserve.gov/newsevents/2026-december.htm",
+        "officialDate": "2026-03-13"
+      },
+      {
+        "id": "tsy-4w-bill-2026-12-24",
+        "date": "2026-12-24",
+        "time": null,
+        "title": "4 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-22 · 预计结算 2026-12-29",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "4w-bill"
+      },
+      {
+        "id": "tsy-8w-bill-2026-12-24",
+        "date": "2026-12-24",
+        "time": null,
+        "title": "8 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-22 · 预计结算 2026-12-29",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "8w-bill"
+      },
+      {
+        "id": "sifma-2026-12-25",
+        "date": "2026-12-25",
+        "time": null,
+        "title": "UST 现券休市",
+        "detail": "Christmas Day · 圣诞节 · SIFMA 建议",
+        "category": "market",
+        "kind": "holiday",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "sifma",
+        "url": "https://www.sifma.org/resources/guidelines/holiday-schedule"
+      },
+      {
+        "id": "nyse-2026-12-25",
+        "date": "2026-12-25",
+        "time": null,
+        "title": "NYSE休市",
+        "detail": "Christmas Day · 圣诞节 · 股票常规时段",
+        "category": "market",
+        "kind": "holiday",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "nyse",
+        "url": "https://www.nyse.com/trade/hours-calendars"
+      }
+    ],
+    "sources": [
+      {
+        "id": "treasury",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "count": 0
+      },
+      {
+        "id": "tentative",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "officialUpdate": "2026-11-05",
+        "count": 10
+      },
+      {
+        "id": "bls",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "officialUpdate": "2026-11-09",
+        "count": 0
+      },
+      {
+        "id": "bea",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "officialUpdate": "2026-11-22",
+        "count": 2
+      },
+      {
+        "id": "census",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "officialUpdate": "2026-11-22",
+        "count": 2
+      },
+      {
+        "id": "fed",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "officialUpdate": "2026-03-13",
+        "count": 1
+      },
+      {
+        "id": "fomc",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "officialUpdate": "2026-11-18",
+        "count": 0
+      },
+      {
+        "id": "dol",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "officialUpdate": "2026-09-11",
+        "count": 1
+      },
+      {
+        "id": "sifma",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "count": 2
+      },
+      {
+        "id": "nyse",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "count": 2
+      },
+      {
+        "id": "cme",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "count": 1
+      },
+      {
+        "id": "curve",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:56.865Z",
+        "count": 0
+      }
+    ],
+    "curve": [],
+    "refreshedAt": "2026-11-23T05:57:56.865Z"
+  },
+  "2026-12-28": {
+    "week": "2026-12-28",
+    "events": [
+      {
+        "id": "census-advance-economic-indicators-report-international-trade-retail-wholesale-november-2026-2026-12-28",
+        "date": "2026-12-28",
+        "time": "08:30",
+        "title": "美国预估经济指标",
+        "detail": "Advance Economic Indicators Report (International Trade, Retail, & Wholesale) · November 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "tsy-2y-nominal-2026-12-28",
+        "date": "2026-12-28",
+        "time": null,
+        "title": "2 年期国债拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-24 · 预计结算 2026-12-31",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 3,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "2y-nominal"
+      },
+      {
+        "id": "tsy-5y-nominal-2026-12-28",
+        "date": "2026-12-28",
+        "time": null,
+        "title": "5 年期国债拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-24 · 预计结算 2026-12-31",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 3,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "5y-nominal"
+      },
+      {
+        "id": "tsy-13w-bill-2026-12-28",
+        "date": "2026-12-28",
+        "time": null,
+        "title": "13 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-24 · 预计结算 2026-12-31",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "13w-bill"
+      },
+      {
+        "id": "tsy-26w-bill-2026-12-28",
+        "date": "2026-12-28",
+        "time": null,
+        "title": "26 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-24 · 预计结算 2026-12-31",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "26w-bill"
+      },
+      {
+        "id": "tsy-7y-nominal-2026-12-29",
+        "date": "2026-12-29",
+        "time": null,
+        "title": "7 年期国债拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-24 · 预计结算 2026-12-31",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 4,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "7y-nominal"
+      },
+      {
+        "id": "tsy-6w-bill-2026-12-29",
+        "date": "2026-12-29",
+        "time": null,
+        "title": "6 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-24 · 预计结算 2026-12-31",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "6w-bill"
+      },
+      {
+        "id": "tsy-17w-bill-2026-12-30",
+        "date": "2026-12-30",
+        "time": null,
+        "title": "17 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-29 · 预计结算 2027-01-05",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "17w-bill"
+      },
+      {
+        "id": "dol-claims-2026-12-31",
+        "date": "2026-12-31",
+        "time": "08:30",
+        "title": "初请失业金",
+        "detail": "Unemployment Insurance Weekly Claims · 劳工部每周日程",
+        "category": "macro",
+        "kind": "claims",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "dol",
+        "url": "https://oui.doleta.gov/unemploy/claims_arch.asp",
+        "officialDate": "2026-09-11"
+      },
+      {
+        "id": "sifma-2026-12-31",
+        "date": "2026-12-31",
+        "time": "14:00",
+        "title": "UST 现券提前收市",
+        "detail": "New Year’s Day 2026/2027 · 元旦 · SIFMA 建议",
+        "category": "market",
+        "kind": "earlyClose",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "sifma",
+        "url": "https://www.sifma.org/resources/guidelines/holiday-schedule"
+      },
+      {
+        "id": "tsy-4w-bill-2026-12-31",
+        "date": "2026-12-31",
+        "time": null,
+        "title": "4 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-29 · 预计结算 2027-01-05",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "4w-bill"
+      },
+      {
+        "id": "tsy-8w-bill-2026-12-31",
+        "date": "2026-12-31",
+        "time": null,
+        "title": "8 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-29 · 预计结算 2027-01-05",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "8w-bill"
+      },
+      {
+        "id": "sifma-2027-01-01",
+        "date": "2027-01-01",
+        "time": null,
+        "title": "UST 现券休市",
+        "detail": "New Year’s Day 2026/2027 · 元旦 · SIFMA 建议",
+        "category": "market",
+        "kind": "holiday",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "sifma",
+        "url": "https://www.sifma.org/resources/guidelines/holiday-schedule"
+      },
+      {
+        "id": "nyse-2027-01-01",
+        "date": "2027-01-01",
+        "time": null,
+        "title": "NYSE休市",
+        "detail": "New Year’s Day · 元旦 · 股票常规时段",
+        "category": "market",
+        "kind": "holiday",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "nyse",
+        "url": "https://www.nyse.com/trade/hours-calendars"
+      }
+    ],
+    "sources": [
+      {
+        "id": "treasury",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "count": 0
+      },
+      {
+        "id": "tentative",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "officialUpdate": "2026-11-05",
+        "count": 9
+      },
+      {
+        "id": "bls",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "officialUpdate": "2026-11-09",
+        "count": 0
+      },
+      {
+        "id": "bea",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "officialUpdate": "2026-11-22",
+        "count": 0
+      },
+      {
+        "id": "census",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "officialUpdate": "2026-11-22",
+        "count": 1
+      },
+      {
+        "id": "fed",
+        "count": 0,
+        "state": "unavailable",
+        "checkedAt": null
+      },
+      {
+        "id": "fomc",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "officialUpdate": "2026-11-18",
+        "count": 0
+      },
+      {
+        "id": "dol",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "officialUpdate": "2026-09-11",
+        "count": 1
+      },
+      {
+        "id": "sifma",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "count": 2
+      },
+      {
+        "id": "nyse",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "count": 1
+      },
+      {
+        "id": "cme",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "count": 0
+      },
+      {
+        "id": "curve",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.142Z",
+        "count": 0
+      }
+    ],
+    "curve": [],
+    "refreshedAt": "2026-11-23T05:57:57.142Z"
+  },
+  "2027-01-04": {
+    "week": "2027-01-04",
+    "events": [
+      {
+        "id": "tsy-13w-bill-2027-01-04",
+        "date": "2027-01-04",
+        "time": null,
+        "title": "13 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-31 · 预计结算 2027-01-07",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "13w-bill"
+      },
+      {
+        "id": "tsy-26w-bill-2027-01-04",
+        "date": "2027-01-04",
+        "time": null,
+        "title": "26 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-31 · 预计结算 2027-01-07",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "26w-bill"
+      },
+      {
+        "id": "bls-job-openings-and-labor-turnover-survey-for-november-2026-2027-01-05",
+        "date": "2027-01-05",
+        "time": "10:00",
+        "title": "JOLTS 职位空缺",
+        "detail": "Job Openings and Labor Turnover Survey for November 2026",
+        "category": "macro",
+        "kind": "jobs",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "bls",
+        "url": "https://www.bls.gov/schedule/2027/01_sched_list.htm",
+        "officialDate": "2026-11-09"
+      },
+      {
+        "id": "tsy-6w-bill-2027-01-05",
+        "date": "2027-01-05",
+        "time": null,
+        "title": "6 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2026-12-31 · 预计结算 2027-01-07",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "6w-bill"
+      },
+      {
+        "id": "tsy-17w-bill-2027-01-06",
+        "date": "2027-01-06",
+        "time": null,
+        "title": "17 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-05 · 预计结算 2027-01-12",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "17w-bill"
+      },
+      {
+        "id": "dol-claims-2027-01-07",
+        "date": "2027-01-07",
+        "time": "08:30",
+        "title": "初请失业金",
+        "detail": "Unemployment Insurance Weekly Claims · 劳工部每周日程",
+        "category": "macro",
+        "kind": "claims",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "dol",
+        "url": "https://oui.doleta.gov/unemploy/claims_arch.asp",
+        "officialDate": "2026-09-11"
+      },
+      {
+        "id": "census-u-s-international-trade-in-goods-and-services-november-2026-2027-01-07",
+        "date": "2027-01-07",
+        "time": "08:30",
+        "title": "美国商品和服务贸易",
+        "detail": "U.S. International Trade in Goods and Services · November 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "tsy-4w-bill-2027-01-07",
+        "date": "2027-01-07",
+        "time": null,
+        "title": "4 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-05 · 预计结算 2027-01-12",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "4w-bill"
+      },
+      {
+        "id": "tsy-8w-bill-2027-01-07",
+        "date": "2027-01-07",
+        "time": null,
+        "title": "8 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-05 · 预计结算 2027-01-12",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "8w-bill"
+      },
+      {
+        "id": "bls-employment-situation-for-december-2026-2027-01-08",
+        "date": "2027-01-08",
+        "time": "08:30",
+        "title": "美国非农就业",
+        "detail": "Employment Situation for December 2026",
+        "category": "macro",
+        "kind": "jobs",
+        "impact": 5,
+        "status": "confirmed",
+        "source": "bls",
+        "url": "https://www.bls.gov/schedule/2027/01_sched_list.htm",
+        "officialDate": "2026-11-09"
+      },
+      {
+        "id": "census-monthly-wholesale-trade-sales-and-inventories-november-2026-2027-01-08",
+        "date": "2027-01-08",
+        "time": "10:00",
+        "title": "批发销售与库存",
+        "detail": "Monthly Wholesale Trade: Sales and Inventories · November 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview.html",
+        "officialDate": "2026-11-22"
+      }
+    ],
+    "sources": [
+      {
+        "id": "treasury",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "count": 0
+      },
+      {
+        "id": "tentative",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "officialUpdate": "2026-11-05",
+        "count": 6
+      },
+      {
+        "id": "bls",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "officialUpdate": "2026-11-09",
+        "count": 2
+      },
+      {
+        "id": "bea",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "officialUpdate": "2026-11-22",
+        "count": 0
+      },
+      {
+        "id": "census",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "officialUpdate": "2026-11-22",
+        "count": 2
+      },
+      {
+        "id": "fed",
+        "count": 0,
+        "state": "unavailable",
+        "checkedAt": null
+      },
+      {
+        "id": "fomc",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "officialUpdate": "2026-11-18",
+        "count": 0
+      },
+      {
+        "id": "dol",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "officialUpdate": "2026-09-11",
+        "count": 1
+      },
+      {
+        "id": "sifma",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "count": 0
+      },
+      {
+        "id": "nyse",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "count": 0
+      },
+      {
+        "id": "cme",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "count": 0
+      },
+      {
+        "id": "curve",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.406Z",
+        "count": 0
+      }
+    ],
+    "curve": [],
+    "refreshedAt": "2026-11-23T05:57:57.406Z"
+  },
+  "2027-01-11": {
+    "week": "2027-01-11",
+    "events": [
+      {
+        "id": "tsy-3y-nominal-2027-01-11",
+        "date": "2027-01-11",
+        "time": null,
+        "title": "3 年期国债拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-07 · 预计结算 2027-01-15",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 3,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "3y-nominal"
+      },
+      {
+        "id": "tsy-13w-bill-2027-01-11",
+        "date": "2027-01-11",
+        "time": null,
+        "title": "13 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-07 · 预计结算 2027-01-14",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "13w-bill"
+      },
+      {
+        "id": "tsy-26w-bill-2027-01-11",
+        "date": "2027-01-11",
+        "time": null,
+        "title": "26 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-07 · 预计结算 2027-01-14",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "26w-bill"
+      },
+      {
+        "id": "tsy-10y-nominal-2027-01-12",
+        "date": "2027-01-12",
+        "time": null,
+        "title": "10 年期国债拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-07 · 预计结算 2027-01-15",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 4,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "10y-nominal"
+      },
+      {
+        "id": "tsy-6w-bill-2027-01-12",
+        "date": "2027-01-12",
+        "time": null,
+        "title": "6 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-07 · 预计结算 2027-01-14",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "6w-bill"
+      },
+      {
+        "id": "bls-consumer-price-index-for-december-2026-2027-01-13",
+        "date": "2027-01-13",
+        "time": "08:30",
+        "title": "美国 CPI",
+        "detail": "Consumer Price Index for December 2026",
+        "category": "macro",
+        "kind": "inflation",
+        "impact": 5,
+        "status": "confirmed",
+        "source": "bls",
+        "url": "https://www.bls.gov/schedule/2027/01_sched_list.htm",
+        "officialDate": "2026-11-09"
+      },
+      {
+        "id": "tsy-30y-nominal-2027-01-13",
+        "date": "2027-01-13",
+        "time": null,
+        "title": "30 年期国债拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-07 · 预计结算 2027-01-15",
+        "category": "auction",
+        "kind": "longAuction",
+        "impact": 5,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "30y-nominal"
+      },
+      {
+        "id": "tsy-17w-bill-2027-01-13",
+        "date": "2027-01-13",
+        "time": null,
+        "title": "17 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-12 · 预计结算 2027-01-19",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "17w-bill"
+      },
+      {
+        "id": "bls-producer-price-index-for-december-2026-2027-01-14",
+        "date": "2027-01-14",
+        "time": "08:30",
+        "title": "美国 PPI",
+        "detail": "Producer Price Index for December 2026",
+        "category": "macro",
+        "kind": "ppi",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "bls",
+        "url": "https://www.bls.gov/schedule/2027/01_sched_list.htm",
+        "officialDate": "2026-11-09"
+      },
+      {
+        "id": "dol-claims-2027-01-14",
+        "date": "2027-01-14",
+        "time": "08:30",
+        "title": "初请失业金",
+        "detail": "Unemployment Insurance Weekly Claims · 劳工部每周日程",
+        "category": "macro",
+        "kind": "claims",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "dol",
+        "url": "https://oui.doleta.gov/unemploy/claims_arch.asp",
+        "officialDate": "2026-09-11"
+      },
+      {
+        "id": "tsy-4w-bill-2027-01-14",
+        "date": "2027-01-14",
+        "time": null,
+        "title": "4 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-12 · 预计结算 2027-01-19",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "4w-bill"
+      },
+      {
+        "id": "tsy-8w-bill-2027-01-14",
+        "date": "2027-01-14",
+        "time": null,
+        "title": "8 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-12 · 预计结算 2027-01-19",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "8w-bill"
+      },
+      {
+        "id": "census-advance-monthly-sales-for-retail-and-food-services-december-2026-2027-01-15",
+        "date": "2027-01-15",
+        "time": "08:30",
+        "title": "美国零售销售",
+        "detail": "Advance Monthly Sales for Retail and Food Services · December 2026",
+        "category": "macro",
+        "kind": "retail",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "bls-u-s-import-and-export-price-indexes-for-december-2026-2027-01-15",
+        "date": "2027-01-15",
+        "time": "08:30",
+        "title": "美国进出口价格",
+        "detail": "U.S. Import and Export Price Indexes for December 2026",
+        "category": "macro",
+        "kind": "inflation",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "bls",
+        "url": "https://www.bls.gov/schedule/2027/01_sched_list.htm",
+        "officialDate": "2026-11-09"
+      },
+      {
+        "id": "census-manufacturing-and-trade-inventories-and-sales-november-2026-2027-01-15",
+        "date": "2027-01-15",
+        "time": "10:00",
+        "title": "商业库存与销售",
+        "detail": "Manufacturing and Trade: Inventories and Sales · November 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview.html",
+        "officialDate": "2026-11-22"
+      }
+    ],
+    "sources": [
+      {
+        "id": "treasury",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "count": 0
+      },
+      {
+        "id": "tentative",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "officialUpdate": "2026-11-05",
+        "count": 9
+      },
+      {
+        "id": "bls",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "officialUpdate": "2026-11-09",
+        "count": 3
+      },
+      {
+        "id": "bea",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "officialUpdate": "2026-11-22",
+        "count": 0
+      },
+      {
+        "id": "census",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "officialUpdate": "2026-11-22",
+        "count": 2
+      },
+      {
+        "id": "fed",
+        "count": 0,
+        "state": "unavailable",
+        "checkedAt": null
+      },
+      {
+        "id": "fomc",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "officialUpdate": "2026-11-18",
+        "count": 0
+      },
+      {
+        "id": "dol",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "officialUpdate": "2026-09-11",
+        "count": 1
+      },
+      {
+        "id": "sifma",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "count": 0
+      },
+      {
+        "id": "nyse",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "count": 0
+      },
+      {
+        "id": "cme",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "count": 0
+      },
+      {
+        "id": "curve",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.673Z",
+        "count": 0
+      }
+    ],
+    "curve": [],
+    "refreshedAt": "2026-11-23T05:57:57.673Z"
+  },
+  "2027-01-18": {
+    "week": "2027-01-18",
+    "events": [
+      {
+        "id": "nyse-2027-01-18",
+        "date": "2027-01-18",
+        "time": null,
+        "title": "NYSE休市",
+        "detail": "Martin Luther King, Jr. Day · 马丁·路德·金纪念日 · 股票常规时段",
+        "category": "market",
+        "kind": "holiday",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "nyse",
+        "url": "https://www.nyse.com/trade/hours-calendars"
+      },
+      {
+        "id": "tsy-13w-bill-2027-01-19",
+        "date": "2027-01-19",
+        "time": null,
+        "title": "13 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-14 · 预计结算 2027-01-21",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "13w-bill"
+      },
+      {
+        "id": "tsy-26w-bill-2027-01-19",
+        "date": "2027-01-19",
+        "time": null,
+        "title": "26 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-14 · 预计结算 2027-01-21",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "26w-bill"
+      },
+      {
+        "id": "tsy-52w-bill-2027-01-19",
+        "date": "2027-01-19",
+        "time": null,
+        "title": "52 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-14 · 预计结算 2027-01-21",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "52w-bill"
+      },
+      {
+        "id": "tsy-6w-bill-2027-01-19",
+        "date": "2027-01-19",
+        "time": null,
+        "title": "6 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-14 · 预计结算 2027-01-21",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "6w-bill"
+      },
+      {
+        "id": "census-new-residential-construction-building-permits-housing-starts-and-housing-completions-december-2026-2027-01-20",
+        "date": "2027-01-20",
+        "time": "08:30",
+        "title": "新屋开工与建筑许可",
+        "detail": "New Residential Construction (Building Permits, Housing Starts, and Housing Completions) · December 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "tsy-20y-nominal-2027-01-20",
+        "date": "2027-01-20",
+        "time": null,
+        "title": "20 年期国债拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-14 · 预计结算 2027-01-22",
+        "category": "auction",
+        "kind": "longAuction",
+        "impact": 5,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "20y-nominal"
+      },
+      {
+        "id": "tsy-17w-bill-2027-01-20",
+        "date": "2027-01-20",
+        "time": null,
+        "title": "17 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-19 · 预计结算 2027-01-26",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "17w-bill"
+      },
+      {
+        "id": "dol-claims-2027-01-21",
+        "date": "2027-01-21",
+        "time": "08:30",
+        "title": "初请失业金",
+        "detail": "Unemployment Insurance Weekly Claims · 劳工部每周日程",
+        "category": "macro",
+        "kind": "claims",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "dol",
+        "url": "https://oui.doleta.gov/unemploy/claims_arch.asp",
+        "officialDate": "2026-09-11"
+      },
+      {
+        "id": "tsy-10y-tips-2027-01-21",
+        "date": "2027-01-21",
+        "time": null,
+        "title": "10 年期 TIPS 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-14 · 预计结算 2027-01-29",
+        "category": "auction",
+        "kind": "tips",
+        "impact": 4,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "10y-tips"
+      },
+      {
+        "id": "tsy-4w-bill-2027-01-21",
+        "date": "2027-01-21",
+        "time": null,
+        "title": "4 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-19 · 预计结算 2027-01-26",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "4w-bill"
+      },
+      {
+        "id": "tsy-8w-bill-2027-01-21",
+        "date": "2027-01-21",
+        "time": null,
+        "title": "8 周 T-bill 拍卖",
+        "detail": "财政部暂定表 · 预计公告 2027-01-19 · 预计结算 2027-01-26",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "tentative",
+        "source": "tentative",
+        "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
+        "officialDate": "2026-11-05",
+        "auctionKey": "8w-bill"
+      }
+    ],
+    "sources": [
+      {
+        "id": "treasury",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "count": 0
+      },
+      {
+        "id": "tentative",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "officialUpdate": "2026-11-05",
+        "count": 9
+      },
+      {
+        "id": "bls",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "officialUpdate": "2026-11-09",
+        "count": 0
+      },
+      {
+        "id": "bea",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "officialUpdate": "2026-11-22",
+        "count": 0
+      },
+      {
+        "id": "census",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "officialUpdate": "2026-11-22",
+        "count": 1
+      },
+      {
+        "id": "fed",
+        "count": 0,
+        "state": "unavailable",
+        "checkedAt": null
+      },
+      {
+        "id": "fomc",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "officialUpdate": "2026-11-18",
+        "count": 0
+      },
+      {
+        "id": "dol",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "officialUpdate": "2026-09-11",
+        "count": 1
+      },
+      {
+        "id": "sifma",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "count": 0
+      },
+      {
+        "id": "nyse",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "count": 1
+      },
+      {
+        "id": "cme",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "count": 0
+      },
+      {
+        "id": "curve",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:57:57.956Z",
+        "count": 0
+      }
+    ],
+    "curve": [],
+    "refreshedAt": "2026-11-23T05:57:57.956Z"
   }
 }

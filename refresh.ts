@@ -1,9 +1,10 @@
 import { readFile, rename, writeFile } from "node:fs/promises";
 import { publicFeeds } from "./feeds";
+import { enrichRelease, loadNowcasts, type InflationModels } from "./releases";
 import { addDays, isWeek, newYorkDate, sourceKeys, timeSort, todayWeek, type Calendar, type MarketEvent, type SourceCheck } from "./model";
 import { seedCalendar } from "./seed";
 
-async function refreshCalendar(week: string, previous: Calendar): Promise<Calendar> {
+async function refreshCalendar(week: string, previous: Calendar, models: InflationModels): Promise<Calendar> {
   const baseline = seedCalendar(week);
   const checkedAt = new Date().toISOString();
   const feeds = publicFeeds(week);
@@ -50,7 +51,8 @@ async function refreshCalendar(week: string, previous: Calendar): Promise<Calend
       const fromOtherSource = events.get(event.id);
       const officialUrl = prior?.source === event.source ? prior.resultUrl : fromOtherSource?.resultUrl;
       const url = prior?.source === event.source && /sifma.org\/news\/press-releases\//.test(prior.url) ? prior.url : event.url;
-      collect({ ...event, url, officialDate: event.officialDate ?? prior?.officialDate, actual: event.actual ?? prior?.actual, resultUrl: event.resultUrl ?? officialUrl });
+      collect({ ...event, url, officialDate: event.officialDate ?? prior?.officialDate, actual: event.actual ?? prior?.actual,
+        resultUrl: event.resultUrl ?? officialUrl, readings: prior?.readings, reference: prior?.reference });
     }
     if (id === "curve" && value.curve?.length) {
       curve = [...new Map([...previous.curve, ...value.curve].map(point => [point.date, point])).values()].sort((a, b) => a.date.localeCompare(b.date));
@@ -67,7 +69,8 @@ async function refreshCalendar(week: string, previous: Calendar): Promise<Calend
     if (event.source === "tentative" && announced.has(event.auctionKey + ":" + event.date)) events.delete(event.id);
   }
   const succeeded = responses.some(response => response.status === "fulfilled");
-  const data: Calendar = { week, events: [...events.values()].sort(timeSort), sources, curve,
+  const enriched = await Promise.all([...events.values()].sort(timeSort).map(event => enrichRelease(event, models)));
+  const data: Calendar = { week, events: enriched, sources, curve,
     refreshedAt: succeeded ? checkedAt : previous.refreshedAt };
   return data;
 }
@@ -75,15 +78,20 @@ async function refreshCalendar(week: string, previous: Calendar): Promise<Calend
 const file = "calendar.json";
 const calendars = JSON.parse(await readFile(file, "utf8")) as Record<string, Calendar>;
 const week = todayWeek();
-const requested = process.argv.slice(2);
+const near = process.argv.includes("--near");
+const requested = process.argv.slice(2).filter(argument => argument !== "--near");
 if (!requested.every(isWeek)) throw new Error("Requested weeks must be Monday dates (YYYY-MM-DD).");
-const weeks = requested.length ? requested : [addDays(week, -7), week, addDays(week, 7)];
-for (const target of weeks) {
+const offsets = near ? [-1, 0, 1] : [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
+const weeks = requested.length ? requested : offsets.map(offset => addDays(week, offset * 7));
+const models = await loadNowcasts();
+const meaningful = (calendar: Calendar) =>
+  JSON.stringify(calendar, (key, value) => key === "refreshedAt" || key === "checkedAt" ? undefined : value);
+for (const target of [...new Set(weeks)]) {
   const previous = calendars[target] ?? seedCalendar(target);
-  const calendar = await refreshCalendar(target, previous);
+  const calendar = await refreshCalendar(target, previous, models);
   const verified = calendar.sources.filter(source => source.state === "verified").length;
   console.log(target, calendar.events.length + " events", verified + "/" + sourceKeys.length + " verified sources");
-  if (verified > 0) calendars[target] = calendar;
+  if (verified > 0 && (!calendars[target] || meaningful(previous) !== meaningful(calendar))) calendars[target] = calendar;
 }
 await writeFile(file + ".tmp", JSON.stringify(calendars, null, 2) + "\n");
 await rename(file + ".tmp", file);

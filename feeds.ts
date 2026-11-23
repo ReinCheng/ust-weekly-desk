@@ -32,7 +32,19 @@ const covered = (value: string, week: string) => value >= week && value <= addDa
 const weekMonths = (week: string) => [...new Set([week.slice(0, 7), addDays(week, 6).slice(0, 7)])];
 const weekYears = (week: string) => [...new Set([week.slice(0, 4), addDays(week, 6).slice(0, 4)])];
 
-async function document(url: string) {
+type PublicDocument = { html: string; modified?: string };
+const documents = new Map<string, Promise<PublicDocument>>();
+
+export function document(url: string): Promise<PublicDocument> {
+  let request = documents.get(url);
+  if (!request) {
+    request = fetchDocument(url);
+    documents.set(url, request);
+  }
+  return request;
+}
+
+async function fetchDocument(url: string): Promise<PublicDocument> {
   const response = await fetch(url, { headers, signal: AbortSignal.timeout(9000) });
   if (!response.ok) throw new Error("Upstream HTTP " + response.status);
   const modified = response.headers.get("Last-Modified");
@@ -96,7 +108,9 @@ export function parseBea(html: string, year: string, week: string, modified?: st
     const date = dateOf(label ?? "", year);
     const time = timeOf(label ?? "");
     const item = date && time && covered(date, week) && buildMacro("bea", date, time, detail, url, officialUpdate);
-    return item ? [item] : [];
+    if (!item) return [];
+    const article = row.match(/href="(\/news\/20\d\d\/[a-z0-9-]+)"/i)?.[1];
+    return [{ ...item, resultUrl: article ? new URL(article, url).href : undefined }];
   });
   return { id: "bea", events, officialUpdate };
 }
@@ -399,11 +413,16 @@ export function publicFeeds(week: string, supplied?: PublicInputs): [SourceId, P
       const data = cmeResult.value;
       return parseCme(JSON.parse(data.html), week, addDays(week, 6), data.modified, holidays);
     })],
-    ["curve", Promise.all([...new Set([...weekMonths(week), addDays(week, -7).slice(0, 7)])].map(async month => {
+    ["curve", Promise.allSettled([...new Set([...weekMonths(week), addDays(week, -7).slice(0, 7)])].map(async month => {
+      if (month > newYorkDate().slice(0, 7)) return { id: "curve" as const, events: [], curve: [] };
       const data = await document(curveUrl(month));
       const curve = parseCurve(data.html, week);
       return { id: "curve" as const, events: [], curve, officialUpdate: curve.at(-1)?.date };
-    })).then(parts => combine("curve", parts))],
+    })).then(results => {
+      const parts = results.flatMap(result => result.status === "fulfilled" ? [result.value] : []);
+      if (!parts.length) throw new Error("Treasury yield curve unavailable");
+      return { ...combine("curve", parts), partial: parts.length < results.length };
+    })],
   ];
 }
 

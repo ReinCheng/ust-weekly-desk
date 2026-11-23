@@ -17,12 +17,14 @@ export const sourceIndex = {
   sifma: { name: "SIFMA · 美国固收", detail: "美元固收休市及提前收市建议", url: "https://www.sifma.org/resources/guidelines/holiday-schedule" },
   nyse: { name: "NYSE · 股票市场", detail: "股票常规交易时段、休市和提前收市", url: "https://www.nyse.com/trade/hours-calendars" },
   cme: { name: "CME Globex · 利率期货", detail: "按产品及日期查 Treasury futures 节假日时段", url: "https://www.cmegroup.com/trading-hours.html#trading-holiday-hours" },
-  curve: { name: "U.S. Treasury · Par Yield Curve", detail: "官方日度平价收益率，市场复盘基准", url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve" },
+  curve: { name: "U.S. Treasury · Par Yield Curve", detail: "官方日终平价收益率", url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve" },
 } as const;
 
 export type SourceId = keyof typeof sourceIndex;
 export type Category = keyof typeof categories;
 export type Kind = "inflation" | "ppi" | "jobs" | "claims" | "retail" | "growth" | "policy" | "minutes" | "speech" | "technicalSpeech" | "longAuction" | "tips" | "coupon" | "bills" | "holiday" | "earlyClose" | "marketCheck" | "funding";
+export type Reading = { label: string; value: number; unit: "%" | "千人" };
+export type Reference = { value: number; period: string; asOf: string };
 export type MarketEvent = {
   id: string;
   date: string;
@@ -37,6 +39,8 @@ export type MarketEvent = {
   url: string;
   officialDate?: string;
   actual?: string;
+  readings?: Reading[];
+  reference?: Reference;
   resultUrl?: string;
   auctionKey?: string;
 };
