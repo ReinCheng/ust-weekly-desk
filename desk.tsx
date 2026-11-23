@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  Activity, AlertTriangle, ArrowDownUp, BarChart3, BookOpen, CalendarDays, ChevronLeft,
+  Activity, AlertTriangle, ArrowDownUp, BookOpen, CalendarDays, ChevronLeft,
   ChevronRight, Clock, Database, ExternalLink, Globe, History, Layers, LineChart, Moon,
   RefreshCw, RotateCcw, Search, SlidersHorizontal, Sparkles, Sun, TrendingUp, X,
 } from "lucide-react";
@@ -20,7 +20,6 @@ import { seedCalendar } from "./seed";
 type ViewId = "overview" | "calendar" | "scenarios" | "sources";
 type DrawerTab = "scenario" | "history" | "micro";
 type ThemeMode = "light" | "dark";
-type CurveMode = "curve" | "change";
 type BenchMode = "1D" | "1W" | "1M";
 type SavedScenarioInput = { expected?: string; hypothesis?: string; components?: string; stance?: string };
 
@@ -145,7 +144,6 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
 }) {
   const latestEod = points.at(-1);
   const usingLive = Boolean(showLive && canLive && live);
-  const [mode, setMode] = useState<CurveMode>("curve");
   const [bench, setBench] = useState<BenchMode>("1D");
   const [focus, setFocus] = useState<number | null>(null);
   const compareEod = pickBenchmark(points, bench);
@@ -165,51 +163,96 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
     : compareEod ? activeTenors.map(t => curveValue(compareEod, t) ?? NaN) : [];
 
   const hasCompare = compareVals.length === activeTenors.length && compareVals.every(Number.isFinite);
+  const bpDigits = usingLive && bench === "1D" ? 1 : 0;
+  const yDigits = usingLive ? 3 : 2;
   const deltasBp = activeTenors.map((_, i) =>
     hasCompare && Number.isFinite(latestVals[i])
-      ? Number(((latestVals[i] - compareVals[i]) * 100).toFixed(usingLive && bench === "1D" ? 1 : 0))
+      ? Number(((latestVals[i] - compareVals[i]) * 100).toFixed(bpDigits))
       : null
   );
 
+  // Exact trading dates for solid & dashed lines
+  const liveNyDate = usingLive ? newYorkDate(new Date(live!.asOf)) : null;
+  const livePrevDate = liveNyDate
+    ? (points.filter(p => p.date < liveNyDate).at(-1)?.date ?? latestEod?.date ?? null)
+    : null;
+  const solidLegend = usingLive
+    ? `实时现券 ${liveNyDate} ${formatClockSec(live!.asOf, tz)} (${live!.exchange})`
+    : latestEod ? `财政部日终 ${latestEod.date}` : "暂无数据";
+  const dashedLegend = !hasCompare ? null
+    : usingLive && bench === "1D"
+      ? `昨收 ${livePrevDate ?? "上一交易日"} (${live!.exchange})`
+      : compareEod
+        ? `${bench === "1D" ? "上一观测日" : bench + " 基准"} ${compareEod.date} (财政部日终)`
+        : null;
+
+  // Dual-pane vertically aligned SVG geometry: Top = Yield Curve, Bottom = Aligned Δbp Bars
   const validVals = [...latestVals, ...(hasCompare ? compareVals : [])].filter(Number.isFinite);
   const start = validVals.length ? Math.min(...validVals) - 0.1 : 0;
   const end = validVals.length ? Math.max(...validVals) + 0.12 : 1;
-  const padL = 44, padR = 20, width = 520, height = 198;
+  const width = 560, height = hasCompare ? 300 : 196;
+  const padL = 48, padR = 22;
   const x = (index: number) => activeTenors.length > 1
     ? padL + (width - padL - padR) * index / (activeTenors.length - 1)
     : width / 2;
-  const y = (value: number) => 152 - 122 * (value - start) / Math.max(0.01, end - start);
+  const y = (value: number) => 148 - 118 * (value - start) / Math.max(0.01, end - start);
   const linePath = (vals: number[]) => vals.map((v, i) => x(i).toFixed(1) + "," + y(v).toFixed(1)).join(" ");
   const areaPath = latestVals.length
-    ? `M ${x(0).toFixed(1)},152 L ${latestVals.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" L ")} L ${x(latestVals.length - 1).toFixed(1)},152 Z`
+    ? `M ${x(0).toFixed(1)},148 L ${latestVals.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" L ")} L ${x(latestVals.length - 1).toFixed(1)},148 Z`
     : "";
 
-  const maxAbsBp = Math.max(8, Math.ceil(Math.max(0, ...deltasBp.map(d => (d === null ? 0 : Math.abs(d))))));
-  const zeroY = 92;
-  const barY = (bp: number) => zeroY - (bp / maxAbsBp) * 58;
+  const maxAbsBp = Math.max(5, Math.ceil(Math.max(0, ...deltasBp.map(d => (d === null ? 0 : Math.abs(d))))));
+  const zeroY = 226;
+  const barY = (bp: number) => zeroY - (bp / maxAbsBp) * 32;
+  const colW = activeTenors.length > 1 ? (width - padL - padR) / (activeTenors.length - 1) : 60;
 
-  const valOf = (t: Tenor) => {
+  const valOf = (arr: number[], t: Tenor) => {
     const idx = activeTenors.indexOf(t);
-    return idx >= 0 && Number.isFinite(latestVals[idx]) ? latestVals[idx] : undefined;
+    return idx >= 0 && Number.isFinite(arr[idx]) ? arr[idx] : undefined;
   };
-  const y2 = valOf("2Y"), y5 = valOf("5Y"), y10 = valOf("10Y"), y20 = valOf("20Y"), y30 = valOf("30Y");
-  const fly102030 = y10 !== undefined && y20 !== undefined && y30 !== undefined ? Math.round((2 * y20 - y10 - y30) * 100) : null;
-  const fly2510 = y2 !== undefined && y5 !== undefined && y10 !== undefined ? Math.round((2 * y5 - y2 - y10) * 100) : null;
+  const spreadMetrics = useMemo(() => {
+    const cur = latestVals, cmp = hasCompare ? compareVals : [];
+    const build = (
+      id: string, name: string, formula: string,
+      calc: (arr: number[]) => number | undefined,
+      posWord: string, negWord: string,
+    ) => {
+      const v = calc(cur);
+      if (v === undefined) return null;
+      const pv = hasCompare ? calc(cmp) : undefined;
+      const d = pv !== undefined ? Number((v - pv).toFixed(bpDigits)) : null;
+      return { id, name, formula, value: v, delta: d, trend: d === null || d === 0 ? "持平" : d > 0 ? posWord : negWord };
+    };
+    return [
+      build("2s10s", "2s10s", "10Y − 2Y", a => {
+        const a2 = valOf(a, "2Y"), a10 = valOf(a, "10Y");
+        return a2 !== undefined && a10 !== undefined ? (a10 - a2) * 100 : undefined;
+      }, "走陡", "趋平"),
+      build("5s30s", "5s30s", "30Y − 5Y", a => {
+        const a5 = valOf(a, "5Y"), a30 = valOf(a, "30Y");
+        return a5 !== undefined && a30 !== undefined ? (a30 - a5) * 100 : undefined;
+      }, "走陡", "趋平"),
+      build("2s5s10s", "2s5s10s Fly", "2×5Y − 2Y − 10Y", a => {
+        const a2 = valOf(a, "2Y"), a5 = valOf(a, "5Y"), a10 = valOf(a, "10Y");
+        return a2 !== undefined && a5 !== undefined && a10 !== undefined ? (2 * a5 - a2 - a10) * 100 : undefined;
+      }, "Belly 走弱", "Belly 走强"),
+      build("10s20s30s", "10/20/30 Fly", "2×20Y − 10Y − 30Y", a => {
+        const a10 = valOf(a, "10Y"), a20 = valOf(a, "20Y"), a30 = valOf(a, "30Y");
+        return a10 !== undefined && a20 !== undefined && a30 !== undefined ? (2 * a20 - a10 - a30) * 100 : undefined;
+      }, "20Y 走弱", "20Y 走强"),
+    ].filter((m): m is NonNullable<typeof m> => Boolean(m));
+  }, [latestVals, compareVals, hasCompare, bpDigits, activeTenors]);
+
   const focusedIdx = focus !== null && focus < activeTenors.length ? focus : null;
-  const bpDigits = usingLive && bench === "1D" ? 1 : 0;
-  const yDigits = usingLive ? 3 : 2;
-  const compareLabel = usingLive && bench === "1D" ? "昨收 (Tradeweb)" : compareEod ? short(compareEod.date) + " (" + bench + ")" : "";
 
   return <section className="panel glass curve" aria-labelledby="curve-title">
     <div className="panel-header curve-header">
       <div>
         <div className="curve-title-row">
-          <h2 id="curve-title">美债收益率曲线</h2>
+          <h2 id="curve-title">美债收益率曲线与基点变动</h2>
           {usingLive && <span className="live-badge"><i className="live-dot" />LIVE · {live!.exchange}</span>}
         </div>
-        <p>{usingLive
-          ? "实时现券报价 " + formatClockSec(live!.asOf, tz) + " · 每 30 秒自动刷新"
-          : latestEod ? latestEod.date + " · 财政部日终平价曲线" : "等待收益率数据"}</p>
+        <p>{usingLive ? "每 30 秒自动刷新 · 上图为收益率曲线，下方同轴对齐为较基准基点变动" : "财政部官方日终平价曲线 · 下方同轴对齐为较基准基点变动"}</p>
       </div>
       <div className="curve-controls">
         {canLive && live && (
@@ -218,14 +261,6 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
             <button type="button" className={!showLive ? "active" : ""} onClick={() => onToggleLive(false)}>日终</button>
           </div>
         )}
-        <div className="segmented" role="group" aria-label="图表视图">
-          <button type="button" className={mode === "curve" ? "active" : ""} onClick={() => setMode("curve")}>
-            <LineChart size={13} />曲线
-          </button>
-          <button type="button" className={mode === "change" ? "active" : ""} onClick={() => setMode("change")} disabled={!hasCompare}>
-            <BarChart3 size={13} />变动 bp
-          </button>
-        </div>
         <div className="segmented" role="group" aria-label="对比基准">
           {(["1D", "1W", "1M"] as const).map(b => (
             <button key={b} type="button" className={bench === b ? "active" : ""} onClick={() => setBench(b)} disabled={points.length < 2 && !(usingLive && b === "1D")}>{b}</button>
@@ -235,74 +270,103 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
     </div>
 
     {latestVals.length > 0 ? <>
-      {mode === "curve" ? (
-        <svg className="curve-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="美债收益率曲线">
-          <defs>
-            <linearGradient id="curveArea" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.24" />
-              <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.01" />
-            </linearGradient>
-          </defs>
-          {[0, 1, 2, 3].map(i => {
-            const value = start + (end - start) * i / 3;
-            return <g key={i}>
-              <line x1={padL} x2={width - padR} y1={y(value)} y2={y(value)} className="grid-line" />
-              <text x={padL - 7} y={y(value) + 3.5} textAnchor="end">{value.toFixed(2)}%</text>
-            </g>;
-          })}
-          <path d={areaPath} fill="url(#curveArea)" />
-          {hasCompare && <polyline fill="none" className="compare-line" strokeWidth="1.9" strokeDasharray="4 4" points={linePath(compareVals)} />}
-          <polyline fill="none" className="main-line" strokeWidth="2.8" strokeLinejoin="round" strokeLinecap="round" points={linePath(latestVals)} />
-          {latestVals.map((value, i) => {
-            const active = focusedIdx === i;
-            const d = deltasBp[i];
-            const cx = x(i), cy = y(value);
-            const tipX = Math.min(Math.max(cx, 84), width - 84);
-            const tipY = cy < 52 ? cy + 28 : cy - 16;
-            return <g key={activeTenors[i]} className="curve-point" onMouseEnter={() => setFocus(i)} onMouseLeave={() => setFocus(null)}
-              onClick={() => setFocus(prev => prev === i ? null : i)}>
-              {active && <line x1={cx} x2={cx} y1="26" y2="152" className="focus-guide" />}
-              <circle cx={cx} cy={cy} r={active ? 6 : 3.8} className="curve-dot" />
-              <circle cx={cx} cy={cy} r="17" fill="transparent">
-                <title>{activeTenors[i] + " " + value.toFixed(yDigits) + "%" + (d !== null ? " (" + sign(d, bpDigits) + " bp)" : "")}</title>
-              </circle>
-              <text x={cx} y="176" textAnchor="middle" className={active ? "tenor-active" : ""}>{activeTenors[i]}</text>
-              {active && <g className="svg-callout">
-                <rect x={tipX - 66} y={tipY - 15} width="132" height="22" rx="11" />
-                <text x={tipX} y={tipY} textAnchor="middle" className="chart-value">
-                  {activeTenors[i]} {value.toFixed(yDigits)}%{d !== null ? " · " + sign(d, bpDigits) + "bp" : ""}
-                </text>
-              </g>}
-            </g>;
-          })}
-        </svg>
-      ) : (
-        <svg className="curve-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="各期限收益率变动基点">
-          <line x1={padL} x2={width - padR} y1={zeroY} y2={zeroY} className="zero-line" />
-          <text x={padL - 7} y={zeroY + 3.5} textAnchor="end">0bp</text>
-          <text x={padL - 7} y="38" textAnchor="end">+{maxAbsBp}</text>
-          <text x={padL - 7} y="152" textAnchor="end">-{maxAbsBp}</text>
-          {deltasBp.map((bp, i) => {
-            if (bp === null) return null;
-            const cx = x(i);
-            const yTop = bp >= 0 ? barY(bp) : zeroY;
-            const barH = Math.max(2, Math.abs(barY(bp) - zeroY));
-            const labelY = bp >= 0 ? yTop - 6 : yTop + barH + 12;
-            return <g key={activeTenors[i]}>
-              <rect x={cx - 13} y={yTop} width="26" height={barH} rx="6" className={bp > 0 ? "bar-up" : bp < 0 ? "bar-down" : "bar-flat"} />
-              <text x={cx} y={labelY} textAnchor="middle" className={bp > 0 ? "bp-up" : bp < 0 ? "bp-down" : ""}>{sign(bp, bpDigits)}</text>
-              <text x={cx} y="178" textAnchor="middle">{activeTenors[i]}</text>
-            </g>;
-          })}
-        </svg>
-      )}
-      <div className="curve-foot">
-        {y2 !== undefined && y10 !== undefined && <span><b>2s10s</b> {sign((y10 - y2) * 100, bpDigits)} bp</span>}
-        {y5 !== undefined && y30 !== undefined && <span><b>5s30s</b> {sign((y30 - y5) * 100, bpDigits)} bp</span>}
-        {fly2510 !== null && <span><b>2s5s10s</b> {sign(fly2510, 0)} bp</span>}
-        {fly102030 !== null && <span><b>10/20/30 fly</b> {sign(fly102030, 0)} bp</span>}
-        {hasCompare && compareLabel && <span className="legend">虚线 / 基准 {compareLabel}</span>}
+      <div className="curve-legend-bar" aria-label="曲线图例">
+        <span className="legend-item">
+          <i className="swatch swatch-solid" />
+          <b>实线</b> {solidLegend}
+        </span>
+        {dashedLegend && <span className="legend-item">
+          <i className="swatch swatch-dashed" />
+          <b>虚线</b> {dashedLegend}
+        </span>}
       </div>
+
+      <svg className="curve-chart-dual" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="美债收益率曲线及各期限基点变动">
+        <defs>
+          <linearGradient id="curveArea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.01" />
+          </linearGradient>
+        </defs>
+
+        {/* Top Pane: Yield Curve */}
+        {[0, 1, 2, 3].map(i => {
+          const value = start + (end - start) * i / 3;
+          return <g key={i}>
+            <line x1={padL} x2={width - padR} y1={y(value)} y2={y(value)} className="grid-line" />
+            <text x={padL - 7} y={y(value) + 3.5} textAnchor="end">{value.toFixed(2)}%</text>
+          </g>;
+        })}
+        <path d={areaPath} fill="url(#curveArea)" />
+        {hasCompare && <polyline fill="none" className="compare-line" strokeWidth="1.8" strokeDasharray="4 4" points={linePath(compareVals)} />}
+        <polyline fill="none" className="main-line" strokeWidth="2.8" strokeLinejoin="round" strokeLinecap="round" points={linePath(latestVals)} />
+
+        {/* Bottom Pane: Aligned Δbp Histogram */}
+        {hasCompare && <>
+          <line x1={padL} x2={width - padR} y1="166" y2="166" className="pane-divider" />
+          <text x={padL} y="180" className="pane-tag">较虚线变动 (bp)</text>
+          <text x={width - padR} y="180" textAnchor="end" className="pane-hint">橙红 = 上行 · 翠绿 = 下行</text>
+          <line x1={padL} x2={width - padR} y1={zeroY} y2={zeroY} className="zero-line" />
+          <text x={padL - 7} y={zeroY + 3.5} textAnchor="end">0</text>
+          <text x={padL - 7} y="198" textAnchor="end">+{maxAbsBp}</text>
+          <text x={padL - 7} y="260" textAnchor="end">-{maxAbsBp}</text>
+        </>}
+
+        {/* Synchronized Interactive Columns for Every Tenor */}
+        {latestVals.map((value, i) => {
+          const active = focusedIdx === i;
+          const d = deltasBp[i];
+          const cx = x(i), cy = y(value);
+          const tipX = Math.min(Math.max(cx, 84), width - 84);
+          const tipY = cy < 50 ? cy + 28 : cy - 16;
+          const barTop = d !== null ? (d >= 0 ? barY(d) : zeroY) : zeroY;
+          const barH = d !== null ? Math.max(2.5, Math.abs(barY(d) - zeroY)) : 0;
+          const bpLabelY = d !== null ? (d >= 0 ? barTop - 5 : barTop + barH + 11) : zeroY;
+          const tenorY = hasCompare ? 288 : 176;
+
+          return <g key={activeTenors[i]} className="curve-point"
+            onMouseEnter={() => setFocus(i)} onMouseLeave={() => setFocus(null)}
+            onClick={() => setFocus(prev => prev === i ? null : i)}>
+            {active && <line x1={cx} x2={cx} y1="24" y2={hasCompare ? 272 : 154} className="focus-guide" />}
+            <circle cx={cx} cy={cy} r={active ? 6 : 3.8} className="curve-dot" />
+            {hasCompare && d !== null && <>
+              <rect x={cx - 12} y={barTop} width="24" height={barH} rx="5"
+                className={(d > 0 ? "bar-up" : d < 0 ? "bar-down" : "bar-flat") + (active ? " bar-active" : "")} />
+              <text x={cx} y={bpLabelY} textAnchor="middle"
+                className={"bp-val " + (d > 0 ? "bp-up" : d < 0 ? "bp-down" : "")}>{sign(d, bpDigits)}</text>
+            </>}
+            <text x={cx} y={tenorY} textAnchor="middle" className={"tenor-lbl" + (active ? " tenor-active" : "")}>{activeTenors[i]}</text>
+            <rect x={cx - colW / 2} y="16" width={colW} height={height - 20} fill="transparent">
+              <title>{activeTenors[i] + " " + value.toFixed(yDigits) + "%" + (d !== null ? " (" + sign(d, bpDigits) + " bp)" : "")}</title>
+            </rect>
+            {active && <g className="svg-callout">
+              <rect x={tipX - 68} y={tipY - 15} width="136" height="22" rx="11" />
+              <text x={tipX} y={tipY} textAnchor="middle" className="chart-value">
+                {activeTenors[i]} {value.toFixed(yDigits)}%{d !== null ? " · " + sign(d, bpDigits) + "bp" : ""}
+              </text>
+            </g>}
+          </g>;
+        })}
+      </svg>
+
+      {/* Redesigned 4-Card Curve Spread & Butterfly Metrics Grid */}
+      {spreadMetrics.length > 0 && <div className="curve-metrics" aria-label="关键期限利差与蝶式结构">
+        {spreadMetrics.map(m => (
+          <div className="cm-card" key={m.id}>
+            <div className="cm-top">
+              <strong>{m.name}</strong>
+              <span>{m.formula}</span>
+            </div>
+            <div className="cm-val">{sign(m.value, bpDigits)} bp</div>
+            <div className="cm-foot">
+              {m.delta !== null ? <>
+                <em className={m.delta > 0 ? "txt-up" : m.delta < 0 ? "txt-down" : "txt-muted"}>{sign(m.delta, bpDigits)} bp</em>
+                <span className="cm-trend">{m.trend}</span>
+              </> : <span className="cm-trend">较 {bench}</span>}
+            </div>
+          </div>
+        ))}
+      </div>}
     </> : <p className="empty">该日期之前暂无可用的曲线数据。</p>}
   </section>;
 }
@@ -317,8 +381,8 @@ function RateCards({ points, live, showLive }: { points: CurvePoint[]; live: Liv
   const valOf = (t: Tenor) => usingLive ? live!.values[tenors.indexOf(t)] : curveValue(latestEod, t);
   const prevOf = (t: Tenor) => usingLive ? (live!.prevValues[tenors.indexOf(t)] ?? undefined) : curveValue(prev1dEod, t);
 
-  const y3m = valOf("3M"), y2 = valOf("2Y"), y5 = valOf("5Y"), y10 = valOf("10Y"), y20 = valOf("20Y"), y30 = valOf("30Y");
-  const p3m = prevOf("3M"), p2 = prevOf("2Y"), p5 = prevOf("5Y"), p10 = prevOf("10Y"), p20 = prevOf("20Y"), p30 = prevOf("30Y");
+  const y3m = valOf("3M"), y1y = valOf("1Y"), y10 = valOf("10Y");
+  const p3m = prevOf("3M"), p1y = prevOf("1Y"), p10 = prevOf("10Y");
 
   const r10 = realCurveValue(latestEod, "10Y");
   const eod10 = curveValue(latestEod, "10Y");
@@ -333,12 +397,10 @@ function RateCards({ points, live, showLive }: { points: CurvePoint[]; live: Liv
 
   const ribbon = [
     y3m !== undefined ? { label: "3M 短端", value: y3m.toFixed(usingLive ? 3 : 2) + "%", delta: bpFmt(y3m, p3m, bpDigits) } : null,
-    y3m !== undefined && y10 !== undefined ? { label: "3m10s", value: sign((y10 - y3m) * 100, 0) + " bp", delta: bpFmt(y10 - y3m, p10 !== undefined && p3m !== undefined ? p10 - p3m : undefined, bpDigits) } : null,
-    y2 !== undefined && y10 !== undefined ? { label: "2s10s", value: sign((y10 - y2) * 100, 0) + " bp", delta: bpFmt(y10 - y2, p10 !== undefined && p2 !== undefined ? p10 - p2 : undefined, bpDigits) } : null,
-    y5 !== undefined && y30 !== undefined ? { label: "5s30s", value: sign((y30 - y5) * 100, 0) + " bp", delta: bpFmt(y30 - y5, p30 !== undefined && p5 !== undefined ? p30 - p5 : undefined, bpDigits) } : null,
-    y10 !== undefined && y20 !== undefined && y30 !== undefined ? { label: "10/20/30 Fly", value: sign((2 * y20 - y10 - y30) * 100, 0) + " bp", delta: bpFmt(2 * y20 - y10 - y30, p10 !== undefined && p20 !== undefined && p30 !== undefined ? 2 * p20 - p10 - p30 : undefined, bpDigits) } : null,
-    r10 !== undefined ? { label: usingLive ? "10Y 实际(日终)" : "10Y 实际利率", value: r10.toFixed(2) + "%", delta: bpFmt(r10, pr10, 0) } : null,
-    be10 !== undefined ? { label: usingLive ? "10Y BE(日终)" : "10Y Breakeven", value: be10.toFixed(2) + "%", delta: bpFmt(be10, pbe10, 0) } : null,
+    y1y !== undefined ? { label: "1Y 短端", value: y1y.toFixed(usingLive ? 3 : 2) + "%", delta: bpFmt(y1y, p1y, bpDigits) } : null,
+    y3m !== undefined && y10 !== undefined ? { label: "3m10s 利差", value: sign((y10 - y3m) * 100, bpDigits) + " bp", delta: bpFmt(y10 - y3m, p10 !== undefined && p3m !== undefined ? p10 - p3m : undefined, bpDigits) } : null,
+    r10 !== undefined ? { label: usingLive ? "10Y 实际利率 (日终)" : "10Y 实际利率", value: r10.toFixed(2) + "%", delta: bpFmt(r10, pr10, 0) } : null,
+    be10 !== undefined ? { label: usingLive ? "10Y Breakeven (日终)" : "10Y Breakeven", value: be10.toFixed(2) + "%", delta: bpFmt(be10, pbe10, 0) } : null,
   ].filter((item): item is { label: string; value: string; delta: number | null } => Boolean(item));
 
   return <div className="rates-wrap">
@@ -361,11 +423,11 @@ function RateCards({ points, live, showLive }: { points: CurvePoint[]; live: Liv
         </article>;
       })}
     </div>
-    {ribbon.length > 0 && <div className="spread-ribbon glass" aria-label="利差与通胀预期指标">
+    {ribbon.length > 0 && <div className="spread-ribbon glass" aria-label="短端与通胀预期指标">
       {ribbon.map(item => <div className="spread-chip" key={item.label}>
         <span>{item.label}</span>
         <strong>{item.value}</strong>
-        {item.delta !== null && <em className={item.delta > 0 ? "txt-up" : item.delta < 0 ? "txt-down" : "txt-muted"}>{sign(item.delta, Math.abs(item.delta % 1) > 0.01 ? 1 : 0)}</em>}
+        {item.delta !== null && <em className={item.delta > 0 ? "txt-up" : item.delta < 0 ? "txt-down" : "txt-muted"}>{sign(item.delta, Math.abs(item.delta % 1) > 0.01 ? 1 : 0)} bp</em>}
       </div>)}
     </div>}
   </div>;
@@ -961,10 +1023,6 @@ export default function Desk() {
             <span className="brand-badge"><TrendingUp size={20} /></span>
             <b>UST Weekly Desk<small>美债宏观与利率台</small></b>
           </button>
-          <button type="button" className="icon-button mobile-theme-btn" aria-label="切换明暗液态玻璃"
-            onClick={() => setTheme(t => t === "light" ? "dark" : "light")}>
-            {theme === "light" ? <Moon size={15} /> : <Sun size={15} />}
-          </button>
         </div>
 
         <nav className="nav-primary" aria-label="主功能导航">
@@ -990,9 +1048,13 @@ export default function Desk() {
               ))}
             </div>
           </div>
-          <button type="button" className="theme-toggle" onClick={() => setTheme(t => t === "light" ? "dark" : "light")}>
-            {theme === "light" ? <><Moon size={15} />切换深色玻璃</> : <><Sun size={15} />切换浅色玻璃</>}
-          </button>
+          <div className="theme-corner">
+            <button type="button" className="theme-mini" title={theme === "light" ? "切换深色模式" : "切换浅色模式"}
+              aria-label={theme === "light" ? "切换深色模式" : "切换浅色模式"}
+              onClick={() => setTheme(t => t === "light" ? "dark" : "light")}>
+              {theme === "light" ? <><Moon size={13} /><span>深色</span></> : <><Sun size={13} /><span>浅色</span></>}
+            </button>
+          </div>
         </div>
       </aside>
 
