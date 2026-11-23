@@ -60,7 +60,7 @@ export const realTenors = ["5Y", "7Y", "10Y", "20Y", "30Y"] as const;
 export type CurvePoint = { date: string; values: number[]; real?: number[] };
 export type Calendar = { week: string; refreshedAt: string | null; events: MarketEvent[]; sources: SourceCheck[]; curve: CurvePoint[] };
 export type Scenario = { id: string; title: string; impact: number; detail: string; trigger: string; invalidation: string; kind: Kind; events: string[] };
-export type TzMode = "ET" | "BJ" | "LOCAL";
+export type TzMode = "ET" | "LDN" | "TYO";
 
 export function curveValue(point: CurvePoint | undefined, tenor: Tenor): number | undefined {
   if (!point) return undefined;
@@ -110,20 +110,20 @@ export function newYorkInstant(date: string, time: string): Date {
 
 export function tzIana(tz: TzMode): string {
   if (tz === "ET") return "America/New_York";
-  if (tz === "BJ") return "Asia/Shanghai";
-  return Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York";
+  if (tz === "LDN") return "Europe/London";
+  return "Asia/Tokyo";
 }
 
 export function tzLabel(tz: TzMode): string {
-  if (tz === "ET") return "ET";
-  if (tz === "BJ") return "北京时间";
-  return "本地时间";
+  if (tz === "ET") return "纽约时间";
+  if (tz === "LDN") return "伦敦时间";
+  return "东京时间";
 }
 
 export function tzShortTag(tz: TzMode): string {
-  if (tz === "ET") return "ET";
-  if (tz === "BJ") return "UTC+8";
-  return "Local";
+  if (tz === "ET") return "NY";
+  if (tz === "LDN") return "LDN";
+  return "TYO";
 }
 
 export function formatEventClock(event: MarketEvent, tz: TzMode): { date: string; clock: string; dayShift: number } {

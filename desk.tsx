@@ -11,7 +11,7 @@ import {
   timeSort, tzIana, tzLabel, tzShortTag, weekOf, type Calendar, type Category, type CurvePoint,
   type MarketEvent, type Reading, type SourceCheck, type Tenor, type TzMode,
 } from "./model";
-import { loadCalendars } from "./pages-data";
+import { loadCalendars, loadLiveCurve, type LiveCurve } from "./pages-data";
 import { featuredPlaybookKeys, playbookByKey, playbookFor, type Playbook } from "./playbooks";
 import { nowcastUrl } from "./releases";
 import { actualFor, priorFor, ruleFor, scenarioFor } from "./scenarios";
@@ -46,6 +46,13 @@ function formatStamp(stamp: string | null, tz: TzMode) {
     timeZone: tzIana(tz), month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
   }).format(new Date(stamp));
   return formatted + " " + tzShortTag(tz);
+}
+
+function formatClockSec(stamp: string | null, tz: TzMode) {
+  if (!stamp) return "—";
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: tzIana(tz), hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
+  }).format(new Date(stamp)) + " " + tzShortTag(tz);
 }
 
 function readingText(reading: Reading) {
@@ -128,21 +135,40 @@ function SourceLink({ url, label }: { url: string; label: string }) {
 
 /* ---------- Overview Components ---------- */
 
-function Curve({ points }: { points: CurvePoint[] }) {
-  const latest = points.at(-1);
+function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
+  points: CurvePoint[];
+  live: LiveCurve | null;
+  showLive: boolean;
+  canLive: boolean;
+  onToggleLive: (useLive: boolean) => void;
+  tz: TzMode;
+}) {
+  const latestEod = points.at(-1);
+  const usingLive = Boolean(showLive && canLive && live);
   const [mode, setMode] = useState<CurveMode>("curve");
   const [bench, setBench] = useState<BenchMode>("1D");
   const [focus, setFocus] = useState<number | null>(null);
-  const compare = pickBenchmark(points, bench);
+  const compareEod = pickBenchmark(points, bench);
 
-  const activeTenors: readonly Tenor[] = latest && latest.values.length === tenors.length
+  const activeTenors: readonly Tenor[] = usingLive
     ? tenors
-    : (legacyTenors as readonly Tenor[]);
-  const latestVals = latest ? activeTenors.map(t => curveValue(latest, t) ?? NaN) : [];
-  const compareVals = compare ? activeTenors.map(t => curveValue(compare, t) ?? NaN) : [];
-  const hasCompare = Boolean(compare && compareVals.every(Number.isFinite));
+    : latestEod && latestEod.values.length === tenors.length
+      ? tenors
+      : (legacyTenors as readonly Tenor[]);
+
+  const latestVals = usingLive
+    ? live!.values
+    : latestEod ? activeTenors.map(t => curveValue(latestEod, t) ?? NaN) : [];
+
+  const compareVals = usingLive && bench === "1D"
+    ? live!.prevValues.map(v => v ?? NaN)
+    : compareEod ? activeTenors.map(t => curveValue(compareEod, t) ?? NaN) : [];
+
+  const hasCompare = compareVals.length === activeTenors.length && compareVals.every(Number.isFinite);
   const deltasBp = activeTenors.map((_, i) =>
-    hasCompare && Number.isFinite(latestVals[i]) ? Math.round((latestVals[i] - compareVals[i]) * 100) : null
+    hasCompare && Number.isFinite(latestVals[i])
+      ? Number(((latestVals[i] - compareVals[i]) * 100).toFixed(usingLive && bench === "1D" ? 1 : 0))
+      : null
   );
 
   const validVals = [...latestVals, ...(hasCompare ? compareVals : [])].filter(Number.isFinite);
@@ -158,26 +184,40 @@ function Curve({ points }: { points: CurvePoint[] }) {
     ? `M ${x(0).toFixed(1)},152 L ${latestVals.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" L ")} L ${x(latestVals.length - 1).toFixed(1)},152 Z`
     : "";
 
-  const maxAbsBp = Math.max(8, ...deltasBp.map(d => (d === null ? 0 : Math.abs(d))));
+  const maxAbsBp = Math.max(8, Math.ceil(Math.max(0, ...deltasBp.map(d => (d === null ? 0 : Math.abs(d))))));
   const zeroY = 92;
   const barY = (bp: number) => zeroY - (bp / maxAbsBp) * 58;
 
-  const y2 = curveValue(latest, "2Y");
-  const y5 = curveValue(latest, "5Y");
-  const y10 = curveValue(latest, "10Y");
-  const y20 = curveValue(latest, "20Y");
-  const y30 = curveValue(latest, "30Y");
+  const valOf = (t: Tenor) => {
+    const idx = activeTenors.indexOf(t);
+    return idx >= 0 && Number.isFinite(latestVals[idx]) ? latestVals[idx] : undefined;
+  };
+  const y2 = valOf("2Y"), y5 = valOf("5Y"), y10 = valOf("10Y"), y20 = valOf("20Y"), y30 = valOf("30Y");
   const fly102030 = y10 !== undefined && y20 !== undefined && y30 !== undefined ? Math.round((2 * y20 - y10 - y30) * 100) : null;
   const fly2510 = y2 !== undefined && y5 !== undefined && y10 !== undefined ? Math.round((2 * y5 - y2 - y10) * 100) : null;
   const focusedIdx = focus !== null && focus < activeTenors.length ? focus : null;
+  const bpDigits = usingLive && bench === "1D" ? 1 : 0;
+  const yDigits = usingLive ? 3 : 2;
+  const compareLabel = usingLive && bench === "1D" ? "昨收 (Tradeweb)" : compareEod ? short(compareEod.date) + " (" + bench + ")" : "";
 
   return <section className="panel glass curve" aria-labelledby="curve-title">
     <div className="panel-header curve-header">
       <div>
-        <h2 id="curve-title">美债收益率曲线</h2>
-        <p>{latest ? latest.date + " · 财政部日终平价曲线" : "等待财政部日终数据"}</p>
+        <div className="curve-title-row">
+          <h2 id="curve-title">美债收益率曲线</h2>
+          {usingLive && <span className="live-badge"><i className="live-dot" />LIVE · {live!.exchange}</span>}
+        </div>
+        <p>{usingLive
+          ? "实时现券报价 " + formatClockSec(live!.asOf, tz) + " · 每 30 秒自动刷新"
+          : latestEod ? latestEod.date + " · 财政部日终平价曲线" : "等待收益率数据"}</p>
       </div>
       <div className="curve-controls">
+        {canLive && live && (
+          <div className="segmented" role="group" aria-label="行情源">
+            <button type="button" className={showLive ? "active" : ""} onClick={() => onToggleLive(true)}>实时</button>
+            <button type="button" className={!showLive ? "active" : ""} onClick={() => onToggleLive(false)}>日终</button>
+          </div>
+        )}
         <div className="segmented" role="group" aria-label="图表视图">
           <button type="button" className={mode === "curve" ? "active" : ""} onClick={() => setMode("curve")}>
             <LineChart size={13} />曲线
@@ -188,16 +228,15 @@ function Curve({ points }: { points: CurvePoint[] }) {
         </div>
         <div className="segmented" role="group" aria-label="对比基准">
           {(["1D", "1W", "1M"] as const).map(b => (
-            <button key={b} type="button" className={bench === b ? "active" : ""} onClick={() => setBench(b)} disabled={points.length < 2}>{b}</button>
+            <button key={b} type="button" className={bench === b ? "active" : ""} onClick={() => setBench(b)} disabled={points.length < 2 && !(usingLive && b === "1D")}>{b}</button>
           ))}
         </div>
-        <SourceLink url={sourceIndex.curve.url} label="财政部" />
       </div>
     </div>
 
-    {latest ? <>
+    {latestVals.length > 0 ? <>
       {mode === "curve" ? (
-        <svg className="curve-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="美债官方平价收益率曲线">
+        <svg className="curve-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="美债收益率曲线">
           <defs>
             <linearGradient id="curveArea" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.24" />
@@ -218,20 +257,20 @@ function Curve({ points }: { points: CurvePoint[] }) {
             const active = focusedIdx === i;
             const d = deltasBp[i];
             const cx = x(i), cy = y(value);
-            const tipX = Math.min(Math.max(cx, 78), width - 78);
+            const tipX = Math.min(Math.max(cx, 84), width - 84);
             const tipY = cy < 52 ? cy + 28 : cy - 16;
             return <g key={activeTenors[i]} className="curve-point" onMouseEnter={() => setFocus(i)} onMouseLeave={() => setFocus(null)}
               onClick={() => setFocus(prev => prev === i ? null : i)}>
               {active && <line x1={cx} x2={cx} y1="26" y2="152" className="focus-guide" />}
               <circle cx={cx} cy={cy} r={active ? 6 : 3.8} className="curve-dot" />
               <circle cx={cx} cy={cy} r="17" fill="transparent">
-                <title>{activeTenors[i] + " " + value.toFixed(2) + "%" + (d !== null ? " (" + sign(d, 0) + " bp)" : "")}</title>
+                <title>{activeTenors[i] + " " + value.toFixed(yDigits) + "%" + (d !== null ? " (" + sign(d, bpDigits) + " bp)" : "")}</title>
               </circle>
               <text x={cx} y="176" textAnchor="middle" className={active ? "tenor-active" : ""}>{activeTenors[i]}</text>
               {active && <g className="svg-callout">
-                <rect x={tipX - 58} y={tipY - 15} width="116" height="22" rx="11" />
+                <rect x={tipX - 66} y={tipY - 15} width="132" height="22" rx="11" />
                 <text x={tipX} y={tipY} textAnchor="middle" className="chart-value">
-                  {activeTenors[i]} {value.toFixed(2)}%{d !== null ? " · " + sign(d, 0) + "bp" : ""}
+                  {activeTenors[i]} {value.toFixed(yDigits)}%{d !== null ? " · " + sign(d, bpDigits) + "bp" : ""}
                 </text>
               </g>}
             </g>;
@@ -251,64 +290,72 @@ function Curve({ points }: { points: CurvePoint[] }) {
             const labelY = bp >= 0 ? yTop - 6 : yTop + barH + 12;
             return <g key={activeTenors[i]}>
               <rect x={cx - 13} y={yTop} width="26" height={barH} rx="6" className={bp > 0 ? "bar-up" : bp < 0 ? "bar-down" : "bar-flat"} />
-              <text x={cx} y={labelY} textAnchor="middle" className={bp > 0 ? "bp-up" : bp < 0 ? "bp-down" : ""}>{sign(bp, 0)}</text>
+              <text x={cx} y={labelY} textAnchor="middle" className={bp > 0 ? "bp-up" : bp < 0 ? "bp-down" : ""}>{sign(bp, bpDigits)}</text>
               <text x={cx} y="178" textAnchor="middle">{activeTenors[i]}</text>
             </g>;
           })}
         </svg>
       )}
       <div className="curve-foot">
-        {y2 !== undefined && y10 !== undefined && <span><b>2s10s</b> {sign((y10 - y2) * 100, 0)} bp</span>}
-        {y5 !== undefined && y30 !== undefined && <span><b>5s30s</b> {sign((y30 - y5) * 100, 0)} bp</span>}
+        {y2 !== undefined && y10 !== undefined && <span><b>2s10s</b> {sign((y10 - y2) * 100, bpDigits)} bp</span>}
+        {y5 !== undefined && y30 !== undefined && <span><b>5s30s</b> {sign((y30 - y5) * 100, bpDigits)} bp</span>}
         {fly2510 !== null && <span><b>2s5s10s</b> {sign(fly2510, 0)} bp</span>}
         {fly102030 !== null && <span><b>10/20/30 fly</b> {sign(fly102030, 0)} bp</span>}
-        {hasCompare && compare && <span className="legend">虚线 / 基准 {short(compare.date)} ({bench})</span>}
+        {hasCompare && compareLabel && <span className="legend">虚线 / 基准 {compareLabel}</span>}
       </div>
     </> : <p className="empty">该日期之前暂无可用的曲线数据。</p>}
   </section>;
 }
 
-function RateCards({ points }: { points: CurvePoint[] }) {
-  const latest = points.at(-1);
-  const prev1d = pickBenchmark(points, "1D");
+function RateCards({ points, live, showLive }: { points: CurvePoint[]; live: LiveCurve | null; showLive: boolean }) {
+  const latestEod = points.at(-1);
+  const prev1dEod = pickBenchmark(points, "1D");
   const prev1w = pickBenchmark(points, "1W");
+  const usingLive = Boolean(showLive && live);
   const heroTenors: Tenor[] = ["2Y", "5Y", "10Y", "30Y"];
 
-  const y3m = curveValue(latest, "3M"), y2 = curveValue(latest, "2Y"), y5 = curveValue(latest, "5Y");
-  const y10 = curveValue(latest, "10Y"), y20 = curveValue(latest, "20Y"), y30 = curveValue(latest, "30Y");
-  const r10 = realCurveValue(latest, "10Y");
-  const be10 = y10 !== undefined && r10 !== undefined ? y10 - r10 : undefined;
+  const valOf = (t: Tenor) => usingLive ? live!.values[tenors.indexOf(t)] : curveValue(latestEod, t);
+  const prevOf = (t: Tenor) => usingLive ? (live!.prevValues[tenors.indexOf(t)] ?? undefined) : curveValue(prev1dEod, t);
 
-  const p3m = curveValue(prev1d, "3M"), p2 = curveValue(prev1d, "2Y"), p5 = curveValue(prev1d, "5Y");
-  const p10 = curveValue(prev1d, "10Y"), p20 = curveValue(prev1d, "20Y"), p30 = curveValue(prev1d, "30Y");
-  const pr10 = realCurveValue(prev1d, "10Y");
-  const pbe10 = p10 !== undefined && pr10 !== undefined ? p10 - pr10 : undefined;
+  const y3m = valOf("3M"), y2 = valOf("2Y"), y5 = valOf("5Y"), y10 = valOf("10Y"), y20 = valOf("20Y"), y30 = valOf("30Y");
+  const p3m = prevOf("3M"), p2 = prevOf("2Y"), p5 = prevOf("5Y"), p10 = prevOf("10Y"), p20 = prevOf("20Y"), p30 = prevOf("30Y");
+
+  const r10 = realCurveValue(latestEod, "10Y");
+  const eod10 = curveValue(latestEod, "10Y");
+  const be10 = eod10 !== undefined && r10 !== undefined ? eod10 - r10 : undefined;
+  const pr10 = realCurveValue(prev1dEod, "10Y");
+  const peod10 = curveValue(prev1dEod, "10Y");
+  const pbe10 = peod10 !== undefined && pr10 !== undefined ? peod10 - pr10 : undefined;
+
+  const bpFmt = (a: number | undefined, b: number | undefined, d = 0) =>
+    a !== undefined && b !== undefined ? Number(((a - b) * 100).toFixed(d)) : null;
+  const bpDigits = usingLive ? 1 : 0;
 
   const ribbon = [
-    y3m !== undefined ? { label: "3M 短端", value: y3m.toFixed(2) + "%", delta: p3m !== undefined ? Math.round((y3m - p3m) * 100) : null } : null,
-    y3m !== undefined && y10 !== undefined ? { label: "3m10s", value: sign((y10 - y3m) * 100, 0) + " bp", delta: p3m !== undefined && p10 !== undefined ? Math.round(((y10 - y3m) - (p10 - p3m)) * 100) : null } : null,
-    y2 !== undefined && y10 !== undefined ? { label: "2s10s", value: sign((y10 - y2) * 100, 0) + " bp", delta: p2 !== undefined && p10 !== undefined ? Math.round(((y10 - y2) - (p10 - p2)) * 100) : null } : null,
-    y5 !== undefined && y30 !== undefined ? { label: "5s30s", value: sign((y30 - y5) * 100, 0) + " bp", delta: p5 !== undefined && p30 !== undefined ? Math.round(((y30 - y5) - (p30 - p5)) * 100) : null } : null,
-    y10 !== undefined && y20 !== undefined && y30 !== undefined ? { label: "10/20/30 Fly", value: sign((2 * y20 - y10 - y30) * 100, 0) + " bp", delta: p10 !== undefined && p20 !== undefined && p30 !== undefined ? Math.round(((2 * y20 - y10 - y30) - (2 * p20 - p10 - p30)) * 100) : null } : null,
-    r10 !== undefined ? { label: "10Y 实际利率", value: r10.toFixed(2) + "%", delta: pr10 !== undefined ? Math.round((r10 - pr10) * 100) : null } : null,
-    be10 !== undefined ? { label: "10Y Breakeven", value: be10.toFixed(2) + "%", delta: pbe10 !== undefined ? Math.round((be10 - pbe10) * 100) : null } : null,
+    y3m !== undefined ? { label: "3M 短端", value: y3m.toFixed(usingLive ? 3 : 2) + "%", delta: bpFmt(y3m, p3m, bpDigits) } : null,
+    y3m !== undefined && y10 !== undefined ? { label: "3m10s", value: sign((y10 - y3m) * 100, 0) + " bp", delta: bpFmt(y10 - y3m, p10 !== undefined && p3m !== undefined ? p10 - p3m : undefined, bpDigits) } : null,
+    y2 !== undefined && y10 !== undefined ? { label: "2s10s", value: sign((y10 - y2) * 100, 0) + " bp", delta: bpFmt(y10 - y2, p10 !== undefined && p2 !== undefined ? p10 - p2 : undefined, bpDigits) } : null,
+    y5 !== undefined && y30 !== undefined ? { label: "5s30s", value: sign((y30 - y5) * 100, 0) + " bp", delta: bpFmt(y30 - y5, p30 !== undefined && p5 !== undefined ? p30 - p5 : undefined, bpDigits) } : null,
+    y10 !== undefined && y20 !== undefined && y30 !== undefined ? { label: "10/20/30 Fly", value: sign((2 * y20 - y10 - y30) * 100, 0) + " bp", delta: bpFmt(2 * y20 - y10 - y30, p10 !== undefined && p20 !== undefined && p30 !== undefined ? 2 * p20 - p10 - p30 : undefined, bpDigits) } : null,
+    r10 !== undefined ? { label: usingLive ? "10Y 实际(日终)" : "10Y 实际利率", value: r10.toFixed(2) + "%", delta: bpFmt(r10, pr10, 0) } : null,
+    be10 !== undefined ? { label: usingLive ? "10Y BE(日终)" : "10Y Breakeven", value: be10.toFixed(2) + "%", delta: bpFmt(be10, pbe10, 0) } : null,
   ].filter((item): item is { label: string; value: string; delta: number | null } => Boolean(item));
 
   return <div className="rates-wrap">
     <div className="rate-grid" aria-label="主要期限收益率">
       {heroTenors.map(tenor => {
-        const val = curveValue(latest, tenor);
-        const d1 = val !== undefined && curveValue(prev1d, tenor) !== undefined ? Math.round((val - curveValue(prev1d, tenor)!) * 100) : null;
-        const d1w = val !== undefined && curveValue(prev1w, tenor) !== undefined && prev1w?.date !== prev1d?.date
+        const val = valOf(tenor);
+        const d1 = bpFmt(val, prevOf(tenor), bpDigits);
+        const d1w = val !== undefined && curveValue(prev1w, tenor) !== undefined && (usingLive || prev1w?.date !== prev1dEod?.date)
           ? Math.round((val - curveValue(prev1w, tenor)!) * 100) : null;
         return <article className="rate-card glass-hero" key={tenor}>
           <div className="rate-head">
             <span>{tenor} 国债</span>
-            {d1 !== null && <em className={"delta-pill " + (d1 > 0 ? "up" : d1 < 0 ? "down" : "flat")}>{sign(d1, 0)} bp</em>}
+            {d1 !== null && <em className={"delta-pill " + (d1 > 0 ? "up" : d1 < 0 ? "down" : "flat")}>{sign(d1, bpDigits)} bp</em>}
           </div>
-          <strong>{val !== undefined ? val.toFixed(2) + "%" : "—"}</strong>
+          <strong>{val !== undefined ? val.toFixed(usingLive ? 3 : 2) + "%" : "—"}</strong>
           <small>
-            {d1 === null ? "暂无日变动" : "较上日"}
+            {d1 === null ? "暂无日变动" : usingLive ? "较昨收" : "较上日"}
             {d1w !== null && <> · 1W <b className={d1w > 0 ? "txt-up" : d1w < 0 ? "txt-down" : ""}>{sign(d1w, 0)} bp</b></>}
           </small>
         </article>;
@@ -318,7 +365,7 @@ function RateCards({ points }: { points: CurvePoint[] }) {
       {ribbon.map(item => <div className="spread-chip" key={item.label}>
         <span>{item.label}</span>
         <strong>{item.value}</strong>
-        {item.delta !== null && <em className={item.delta > 0 ? "txt-up" : item.delta < 0 ? "txt-down" : "txt-muted"}>{sign(item.delta, 0)}</em>}
+        {item.delta !== null && <em className={item.delta > 0 ? "txt-up" : item.delta < 0 ? "txt-down" : "txt-muted"}>{sign(item.delta, Math.abs(item.delta % 1) > 0.01 ? 1 : 0)}</em>}
       </div>)}
     </div>}
   </div>;
@@ -719,14 +766,18 @@ export default function Desk() {
   const [tz, setTz] = useState<TzMode>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_TZ) as TzMode;
-      return saved === "BJ" || saved === "LOCAL" || saved === "ET" ? saved : "ET";
+      return saved === "LDN" || saved === "TYO" || saved === "ET" ? saved : "ET";
     } catch { return "ET"; }
   });
 
   const [calendars, setCalendars] = useState<Record<string, Calendar>>({});
+  const [liveCurve, setLiveCurve] = useState<LiveCurve | null>(null);
+  const [liveFailed, setLiveFailed] = useState(false);
+  const [preferLive, setPreferLive] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
-  const [reload, setReload] = useState(0);
 
   // Calendar filters
   const [filter, setFilter] = useState<Category | "all">("all");
@@ -761,22 +812,74 @@ export default function Desk() {
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
+  async function refreshAll(manual = false, signal?: AbortSignal) {
+    if (manual) setRefreshing(true);
+    const started = Date.now();
+    const [calRes, liveRes] = await Promise.allSettled([
+      loadCalendars(signal),
+      loadLiveCurve(signal),
+    ]);
+    if (signal?.aborted) return;
+    if (calRes.status === "fulfilled") {
+      setCalendars(calRes.value);
+      setFailed(false);
+    } else {
+      setFailed(true);
+    }
+    if (liveRes.status === "fulfilled") {
+      setLiveCurve(liveRes.value);
+      setLiveFailed(false);
+    } else {
+      setLiveFailed(true);
+    }
+    setNow(new Date());
+    setLastSyncedAt(new Date().toISOString());
+    setLoading(false);
+    if (manual) {
+      const wait = Math.max(0, 380 - (Date.now() - started));
+      if (wait > 0) await new Promise(resolve => window.setTimeout(resolve, wait));
+      if (!signal?.aborted) setRefreshing(false);
+    }
+  }
+
   useEffect(() => {
     const controller = new AbortController();
-    async function read() {
-      try {
-        const data = await loadCalendars(controller.signal);
+    void refreshAll(false, controller.signal);
+
+    // Auto-refresh live Tradeweb UST curve every 30s while tab is visible
+    const liveTimer = window.setInterval(() => {
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
+      void loadLiveCurve(controller.signal).then(data => {
+        if (!controller.signal.aborted) {
+          setLiveCurve(data);
+          setLiveFailed(false);
+          setNow(new Date());
+          setLastSyncedAt(new Date().toISOString());
+        }
+      }).catch(() => {
+        if (!controller.signal.aborted) setLiveFailed(true);
+      });
+    }, 30000);
+
+    // Refresh calendar.json every 2 minutes
+    const calTimer = window.setInterval(() => {
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
+      void loadCalendars(controller.signal).then(data => {
         if (!controller.signal.aborted) { setCalendars(data); setFailed(false); }
-      } catch {
-        if (!controller.signal.aborted) setFailed(true);
-      } finally {
-        if (!controller.signal.aborted) { setNow(new Date()); setLoading(false); }
-      }
-    }
-    void read();
-    const timer = window.setInterval(read, 120000);
-    return () => { controller.abort(); window.clearInterval(timer); };
-  }, [reload]);
+      }).catch(() => {});
+    }, 120000);
+
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void refreshAll(false, controller.signal);
+    };
+    document.addEventListener?.("visibilitychange", onVisible);
+    return () => {
+      controller.abort();
+      window.clearInterval(liveTimer);
+      window.clearInterval(calTimer);
+      document.removeEventListener?.("visibilitychange", onVisible);
+    };
+  }, []);
 
   const allWeeks = useMemo(() => Object.values(calendars).sort((a, b) => a.week.localeCompare(b.week)), [calendars]);
   const weekEnd = addDays(week, 6);
@@ -880,9 +983,9 @@ export default function Desk() {
 
         <div className="sidebar-controls">
           <div className="control-block">
-            <span className="control-label"><Globe size={13} />显示时区</span>
-            <div className="segmented full-seg" role="group" aria-label="选择时区">
-              {([["ET", "纽约"], ["BJ", "北京"], ["LOCAL", "本地"]] as const).map(([key, label]) => (
+            <span className="control-label"><Globe size={13} />交易中心时区</span>
+            <div className="segmented full-seg" role="group" aria-label="选择交易中心时区">
+              {([["ET", "纽约"], ["LDN", "伦敦"], ["TYO", "东京"]] as const).map(([key, label]) => (
                 <button key={key} type="button" className={tz === key ? "active" : ""} onClick={() => setTz(key)}>{label}</button>
               ))}
             </div>
@@ -912,25 +1015,33 @@ export default function Desk() {
               {view === "sources" && "数据来源与自动排程"}
             </h1>
             <p>
-              {view === "overview" && (points.length ? "收益率观测日 " + points.at(-1)!.date + " · 点击任意事件直接在右侧玻璃抽屉推演，不再跳来跳去" : "收益率、经济数据、国债拍卖和美联储日程")}
+              {view === "overview" && (week >= current && preferLive && liveCurve
+                ? `Tradeweb 实时现券 ${formatClockSec(liveCurve.asOf, tz)} · 点击任意事件在右侧玻璃抽屉推演`
+                : points.length ? "财政部日终观测 " + points.at(-1)!.date + " · 点击任意事件直接在右侧玻璃抽屉推演" : "收益率、经济数据、国债拍卖和美联储日程")}
               {view === "calendar" && `${short(week)} – ${short(weekEnd)} (${tzLabel(tz)}) · 点击任意行打开右侧详情与推演`}
               {view === "scenarios" && "核对核心传导机制、周期分叉、常见反向陷阱与官方财政部历史实证案例"}
-              {view === "sources" && "12 个官方一级来源的核验状态、日内及日终自动刷新排程说明"}
+              {view === "sources" && "Tradeweb 实时现券 + 12 个官方一级来源的核验状态与自动刷新排程说明"}
             </p>
           </div>
           <div className="sync">
-            <span className="sync-pill"><Clock size={13} />{failed ? "载入失败 · 保留缓存" : "更新 " + formatStamp(dataChanged, tz)}</span>
-            <button className="action" onClick={() => { setLoading(true); setReload(value => value + 1); }} disabled={loading}>
-              <RefreshCw size={14} className={loading ? "spin" : ""} />{loading ? "载入中" : "重新载入"}
+            <span className={"sync-pill" + (week >= current && preferLive && liveCurve ? " sync-live" : "")}>
+              {week >= current && preferLive && liveCurve ? <i className="live-dot" /> : <Clock size={13} />}
+              {failed ? "日历载入失败 · 保留缓存" :
+                liveCurve && week >= current && preferLive ? "实时 " + formatClockSec(liveCurve.asOf, tz) :
+                lastSyncedAt ? "已同步 " + formatClockSec(lastSyncedAt, tz) :
+                "更新 " + formatStamp(dataChanged, tz)}
+            </span>
+            <button type="button" className="action" onClick={() => { void refreshAll(true); }} disabled={loading || refreshing}>
+              <RefreshCw size={14} className={loading || refreshing ? "spin" : ""} />{refreshing ? "刷新中" : loading ? "载入中" : "重新载入"}
             </button>
           </div>
         </header>
 
         {/* VIEW 1: OVERVIEW */}
         {view === "overview" && <>
-          <RateCards points={points} />
+          <RateCards points={points} live={liveCurve} showLive={week >= current && preferLive} />
           <div className="overview-grid">
-            <Curve points={points} />
+            <Curve points={points} live={liveCurve} showLive={preferLive} canLive={week >= current} onToggleLive={setPreferLive} tz={tz} />
             <FocusList inspect={inspectEvent} tz={tz} now={now} events={upcoming.slice(0, 5)} />
           </div>
           <LatestReleases events={latestReleases} tz={tz} inspect={inspectEvent} />
@@ -1110,14 +1221,26 @@ export default function Desk() {
               <button className="icon-button" aria-label="下一周" onClick={() => selectWeek(addDays(week, 7))}><ChevronRight size={18} /></button>
             </div>
           </div>
-          <div className="source-list">{calendar.sources.map(check => <article key={check.id}>
-            <div>
-              <SourceLink url={sourceIndex[check.id].url} label={sourceIndex[check.id].name} />
-              <p>{sourceIndex[check.id].detail}</p>
-            </div>
-            <span className={"source-state " + check.state}>{stateText[check.state]}</span>
-            <time>{formatStamp(check.checkedAt, tz)}</time>
-          </article>)}</div>
+          <div className="source-list">
+            <article>
+              <div>
+                <SourceLink url="https://www.cnbc.com/bonds/" label="Tradeweb / CNBC · 实时现券曲线" />
+                <p>浏览器端直连 3M–30Y 全部 9 期限美债实时现券收益率，每 30 秒自动刷新（纽约/伦敦/东京盘全时段覆盖）</p>
+              </div>
+              <span className={"source-state " + (liveCurve ? "verified" : liveFailed ? "unavailable" : "cached")}>
+                {liveCurve ? "实时在线" : liveFailed ? "已回退日终" : "连接中"}
+              </span>
+              <time>{liveCurve ? formatClockSec(liveCurve.asOf, tz) : "—"}</time>
+            </article>
+            {calendar.sources.map(check => <article key={check.id}>
+              <div>
+                <SourceLink url={sourceIndex[check.id].url} label={sourceIndex[check.id].name} />
+                <p>{sourceIndex[check.id].detail}</p>
+              </div>
+              <span className={"source-state " + check.state}>{stateText[check.state]}</span>
+              <time>{formatStamp(check.checkedAt, tz)}</time>
+            </article>)}
+          </div>
           <p className="source-note">财政部名义平价与 TIPS 实际收益率为日终数据。官方自动采集覆盖 CPI、PPI、非农、JOLTS、ECI、PCE（含同比与实际消费）、GDP 及国债拍卖结果（含一级交易商与间接/直接获配占比）。{" "}
             <SourceLink url={nowcastUrl} label="Cleveland Fed 通胀模型" /></p>
         </section>}
