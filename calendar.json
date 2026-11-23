@@ -944,7 +944,6 @@
   },
   "2026-11-16": {
     "week": "2026-11-16",
-    "refreshedAt": "2026-11-22T23:04:39.866Z",
     "events": [
       {
         "id": "fed-barr-2026-11-16-0500",
@@ -1342,82 +1341,82 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "officialUpdate": "2026-11-19",
         "count": 9
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "officialUpdate": "2026-11-05",
         "count": 8
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "officialUpdate": "2026-11-03",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
-        "officialUpdate": "2026-11-20",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
+        "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "officialUpdate": "2026-11-20",
         "count": 11
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "officialUpdate": "2026-11-18",
         "count": 1
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:39.866Z",
+        "checkedAt": "2026-11-23T05:46:43.992Z",
         "officialUpdate": "2026-11-20",
         "count": 0
       }
@@ -1531,11 +1530,11 @@
           5.31
         ]
       }
-    ]
+    ],
+    "refreshedAt": "2026-11-23T05:46:43.992Z"
   },
   "2026-11-23": {
     "week": "2026-11-23",
-    "refreshedAt": "2026-11-22T23:04:46.697Z",
     "events": [
       {
         "id": "tsy-13w-bill-2026-11-23",
@@ -1654,7 +1653,7 @@
         "status": "confirmed",
         "source": "bea",
         "url": "https://www.bea.gov/news/schedule/full",
-        "officialDate": "2026-11-20"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "dol-claims-2026-11-25",
@@ -1682,7 +1681,7 @@
         "status": "confirmed",
         "source": "bea",
         "url": "https://www.bea.gov/news/schedule/full",
-        "officialDate": "2026-11-20"
+        "officialDate": "2026-11-22"
       },
       {
         "id": "census-advance-report-on-durable-goods-manufacturers-shipments-inventories-and-orders-october-2026-2026-11-25",
@@ -1925,82 +1924,82 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "officialUpdate": "2026-11-19",
         "count": 8
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "officialUpdate": "2026-11-05",
         "count": 11
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "officialUpdate": "2026-11-03",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
-        "officialUpdate": "2026-11-20",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
+        "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "officialUpdate": "2026-11-20",
         "count": 2
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "officialUpdate": "2026-11-12",
         "count": 2
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "count": 2
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "count": 2
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-22T23:04:46.697Z",
+        "checkedAt": "2026-11-23T05:46:44.871Z",
         "officialUpdate": "2026-11-20",
         "count": 0
       }
@@ -2066,11 +2065,11 @@
           5.31
         ]
       }
-    ]
+    ],
+    "refreshedAt": "2026-11-23T05:46:44.871Z"
   },
   "2026-11-30": {
     "week": "2026-11-30",
-    "refreshedAt": "2026-11-13T04:52:00.000Z",
     "events": [
       {
         "id": "tsy-13w-bill-2026-11-30",
@@ -2084,7 +2083,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "13w-bill"
       },
       {
@@ -2099,7 +2098,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "26w-bill"
       },
       {
@@ -2113,7 +2112,7 @@
         "impact": 4,
         "status": "confirmed",
         "source": "bls",
-        "url": "https://www.bls.gov/schedule/",
+        "url": "https://www.bls.gov/schedule/2026/12_sched_list.htm",
         "officialDate": "2026-11-09"
       },
       {
@@ -2128,7 +2127,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "6w-bill"
       },
       {
@@ -2143,7 +2142,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "17w-bill"
       },
       {
@@ -2172,7 +2171,7 @@
         "status": "confirmed",
         "source": "fed",
         "url": "https://www.federalreserve.gov/newsevents/2026-december.htm",
-        "officialDate": "2026-11-12"
+        "officialDate": "2026-03-13"
       },
       {
         "id": "tsy-4w-bill-2026-12-03",
@@ -2186,7 +2185,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "4w-bill"
       },
       {
@@ -2201,7 +2200,7 @@
         "status": "tentative",
         "source": "tentative",
         "url": "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf",
-        "officialDate": "2026-11-04",
+        "officialDate": "2026-11-05",
         "auctionKey": "8w-bill"
       },
       {
@@ -2215,95 +2214,96 @@
         "impact": 5,
         "status": "confirmed",
         "source": "bls",
-        "url": "https://www.bls.gov/schedule/",
+        "url": "https://www.bls.gov/schedule/2026/12_sched_list.htm",
         "officialDate": "2026-11-09"
       }
     ],
     "sources": [
       {
         "id": "treasury",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
-        "state": "reference",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-04",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "bls",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-03",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "fed",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "officialUpdate": "2026-11-20",
         "count": 1
       },
       {
         "id": "fomc",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
+        "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
-        "state": "cached",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
         "count": 0
       },
       {
         "id": "cme",
-        "state": "reference",
-        "checkedAt": "2026-11-13T04:52:00.000Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T05:46:45.252Z",
         "count": 0
       },
       {
         "id": "curve",
+        "count": 0,
         "state": "cached",
         "checkedAt": "2026-11-13T04:52:00.000Z",
-        "officialUpdate": "2026-11-12",
-        "count": 0
+        "officialUpdate": "2026-11-12"
       }
     ],
-    "curve": []
+    "curve": [],
+    "refreshedAt": "2026-11-23T05:46:45.252Z"
   },
   "2026-12-07": {
     "week": "2026-12-07",
