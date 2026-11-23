@@ -245,83 +245,83 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "tentative",
-        "count": 0,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:53.641Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "officialUpdate": "2026-11-05",
+        "count": 0
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "officialUpdate": "2026-11-03",
         "count": 3
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "officialUpdate": "2026-11-20",
         "count": 2
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
         "count": 0
       },
       {
         "id": "curve",
-        "state": "cached",
-        "checkedAt": "2026-11-23T06:02:05.147Z",
-        "officialUpdate": "2026-10-30",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "officialUpdate": "2026-11-06",
         "count": 0
       }
     ],
@@ -447,7 +447,7 @@
         ]
       }
     ],
-    "refreshedAt": "2026-11-23T06:02:05.147Z"
+    "refreshedAt": "2026-11-23T06:31:06.932Z"
   },
   "2026-11-09": {
     "week": "2026-11-09",
@@ -864,84 +864,84 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "officialUpdate": "2026-11-12",
         "count": 9
       },
       {
         "id": "tentative",
-        "count": 0,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:54.140Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "officialUpdate": "2026-11-05",
+        "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "officialUpdate": "2026-11-03",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "officialUpdate": "2026-11-20",
         "count": 8
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "officialUpdate": "2026-11-12",
         "count": 1
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.166Z",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
         "count": 2
       },
       {
         "id": "curve",
-        "count": 0,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:54.140Z",
-        "officialUpdate": "2026-11-13"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "officialUpdate": "2026-11-13",
+        "count": 0
       }
     ],
     "curve": [
@@ -1054,7 +1054,7 @@
         ]
       }
     ],
-    "refreshedAt": "2026-11-23T06:02:14.166Z"
+    "refreshedAt": "2026-11-23T06:31:07.630Z"
   },
   "2026-11-16": {
     "week": "2026-11-16",
@@ -1455,84 +1455,84 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "officialUpdate": "2026-11-19",
         "count": 9
       },
       {
         "id": "tentative",
-        "count": 0,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:46:43.992Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "officialUpdate": "2026-11-05",
+        "count": 8
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "officialUpdate": "2026-11-03",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "officialUpdate": "2026-11-20",
         "count": 11
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "officialUpdate": "2026-11-18",
         "count": 1
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:14.678Z",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
         "count": 0
       },
       {
         "id": "curve",
-        "count": 0,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:46:43.992Z",
-        "officialUpdate": "2026-11-20"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "officialUpdate": "2026-11-20",
+        "count": 0
       }
     ],
     "curve": [
@@ -1645,7 +1645,7 @@
         ]
       }
     ],
-    "refreshedAt": "2026-11-23T06:02:14.678Z"
+    "refreshedAt": "2026-11-23T06:31:08.023Z"
   },
   "2026-11-23": {
     "week": "2026-11-23",
@@ -2043,84 +2043,84 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "officialUpdate": "2026-11-19",
         "count": 8
       },
       {
         "id": "tentative",
-        "count": 3,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:55.057Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "officialUpdate": "2026-11-05",
+        "count": 11
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "officialUpdate": "2026-11-03",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "officialUpdate": "2026-11-20",
         "count": 2
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "officialUpdate": "2026-11-12",
         "count": 2
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "count": 2
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.249Z",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
         "count": 2
       },
       {
         "id": "curve",
-        "count": 0,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:55.057Z",
-        "officialUpdate": "2026-11-20"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "officialUpdate": "2026-11-20",
+        "count": 0
       }
     ],
     "curve": [
@@ -2185,7 +2185,7 @@
         ]
       }
     ],
-    "refreshedAt": "2026-11-23T06:02:15.249Z"
+    "refreshedAt": "2026-11-23T06:31:08.288Z"
   },
   "2026-11-30": {
     "week": "2026-11-30",
@@ -2341,88 +2341,88 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
-        "count": 6,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:55.570Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "officialUpdate": "2026-11-05",
+        "count": 6
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "officialUpdate": "2026-11-20",
         "count": 1
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "count": 0
       },
       {
         "id": "curve",
-        "state": "cached",
-        "checkedAt": "2026-11-23T06:02:15.528Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:08.624Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:02:15.528Z"
+    "refreshedAt": "2026-11-23T06:31:08.624Z"
   },
   "2026-12-07": {
     "week": "2026-12-07",
@@ -2712,88 +2712,88 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
-        "count": 9,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:56.079Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "officialUpdate": "2026-11-05",
+        "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "officialUpdate": "2026-03-13",
         "count": 3
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "officialUpdate": "2026-11-18",
         "count": 2
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "count": 0
       },
       {
         "id": "curve",
-        "state": "cached",
-        "checkedAt": "2026-11-23T06:02:15.822Z",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:08.891Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:02:15.822Z"
+    "refreshedAt": "2026-11-23T06:31:08.891Z"
   },
   "2026-12-14": {
     "week": "2026-12-14",
@@ -3019,88 +3019,88 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
-        "count": 6,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:56.594Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "officialUpdate": "2026-11-05",
+        "count": 6
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "officialUpdate": "2026-11-09",
         "count": 3
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "officialUpdate": "2026-03-13",
         "count": 2
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.110Z",
+        "checkedAt": "2026-11-23T06:31:09.284Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:02:16.110Z"
+    "refreshedAt": "2026-11-23T06:31:09.284Z"
   },
   "2026-10-26": {
     "week": "2026-10-26",
@@ -3991,85 +3991,85 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "count": 0
       },
       {
         "id": "tentative",
-        "count": 10,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:56.865Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "officialUpdate": "2026-11-05",
+        "count": 10
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "officialUpdate": "2026-11-09",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "officialUpdate": "2026-03-13",
         "count": 1
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "count": 2
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "count": 2
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "count": 1
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.432Z",
+        "checkedAt": "2026-11-23T06:31:09.563Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:02:16.432Z"
+    "refreshedAt": "2026-11-23T06:31:09.563Z"
   },
   "2026-12-28": {
     "week": "2026-12-28",
@@ -4281,34 +4281,34 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "count": 0
       },
       {
         "id": "tentative",
-        "count": 9,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:57.142Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "officialUpdate": "2026-11-05",
+        "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "officialUpdate": "2026-11-09",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
@@ -4321,44 +4321,44 @@
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "count": 2
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "count": 1
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:16.699Z",
+        "checkedAt": "2026-11-23T06:31:09.815Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:02:16.699Z"
+    "refreshedAt": "2026-11-23T06:31:09.815Z"
   },
   "2027-01-04": {
     "week": "2027-01-04",
@@ -4528,34 +4528,34 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "count": 0
       },
       {
         "id": "tentative",
-        "count": 6,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:57.406Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "officialUpdate": "2026-11-05",
+        "count": 6
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
@@ -4568,44 +4568,44 @@
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.014Z",
+        "checkedAt": "2026-11-23T06:31:10.041Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:02:17.014Z"
+    "refreshedAt": "2026-11-23T06:31:10.041Z"
   },
   "2027-01-11": {
     "week": "2027-01-11",
@@ -4834,34 +4834,34 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "count": 0
       },
       {
         "id": "tentative",
-        "count": 9,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:57.673Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "officialUpdate": "2026-11-05",
+        "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "officialUpdate": "2026-11-09",
         "count": 3
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
@@ -4874,44 +4874,44 @@
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.300Z",
+        "checkedAt": "2026-11-23T06:31:10.406Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:02:17.300Z"
+    "refreshedAt": "2026-11-23T06:31:10.406Z"
   },
   "2027-01-18": {
     "week": "2027-01-18",
@@ -5097,34 +5097,34 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "count": 0
       },
       {
         "id": "tentative",
-        "count": 9,
-        "state": "cached",
-        "checkedAt": "2026-11-23T05:57:57.956Z",
-        "officialUpdate": "2026-11-05"
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "officialUpdate": "2026-11-05",
+        "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "officialUpdate": "2026-11-09",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
@@ -5137,43 +5137,43 @@
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "count": 1
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:02:17.538Z",
+        "checkedAt": "2026-11-23T06:31:10.743Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:02:17.538Z"
+    "refreshedAt": "2026-11-23T06:31:10.743Z"
   }
 }
