@@ -1,4 +1,1063 @@
 {
+  "2026-10-26": {
+    "week": "2026-10-26",
+    "events": [
+      {
+        "id": "tsy-13w-bill-2026-10-26",
+        "date": "2026-10-26",
+        "time": "11:30",
+        "title": "13 周 T-bill 拍卖",
+        "detail": "$95bn · 续发 · 结算 2026-10-29 · CUSIP 912797VU8",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_2.pdf",
+        "officialDate": "2026-10-26",
+        "actual": "最高贴现率 4.050% · 投标倍数 3.07× · Dealer 24.1% / 间接 69.2%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.05,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 3.07,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 24.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 69.2,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 6.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_1.pdf",
+        "auctionKey": "13w-bill"
+      },
+      {
+        "id": "tsy-26w-bill-2026-10-26",
+        "date": "2026-10-26",
+        "time": "11:30",
+        "title": "26 周 T-bill 拍卖",
+        "detail": "$82bn · 新发 · 结算 2026-10-29 · CUSIP 912797WW3",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_3.pdf",
+        "officialDate": "2026-10-26",
+        "actual": "最高贴现率 4.210% · 投标倍数 2.63× · Dealer 33.4% / 间接 55.1%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.21,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.63,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 33.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 55.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 11.5,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_2.pdf",
+        "auctionKey": "26w-bill"
+      },
+      {
+        "id": "tsy-2y-nominal-2026-10-26",
+        "date": "2026-10-26",
+        "time": "13:00",
+        "title": "2 年期国债拍卖",
+        "detail": "$69bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRU7",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_6.pdf",
+        "officialDate": "2026-10-26",
+        "actual": "中标收益率 4.708% · 投标倍数 2.59× · Dealer 13.0% / 间接 45.7%",
+        "readings": [
+          {
+            "label": "中标收益率",
+            "value": 4.708,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.59,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 13,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 45.7,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 41.3,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_3.pdf",
+        "auctionKey": "2y-nominal"
+      },
+      {
+        "id": "census-advance-report-on-durable-goods-manufacturers-shipments-inventories-and-orders-september-2026-2026-10-27",
+        "date": "2026-10-27",
+        "time": "08:30",
+        "title": "耐用品订单初值",
+        "detail": "Advance Report on Durable Goods--Manufacturers' Shipments, Inventories, and Orders · September 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "census-new-residential-sales-september-2026-2026-10-27",
+        "date": "2026-10-27",
+        "time": "10:00",
+        "title": "新屋销售",
+        "detail": "New Residential Sales · September 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "tsy-52w-bill-2026-10-27",
+        "date": "2026-10-27",
+        "time": "11:30",
+        "title": "52 周 T-bill 拍卖",
+        "detail": "$54bn · 新发 · 结算 2026-10-29 · CUSIP 912797WT0",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_4.pdf",
+        "officialDate": "2026-10-27",
+        "actual": "最高贴现率 4.290% · 投标倍数 3.15× · Dealer 23.9% / 间接 71.4%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.29,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 3.15,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 23.9,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 71.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 4.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261027_1.pdf",
+        "auctionKey": "52w-bill"
+      },
+      {
+        "id": "tsy-6w-bill-2026-10-27",
+        "date": "2026-10-27",
+        "time": "11:30",
+        "title": "6 周 T-bill 拍卖",
+        "detail": "$95bn · 续发 · 结算 2026-10-29 · CUSIP 912797VG9",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_1.pdf",
+        "officialDate": "2026-10-27",
+        "actual": "最高贴现率 3.950% · 投标倍数 2.83× · Dealer 27.1% / 间接 67.2%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 3.95,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.83,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 27.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 67.2,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 5.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261027_2.pdf",
+        "auctionKey": "6w-bill"
+      },
+      {
+        "id": "tsy-5y-nominal-2026-10-27",
+        "date": "2026-10-27",
+        "time": "13:00",
+        "title": "5 年期国债拍卖",
+        "detail": "$70bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRT0",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_7.pdf",
+        "officialDate": "2026-10-27",
+        "actual": "中标收益率 4.845% · 投标倍数 2.33× · Dealer 10.6% / 间接 60.0%",
+        "readings": [
+          {
+            "label": "中标收益率",
+            "value": 4.845,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.33,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 10.6,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 60,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 29.4,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261027_3.pdf",
+        "auctionKey": "5y-nominal"
+      },
+      {
+        "id": "fomc-start-2026-10-27",
+        "date": "2026-10-27",
+        "time": null,
+        "title": "FOMC 政策会议开始",
+        "detail": "两天会议 · 决议发布日 2026-10-28",
+        "category": "fed",
+        "kind": "policy",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "fomc",
+        "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+        "officialDate": "2026-11-18"
+      },
+      {
+        "id": "census-advance-economic-indicators-report-international-trade-retail-wholesale-september-2026-2026-10-28",
+        "date": "2026-10-28",
+        "time": "08:30",
+        "title": "美国预估经济指标",
+        "detail": "Advance Economic Indicators Report (International Trade, Retail, & Wholesale) · September 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "census",
+        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
+        "officialDate": "2026-11-22"
+      },
+      {
+        "id": "tsy-17w-bill-2026-10-28",
+        "date": "2026-10-28",
+        "time": "11:30",
+        "title": "17 周 T-bill 拍卖",
+        "detail": "$75bn · 新发 · 结算 2026-11-03 · CUSIP 912797XB8",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261027_3.pdf",
+        "officialDate": "2026-10-28",
+        "actual": "最高贴现率 4.140% · 投标倍数 3.08× · Dealer 35.1% / 间接 57.9%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.14,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 3.08,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 35.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 57.9,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 6.9,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261028_2.pdf",
+        "auctionKey": "17w-bill"
+      },
+      {
+        "id": "tsy-2y-frn-2026-10-28",
+        "date": "2026-10-28",
+        "time": "11:30",
+        "title": "2 年期 FRN 拍卖",
+        "detail": "$30bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRS2",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_5.pdf",
+        "officialDate": "2026-10-28",
+        "actual": "最高折扣利差 0.038% · 投标倍数 3.05× · Dealer 28.0% / 间接 71.4%",
+        "readings": [
+          {
+            "label": "最高折扣利差",
+            "value": 0.038,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 3.05,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 28,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 71.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 0.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261028_1.pdf",
+        "auctionKey": "2y-frn"
+      },
+      {
+        "id": "fomc-decision-2026-10-28",
+        "date": "2026-10-28",
+        "time": "14:00",
+        "title": "FOMC 利率决议",
+        "detail": "Two-day meeting, October 27 - 28 · Press Conference",
+        "category": "fed",
+        "kind": "policy",
+        "impact": 5,
+        "status": "confirmed",
+        "source": "fed",
+        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+        "officialDate": "2026-10-14"
+      },
+      {
+        "id": "fed-press-conference-2026-10-28",
+        "date": "2026-10-28",
+        "time": "14:30",
+        "title": "FOMC 记者会",
+        "detail": "FOMC Press Conference · 关注政策阐释与问答",
+        "category": "fed",
+        "kind": "policy",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "fed",
+        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+        "officialDate": "2026-10-14"
+      },
+      {
+        "id": "bea-personal-income-and-outlays-september-2026-2026-10-29",
+        "date": "2026-10-29",
+        "time": "08:30",
+        "title": "PCE 物价 / 个人收支",
+        "detail": "Personal Income and Outlays, September 2026",
+        "category": "macro",
+        "kind": "inflation",
+        "impact": 5,
+        "status": "confirmed",
+        "source": "bea",
+        "url": "https://www.bea.gov/news/schedule/full",
+        "officialDate": "2026-11-22",
+        "resultUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-september-2026",
+        "readings": [
+          {
+            "label": "核心 PCE 月率",
+            "value": 0.3,
+            "unit": "%",
+            "signed": true
+          },
+          {
+            "label": "整体 PCE 月率",
+            "value": 0.5,
+            "unit": "%",
+            "signed": true
+          },
+          {
+            "label": "核心 PCE 同比",
+            "value": 3.1,
+            "unit": "%"
+          },
+          {
+            "label": "整体 PCE 同比",
+            "value": 3.6,
+            "unit": "%"
+          },
+          {
+            "label": "实际消费月率",
+            "value": 0,
+            "unit": "%",
+            "signed": true
+          }
+        ]
+      },
+      {
+        "id": "bea-gdp-advance-estimate-2026-10-29",
+        "date": "2026-10-29",
+        "time": "08:30",
+        "title": "美国 GDP",
+        "detail": "GDP (Advance Estimate), 3rd Quarter 2026",
+        "category": "macro",
+        "kind": "growth",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "bea",
+        "url": "https://www.bea.gov/news/schedule/full",
+        "officialDate": "2026-11-22",
+        "resultUrl": "https://www.bea.gov/news/2026/gdp-advance-estimate-3rd-quarter-2026",
+        "readings": [
+          {
+            "label": "实际 GDP 季环比折年率",
+            "value": 3.4,
+            "unit": "%",
+            "signed": true
+          },
+          {
+            "label": "私人国内最终销售折年率",
+            "value": 4.9,
+            "unit": "%",
+            "signed": true
+          }
+        ]
+      },
+      {
+        "id": "dol-claims-2026-10-29",
+        "date": "2026-10-29",
+        "time": "08:30",
+        "title": "初请失业金",
+        "detail": "Unemployment Insurance Weekly Claims · 劳工部每周日程",
+        "category": "macro",
+        "kind": "claims",
+        "impact": 3,
+        "status": "confirmed",
+        "source": "dol",
+        "url": "https://oui.doleta.gov/unemploy/claims_arch.asp",
+        "officialDate": "2026-09-11"
+      },
+      {
+        "id": "tsy-4w-bill-2026-10-29",
+        "date": "2026-10-29",
+        "time": "11:30",
+        "title": "4 周 T-bill 拍卖",
+        "detail": "$115bn · 续发 · 结算 2026-11-03 · CUSIP 912797VZ7",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261027_1.pdf",
+        "officialDate": "2026-10-29",
+        "actual": "最高贴现率 3.910% · 投标倍数 3.10× · Dealer 24.4% / 间接 69.8%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 3.91,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 3.1,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 24.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 69.8,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 5.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_1.pdf",
+        "auctionKey": "4w-bill"
+      },
+      {
+        "id": "tsy-8w-bill-2026-10-29",
+        "date": "2026-10-29",
+        "time": "11:30",
+        "title": "8 周 T-bill 拍卖",
+        "detail": "$110bn · 续发 · 结算 2026-11-03 · CUSIP 912797WH6",
+        "category": "auction",
+        "kind": "bills",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261027_2.pdf",
+        "officialDate": "2026-10-29",
+        "actual": "最高贴现率 4.020% · 投标倍数 2.63× · Dealer 31.5% / 间接 62.7%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.02,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.63,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 31.5,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 62.7,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 5.9,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_2.pdf",
+        "auctionKey": "8w-bill"
+      },
+      {
+        "id": "tsy-7y-nominal-2026-10-29",
+        "date": "2026-10-29",
+        "time": "13:00",
+        "title": "7 年期国债拍卖",
+        "detail": "$44bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRV5",
+        "category": "auction",
+        "kind": "coupon",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "treasury",
+        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_8.pdf",
+        "officialDate": "2026-10-29",
+        "actual": "中标收益率 4.894% · 投标倍数 2.46× · Dealer 9.4% / 间接 57.8%",
+        "readings": [
+          {
+            "label": "中标收益率",
+            "value": 4.894,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.46,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 9.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 57.8,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 32.8,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
+        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_3.pdf",
+        "auctionKey": "7y-nominal"
+      },
+      {
+        "id": "fed-h41-2026-10-29",
+        "date": "2026-10-29",
+        "time": "16:30",
+        "title": "美联储资产负债表 H.4.1",
+        "detail": "Factors Affecting Reserve Balances",
+        "category": "fed",
+        "kind": "funding",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "fed",
+        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+        "officialDate": "2026-10-14"
+      },
+      {
+        "id": "bls-employment-cost-index-for-third-quarter-2026-2026-10-30",
+        "date": "2026-10-30",
+        "time": "08:30",
+        "title": "就业成本指数（ECI）",
+        "detail": "Employment Cost Index for Third Quarter 2026",
+        "category": "macro",
+        "kind": "jobs",
+        "impact": 4,
+        "status": "confirmed",
+        "source": "bls",
+        "url": "https://www.bls.gov/schedule/2026/10_sched_list.htm",
+        "officialDate": "2026-02-18",
+        "resultUrl": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+        "readings": [
+          {
+            "label": "就业成本指数季率",
+            "value": 0.8,
+            "unit": "%",
+            "signed": true
+          },
+          {
+            "label": "薪资季率",
+            "value": 0.7,
+            "unit": "%",
+            "signed": true
+          },
+          {
+            "label": "就业成本指数同比",
+            "value": 3.4,
+            "unit": "%"
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "treasury",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "officialUpdate": "2026-10-29",
+        "count": 11
+      },
+      {
+        "id": "tentative",
+        "count": 0,
+        "state": "reference",
+        "checkedAt": null
+      },
+      {
+        "id": "bls",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "officialUpdate": "2026-11-03",
+        "count": 1
+      },
+      {
+        "id": "bea",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "officialUpdate": "2026-11-22",
+        "count": 2
+      },
+      {
+        "id": "census",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "officialUpdate": "2026-11-22",
+        "count": 3
+      },
+      {
+        "id": "fed",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "officialUpdate": "2026-11-20",
+        "count": 3
+      },
+      {
+        "id": "fomc",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "officialUpdate": "2026-11-18",
+        "count": 2
+      },
+      {
+        "id": "dol",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "officialUpdate": "2026-09-11",
+        "count": 1
+      },
+      {
+        "id": "sifma",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "count": 0
+      },
+      {
+        "id": "nyse",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "count": 0
+      },
+      {
+        "id": "cme",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "count": 0
+      },
+      {
+        "id": "curve",
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:21:47.107Z",
+        "officialUpdate": "2026-10-30",
+        "count": 10
+      }
+    ],
+    "curve": [
+      {
+        "date": "2026-10-19",
+        "values": [
+          4.27,
+          4.5,
+          4.77,
+          4.85,
+          4.94,
+          5.04,
+          5.15,
+          5.53,
+          5.48
+        ],
+        "real": [
+          2.56,
+          2.67,
+          2.8,
+          3.06,
+          3.21
+        ]
+      },
+      {
+        "date": "2026-10-20",
+        "values": [
+          4.26,
+          4.51,
+          4.79,
+          4.86,
+          4.94,
+          5.02,
+          5.12,
+          5.47,
+          5.42
+        ],
+        "real": [
+          2.55,
+          2.65,
+          2.77,
+          3.02,
+          3.16
+        ]
+      },
+      {
+        "date": "2026-10-21",
+        "values": [
+          4.25,
+          4.52,
+          4.81,
+          4.89,
+          4.95,
+          5.03,
+          5.13,
+          5.47,
+          5.42
+        ],
+        "real": [
+          2.55,
+          2.65,
+          2.76,
+          3.01,
+          3.15
+        ]
+      },
+      {
+        "date": "2026-10-22",
+        "values": [
+          4.22,
+          4.41,
+          4.65,
+          4.72,
+          4.78,
+          4.86,
+          4.96,
+          5.32,
+          5.29
+        ],
+        "real": [
+          2.33,
+          2.48,
+          2.64,
+          2.91,
+          3.05
+        ]
+      },
+      {
+        "date": "2026-10-23",
+        "values": [
+          4.22,
+          4.44,
+          4.69,
+          4.75,
+          4.82,
+          4.89,
+          5,
+          5.37,
+          5.33
+        ],
+        "real": [
+          2.34,
+          2.49,
+          2.66,
+          2.94,
+          3.08
+        ]
+      },
+      {
+        "date": "2026-10-26",
+        "values": [
+          4.22,
+          4.47,
+          4.68,
+          4.79,
+          4.84,
+          4.91,
+          5,
+          5.35,
+          5.31
+        ],
+        "real": [
+          2.37,
+          2.51,
+          2.66,
+          2.93,
+          3.07
+        ]
+      },
+      {
+        "date": "2026-10-27",
+        "values": [
+          4.22,
+          4.5,
+          4.7,
+          4.8,
+          4.82,
+          4.91,
+          4.99,
+          5.34,
+          5.3
+        ],
+        "real": [
+          2.37,
+          2.5,
+          2.64,
+          2.91,
+          3.05
+        ]
+      },
+      {
+        "date": "2026-10-28",
+        "values": [
+          4.18,
+          4.47,
+          4.67,
+          4.8,
+          4.85,
+          4.95,
+          5.05,
+          5.41,
+          5.37
+        ],
+        "real": [
+          2.36,
+          2.51,
+          2.67,
+          2.96,
+          3.1
+        ]
+      },
+      {
+        "date": "2026-10-29",
+        "values": [
+          4.18,
+          4.42,
+          4.61,
+          4.73,
+          4.78,
+          4.87,
+          4.98,
+          5.35,
+          5.32
+        ],
+        "real": [
+          2.31,
+          2.46,
+          2.63,
+          2.92,
+          3.07
+        ]
+      },
+      {
+        "date": "2026-10-30",
+        "values": [
+          4.16,
+          4.36,
+          4.56,
+          4.65,
+          4.71,
+          4.8,
+          4.94,
+          5.34,
+          5.31
+        ],
+        "real": [
+          2.25,
+          2.42,
+          2.6,
+          2.92,
+          3.08
+        ]
+      }
+    ],
+    "refreshedAt": "2026-11-23T06:21:47.107Z"
+  },
   "2026-11-02": {
     "week": "2026-11-02",
     "events": [
@@ -15,7 +1074,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261029_2.pdf",
         "officialDate": "2026-11-02",
-        "actual": "最高贴现率 4.040% · 投标倍数 2.88×",
+        "actual": "最高贴现率 4.040% · 投标倍数 2.88× · Dealer 34.0% / 间接 55.9%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.04,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.88,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 34,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 55.9,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 10.1,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261102_1.pdf",
         "auctionKey": "13w-bill"
       },
@@ -32,7 +1123,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261029_3.pdf",
         "officialDate": "2026-11-02",
-        "actual": "最高贴现率 4.150% · 投标倍数 2.89×",
+        "actual": "最高贴现率 4.150% · 投标倍数 2.89× · Dealer 24.4% / 间接 64.6%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.15,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.89,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 24.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 64.6,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 10.9,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261102_2.pdf",
         "auctionKey": "26w-bill"
       },
@@ -48,7 +1171,28 @@
         "status": "confirmed",
         "source": "bls",
         "url": "https://www.bls.gov/schedule/2026/11_sched_list.htm",
-        "officialDate": "2026-11-03"
+        "officialDate": "2026-11-03",
+        "resultUrl": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+        "readings": [
+          {
+            "label": "职位空缺",
+            "value": 7.5,
+            "unit": "百万",
+            "digits": 1
+          },
+          {
+            "label": "招聘人数",
+            "value": 5.4,
+            "unit": "百万",
+            "digits": 1
+          },
+          {
+            "label": "主动离职",
+            "value": 3.4,
+            "unit": "百万",
+            "digits": 1
+          }
+        ]
       },
       {
         "id": "tsy-6w-bill-2026-11-03",
@@ -63,27 +1207,44 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261029_1.pdf",
         "officialDate": "2026-11-03",
-        "actual": "最高贴现率 3.940% · 投标倍数 2.88×",
+        "actual": "最高贴现率 3.940% · 投标倍数 2.88× · Dealer 33.4% / 间接 61.0%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 3.94,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.88,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 33.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 61,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 5.6,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261103_1.pdf",
         "auctionKey": "6w-bill"
       },
       {
-        "id": "bea-u-s-international-trade-in-goods-and-services-september-2026-2026-11-04",
-        "date": "2026-11-04",
-        "time": "08:30",
-        "title": "美国商品和服务贸易",
-        "detail": "U.S. International Trade in Goods and Services, September 2026",
-        "category": "macro",
-        "kind": "growth",
-        "impact": 3,
-        "status": "confirmed",
-        "source": "bea",
-        "url": "https://www.bea.gov/news/schedule/full",
-        "officialDate": "2026-11-22",
-        "resultUrl": "https://www.bea.gov/news/2026/us-international-trade-goods-and-services-september-2026"
-      },
-      {
-        "id": "census-u-s-international-trade-in-goods-and-services-september-2026-2026-11-04",
+        "id": "macro-us-trade-2026-11-04",
         "date": "2026-11-04",
         "time": "08:30",
         "title": "美国商品和服务贸易",
@@ -94,7 +1255,8 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-22"
+        "officialDate": "2026-11-22",
+        "resultUrl": "https://www.bea.gov/news/2026/us-international-trade-goods-and-services-september-2026"
       },
       {
         "id": "tsy-17w-bill-2026-11-04",
@@ -109,7 +1271,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261103_3.pdf",
         "officialDate": "2026-11-04",
-        "actual": "最高贴现率 4.090% · 投标倍数 3.26×",
+        "actual": "最高贴现率 4.090% · 投标倍数 3.26× · Dealer 42.5% / 间接 49.4%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.09,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 3.26,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 42.5,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 49.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 8.1,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261104_1.pdf",
         "auctionKey": "17w-bill"
       },
@@ -154,7 +1348,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261103_1.pdf",
         "officialDate": "2026-11-05",
-        "actual": "最高贴现率 3.890% · 投标倍数 2.46×",
+        "actual": "最高贴现率 3.890% · 投标倍数 2.46× · Dealer 48.4% / 间接 47.8%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 3.89,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.46,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 48.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 47.8,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 3.8,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261105_1.pdf",
         "auctionKey": "4w-bill"
       },
@@ -171,7 +1397,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261103_2.pdf",
         "officialDate": "2026-11-05",
-        "actual": "最高贴现率 3.975% · 投标倍数 2.68×",
+        "actual": "最高贴现率 3.975% · 投标倍数 2.68× · Dealer 31.3% / 间接 65.3%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 3.975,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.68,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 31.3,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 65.3,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 3.4,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261105_2.pdf",
         "auctionKey": "8w-bill"
       },
@@ -207,7 +1465,8 @@
           {
             "label": "非农新增就业",
             "value": 165,
-            "unit": "千人"
+            "unit": "千人",
+            "signed": true
           },
           {
             "label": "失业率",
@@ -217,12 +1476,14 @@
           {
             "label": "平均时薪月率",
             "value": 0.4,
-            "unit": "%"
+            "unit": "%",
+            "signed": true
           },
           {
             "label": "前两月非农合计修订",
             "value": 84,
-            "unit": "千人"
+            "unit": "千人",
+            "signed": true
           }
         ]
       },
@@ -245,90 +1506,92 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-11-05",
         "count": 0
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-11-03",
         "count": 3
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-11-20",
         "count": 2
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:06.932Z",
+        "checkedAt": "2026-11-23T06:20:34.361Z",
         "officialUpdate": "2026-11-06",
-        "count": 0
+        "count": 10
       }
     ],
     "curve": [
       {
         "date": "2026-10-26",
         "values": [
+          4.22,
+          4.47,
           4.68,
           4.79,
           4.84,
@@ -336,11 +1599,20 @@
           5,
           5.35,
           5.31
+        ],
+        "real": [
+          2.37,
+          2.51,
+          2.66,
+          2.93,
+          3.07
         ]
       },
       {
         "date": "2026-10-27",
         "values": [
+          4.22,
+          4.5,
           4.7,
           4.8,
           4.82,
@@ -348,11 +1620,20 @@
           4.99,
           5.34,
           5.3
+        ],
+        "real": [
+          2.37,
+          2.5,
+          2.64,
+          2.91,
+          3.05
         ]
       },
       {
         "date": "2026-10-28",
         "values": [
+          4.18,
+          4.47,
           4.67,
           4.8,
           4.85,
@@ -360,11 +1641,20 @@
           5.05,
           5.41,
           5.37
+        ],
+        "real": [
+          2.36,
+          2.51,
+          2.67,
+          2.96,
+          3.1
         ]
       },
       {
         "date": "2026-10-29",
         "values": [
+          4.18,
+          4.42,
           4.61,
           4.73,
           4.78,
@@ -372,11 +1662,20 @@
           4.98,
           5.35,
           5.32
+        ],
+        "real": [
+          2.31,
+          2.46,
+          2.63,
+          2.92,
+          3.07
         ]
       },
       {
         "date": "2026-10-30",
         "values": [
+          4.16,
+          4.36,
           4.56,
           4.65,
           4.71,
@@ -384,11 +1683,20 @@
           4.94,
           5.34,
           5.31
+        ],
+        "real": [
+          2.25,
+          2.42,
+          2.6,
+          2.92,
+          3.08
         ]
       },
       {
         "date": "2026-11-02",
         "values": [
+          4.21,
+          4.38,
           4.59,
           4.65,
           4.7,
@@ -396,11 +1704,20 @@
           4.91,
           5.31,
           5.28
+        ],
+        "real": [
+          2.31,
+          2.45,
+          2.62,
+          2.91,
+          3.06
         ]
       },
       {
         "date": "2026-11-03",
         "values": [
+          4.21,
+          4.4,
           4.61,
           4.68,
           4.74,
@@ -408,11 +1725,20 @@
           4.95,
           5.35,
           5.32
+        ],
+        "real": [
+          2.35,
+          2.49,
+          2.65,
+          2.94,
+          3.09
         ]
       },
       {
         "date": "2026-11-04",
         "values": [
+          4.21,
+          4.39,
           4.58,
           4.64,
           4.69,
@@ -420,11 +1746,20 @@
           4.9,
           5.3,
           5.28
+        ],
+        "real": [
+          2.39,
+          2.51,
+          2.64,
+          2.92,
+          3.08
         ]
       },
       {
         "date": "2026-11-05",
         "values": [
+          4.17,
+          4.28,
           4.46,
           4.53,
           4.59,
@@ -432,11 +1767,20 @@
           4.84,
           5.27,
           5.25
+        ],
+        "real": [
+          2.33,
+          2.46,
+          2.6,
+          2.9,
+          3.05
         ]
       },
       {
         "date": "2026-11-06",
         "values": [
+          4.19,
+          4.33,
           4.51,
           4.59,
           4.64,
@@ -444,10 +1788,17 @@
           4.86,
           5.29,
           5.26
+        ],
+        "real": [
+          2.35,
+          2.48,
+          2.63,
+          2.91,
+          3.07
         ]
       }
     ],
-    "refreshedAt": "2026-11-23T06:31:06.932Z"
+    "refreshedAt": "2026-11-23T06:20:34.361Z"
   },
   "2026-11-09": {
     "week": "2026-11-09",
@@ -493,7 +1844,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261105_2.pdf",
         "officialDate": "2026-11-09",
-        "actual": "最高贴现率 4.060% · 投标倍数 2.67×",
+        "actual": "最高贴现率 4.060% · 投标倍数 2.67× · Dealer 35.4% / 间接 55.9%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.06,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.67,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 35.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 55.9,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 8.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261109_1.pdf",
         "auctionKey": "13w-bill"
       },
@@ -510,7 +1893,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261105_3.pdf",
         "officialDate": "2026-11-09",
-        "actual": "最高贴现率 4.145% · 投标倍数 2.92×",
+        "actual": "最高贴现率 4.145% · 投标倍数 2.92× · Dealer 34.0% / 间接 56.7%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.145,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.92,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 34,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 56.7,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 9.3,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261109_2.pdf",
         "auctionKey": "26w-bill"
       },
@@ -527,7 +1942,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261104_1.pdf",
         "officialDate": "2026-11-09",
-        "actual": "中标收益率 4.627% · 投标倍数 2.53×",
+        "actual": "中标收益率 4.627% · 投标倍数 2.53× · Dealer 9.5% / 间接 55.5%",
+        "readings": [
+          {
+            "label": "中标收益率",
+            "value": 4.627,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.53,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 9.5,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 55.5,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 35,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261109_3.pdf",
         "auctionKey": "3y-nominal"
       },
@@ -544,7 +1991,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261105_1.pdf",
         "officialDate": "2026-11-09",
-        "actual": "最高贴现率 3.990% · 投标倍数 2.59×",
+        "actual": "最高贴现率 3.990% · 投标倍数 2.59× · Dealer 30.2% / 间接 67.1%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 3.99,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.59,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 30.2,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 67.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 2.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261109_4.pdf",
         "auctionKey": "6w-bill"
       },
@@ -581,17 +2060,20 @@
           {
             "label": "核心 CPI 月率",
             "value": 0.3,
-            "unit": "%"
+            "unit": "%",
+            "signed": true
           },
           {
             "label": "整体 CPI 月率",
             "value": 0.4,
-            "unit": "%"
+            "unit": "%",
+            "signed": true
           },
           {
             "label": "住房月率",
             "value": 0.3,
-            "unit": "%"
+            "unit": "%",
+            "signed": true
           }
         ]
       },
@@ -608,7 +2090,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261104_2.pdf",
         "officialDate": "2026-11-10",
-        "actual": "中标收益率 5.020% · 投标倍数 2.46×",
+        "actual": "中标收益率 5.020% · 投标倍数 2.46× · Dealer 9.8% / 间接 61.2%",
+        "readings": [
+          {
+            "label": "中标收益率",
+            "value": 5.02,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.46,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 9.8,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 61.2,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 29,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261110_1.pdf",
         "auctionKey": "10y-nominal"
       },
@@ -735,7 +2249,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261110_1.pdf",
         "officialDate": "2026-11-12",
-        "actual": "最高贴现率 3.955% · 投标倍数 2.94×",
+        "actual": "最高贴现率 3.955% · 投标倍数 2.94× · Dealer 25.2% / 间接 67.1%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 3.955,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.94,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 25.2,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 67.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 7.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261112_2.pdf",
         "auctionKey": "4w-bill"
       },
@@ -752,7 +2298,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261110_2.pdf",
         "officialDate": "2026-11-12",
-        "actual": "最高贴现率 4.080% · 投标倍数 2.50×",
+        "actual": "最高贴现率 4.080% · 投标倍数 2.50× · Dealer 39.2% / 间接 53.0%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.08,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.5,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 39.2,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 53,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 7.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261112_1.pdf",
         "auctionKey": "8w-bill"
       },
@@ -769,7 +2347,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261104_3.pdf",
         "officialDate": "2026-11-12",
-        "actual": "中标收益率 5.441% · 投标倍数 2.36×",
+        "actual": "中标收益率 5.441% · 投标倍数 2.36× · Dealer 11.4% / 间接 68.1%",
+        "readings": [
+          {
+            "label": "中标收益率",
+            "value": 5.441,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.36,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 11.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 68.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 20.5,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261112_4.pdf",
         "auctionKey": "30y-nominal"
       },
@@ -786,7 +2396,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261110_3.pdf",
         "officialDate": "2026-11-12",
-        "actual": "最高贴现率 4.225% · 投标倍数 2.78×",
+        "actual": "最高贴现率 4.225% · 投标倍数 2.78× · Dealer 42.3% / 间接 52.9%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.225,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.78,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 42.3,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 52.9,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 4.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261112_3.pdf",
         "auctionKey": "17w-bill"
       },
@@ -822,12 +2464,14 @@
           {
             "label": "最终需求 PPI 月率",
             "value": 0.3,
-            "unit": "%"
+            "unit": "%",
+            "signed": true
           },
           {
             "label": "剔除食品、能源和贸易服务月率",
             "value": 0.5,
-            "unit": "%"
+            "unit": "%",
+            "signed": true
           }
         ]
       },
@@ -864,90 +2508,92 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-11-12",
         "count": 9
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-11-05",
         "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-11-03",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-11-20",
         "count": 8
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-11-12",
         "count": 1
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "count": 2
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:07.630Z",
+        "checkedAt": "2026-11-23T06:20:35.001Z",
         "officialUpdate": "2026-11-13",
-        "count": 0
+        "count": 9
       }
     ],
     "curve": [
       {
         "date": "2026-11-02",
         "values": [
+          4.21,
+          4.38,
           4.59,
           4.65,
           4.7,
@@ -955,11 +2601,20 @@
           4.91,
           5.31,
           5.28
+        ],
+        "real": [
+          2.31,
+          2.45,
+          2.62,
+          2.91,
+          3.06
         ]
       },
       {
         "date": "2026-11-03",
         "values": [
+          4.21,
+          4.4,
           4.61,
           4.68,
           4.74,
@@ -967,11 +2622,20 @@
           4.95,
           5.35,
           5.32
+        ],
+        "real": [
+          2.35,
+          2.49,
+          2.65,
+          2.94,
+          3.09
         ]
       },
       {
         "date": "2026-11-04",
         "values": [
+          4.21,
+          4.39,
           4.58,
           4.64,
           4.69,
@@ -979,11 +2643,20 @@
           4.9,
           5.3,
           5.28
+        ],
+        "real": [
+          2.39,
+          2.51,
+          2.64,
+          2.92,
+          3.08
         ]
       },
       {
         "date": "2026-11-05",
         "values": [
+          4.17,
+          4.28,
           4.46,
           4.53,
           4.59,
@@ -991,11 +2664,20 @@
           4.84,
           5.27,
           5.25
+        ],
+        "real": [
+          2.33,
+          2.46,
+          2.6,
+          2.9,
+          3.05
         ]
       },
       {
         "date": "2026-11-06",
         "values": [
+          4.19,
+          4.33,
           4.51,
           4.59,
           4.64,
@@ -1003,11 +2685,20 @@
           4.86,
           5.29,
           5.26
+        ],
+        "real": [
+          2.35,
+          2.48,
+          2.63,
+          2.91,
+          3.07
         ]
       },
       {
         "date": "2026-11-09",
         "values": [
+          4.24,
+          4.38,
           4.56,
           4.58,
           4.67,
@@ -1015,11 +2706,20 @@
           4.88,
           5.29,
           5.26
+        ],
+        "real": [
+          2.42,
+          2.53,
+          2.66,
+          2.93,
+          3.08
         ]
       },
       {
         "date": "2026-11-10",
         "values": [
+          4.3,
+          4.56,
           4.73,
           4.74,
           4.81,
@@ -1027,11 +2727,20 @@
           4.98,
           5.39,
           5.35
+        ],
+        "real": [
+          2.56,
+          2.66,
+          2.78,
+          3.03,
+          3.17
         ]
       },
       {
         "date": "2026-11-12",
         "values": [
+          4.32,
+          4.65,
           4.86,
           4.9,
           4.95,
@@ -1039,11 +2748,20 @@
           5.1,
           5.48,
           5.43
+        ],
+        "real": [
+          2.64,
+          2.74,
+          2.86,
+          3.11,
+          3.24
         ]
       },
       {
         "date": "2026-11-13",
         "values": [
+          4.32,
+          4.65,
           4.88,
           4.92,
           4.98,
@@ -1051,10 +2769,17 @@
           5.15,
           5.52,
           5.47
+        ],
+        "real": [
+          2.68,
+          2.78,
+          2.91,
+          3.15,
+          3.28
         ]
       }
     ],
-    "refreshedAt": "2026-11-23T06:31:07.630Z"
+    "refreshedAt": "2026-11-23T06:20:35.001Z"
   },
   "2026-11-16": {
     "week": "2026-11-16",
@@ -1086,7 +2811,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261112_2.pdf",
         "officialDate": "2026-11-16",
-        "actual": "最高贴现率 4.155% · 投标倍数 2.76×",
+        "actual": "最高贴现率 4.155% · 投标倍数 2.76× · Dealer 34.8% / 间接 56.9%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.155,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.76,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 34.8,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 56.9,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 8.3,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261116_1.pdf",
         "auctionKey": "13w-bill"
       },
@@ -1103,7 +2860,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261112_3.pdf",
         "officialDate": "2026-11-16",
-        "actual": "最高贴现率 4.310% · 投标倍数 2.83×",
+        "actual": "最高贴现率 4.310% · 投标倍数 2.83× · Dealer 30.6% / 间接 58.1%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.31,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.83,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 30.6,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 58.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 11.2,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261116_2.pdf",
         "auctionKey": "26w-bill"
       },
@@ -1204,7 +2993,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261112_1.pdf",
         "officialDate": "2026-11-17",
-        "actual": "最高贴现率 4.055% · 投标倍数 2.82×",
+        "actual": "最高贴现率 4.055% · 投标倍数 2.82× · Dealer 29.7% / 间接 65.7%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.055,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.82,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 29.7,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 65.7,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 4.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261117_1.pdf",
         "auctionKey": "6w-bill"
       },
@@ -1235,7 +3056,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261117_3.pdf",
         "officialDate": "2026-11-18",
-        "actual": "最高贴现率 4.230% · 投标倍数 3.05×",
+        "actual": "最高贴现率 4.230% · 投标倍数 3.05× · Dealer 37.5% / 间接 56.8%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.23,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 3.05,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 37.5,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 56.8,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 5.6,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261118_1.pdf",
         "auctionKey": "17w-bill"
       },
@@ -1252,7 +3105,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261112_5.pdf",
         "officialDate": "2026-11-18",
-        "actual": "中标收益率 5.459% · 投标倍数 2.63×",
+        "actual": "中标收益率 5.459% · 投标倍数 2.63× · Dealer 13.1% / 间接 60.2%",
+        "readings": [
+          {
+            "label": "中标收益率",
+            "value": 5.459,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.63,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 13.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 60.2,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 26.7,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261118_2.pdf",
         "auctionKey": "20y-nominal"
       },
@@ -1325,7 +3210,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261117_1.pdf",
         "officialDate": "2026-11-19",
-        "actual": "最高贴现率 4.050% · 投标倍数 2.55×",
+        "actual": "最高贴现率 4.050% · 投标倍数 2.55× · Dealer 36.4% / 间接 59.3%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.05,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.55,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 36.4,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 59.3,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 4.3,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261119_1.pdf",
         "auctionKey": "4w-bill"
       },
@@ -1342,7 +3259,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261117_2.pdf",
         "officialDate": "2026-11-19",
-        "actual": "最高贴现率 4.110% · 投标倍数 2.72×",
+        "actual": "最高贴现率 4.110% · 投标倍数 2.72× · Dealer 27.9% / 间接 67.8%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 4.11,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.72,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 27.9,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 67.8,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 4.3,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261119_2.pdf",
         "auctionKey": "8w-bill"
       },
@@ -1359,7 +3308,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261112_4.pdf",
         "officialDate": "2026-11-19",
-        "actual": "中标收益率 2.903% · 投标倍数 2.43×",
+        "actual": "中标实际收益率 2.903% · 投标倍数 2.43× · Dealer 6.0% / 间接 68.6%",
+        "readings": [
+          {
+            "label": "中标实际收益率",
+            "value": 2.903,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 2.43,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 6,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 68.6,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 25.4,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261119_3.pdf",
         "auctionKey": "10y-tips"
       },
@@ -1376,7 +3357,39 @@
         "source": "treasury",
         "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261118_1.pdf",
         "officialDate": "2026-11-19",
-        "actual": "最高贴现率 3.910% · 投标倍数 3.97×",
+        "actual": "最高贴现率 3.910% · 投标倍数 3.97× · Dealer 52.1% / 间接 45.9%",
+        "readings": [
+          {
+            "label": "最高贴现率",
+            "value": 3.91,
+            "unit": "%",
+            "digits": 3
+          },
+          {
+            "label": "投标倍数",
+            "value": 3.97,
+            "unit": "×",
+            "digits": 2
+          },
+          {
+            "label": "一级交易商",
+            "value": 52.1,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "间接投标",
+            "value": 45.9,
+            "unit": "%",
+            "digits": 1
+          },
+          {
+            "label": "直接投标",
+            "value": 2,
+            "unit": "%",
+            "digits": 1
+          }
+        ],
         "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261119_4.pdf",
         "auctionKey": "9w-bill"
       },
@@ -1455,90 +3468,92 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-11-19",
         "count": 9
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-11-05",
         "count": 8
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-11-03",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-11-20",
         "count": 11
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-11-18",
         "count": 1
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.023Z",
+        "checkedAt": "2026-11-23T06:20:35.604Z",
         "officialUpdate": "2026-11-20",
-        "count": 0
+        "count": 9
       }
     ],
     "curve": [
       {
         "date": "2026-11-09",
         "values": [
+          4.24,
+          4.38,
           4.56,
           4.58,
           4.67,
@@ -1546,11 +3561,20 @@
           4.88,
           5.29,
           5.26
+        ],
+        "real": [
+          2.42,
+          2.53,
+          2.66,
+          2.93,
+          3.08
         ]
       },
       {
         "date": "2026-11-10",
         "values": [
+          4.3,
+          4.56,
           4.73,
           4.74,
           4.81,
@@ -1558,11 +3582,20 @@
           4.98,
           5.39,
           5.35
+        ],
+        "real": [
+          2.56,
+          2.66,
+          2.78,
+          3.03,
+          3.17
         ]
       },
       {
         "date": "2026-11-12",
         "values": [
+          4.32,
+          4.65,
           4.86,
           4.9,
           4.95,
@@ -1570,11 +3603,20 @@
           5.1,
           5.48,
           5.43
+        ],
+        "real": [
+          2.64,
+          2.74,
+          2.86,
+          3.11,
+          3.24
         ]
       },
       {
         "date": "2026-11-13",
         "values": [
+          4.32,
+          4.65,
           4.88,
           4.92,
           4.98,
@@ -1582,11 +3624,20 @@
           5.15,
           5.52,
           5.47
+        ],
+        "real": [
+          2.68,
+          2.78,
+          2.91,
+          3.15,
+          3.28
         ]
       },
       {
         "date": "2026-11-16",
         "values": [
+          4.34,
+          4.62,
           4.83,
           4.87,
           4.93,
@@ -1594,11 +3645,20 @@
           5.12,
           5.51,
           5.46
+        ],
+        "real": [
+          2.68,
+          2.79,
+          2.92,
+          3.17,
+          3.3
         ]
       },
       {
         "date": "2026-11-17",
         "values": [
+          4.33,
+          4.6,
           4.8,
           4.84,
           4.9,
@@ -1606,11 +3666,20 @@
           5.1,
           5.5,
           5.46
+        ],
+        "real": [
+          2.64,
+          2.76,
+          2.89,
+          3.14,
+          3.28
         ]
       },
       {
         "date": "2026-11-18",
         "values": [
+          4.34,
+          4.62,
           4.8,
           4.84,
           4.89,
@@ -1618,11 +3687,20 @@
           5.07,
           5.44,
           5.41
+        ],
+        "real": [
+          2.66,
+          2.76,
+          2.88,
+          3.12,
+          3.25
         ]
       },
       {
         "date": "2026-11-19",
         "values": [
+          4.34,
+          4.62,
           4.76,
           4.81,
           4.86,
@@ -1630,11 +3708,20 @@
           5.04,
           5.43,
           5.4
+        ],
+        "real": [
+          2.64,
+          2.76,
+          2.88,
+          3.12,
+          3.24
         ]
       },
       {
         "date": "2026-11-20",
         "values": [
+          4.32,
+          4.51,
           4.63,
           4.65,
           4.71,
@@ -1642,10 +3729,17 @@
           4.92,
           5.34,
           5.31
+        ],
+        "real": [
+          2.53,
+          2.64,
+          2.77,
+          3.03,
+          3.17
         ]
       }
     ],
-    "refreshedAt": "2026-11-23T06:31:08.023Z"
+    "refreshedAt": "2026-11-23T06:20:35.604Z"
   },
   "2026-11-23": {
     "week": "2026-11-23",
@@ -1935,7 +4029,7 @@
         "id": "nyse-2026-11-26",
         "date": "2026-11-26",
         "time": null,
-        "title": "NYSE休市",
+        "title": "NYSE 休市",
         "detail": "Thanksgiving Day · 感恩节 · 股票常规时段",
         "category": "market",
         "kind": "holiday",
@@ -1988,7 +4082,7 @@
         "id": "nyse-2026-11-27",
         "date": "2026-11-27",
         "time": "13:00",
-        "title": "NYSE提前收市",
+        "title": "NYSE 提前收市",
         "detail": "Thanksgiving Day · 感恩节 · 股票常规时段",
         "category": "market",
         "kind": "earlyClose",
@@ -2043,90 +4137,92 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-11-19",
         "count": 8
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-11-05",
         "count": 11
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-11-03",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-11-20",
         "count": 2
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-11-12",
         "count": 2
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "count": 2
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "count": 2
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.288Z",
+        "checkedAt": "2026-11-23T06:20:35.888Z",
         "officialUpdate": "2026-11-20",
-        "count": 0
+        "count": 5
       }
     ],
     "curve": [
       {
         "date": "2026-11-16",
         "values": [
+          4.34,
+          4.62,
           4.83,
           4.87,
           4.93,
@@ -2134,11 +4230,20 @@
           5.12,
           5.51,
           5.46
+        ],
+        "real": [
+          2.68,
+          2.79,
+          2.92,
+          3.17,
+          3.3
         ]
       },
       {
         "date": "2026-11-17",
         "values": [
+          4.33,
+          4.6,
           4.8,
           4.84,
           4.9,
@@ -2146,11 +4251,20 @@
           5.1,
           5.5,
           5.46
+        ],
+        "real": [
+          2.64,
+          2.76,
+          2.89,
+          3.14,
+          3.28
         ]
       },
       {
         "date": "2026-11-18",
         "values": [
+          4.34,
+          4.62,
           4.8,
           4.84,
           4.89,
@@ -2158,11 +4272,20 @@
           5.07,
           5.44,
           5.41
+        ],
+        "real": [
+          2.66,
+          2.76,
+          2.88,
+          3.12,
+          3.25
         ]
       },
       {
         "date": "2026-11-19",
         "values": [
+          4.34,
+          4.62,
           4.76,
           4.81,
           4.86,
@@ -2170,11 +4293,20 @@
           5.04,
           5.43,
           5.4
+        ],
+        "real": [
+          2.64,
+          2.76,
+          2.88,
+          3.12,
+          3.24
         ]
       },
       {
         "date": "2026-11-20",
         "values": [
+          4.32,
+          4.51,
           4.63,
           4.65,
           4.71,
@@ -2182,10 +4314,17 @@
           4.92,
           5.34,
           5.31
+        ],
+        "real": [
+          2.53,
+          2.64,
+          2.77,
+          3.03,
+          3.17
         ]
       }
     ],
-    "refreshedAt": "2026-11-23T06:31:08.288Z"
+    "refreshedAt": "2026-11-23T06:20:35.888Z"
   },
   "2026-11-30": {
     "week": "2026-11-30",
@@ -2341,88 +4480,88 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-11-20",
         "count": 1
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.624Z",
+        "checkedAt": "2026-11-23T06:20:36.376Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:31:08.624Z"
+    "refreshedAt": "2026-11-23T06:20:36.376Z"
   },
   "2026-12-07": {
     "week": "2026-12-07",
@@ -2487,21 +4626,7 @@
         "officialDate": "2026-11-09"
       },
       {
-        "id": "bea-u-s-international-trade-in-goods-and-services-october-2026-2026-12-08",
-        "date": "2026-12-08",
-        "time": "08:30",
-        "title": "美国商品和服务贸易",
-        "detail": "U.S. International Trade in Goods and Services, October 2026",
-        "category": "macro",
-        "kind": "growth",
-        "impact": 3,
-        "status": "confirmed",
-        "source": "bea",
-        "url": "https://www.bea.gov/news/schedule/full",
-        "officialDate": "2026-11-22"
-      },
-      {
-        "id": "census-u-s-international-trade-in-goods-and-services-october-2026-2026-12-08",
+        "id": "macro-us-trade-2026-12-08",
         "date": "2026-12-08",
         "time": "08:30",
         "title": "美国商品和服务贸易",
@@ -2712,88 +4837,88 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-11-05",
         "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-03-13",
         "count": 3
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-11-18",
         "count": 2
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:08.891Z",
+        "checkedAt": "2026-11-23T06:20:36.626Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:31:08.891Z"
+    "refreshedAt": "2026-11-23T06:20:36.626Z"
   },
   "2026-12-14": {
     "week": "2026-12-14",
@@ -3019,665 +5144,88 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-11-09",
         "count": 3
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-11-22",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-03-13",
         "count": 2
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.284Z",
+        "checkedAt": "2026-11-23T06:20:37.091Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:31:09.284Z"
-  },
-  "2026-10-26": {
-    "week": "2026-10-26",
-    "events": [
-      {
-        "id": "tsy-13w-bill-2026-10-26",
-        "date": "2026-10-26",
-        "time": "11:30",
-        "title": "13 周 T-bill 拍卖",
-        "detail": "$95bn · 续发 · 结算 2026-10-29 · CUSIP 912797VU8",
-        "category": "auction",
-        "kind": "bills",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_2.pdf",
-        "officialDate": "2026-10-26",
-        "actual": "最高贴现率 4.050% · 投标倍数 3.07×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_1.pdf",
-        "auctionKey": "13w-bill"
-      },
-      {
-        "id": "tsy-26w-bill-2026-10-26",
-        "date": "2026-10-26",
-        "time": "11:30",
-        "title": "26 周 T-bill 拍卖",
-        "detail": "$82bn · 新发 · 结算 2026-10-29 · CUSIP 912797WW3",
-        "category": "auction",
-        "kind": "bills",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_3.pdf",
-        "officialDate": "2026-10-26",
-        "actual": "最高贴现率 4.210% · 投标倍数 2.63×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_2.pdf",
-        "auctionKey": "26w-bill"
-      },
-      {
-        "id": "tsy-2y-nominal-2026-10-26",
-        "date": "2026-10-26",
-        "time": "13:00",
-        "title": "2 年期国债拍卖",
-        "detail": "$69bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRU7",
-        "category": "auction",
-        "kind": "coupon",
-        "impact": 3,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_6.pdf",
-        "officialDate": "2026-10-26",
-        "actual": "中标收益率 4.708% · 投标倍数 2.59×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_3.pdf",
-        "auctionKey": "2y-nominal"
-      },
-      {
-        "id": "census-advance-report-on-durable-goods-manufacturers-shipments-inventories-and-orders-september-2026-2026-10-27",
-        "date": "2026-10-27",
-        "time": "08:30",
-        "title": "耐用品订单初值",
-        "detail": "Advance Report on Durable Goods--Manufacturers' Shipments, Inventories, and Orders · September 2026",
-        "category": "macro",
-        "kind": "growth",
-        "impact": 3,
-        "status": "confirmed",
-        "source": "census",
-        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-22"
-      },
-      {
-        "id": "census-new-residential-sales-september-2026-2026-10-27",
-        "date": "2026-10-27",
-        "time": "10:00",
-        "title": "新屋销售",
-        "detail": "New Residential Sales · September 2026",
-        "category": "macro",
-        "kind": "growth",
-        "impact": 3,
-        "status": "confirmed",
-        "source": "census",
-        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-22"
-      },
-      {
-        "id": "tsy-52w-bill-2026-10-27",
-        "date": "2026-10-27",
-        "time": "11:30",
-        "title": "52 周 T-bill 拍卖",
-        "detail": "$54bn · 新发 · 结算 2026-10-29 · CUSIP 912797WT0",
-        "category": "auction",
-        "kind": "bills",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_4.pdf",
-        "officialDate": "2026-10-27",
-        "actual": "最高贴现率 4.290% · 投标倍数 3.15×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261027_1.pdf",
-        "auctionKey": "52w-bill"
-      },
-      {
-        "id": "tsy-6w-bill-2026-10-27",
-        "date": "2026-10-27",
-        "time": "11:30",
-        "title": "6 周 T-bill 拍卖",
-        "detail": "$95bn · 续发 · 结算 2026-10-29 · CUSIP 912797VG9",
-        "category": "auction",
-        "kind": "bills",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_1.pdf",
-        "officialDate": "2026-10-27",
-        "actual": "最高贴现率 3.950% · 投标倍数 2.83×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261027_2.pdf",
-        "auctionKey": "6w-bill"
-      },
-      {
-        "id": "tsy-5y-nominal-2026-10-27",
-        "date": "2026-10-27",
-        "time": "13:00",
-        "title": "5 年期国债拍卖",
-        "detail": "$70bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRT0",
-        "category": "auction",
-        "kind": "coupon",
-        "impact": 3,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_7.pdf",
-        "officialDate": "2026-10-27",
-        "actual": "中标收益率 4.845% · 投标倍数 2.33×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261027_3.pdf",
-        "auctionKey": "5y-nominal"
-      },
-      {
-        "id": "fomc-start-2026-10-27",
-        "date": "2026-10-27",
-        "time": null,
-        "title": "FOMC 政策会议开始",
-        "detail": "两天会议 · 决议发布日 2026-10-28",
-        "category": "fed",
-        "kind": "policy",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "fomc",
-        "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
-        "officialDate": "2026-11-18"
-      },
-      {
-        "id": "census-advance-economic-indicators-report-international-trade-retail-wholesale-september-2026-2026-10-28",
-        "date": "2026-10-28",
-        "time": "08:30",
-        "title": "美国预估经济指标",
-        "detail": "Advance Economic Indicators Report (International Trade, Retail, & Wholesale) · September 2026",
-        "category": "macro",
-        "kind": "growth",
-        "impact": 3,
-        "status": "confirmed",
-        "source": "census",
-        "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-22"
-      },
-      {
-        "id": "tsy-17w-bill-2026-10-28",
-        "date": "2026-10-28",
-        "time": "11:30",
-        "title": "17 周 T-bill 拍卖",
-        "detail": "$75bn · 新发 · 结算 2026-11-03 · CUSIP 912797XB8",
-        "category": "auction",
-        "kind": "bills",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261027_3.pdf",
-        "officialDate": "2026-10-28",
-        "actual": "最高贴现率 4.140% · 投标倍数 3.08×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261028_2.pdf",
-        "auctionKey": "17w-bill"
-      },
-      {
-        "id": "tsy-2y-frn-2026-10-28",
-        "date": "2026-10-28",
-        "time": "11:30",
-        "title": "2 年期 FRN 拍卖",
-        "detail": "$30bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRS2",
-        "category": "auction",
-        "kind": "coupon",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_5.pdf",
-        "officialDate": "2026-10-28",
-        "actual": "最高折扣利差 0.038% · 投标倍数 3.05×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261028_1.pdf",
-        "auctionKey": "2y-frn"
-      },
-      {
-        "id": "fomc-decision-2026-10-28",
-        "date": "2026-10-28",
-        "time": "14:00",
-        "title": "FOMC 利率决议",
-        "detail": "Two-day meeting, October 27 - 28 · Press Conference",
-        "category": "fed",
-        "kind": "policy",
-        "impact": 5,
-        "status": "confirmed",
-        "source": "fed",
-        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
-        "officialDate": "2026-10-14"
-      },
-      {
-        "id": "fed-press-conference-2026-10-28",
-        "date": "2026-10-28",
-        "time": "14:30",
-        "title": "FOMC 记者会",
-        "detail": "FOMC Press Conference · 关注政策阐释与问答",
-        "category": "fed",
-        "kind": "policy",
-        "impact": 4,
-        "status": "confirmed",
-        "source": "fed",
-        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
-        "officialDate": "2026-10-14"
-      },
-      {
-        "id": "bea-personal-income-and-outlays-september-2026-2026-10-29",
-        "date": "2026-10-29",
-        "time": "08:30",
-        "title": "PCE 物价 / 个人收支",
-        "detail": "Personal Income and Outlays, September 2026",
-        "category": "macro",
-        "kind": "inflation",
-        "impact": 5,
-        "status": "confirmed",
-        "source": "bea",
-        "url": "https://www.bea.gov/news/schedule/full",
-        "officialDate": "2026-11-22",
-        "resultUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-september-2026",
-        "readings": [
-          {
-            "label": "核心 PCE 月率",
-            "value": 0.3,
-            "unit": "%"
-          },
-          {
-            "label": "整体 PCE 月率",
-            "value": 0.5,
-            "unit": "%"
-          }
-        ]
-      },
-      {
-        "id": "bea-gdp-advance-estimate-2026-10-29",
-        "date": "2026-10-29",
-        "time": "08:30",
-        "title": "美国 GDP",
-        "detail": "GDP (Advance Estimate), 3rd Quarter 2026",
-        "category": "macro",
-        "kind": "growth",
-        "impact": 4,
-        "status": "confirmed",
-        "source": "bea",
-        "url": "https://www.bea.gov/news/schedule/full",
-        "officialDate": "2026-11-22",
-        "resultUrl": "https://www.bea.gov/news/2026/gdp-advance-estimate-3rd-quarter-2026",
-        "readings": [
-          {
-            "label": "实际 GDP 季环比折年率",
-            "value": 3.4,
-            "unit": "%"
-          },
-          {
-            "label": "私人国内最终销售折年率",
-            "value": 4.9,
-            "unit": "%"
-          }
-        ]
-      },
-      {
-        "id": "dol-claims-2026-10-29",
-        "date": "2026-10-29",
-        "time": "08:30",
-        "title": "初请失业金",
-        "detail": "Unemployment Insurance Weekly Claims · 劳工部每周日程",
-        "category": "macro",
-        "kind": "claims",
-        "impact": 3,
-        "status": "confirmed",
-        "source": "dol",
-        "url": "https://oui.doleta.gov/unemploy/claims_arch.asp",
-        "officialDate": "2026-09-11"
-      },
-      {
-        "id": "tsy-4w-bill-2026-10-29",
-        "date": "2026-10-29",
-        "time": "11:30",
-        "title": "4 周 T-bill 拍卖",
-        "detail": "$115bn · 续发 · 结算 2026-11-03 · CUSIP 912797VZ7",
-        "category": "auction",
-        "kind": "bills",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261027_1.pdf",
-        "officialDate": "2026-10-29",
-        "actual": "最高贴现率 3.910% · 投标倍数 3.10×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_1.pdf",
-        "auctionKey": "4w-bill"
-      },
-      {
-        "id": "tsy-8w-bill-2026-10-29",
-        "date": "2026-10-29",
-        "time": "11:30",
-        "title": "8 周 T-bill 拍卖",
-        "detail": "$110bn · 续发 · 结算 2026-11-03 · CUSIP 912797WH6",
-        "category": "auction",
-        "kind": "bills",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261027_2.pdf",
-        "officialDate": "2026-10-29",
-        "actual": "最高贴现率 4.020% · 投标倍数 2.63×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_2.pdf",
-        "auctionKey": "8w-bill"
-      },
-      {
-        "id": "tsy-7y-nominal-2026-10-29",
-        "date": "2026-10-29",
-        "time": "13:00",
-        "title": "7 年期国债拍卖",
-        "detail": "$44bn · 新发 · 结算 2026-11-02 · CUSIP 91282CRV5",
-        "category": "auction",
-        "kind": "coupon",
-        "impact": 4,
-        "status": "confirmed",
-        "source": "treasury",
-        "url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/A_20261022_8.pdf",
-        "officialDate": "2026-10-29",
-        "actual": "中标收益率 4.894% · 投标倍数 2.46×",
-        "resultUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_3.pdf",
-        "auctionKey": "7y-nominal"
-      },
-      {
-        "id": "fed-h41-2026-10-29",
-        "date": "2026-10-29",
-        "time": "16:30",
-        "title": "美联储资产负债表 H.4.1",
-        "detail": "Factors Affecting Reserve Balances",
-        "category": "fed",
-        "kind": "funding",
-        "impact": 2,
-        "status": "confirmed",
-        "source": "fed",
-        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
-        "officialDate": "2026-10-14"
-      },
-      {
-        "id": "bls-employment-cost-index-for-third-quarter-2026-2026-10-30",
-        "date": "2026-10-30",
-        "time": "08:30",
-        "title": "就业成本指数（ECI）",
-        "detail": "Employment Cost Index for Third Quarter 2026",
-        "category": "macro",
-        "kind": "jobs",
-        "impact": 4,
-        "status": "confirmed",
-        "source": "bls",
-        "url": "https://www.bls.gov/schedule/2026/10_sched_list.htm",
-        "officialDate": "2026-02-18"
-      }
-    ],
-    "sources": [
-      {
-        "id": "treasury",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "officialUpdate": "2026-10-29",
-        "count": 11
-      },
-      {
-        "id": "tentative",
-        "count": 0,
-        "state": "reference",
-        "checkedAt": null
-      },
-      {
-        "id": "bls",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "officialUpdate": "2026-11-03",
-        "count": 1
-      },
-      {
-        "id": "bea",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "officialUpdate": "2026-11-22",
-        "count": 2
-      },
-      {
-        "id": "census",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "officialUpdate": "2026-11-22",
-        "count": 3
-      },
-      {
-        "id": "fed",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "officialUpdate": "2026-11-20",
-        "count": 3
-      },
-      {
-        "id": "fomc",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "officialUpdate": "2026-11-18",
-        "count": 2
-      },
-      {
-        "id": "dol",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "officialUpdate": "2026-09-11",
-        "count": 1
-      },
-      {
-        "id": "sifma",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "count": 0
-      },
-      {
-        "id": "nyse",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "count": 0
-      },
-      {
-        "id": "cme",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "count": 0
-      },
-      {
-        "id": "curve",
-        "state": "verified",
-        "checkedAt": "2026-11-23T05:57:52.194Z",
-        "officialUpdate": "2026-10-30",
-        "count": 0
-      }
-    ],
-    "curve": [
-      {
-        "date": "2026-10-19",
-        "values": [
-          4.77,
-          4.85,
-          4.94,
-          5.04,
-          5.15,
-          5.53,
-          5.48
-        ]
-      },
-      {
-        "date": "2026-10-20",
-        "values": [
-          4.79,
-          4.86,
-          4.94,
-          5.02,
-          5.12,
-          5.47,
-          5.42
-        ]
-      },
-      {
-        "date": "2026-10-21",
-        "values": [
-          4.81,
-          4.89,
-          4.95,
-          5.03,
-          5.13,
-          5.47,
-          5.42
-        ]
-      },
-      {
-        "date": "2026-10-22",
-        "values": [
-          4.65,
-          4.72,
-          4.78,
-          4.86,
-          4.96,
-          5.32,
-          5.29
-        ]
-      },
-      {
-        "date": "2026-10-23",
-        "values": [
-          4.69,
-          4.75,
-          4.82,
-          4.89,
-          5,
-          5.37,
-          5.33
-        ]
-      },
-      {
-        "date": "2026-10-26",
-        "values": [
-          4.68,
-          4.79,
-          4.84,
-          4.91,
-          5,
-          5.35,
-          5.31
-        ]
-      },
-      {
-        "date": "2026-10-27",
-        "values": [
-          4.7,
-          4.8,
-          4.82,
-          4.91,
-          4.99,
-          5.34,
-          5.3
-        ]
-      },
-      {
-        "date": "2026-10-28",
-        "values": [
-          4.67,
-          4.8,
-          4.85,
-          4.95,
-          5.05,
-          5.41,
-          5.37
-        ]
-      },
-      {
-        "date": "2026-10-29",
-        "values": [
-          4.61,
-          4.73,
-          4.78,
-          4.87,
-          4.98,
-          5.35,
-          5.32
-        ]
-      },
-      {
-        "date": "2026-10-30",
-        "values": [
-          4.56,
-          4.65,
-          4.71,
-          4.8,
-          4.94,
-          5.34,
-          5.31
-        ]
-      }
-    ],
-    "refreshedAt": "2026-11-23T05:57:52.194Z"
+    "refreshedAt": "2026-11-23T06:20:37.091Z"
   },
   "2026-12-21": {
     "week": "2026-12-21",
@@ -3881,7 +5429,7 @@
         "id": "nyse-2026-12-24",
         "date": "2026-12-24",
         "time": "13:00",
-        "title": "NYSE提前收市",
+        "title": "NYSE 提前收市",
         "detail": "Christmas Day · 圣诞节 · 股票常规时段",
         "category": "market",
         "kind": "earlyClose",
@@ -3977,7 +5525,7 @@
         "id": "nyse-2026-12-25",
         "date": "2026-12-25",
         "time": null,
-        "title": "NYSE休市",
+        "title": "NYSE 休市",
         "detail": "Christmas Day · 圣诞节 · 股票常规时段",
         "category": "market",
         "kind": "holiday",
@@ -3991,85 +5539,85 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "count": 0
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "officialUpdate": "2026-11-05",
         "count": 10
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "officialUpdate": "2026-11-09",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "officialUpdate": "2026-03-13",
         "count": 1
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "count": 2
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "count": 2
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "count": 1
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.563Z",
+        "checkedAt": "2026-11-23T06:20:37.460Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:31:09.563Z"
+    "refreshedAt": "2026-11-23T06:20:37.460Z"
   },
   "2026-12-28": {
     "week": "2026-12-28",
@@ -4179,6 +5727,20 @@
         "auctionKey": "6w-bill"
       },
       {
+        "id": "fed-minutes-2026-12-30",
+        "date": "2026-12-30",
+        "time": "14:00",
+        "title": "FOMC 会议纪要",
+        "detail": "Meeting of December 8-9",
+        "category": "fed",
+        "kind": "minutes",
+        "impact": 5,
+        "status": "confirmed",
+        "source": "fed",
+        "url": "https://www.federalreserve.gov/newsevents/2026-december.htm",
+        "officialDate": "2026-03-13"
+      },
+      {
         "id": "tsy-17w-bill-2026-12-30",
         "date": "2026-12-30",
         "time": null,
@@ -4219,6 +5781,20 @@
         "status": "confirmed",
         "source": "sifma",
         "url": "https://www.sifma.org/resources/guidelines/holiday-schedule"
+      },
+      {
+        "id": "fed-h41-2026-12-31",
+        "date": "2026-12-31",
+        "time": "16:30",
+        "title": "美联储资产负债表 H.4.1",
+        "detail": "Factors Affecting Reserve Balances",
+        "category": "fed",
+        "kind": "funding",
+        "impact": 2,
+        "status": "confirmed",
+        "source": "fed",
+        "url": "https://www.federalreserve.gov/newsevents/2026-december.htm",
+        "officialDate": "2026-03-13"
       },
       {
         "id": "tsy-4w-bill-2026-12-31",
@@ -4267,7 +5843,7 @@
         "id": "nyse-2027-01-01",
         "date": "2027-01-01",
         "time": null,
-        "title": "NYSE休市",
+        "title": "NYSE 休市",
         "detail": "New Year’s Day · 元旦 · 股票常规时段",
         "category": "market",
         "kind": "holiday",
@@ -4281,84 +5857,85 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "count": 0
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "officialUpdate": "2026-11-05",
         "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "officialUpdate": "2026-11-09",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "fed",
-        "count": 0,
-        "state": "unavailable",
-        "checkedAt": null
+        "state": "verified",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
+        "officialUpdate": "2026-03-13",
+        "count": 2
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "count": 2
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "count": 1
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:09.815Z",
+        "checkedAt": "2026-11-23T06:20:37.675Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:31:09.815Z"
+    "refreshedAt": "2026-11-23T06:20:37.675Z"
   },
   "2027-01-04": {
     "week": "2027-01-04",
@@ -4452,7 +6029,7 @@
         "officialDate": "2026-09-11"
       },
       {
-        "id": "census-u-s-international-trade-in-goods-and-services-november-2026-2027-01-07",
+        "id": "macro-us-trade-2027-01-07",
         "date": "2027-01-07",
         "time": "08:30",
         "title": "美国商品和服务贸易",
@@ -4528,84 +6105,84 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "count": 0
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "fed",
-        "count": 0,
-        "state": "unavailable",
-        "checkedAt": null
+        "state": "unscheduled",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
+        "count": 0
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.041Z",
+        "checkedAt": "2026-11-23T06:20:37.960Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:31:10.041Z"
+    "refreshedAt": "2026-11-23T06:20:37.960Z"
   },
   "2027-01-11": {
     "week": "2027-01-11",
@@ -4834,84 +6411,84 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "count": 0
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "officialUpdate": "2026-11-05",
         "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "officialUpdate": "2026-11-09",
         "count": 3
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "officialUpdate": "2026-11-22",
         "count": 2
       },
       {
         "id": "fed",
-        "count": 0,
-        "state": "unavailable",
-        "checkedAt": null
+        "state": "unscheduled",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
+        "count": 0
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.406Z",
+        "checkedAt": "2026-11-23T06:20:38.381Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:31:10.406Z"
+    "refreshedAt": "2026-11-23T06:20:38.381Z"
   },
   "2027-01-18": {
     "week": "2027-01-18",
@@ -4920,7 +6497,7 @@
         "id": "nyse-2027-01-18",
         "date": "2027-01-18",
         "time": null,
-        "title": "NYSE休市",
+        "title": "NYSE 休市",
         "detail": "Martin Luther King, Jr. Day · 马丁·路德·金纪念日 · 股票常规时段",
         "category": "market",
         "kind": "holiday",
@@ -5097,83 +6674,83 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "count": 0
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "officialUpdate": "2026-11-05",
         "count": 9
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "officialUpdate": "2026-11-09",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "officialUpdate": "2026-11-22",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "officialUpdate": "2026-11-22",
         "count": 1
       },
       {
         "id": "fed",
-        "count": 0,
-        "state": "unavailable",
-        "checkedAt": null
+        "state": "unscheduled",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
+        "count": 0
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "count": 1
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-23T06:31:10.743Z",
+        "checkedAt": "2026-11-23T06:20:38.709Z",
         "count": 0
       }
     ],
     "curve": [],
-    "refreshedAt": "2026-11-23T06:31:10.743Z"
+    "refreshedAt": "2026-11-23T06:20:38.709Z"
   }
 }

@@ -1,4 +1,4 @@
-import { copyFile, mkdir } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { build } from "esbuild";
 
 await mkdir("dist", { recursive: true });
@@ -11,5 +11,6 @@ await Promise.all([
     format: "esm",
     minify: true,
   }),
-  ...["index.html", "favicon.svg", "calendar.json"].map(file => copyFile(file, "dist/" + file)),
+  ...["index.html", "favicon.svg"].map(file => copyFile(file, "dist/" + file)),
+  readFile("calendar.json", "utf8").then(raw => writeFile("dist/calendar.json", JSON.stringify(JSON.parse(raw)))),
 ]);

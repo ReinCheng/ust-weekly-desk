@@ -1,0 +1,4 @@
+node_modules/
+dist/
+calendar-refresh.mjs
+.DS_Store

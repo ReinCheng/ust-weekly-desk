@@ -3,8 +3,10 @@ import { isPastEvent, newYorkDate, type MarketEvent, type Reading, type Referenc
 
 export const nowcastUrl = "https://www.clevelandfed.org/indicators-and-data/inflation-nowcasting";
 
-const percent = (label: string, value: number | undefined): Reading[] =>
-  value === undefined ? [] : [{ label, value, unit: "%" }];
+const percent = (label: string, value: number | undefined, signed = false): Reading[] =>
+  value === undefined ? [] : [{ label, value, unit: "%", ...(signed ? { signed: true } : {}) }];
+const millions = (label: string, value: number | undefined): Reading[] =>
+  value === undefined ? [] : [{ label, value, unit: "百万", digits: 1 }];
 const figure = (value: string | undefined) => {
   if (!value) return undefined;
   const number = Number(value.replaceAll(",", ""));
@@ -18,38 +20,70 @@ const percentMove = (text: string, subject: RegExp) => {
   const clause = text.match(subject)?.[0];
   if (!clause) return undefined;
   const match = clause.match(/\b(increased|rose|advanced|decreased|declined|fell|dropped|edged up|edged down)\s+(?:by\s+)?(?:at an annual rate of\s+)?([+-]?\d+(?:\.\d+)?)\s*percent/i);
-  return match ? signed(match[1], match[2]) : /\b(?:was|were|remained)\s+unchanged\b/i.test(clause) ? 0 : undefined;
+  if (match) return signed(match[1], match[2]);
+  if (/\b(?:was|were|remained|changed)\s+(?:unchanged|little)\b|\blittle changed\b/i.test(clause)) return 0;
+  return undefined;
 };
 const clause = (prefix: string, length = 110) => new RegExp(prefix + ".{0," + length + "}", "i");
 
-export function parseBlsReadings(kind: "cpi" | "ppi" | "empsit", html: string): Reading[] {
+export type BlsKind = "cpi" | "ppi" | "empsit" | "jolts" | "eci";
+
+export function parseBlsReadings(kind: BlsKind, html: string): Reading[] {
   const release = html.match(/<pre\b[^>]*>([\s\S]*?)<\/pre>/gi)?.slice(0, 3).join(" ") ?? html;
   const intro = textOf(release).slice(0, 15500);
   if (kind === "cpi") {
+    const coreYoy = percentMove(intro, clause("The all items less food and energy index .{0,30}(?:rose|increased|decreased|declined|fell).{0,40}12 months", 15))
+      ?? percentMove(intro, clause("all items less food and energy index", 95).source.includes("12") ? clause("all items less food and energy index", 95) : /all items less food and energy index\s+(?:rose|increased|decreased|declined|fell)\s+\d+(?:\.\d+)?\s*percent\s+(?:over the last|for the)\s+12 months/i);
+    const headlineYoy = percentMove(intro, /The all items index\s+(?:rose|increased|decreased|declined|fell)\s+\d+(?:\.\d+)?\s*percent\s+(?:for the|over the last)\s+12 months/i);
     return [
-      ...percent("核心 CPI 月率", percentMove(intro, clause("The index for all items less food and energy", 85))),
-      ...percent("整体 CPI 月率", percentMove(intro, clause("The Consumer Price Index for All Urban Consumers", 115))),
-      ...percent("住房月率", percentMove(intro, clause("The index for shelter", 50))),
+      ...percent("核心 CPI 月率", percentMove(intro, clause("The index for all items less food and energy", 85)), true),
+      ...percent("整体 CPI 月率", percentMove(intro, clause("The Consumer Price Index for All Urban Consumers", 115)), true),
+      ...percent("住房月率", percentMove(intro, clause("The index for shelter", 50)), true),
+      ...percent("核心 CPI 同比", coreYoy),
+      ...percent("整体 CPI 同比", headlineYoy),
     ];
   }
   if (kind === "ppi") {
     return [
-      ...percent("最终需求 PPI 月率", percentMove(intro, clause("The Producer Price Index for final demand", 65))),
-      ...percent("剔除食品、能源和贸易服务月率", percentMove(intro, clause("The index for final demand less foods?, energy, and trade services", 65))),
+      ...percent("最终需求 PPI 月率", percentMove(intro, clause("The Producer Price Index for final demand", 65)), true),
+      ...percent("剔除食品、能源和贸易服务月率", percentMove(intro, clause("The index for final demand less foods?, energy, and trade services", 65)), true),
+    ];
+  }
+  if (kind === "jolts") {
+    const openings = figure(intro.match(/job openings[^.!?]{0,75}?(\d+(?:\.\d+)?)\s*million/i)?.[1]);
+    const hires = figure(intro.match(/Hires[^.!?]{0,65}?(\d+(?:\.\d+)?)\s*million/i)?.[1]);
+    const quits = figure(intro.match(/quits\s*\((\d+(?:\.\d+)?)\s*million\)|quits[^.!?]{0,55}?(\d+(?:\.\d+)?)\s*million/i)?.slice(1).find(Boolean));
+    return [
+      ...millions("职位空缺", openings),
+      ...millions("招聘人数", hires),
+      ...millions("主动离职", quits),
+    ];
+  }
+  if (kind === "eci") {
+    const qoq = percentMove(intro, /Compensation costs for civilian workers\s+(?:[^.]|\.\d){0,90}?for the 3-month period/i);
+    const wagesQoq = percentMove(intro, /Wages and salaries\s+(?:[^.]|\.\d){0,75}?from\s+[A-Z][a-z]+\s+20\d\d/i);
+    const yoy = percentMove(intro, /Compensation costs for civilian workers\s+(?:[^.]|\.\d){0,105}?for the 12-month period/i);
+    return [
+      ...percent("就业成本指数季率", qoq, true),
+      ...percent("薪资季率", wagesQoq, true),
+      ...percent("就业成本指数同比", yoy),
     ];
   }
   const payroll = intro.match(/Total nonfarm payroll employment\s+(rose|increased|fell|declined|decreased|edged up|edged down)\s+(?:by\s+)?([+-]?\d[\d,]*)/i);
+  const payrollLittle = intro.match(/Total nonfarm payroll employment\s+(?:was\s+)?(?:changed little|little changed)\s*\(([+-]?\d[\d,]*)\)/i);
   const flat = /Total nonfarm payroll employment (?:was|remained) unchanged\b/i.test(intro);
-  const employment = flat ? 0 : signed(payroll?.[1], payroll?.[2]);
-  const unemployment = figure(intro.match(/the unemployment rate [^.!?]{0,65}?(?:to|at|was|of)\s+(\d(?:\.\d+)?)\s*percent/i)?.[1]);
-  const wages = intro.match(/average hourly earnings for all employees[^\d]{0,105}?(increased|rose|declined|decreased|fell)[^.]{0,75}?\bor\s+(\d+(?:\.\d+)?)\s*percent/i);
+  const employment = flat ? 0 : payroll ? signed(payroll[1], payroll[2]) : payrollLittle ? figure(payrollLittle[1]) : undefined;
+  const unemployment = figure(intro.match(/the unemployment rate (?:[^.!?]|\.\d){0,65}?(?:to|at|was|of)\s+(\d(?:\.\d+)?)\s*percent/i)?.[1]);
+  const wages = intro.match(/average hourly earnings for all employees[^\d]{0,105}?(increased|rose|declined|decreased|fell|edged up|edged down)(?:[^.]|\.\d){0,75}?\bor\s+(\d+(?:\.\d+)?)\s*percent/i);
+  const wagesFlat = /average hourly earnings for all employees[^.]{0,90}?(?:was unchanged|remained unchanged|changed little|little changed)/i.test(intro);
+  const wageMove = wages ? signed(wages[1], wages[2]) : wagesFlat ? 0 : undefined;
   const revisions = [...intro.matchAll(/was revised (up|down) by ([\d,]+), from [+-]?[\d,]+ to [+-]?[\d,]+/gi)].slice(0, 2);
   const netChange = revisions.reduce((sum, match) => sum + (match[1].toLowerCase() === "down" ? -1 : 1) * Number(match[2].replaceAll(",", "")), 0);
   return [
-    ...(employment === undefined ? [] : [{ label: "非农新增就业", value: employment / 1000, unit: "千人" as const }]),
+    ...(employment === undefined ? [] : [{ label: "非农新增就业", value: employment / 1000, unit: "千人" as const, signed: true }]),
     ...percent("失业率", unemployment),
-    ...percent("平均时薪月率", signed(wages?.[1], wages?.[2])),
-    ...(revisions.length === 2 ? [{ label: "前两月非农合计修订", value: netChange / 1000, unit: "千人" as const }] : []),
+    ...percent("平均时薪月率", wageMove, true),
+    ...(revisions.length === 2 ? [{ label: "前两月非农合计修订", value: netChange / 1000, unit: "千人" as const, signed: true }] : []),
   ];
 }
 
@@ -57,23 +91,34 @@ export function parseBeaReadings(kind: "pce" | "gdp", html: string): Reading[] {
   const paragraphs = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)].map(match => textOf(match[1]));
   if (kind === "pce") {
     const monthly = paragraphs.find(p => /(?:from the (?:preceding|previous) month|from (?:[A-Z][a-z]+) to (?:[A-Z][a-z]+)),? the PCE price index/i.test(p)) ?? "";
+    const yearly = paragraphs.find(p => /from the same month one year ago,? the PCE price index/i.test(p)) ?? "";
+    const realPce = paragraphs.find(p => /^Real PCE\b/i.test(p)) ?? "";
+    const realMatch = realPce.match(/^Real PCE\s+(increased|decreased|declined|fell|rose)[^()]{0,60}\(\s*(?:less than\s+)?(\d+(?:\.\d+)?)\s*percent/i);
+    const realVal = realMatch
+      ? (/less than\s+0\.1/i.test(realMatch[0]) ? 0 : signed(realMatch[1], realMatch[2]))
+      : /\bunchanged\b/i.test(realPce) ? 0 : undefined;
     return [
-      ...percent("核心 PCE 月率", percentMove(monthly, clause("Excluding food and energy, the PCE price index", 68))),
-      ...percent("整体 PCE 月率", percentMove(monthly, clause("the PCE price index", 78))),
+      ...percent("核心 PCE 月率", percentMove(monthly, clause("Excluding food and energy, the PCE price index", 68)), true),
+      ...percent("整体 PCE 月率", percentMove(monthly, clause("the PCE price index", 78)), true),
+      ...percent("核心 PCE 同比", percentMove(yearly, clause("Excluding food and energy, the PCE price index", 68))),
+      ...percent("整体 PCE 同比", percentMove(yearly, clause("the PCE price index", 78))),
+      ...percent("实际消费月率", realVal, true),
     ];
   }
   const lead = paragraphs.find(p => /^Real gross domestic product \(GDP\)/i.test(p)) ?? "";
   const demand = paragraphs.find(p => /^Real final sales to private domestic purchasers/i.test(p)) ?? "";
   return [
-    ...percent("实际 GDP 季环比折年率", percentMove(lead, clause("Real gross domestic product", 110))),
-    ...percent("私人国内最终销售折年率", percentMove(demand, clause("Real final sales to private domestic purchasers", 170))),
+    ...percent("实际 GDP 季环比折年率", percentMove(lead, clause("Real gross domestic product", 110)), true),
+    ...percent("私人国内最终销售折年率", percentMove(demand, clause("Real final sales to private domestic purchasers", 170)), true),
   ];
 }
 
-function blsType(event: MarketEvent) {
+function blsType(event: MarketEvent): BlsKind | undefined {
   if (event.title === "美国 CPI") return "cpi";
   if (event.title === "美国 PPI") return "ppi";
   if (event.title === "美国非农就业") return "empsit";
+  if (event.title === "JOLTS 职位空缺") return "jolts";
+  if (event.title === "就业成本指数（ECI）") return "eci";
 }
 
 function beaType(event: MarketEvent) {
@@ -87,7 +132,7 @@ function matchesBlsDate(html: string, expected: string) {
   return stamp && dateOf(stamp) === expected;
 }
 
-async function blsReadings(event: MarketEvent, kind: "cpi" | "ppi" | "empsit") {
+async function blsReadings(event: MarketEvent, kind: BlsKind) {
   const [year, month, day] = event.date.split("-");
   const base = "https://www.bls.gov/news.release/";
   const archive = base + "archives/" + kind + "_" + month + day + year + ".htm";
@@ -152,7 +197,11 @@ export async function enrichRelease(event: MarketEvent, models: InflationModels)
   const period = labelPeriod(event.detail);
   const estimate = period ? (bls === "cpi" ? models.get(period)?.cpi : bea === "pce" ? models.get(period)?.pce : undefined) : undefined;
   const reference = estimate && estimate.asOf < event.date && (!event.reference || estimate.asOf >= event.reference.asOf) ? estimate : event.reference;
-  const published = isPastEvent(event) && event.time && !event.readings?.length;
+  const needsUpgrade = Boolean(event.readings?.length && (
+    (bea === "pce" && !event.readings.some(r => r.label.includes("同比"))) ||
+    ((bls === "cpi" || bls === "ppi" || bls === "empsit" || bea === "gdp") && !event.readings.some(r => r.signed))
+  ));
+  const published = isPastEvent(event) && event.time && (!event.readings?.length || needsUpgrade);
   const actual = !published ? {} : bls ? await blsReadings(event, bls) : bea ? await beaReadings(event, bea) : {};
   return { ...event, ...actual, reference };
 }

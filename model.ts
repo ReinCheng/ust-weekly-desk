@@ -6,7 +6,7 @@ export const categories = {
 } as const;
 
 export const sourceIndex = {
-  treasury: { name: "TreasuryDirect", detail: "已公告拍卖、竞争性截标和官方结果", url: "https://www.treasurydirect.gov/auctions/upcoming/" },
+  treasury: { name: "TreasuryDirect", detail: "已公告拍卖、竞争性截标、官方结果及获配占比", url: "https://www.treasurydirect.gov/auctions/upcoming/" },
   tentative: { name: "U.S. Treasury · 暂定拍卖", detail: "季度暂定发行表，正式公告后更新状态", url: "https://home.treasury.gov/system/files/221/Tentative-Auction-Schedule.pdf" },
   bls: { name: "BLS · 美国劳工统计局", detail: "CPI、PPI、非农、JOLTS、ECI 等", url: "https://www.bls.gov/schedule/" },
   bea: { name: "BEA · 美国经济分析局", detail: "GDP、PCE 与主要国民账户数据", url: "https://www.bea.gov/news/schedule" },
@@ -17,13 +17,13 @@ export const sourceIndex = {
   sifma: { name: "SIFMA · 美国固收", detail: "美元固收休市及提前收市建议", url: "https://www.sifma.org/resources/guidelines/holiday-schedule" },
   nyse: { name: "NYSE · 股票市场", detail: "股票常规交易时段、休市和提前收市", url: "https://www.nyse.com/trade/hours-calendars" },
   cme: { name: "CME Globex · 利率期货", detail: "按产品及日期查 Treasury futures 节假日时段", url: "https://www.cmegroup.com/trading-hours.html#trading-holiday-hours" },
-  curve: { name: "U.S. Treasury · Par Yield Curve", detail: "官方日终平价收益率", url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve" },
+  curve: { name: "U.S. Treasury · Yield Curve", detail: "官方日终名义平价曲线与 TIPS 实际收益率", url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve" },
 } as const;
 
 export type SourceId = keyof typeof sourceIndex;
 export type Category = keyof typeof categories;
 export type Kind = "inflation" | "ppi" | "jobs" | "claims" | "retail" | "growth" | "policy" | "minutes" | "speech" | "technicalSpeech" | "longAuction" | "tips" | "coupon" | "bills" | "holiday" | "earlyClose" | "marketCheck" | "funding";
-export type Reading = { label: string; value: number; unit: "%" | "千人" };
+export type Reading = { label: string; value: number; unit: "%" | "千人" | "百万" | "×"; signed?: boolean; digits?: number };
 export type Reference = { value: number; period: string; asOf: string };
 export type MarketEvent = {
   id: string;
@@ -47,19 +47,35 @@ export type MarketEvent = {
 
 export type SourceCheck = {
   id: SourceId;
-  state: "verified" | "cached" | "unavailable" | "reference";
+  state: "verified" | "cached" | "unavailable" | "reference" | "unscheduled";
   checkedAt: string | null;
   officialUpdate?: string;
   count: number;
 };
 
-export const tenors = ["2Y", "3Y", "5Y", "7Y", "10Y", "20Y", "30Y"] as const;
-export type CurvePoint = { date: string; values: number[] };
+export const tenors = ["3M", "1Y", "2Y", "3Y", "5Y", "7Y", "10Y", "20Y", "30Y"] as const;
+export type Tenor = typeof tenors[number];
+export const legacyTenors = ["2Y", "3Y", "5Y", "7Y", "10Y", "20Y", "30Y"] as const;
+export const realTenors = ["5Y", "7Y", "10Y", "20Y", "30Y"] as const;
+export type CurvePoint = { date: string; values: number[]; real?: number[] };
 export type Calendar = { week: string; refreshedAt: string | null; events: MarketEvent[]; sources: SourceCheck[]; curve: CurvePoint[] };
-export type DeskItem = { id: string; kind: "star" | "task" | "note"; body: string; event: string | null; done: number; updated: string };
-export type VersionSummary = { id: string; week: string; title: string; created: string };
-export type Version = VersionSummary & { calendar: Calendar; items: DeskItem[]; scenarios?: Scenario[]; impactAnalysis?: Partial<Record<Kind, string[]>> };
 export type Scenario = { id: string; title: string; impact: number; detail: string; trigger: string; invalidation: string; kind: Kind; events: string[] };
+export type TzMode = "ET" | "BJ" | "LOCAL";
+
+export function curveValue(point: CurvePoint | undefined, tenor: Tenor): number | undefined {
+  if (!point) return undefined;
+  if (point.values.length === tenors.length) return point.values[tenors.indexOf(tenor)];
+  if (point.values.length === legacyTenors.length) {
+    const idx = (legacyTenors as readonly string[]).indexOf(tenor);
+    return idx >= 0 ? point.values[idx] : undefined;
+  }
+  return undefined;
+}
+
+export function realCurveValue(point: CurvePoint | undefined, tenor: typeof realTenors[number]): number | undefined {
+  if (!point?.real || point.real.length !== realTenors.length) return undefined;
+  return point.real[realTenors.indexOf(tenor)];
+}
 
 const day = 86400000;
 export const newYorkDate = (date = new Date()) => new Intl.DateTimeFormat("en-CA", {
@@ -76,10 +92,56 @@ export const isWeek = (date: unknown): date is string => {
   const stamp = Date.parse(date + "T12:00:00Z");
   return Number.isFinite(stamp) && new Date(stamp).toISOString().slice(0, 10) === date && weekOf(date) === date;
 };
-export const weekNumber = (date: string) => {
-  const thursday = addDays(date, 3);
-  return 1 + Math.floor((Date.parse(thursday) - Date.parse(thursday.slice(0, 4) + "-01-01")) / (7 * day));
-};
+
+export function newYorkInstant(date: string, time: string): Date {
+  const [y, m, d] = date.split("-").map(Number);
+  const [hh, mm] = time.split(":").map(Number);
+  const approx = new Date(Date.UTC(y, m - 1, d, hh, mm));
+  const nyWallUtc = (dt: Date) => {
+    const map = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(dt).map(p => [p.type, p.value]));
+    return Date.UTC(+map.year, +map.month - 1, +map.day, +map.hour % 24, +map.minute);
+  };
+  const first = new Date(approx.getTime() + (approx.getTime() - nyWallUtc(approx)));
+  return new Date(first.getTime() + (approx.getTime() - nyWallUtc(first)));
+}
+
+export function tzIana(tz: TzMode): string {
+  if (tz === "ET") return "America/New_York";
+  if (tz === "BJ") return "Asia/Shanghai";
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York";
+}
+
+export function tzLabel(tz: TzMode): string {
+  if (tz === "ET") return "ET";
+  if (tz === "BJ") return "北京时间";
+  return "本地时间";
+}
+
+export function tzShortTag(tz: TzMode): string {
+  if (tz === "ET") return "ET";
+  if (tz === "BJ") return "UTC+8";
+  return "Local";
+}
+
+export function formatEventClock(event: MarketEvent, tz: TzMode): { date: string; clock: string; dayShift: number } {
+  const isAllDay = event.time === null && (event.kind === "holiday" || (event.source === "cme" && event.status === "confirmed"));
+  if (!event.time) return { date: event.date, clock: isAllDay ? "全天" : "时间待定", dayShift: 0 };
+  if (tz === "ET") return { date: event.date, clock: event.time, dayShift: 0 };
+  const instant = newYorkInstant(event.date, event.time);
+  const zone = tzIana(tz);
+  const targetDate = new Intl.DateTimeFormat("en-CA", {
+    timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(instant);
+  const clock = new Intl.DateTimeFormat("en-GB", {
+    timeZone: zone, hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).format(instant);
+  const dayShift = Math.round((Date.parse(targetDate + "T12:00:00Z") - Date.parse(event.date + "T12:00:00Z")) / day);
+  return { date: targetDate, clock, dayShift };
+}
+
 export const timeSort = (a: MarketEvent, b: MarketEvent) => {
   const eventTime = (item: MarketEvent) => item.time ?? (item.kind === "holiday" || (item.source === "cme" && item.status === "confirmed") ? "00:00" : "99:99");
   return a.date.localeCompare(b.date) || eventTime(a).localeCompare(eventTime(b)) || b.impact - a.impact || a.title.localeCompare(b.title);

@@ -1,8 +1,8 @@
 import { cmeDataUrl, parseCme } from "./cme";
-import { addDays, newYorkDate, sourceIndex, tenors, type CurvePoint, type Kind, type MarketEvent, type SourceId } from "./model";
+import { addDays, newYorkDate, realTenors, sourceIndex, tenors, type CurvePoint, type Kind, type MarketEvent, type Reading, type SourceId } from "./model";
 
 export type PublicInputs = { pending?: unknown[]; results?: unknown[]; bls?: { month: string; html: string }[]; cme?: object };
-export type Feed = { id: SourceId; events: MarketEvent[]; officialUpdate?: string; curve?: CurvePoint[]; partial?: boolean };
+export type Feed = { id: SourceId; events: MarketEvent[]; officialUpdate?: string; curve?: CurvePoint[]; partial?: boolean; unscheduled?: boolean };
 export const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const headers = { "User-Agent": "Mozilla/5.0 (compatible; UST Weekly Desk public calendar)", Accept: "*/*" };
 const pad = (value: string | number) => String(value).padStart(2, "0");
@@ -44,11 +44,28 @@ export function document(url: string): Promise<PublicDocument> {
   return request;
 }
 
+const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 async function fetchDocument(url: string): Promise<PublicDocument> {
-  const response = await fetch(url, { headers, signal: AbortSignal.timeout(9000) });
-  if (!response.ok) throw new Error("Upstream HTTP " + response.status);
-  const modified = response.headers.get("Last-Modified");
-  return { html: await response.text(), modified: modified ? newYorkDate(new Date(modified)) : undefined };
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const response = await fetch(url, { headers, signal: AbortSignal.timeout(12000) });
+      if (response.ok) {
+        const modified = response.headers.get("Last-Modified");
+        return { html: await response.text(), modified: modified ? newYorkDate(new Date(modified)) : undefined };
+      }
+      if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+        throw new Error("Upstream HTTP " + response.status);
+      }
+      lastError = new Error("Upstream HTTP " + response.status);
+    } catch (error) {
+      lastError = error;
+      if (error instanceof Error && /^Upstream HTTP 4\d\d$/.test(error.message) && !error.message.endsWith("429")) throw error;
+    }
+    if (attempt < 2) await pause(450 * (attempt + 1));
+  }
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
 }
 
 const outcome = (kind: Kind, title: string, score: number) => ({ kind, title, score });
@@ -59,7 +76,7 @@ function classifyMacro(title: string) {
   if (/unemployment insurance weekly claims/i.test(title)) return outcome("claims", "初请失业金", 3);
   if (/job openings|employment cost index/i.test(title)) return outcome("jobs", /job openings/i.test(title) ? "JOLTS 职位空缺" : "就业成本指数（ECI）", 4);
   if (/advance monthly sales for retail/i.test(title)) return outcome("retail", "美国零售销售", 4);
-  if (/^(?:real )?GDP\b|gross domestic product/i.test(title) && !/by county|by state|by metropolitan/i.test(title)) return outcome("growth", "美国 GDP", /advance|third quarter/i.test(title) ? 4 : 3);
+  if (/^(?:real )?GDP\b|gross domestic product/i.test(title) && !/by county|by state|by metropolitan/i.test(title)) return outcome("growth", "美国 GDP", /advance/i.test(title) ? 4 : 3);
   if (/durable goods|new residential construction|new residential sales|international trade in goods and services|industrial production|advance economic indicators/i.test(title)) {
     const titleText = /durable goods/i.test(title) ? "耐用品订单初值" :
       /residential construction/i.test(title) ? "新屋开工与建筑许可" :
@@ -79,8 +96,10 @@ function classifyMacro(title: string) {
 const buildMacro = (source: SourceId, date: string, time: string, detail: string, url: string, officialDate?: string) => {
   const item = classifyMacro(detail);
   if (!item) return null;
-  return { id: [source, slug(item.title === "美国 GDP" ? detail.replace(/,?\s+(?:1st|2nd|3rd|4th) Quarter.*$/i, "") : detail), date].join("-"),
-    date, time, title: item.title, detail, category: "macro", kind: item.kind, impact: item.score,
+  const id = item.title === "美国商品和服务贸易"
+    ? "macro-us-trade-" + date
+    : [source, slug(item.title === "美国 GDP" ? detail.replace(/,?\s+(?:1st|2nd|3rd|4th) Quarter.*$/i, "") : detail), date].join("-");
+  return { id, date, time, title: item.title, detail, category: "macro", kind: item.kind, impact: item.score,
     status: "confirmed", source, url, officialDate } satisfies MarketEvent;
 };
 
@@ -227,6 +246,13 @@ export const auctionNames = (term: string, type: string, tips = false, frn = fal
   const auctionKey = tips ? n + "y-tips" : frn ? n + "y-frn" : type === "bill" ? n + "w-bill" : n + "y-nominal";
   return { title, kind, score, auctionKey };
 };
+
+const pctShare = (part: unknown, total: number) => {
+  const value = Number(part);
+  if (!Number.isFinite(value) || value < 0 || !Number.isFinite(total) || total <= 0) return undefined;
+  return Number(((value / total) * 100).toFixed(1));
+};
+
 export function parseTreasury(raw: unknown, week: string): Feed {
   if (!Array.isArray(raw) || (raw.length > 0 && !raw.some(item => item?.competitiveAuctionCloseDate))) throw new Error("Unrecognized TreasuryDirect auction feed");
   const events = new Map<string, MarketEvent>();
@@ -239,21 +265,40 @@ export function parseTreasury(raw: unknown, week: string): Feed {
     const officialDate = String(item.updatedTimestamp || item.announcementDate || "").slice(0, 10) || undefined;
     if (officialDate && (!officialUpdate || officialDate > officialUpdate)) officialUpdate = officialDate;
     const type = String(item.securityType).toLowerCase();
-    const { title, kind, score, auctionKey } = auctionNames(term, type, item.inflationProtected === "Yes", item.floatingRate === "Yes");
+    const isTips = item.inflationProtected === "Yes";
+    const isFrn = item.floatingRate === "Yes";
+    const { title, kind, score, auctionKey } = auctionNames(term, type, isTips, isFrn);
     const amount = +item.offeringAmount / 1e9;
     const detail = [amount ? "$" + new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(amount) + "bn" : "", item.reopening === "Yes" ? "续发" : "新发", item.issueDate ? "结算 " + String(item.issueDate).slice(0, 10) : "", "CUSIP " + item.cusip].filter(Boolean).join(" · ");
     const announcement = /^A_[\d_]+\.pdf$/.test(item.treasuryOfferingAnnouncementPressReleaseFileName) ? item.treasuryOfferingAnnouncementPressReleaseFileName : "";
     const result = /^R_[\d_]+\.pdf$/.test(item.treasuryAuctionResultsPressReleaseFileName) ? item.treasuryAuctionResultsPressReleaseFileName : "";
     const pdf = (file: string) => treasuryBase + "instit/annceresult/press/preanre/" + file.slice(2, 6) + "/" + file;
     const stop = item.highYield || item.highDiscountMargin || item.highRate;
+    const stopLabel = item.highDiscountMargin ? "最高折扣利差" : item.highRate ? "最高贴现率" : isTips ? "中标实际收益率" : "中标收益率";
+    const stopNum = stop !== undefined && stop !== "" ? Number(stop) : NaN;
+    const btcNum = item.bidToCoverRatio !== undefined && item.bidToCoverRatio !== "" ? Number(item.bidToCoverRatio) : NaN;
+    const compTotal = Number(item.subtotalCompetitiveParAwardedInsideOfOfferingAmount || 0);
+    const dealerShare = pctShare(item.primaryDealersCompetitiveParAwarded, compTotal);
+    const indirectShare = pctShare(item.indirectBiddersCompetitiveParAwarded, compTotal);
+    const directShare = pctShare(item.directBiddersCompetitiveParAwarded, compTotal);
+
+    const readings: Reading[] | undefined = stop && result && Number.isFinite(stopNum) ? [
+      { label: stopLabel, value: stopNum, unit: "%", digits: 3 },
+      ...(Number.isFinite(btcNum) ? [{ label: "投标倍数", value: btcNum, unit: "×" as const, digits: 2 }] : []),
+      ...(dealerShare !== undefined ? [{ label: "一级交易商", value: dealerShare, unit: "%" as const, digits: 1 }] : []),
+      ...(indirectShare !== undefined ? [{ label: "间接投标", value: indirectShare, unit: "%" as const, digits: 1 }] : []),
+      ...(directShare !== undefined ? [{ label: "直接投标", value: directShare, unit: "%" as const, digits: 1 }] : []),
+    ] : undefined;
+
     const actual = stop && result ? [
-      (item.highDiscountMargin ? "最高折扣利差 " : item.highRate ? "最高贴现率 " : "中标收益率 ") + stop + "%",
+      stopLabel + " " + stop + "%",
       item.bidToCoverRatio ? "投标倍数 " + item.bidToCoverRatio + "×" : "",
+      dealerShare !== undefined && indirectShare !== undefined ? "Dealer " + dealerShare.toFixed(1) + "% / 间接 " + indirectShare.toFixed(1) + "%" : "",
     ].filter(Boolean).join(" · ") : undefined;
     const id = "tsy-" + auctionKey + "-" + date;
     const existing = events.get(id);
     if (!existing || actual || !existing.actual) events.set(id, { id, date, time, title, detail, category: "auction", kind, impact: score, status: "confirmed", source: "treasury",
-      url: announcement ? pdf(announcement) : sourceIndex.treasury.url, officialDate, actual, resultUrl: result ? pdf(result) : undefined, auctionKey });
+      url: announcement ? pdf(announcement) : sourceIndex.treasury.url, officialDate, actual, readings, resultUrl: result ? pdf(result) : undefined, auctionKey });
   }
   return { id: "treasury", events: [...events.values()], officialUpdate };
 }
@@ -267,7 +312,8 @@ export function holidayEvent(source: "sifma" | "nyse" | "cme", label: string, da
   const name = Object.entries(holidayNames).find(([key]) => label.toLowerCase().includes(key))?.[1] ?? label;
   const session = source === "sifma" ? "UST 现券" : source === "nyse" ? "NYSE" : "CME 利率期货";
   const kind = source === "cme" ? "marketCheck" : time ? "earlyClose" : "holiday";
-  const title = source === "cme" ? "CME 利率期货节假日时段" : session + (time ? "提前收市" : "休市");
+  const sep = source === "nyse" ? " " : "";
+  const title = source === "cme" ? "CME 利率期货节假日时段" : session + sep + (time ? "提前收市" : "休市");
   const detail = label + " · " + name + (source === "sifma" ? " · SIFMA 建议" : source === "nyse" ? " · 股票常规时段" : " · 合约截点待核对");
   return { id: source + "-" + date, date, time, title, detail, category: "market", kind, impact: source === "sifma" ? 4 : source === "cme" ? 3 : 2,
     status: source === "cme" ? "tentative" : "confirmed", source, url: sourceIndex[source].url, officialDate };
@@ -313,8 +359,12 @@ export function parseNyse(html: string, week: string, modified?: string): Feed {
   return { id: "nyse", events, officialUpdate: modified };
 }
 
-const curveNames = ["2year", "3year", "5year", "7year", "10year", "20year", "30year"];
+const curveNames = ["3month", "1year", "2year", "3year", "5year", "7year", "10year", "20year", "30year"];
+const realCurveNames = ["5year", "7year", "10year", "20year", "30year"];
 export const curveUrl = (month: string) => sourceIndex.curve.url + "&field_tdr_date_value_month=" + month.replace("-", "");
+export const realCurveUrl = (month: string) =>
+  "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_real_yield_curve&field_tdr_date_value_month=" + month.replace("-", "");
+
 export function parseCurve(html: string, week: string): CurvePoint[] {
   if (!html.includes("view-field-bc-10year-table-column")) throw new Error("Treasury yield curve table unavailable");
   return rows(html).flatMap(row => {
@@ -328,9 +378,25 @@ export function parseCurve(html: string, week: string): CurvePoint[] {
   });
 }
 
+export function parseRealCurve(html: string, week: string): Map<string, number[]> {
+  const result = new Map<string, number[]>();
+  if (!html.includes("view-field-tc-10year-table-column")) return result;
+  for (const row of rows(html)) {
+    const date = row.match(/<time datetime="(20\d\d-\d\d-\d\d)T/i)?.[1];
+    if (!date || date < addDays(week, -7) || date > addDays(week, 6) || date > newYorkDate()) continue;
+    const values = realCurveNames.map(tenor => {
+      const value = contentOf(row, new RegExp('headers="view-field-tc-' + tenor + '-table-column"[^>]*>([^<]+)', "i"));
+      return value ? Number(value) : NaN;
+    });
+    if (values.length === realTenors.length && values.every(Number.isFinite)) result.set(date, values);
+  }
+  return result;
+}
+
 const combine = (id: SourceId, parts: Feed[]): Feed => ({
   id, events: parts.flatMap(part => part.events), officialUpdate: parts.map(part => part.officialUpdate ?? "").sort().at(-1) || undefined,
   curve: parts.flatMap(part => part.curve ?? []),
+  unscheduled: parts.length > 0 && parts.every(part => part.unscheduled),
 });
 export const blsIcsUrl = "https://www.bls.gov/schedule/news_release/bls.ics";
 
@@ -359,6 +425,7 @@ async function treasuryFeed(week: string, supplied?: PublicInputs) {
 }
 
 export function publicFeeds(week: string, supplied?: PublicInputs): [SourceId, Promise<Feed>][] {
+  const currentMonth = newYorkDate().slice(0, 7);
   const sifma = document(sourceIndex.sifma.url).then(data => parseSifma(data.html, week, data.modified));
   const monthCalendars = weekMonths(week).map(async month => {
     const input = supplied?.bls?.find(entry => entry.month === month);
@@ -399,7 +466,15 @@ export function publicFeeds(week: string, supplied?: PublicInputs): [SourceId, P
         return parseCensus(data.html, year, week, data.modified, url);
       }
     })).then(parts => combine("census", parts))],
-    ["fed", Promise.all(weekMonths(week).map(month => document(fedUrl(month)).then(data => parseFed(data.html, month, week, data.modified)))).then(parts => combine("fed", parts))],
+    ["fed", Promise.all(weekMonths(week).map(async month => {
+      try {
+        const data = await document(fedUrl(month));
+        return parseFed(data.html, month, week, data.modified);
+      } catch (error) {
+        if (month > currentMonth) return { id: "fed" as const, events: [], unscheduled: true };
+        throw error;
+      }
+    })).then(parts => combine("fed", parts))],
     ["fomc", document(sourceIndex.fomc.url).then(data => parseFomc(data.html, week, data.modified))],
     ["dol", document(dolUrl).then(data => parseDol(data.html, week, data.modified))],
     ["sifma", sifma],
@@ -414,9 +489,14 @@ export function publicFeeds(week: string, supplied?: PublicInputs): [SourceId, P
       return parseCme(JSON.parse(data.html), week, addDays(week, 6), data.modified, holidays);
     })],
     ["curve", Promise.allSettled([...new Set([...weekMonths(week), addDays(week, -7).slice(0, 7)])].map(async month => {
-      if (month > newYorkDate().slice(0, 7)) return { id: "curve" as const, events: [], curve: [] };
-      const data = await document(curveUrl(month));
-      const curve = parseCurve(data.html, week);
+      if (month > currentMonth) return { id: "curve" as const, events: [], curve: [] };
+      const [nominalRes, realRes] = await Promise.allSettled([document(curveUrl(month)), document(realCurveUrl(month))]);
+      if (nominalRes.status !== "fulfilled") throw nominalRes.reason;
+      const realMap = realRes.status === "fulfilled" ? parseRealCurve(realRes.value.html, week) : new Map<string, number[]>();
+      const curve = parseCurve(nominalRes.value.html, week).map(point => {
+        const real = realMap.get(point.date);
+        return real ? { ...point, real } : point;
+      });
       return { id: "curve" as const, events: [], curve, officialUpdate: curve.at(-1)?.date };
     })).then(results => {
       const parts = results.flatMap(result => result.status === "fulfilled" ? [result.value] : []);
