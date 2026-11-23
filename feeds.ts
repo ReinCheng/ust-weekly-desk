@@ -74,7 +74,8 @@ function classifyMacro(title: string) {
   if (/producer price index/i.test(title)) return outcome("ppi", "美国 PPI", 4);
   if (/employment situation/i.test(title)) return outcome("jobs", "美国非农就业", 5);
   if (/unemployment insurance weekly claims/i.test(title)) return outcome("claims", "初请失业金", 3);
-  if (/job openings|employment cost index/i.test(title)) return outcome("jobs", /job openings/i.test(title) ? "JOLTS 职位空缺" : "就业成本指数（ECI）", 4);
+  if (/job openings/i.test(title)) return outcome("jobs", "JOLTS 职位空缺", 4);
+  if (/employment cost index/i.test(title)) return outcome("inflation", "就业成本指数（ECI）", 4);
   if (/advance monthly sales for retail/i.test(title)) return outcome("retail", "美国零售销售", 4);
   if (/^(?:real )?GDP\b|gross domestic product/i.test(title) && !/by county|by state|by metropolitan/i.test(title)) return outcome("growth", "美国 GDP", /advance/i.test(title) ? 4 : 3);
   if (/durable goods|new residential construction|new residential sales|international trade in goods and services|industrial production|advance economic indicators/i.test(title)) {
@@ -241,7 +242,7 @@ export const tentativeXml = "https://home.treasury.gov/system/files/221/Tentativ
 export const auctionNames = (term: string, type: string, tips = false, frn = false) => {
   const n = parseInt(term);
   const title = tips ? n + " 年期 TIPS 拍卖" : frn ? n + " 年期 FRN 拍卖" : type === "bill" ? n + " 周 T-bill 拍卖" : n + " 年期国债拍卖";
-  const kind: Kind = tips ? "tips" : type === "bill" ? "bills" : n >= 20 ? "longAuction" : "coupon";
+  const kind: Kind = tips ? "tips" : type === "bill" || frn ? "bills" : n >= 20 ? "longAuction" : "coupon";
   const score = tips ? 4 : type === "bill" || frn ? 2 : n >= 20 ? 5 : n >= 7 ? 4 : 3;
   const auctionKey = tips ? n + "y-tips" : frn ? n + "y-frn" : type === "bill" ? n + "w-bill" : n + "y-nominal";
   return { title, kind, score, auctionKey };

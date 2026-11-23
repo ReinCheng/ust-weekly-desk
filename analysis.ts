@@ -7,7 +7,7 @@ const macro = [
   "分开看 outright 与 switch 的 fill rate。价格失效时复核 RFQ wiretime 和客户端有效窗口。",
   "按 key-rate DV01 匹配 TU/FV/TY 的可交易深度，检查 CTD、转换因子和 cash–futures basis。",
   "深度恢复、markout 稳定后评估挂单。残余 DV01 接近风控线时比较主动成交成本与继续暴露的风险。",
-  "观察 5s30s 与 10s30s，分辨前端政策路径重定价和长端期限溢价。",
+  "观察 5s30s 与 10s30s，分辨前端政策路径重定价与长端期限溢价/通胀补偿变化。",
 ];
 const supply = [
   "截标前盯 WI concession 与盘口深度，结果后再观察 OTR 和邻券成交能否同步恢复。",
@@ -29,46 +29,46 @@ const withBase = (yieldText: string, base: string[], changes: Record<number, str
   [yieldText, ...base].map((value, i) => changes[i] ?? value);
 
 export const analysis: Record<Kind, string[]> = {
-  inflation: withBase("核心通胀强于预期时，2–5Y 易先上行。偏弱时观察降息定价及 bull steepening 的持续性。", macro),
-  ppi: withBase("优先看可传导到 core PCE 的分项。若 headline 主要由易波动成分带动，检查 2–5Y 初动能否延续。", macro),
-  jobs: withBase("结合非农、失业率、薪资和前值修正。方向一致时，前端政策路径反应通常更清晰。", macro),
-  claims: withBase("比较首申、续申和四周均值。节假日前后先检查季调和修订，再解释前端走势。", macro),
-  retail: withBase("优先看 control group 和前值修正。强于预期时跟踪 2Y/5Y 是否主导，辨别 10Y 的增长因子。", macro, {
-    3: "对比 08:30 的 RFQ 成交率与 +30 秒 markout。若同刻还有物价数据，将该窗口标为混合冲击。",
+  inflation: withBase("优先核对未四舍五入精确值、Supercore、前月修订及对 Core PCE 的传导权重；鹰派期偏熊平，通胀失锚/财政期可转熊陡。", macro),
+  ppi: withBase("跳过能源与贸易服务利润率噪音，优先核对医疗、机票、投管等 PCE 桥接分项与前月修订，防止 Headline 假信号反杀。", macro),
+  jobs: withBase("非农新增、失业率（家庭调查）、前两月修订与时薪四维共振时趋势最清晰；冲突时拐点期优先盯失业率与修订。", macro),
+  claims: withBase("方向与通胀相反（申领越高越利多美债）。重点盯非农调查周（含每月 12 日）、续请与四周均值，警惕节假日季调噪音。", macro),
+  retail: withBase("核心看直接进 GDP 的对照组、餐饮服务与前两月修订，排除油价名义干扰；曲线斜率随高利率期（熊陡）或降息定价期（熊平）分叉。", macro, {
+    3: "对比 08:30 的 RFQ 成交率与 +30 秒 markout。若同刻还有初请或物价数据，将该窗口标为混合冲击。",
   }),
-  growth: withBase("区分 headline、关键分项与修订。若多项同时发布，用 2s5s 与 5s30s 判断增长及政策预期的主导期限。", macro),
-  policy: withBase("比较 statement、SEP（如发布）和发布会。跟踪 2Y 与 5Y 的路径重定价及二次反转。", macro, {
-    5: "分别评估声明和记者会窗口的执行成本。若盘口在两个窗口之间恢复，可重估挂单胜率和剩余风险。",
+  growth: withBase("区分初值与修正值、剥离库存与净出口噪音（进口大增常代表内需强），同时严防“弱增速 + 强价格分项”的滞胀反向行情。", macro),
+  policy: withBase("拆成 14:00（声明 + SEP 点阵图与中性利率 r* + QT）与 14:30 记者会两段窗口；超半数 FOMC 交易日存在二次修正或反转。", macro, {
+    5: "分别评估 14:00 声明和 14:30 记者会窗口的执行成本。若盘口在两窗口之间恢复，再重估挂单胜率与剩余风险。",
   }),
-  minutes: withBase("只有对政策分歧、通胀风险或资产负债表的新增信息才构成独立情景。用 2Y/5Y 与长端相对走势辨别渠道。", macro, {
-    3: "对比前一流动性窗口的 RFQ 基线。若同日有长债拍卖，分别标注拍卖后和纪要后的 markout。",
-    6: "若长端波动先于纪要或集中在 20Y，结合 WI 和曲线残差核对供给归因。",
+  minutes: withBase("纪要滞后三周，须先扣除会后 CPI/非农已覆盖的旧信息，重点抓 QT 资产负债表路线图与人数词（most/many/a few）分歧。", macro, {
+    3: "对比前一流动性窗口的 RFQ 基线。若同日 13:00 有 20Y 长债拍卖，必须拆开拍卖后和纪要后的 markout。",
+    6: "若长端波动先于纪要或集中在 20Y，结合 WI 和 10s20s30s fly 核对供给归因。",
   }),
-  speech: withBase("优先查官方讲稿。新政策路径措辞可能带动 2–5Y，延续旧表述时以成交确认方向。", macro, {
+  speech: withBase("先看发言人权重（主席/核心委员 > 普通理事）并读官网原稿，再把讲稿与公开问答（Q&A）拆开评估边际措辞变化。", macro, {
     5: "把讲稿和公开问答作为独立窗口。只有事件触发与流动性条件同时满足时才重新评估执行方式。",
   }),
-  technicalSpeech: withBase("主题偏监管、支付或技术时通常优先级较低。若出现货币政策或资产负债表的新信息，再检验期限反应。", macro, {
+  technicalSpeech: withBase("主题偏监管、支付或技术时通常不构成利率驱动。仅在问答出现货币政策或 QT 增量表态时再检验期限反应。", macro, {
     2: "用行情跳价、数据时间戳和深度变化触发检查，维持对主题相关性的区分。",
   }),
-  longAuction: withBase("用 stop yield 减截标前可成交 WI yield 衡量 tail。若 tail 扩大且 dealer 获配偏高，观察该期限相对邻券走弱。", supply, {
+  longAuction: withBase("核对 Stop vs WI、事前 Concession 深度与 Primary Dealer 兜底占比（30Y >20% 易发尾盘抛压；20Y 重点盯 10s20s30s fly）。", supply, {
     4: "以 20Y/30Y key-rate DV01 测算 TY、US 或 UB 的组合覆盖。盯 CTD/CF、basis 及仍留在 20Y fly 的风险。",
   }),
-  coupon: withBase("核对 stop 与截标前 WI 的差、bid-to-cover 及获配构成。强弱要结合拍卖前 concession。", supply, {
-    6: "用 2s10s 和 5s30s 检查 belly/前端供给有没有传导至长端。",
+  coupon: withBase("按期限分层：2Y/3Y 锚定政策路径、外溢小；5Y/7Y Belly 敏感于交易商资产负债表与 7Y 尾险；10Y 为全球基准并定调次日 30Y。", supply, {
+    6: "用 2s5s10s fly 和 2s10s/5s30s 检查 Belly 供给有没有向长端外溢。",
   }),
-  tips: withBase("先看 real yield stop 对 WI 的 tail，再比较名义 10Y 与 10Y breakeven，拆分真实利率和通胀补偿。", supply, {
-    4: "名义期货可对冲部分利率 beta。单独记录 real-rate 与 breakeven 残差，检查相近久期的 TIPS 和名义券。",
+  tips: withBase("先看 Real Yield Stop 对 WI 的 tail，再用 TIPS 专属 Dealer 标尺（常规仅 5%–10%）核对承接，并拆分名义利率与 Breakeven。", supply, {
+    4: "名义期货仅对冲名义利率 beta，会残留 Breakeven 敞口；需单独监控 real-rate 与通胀预期基差。",
     6: "观察 real-curve 斜率与名义 10s30s，核对是通胀补偿变化还是全曲线久期变化。",
   }),
-  bills: withBase("关注 bill stop rate 与前端资金利率，结合结算日、供给规模与 SOFR/GC 验证资金影响。", supply, {
-    2: "主要核对 bill 及前端报价源，观察 coupon mid 是否出现可验证的联动。",
+  bills: withBase("T-bill 与 2Y FRN 久期近零，核心盯贴现率/折扣利差相对 SOFR/GC 资金面、TGA 结算抽水与季末流动性，不直接外推至长端。", supply, {
+    2: "主要核对 bill 及前端报价源，观察 coupon mid 是否出现可验证的资金面外溢。",
     4: "先看资金与 carry；用 coupon 期货对冲前端利率时单独记录基差与期限错配。",
-    6: "长端通常为间接暴露，需看到融资压力外溢和长端盘口变化再归因。",
+    6: "长端通常无直接暴露，需看到回购资金压力外溢和长端盘口变化再归因。",
   }),
-  funding: withBase("看准备金、TGA 等组成和资金利率验证。单周变动可能来自结算时间差。", supply),
-  holiday: withBase("休市窗口的期货变化可能在现券重开时一次体现。用重开可成交报价确认收益率变化。", holiday),
-  earlyClose: withBase("提前收市压缩可执行窗口。尾盘收益率变化需结合深度和跨资产时段解释。", holiday),
-  marketCheck: withBase("以官方合约时段为准。现金和期货时段错开时标记收益率与期货报价的观测时点。", holiday),
+  funding: withBase("周四 16:30 H.4.1 重点看准备金余额、TGA 与 ON RRP 缓冲垫消耗，结合 4 周趋势与 SOFR-IORB 利差预判 QT 终点。", supply),
+  holiday: withBase("休市窗口的期货与海外变动会在现券重开首 15 分钟一次性跳空反映，用重开可执行报价与恢复深度确认方向。", holiday),
+  earlyClose: withBase("提前收市压缩可执行窗口，尾盘稀疏盘口极易出现非基本面长影线，须缩减单笔并核对跨市场截点。", holiday),
+  marketCheck: withBase("以官方合约时段为准；现券与期货时段错开时（如退伍军人节/感恩节）分别标记现券与期货报价观测时点。", holiday),
 };
 
 export function scenariosFor(calendar: Calendar): Scenario[] {
@@ -83,23 +83,33 @@ export function scenariosFor(calendar: Calendar): Scenario[] {
     const minutes = events.find(event => event.kind === "minutes" && event.date === long.date);
     if (minutes) add({
       id: "supply-minutes-" + long.date, title: "长债供给与 FOMC 纪要的双重冲击", kind: "longAuction", impact: 5,
-      detail: "按截标后和纪要后两个窗口拆分归因。前一窗口看 20Y 相对 10Y/30Y，后一窗口看 2Y/5Y 是否接力。",
-      trigger: "20Y stop 高于截标前可成交 WI，且 20Y 相对邻券持续走弱。纪要后若 2–5Y 同向重新定价，另计政策因子。",
-      invalidation: "20Y 相对弱势快速回归，或 2–5Y 在纪要前已同幅移动。用两个窗口的深度、basis 和 markout 验证。",
+      detail: "按 13:00 截标后与 14:00 纪要后两个窗口拆分归因。前一窗口看 20Y/10s20s30s fly，后一窗口看 2Y/5Y 与 QT 措辞。",
+      trigger: "20Y stop 高于截标前 WI 且 Dealer 获配偏高、fly 走阔；纪要若再释出鹰派/QT 增量，前端与长端形成接力。",
+      invalidation: "20Y 相对弱势迅速回归，或纪要内容已被会后硬数据覆盖、2–5Y 无延续成交。",
       events: [long.id, minutes.id],
     });
   }
+  for (const cpi of events.filter(event => event.title === "美国 CPI" && event.status === "confirmed")) {
+    const auction = events.find(event => event.category === "auction" && event.impact >= 4 && event.date === cpi.date);
+    if (auction) add({
+      id: "cpi-supply-" + cpi.date, title: "CPI 与中长债拍卖同日双击风险", kind: "inflation", impact: 5,
+      detail: "类似 2024-04-10：若早盘 CPI 超预期推高波动率，午后拍卖常因风险预算收缩而放大 Tail。",
+      trigger: "08:30 Core CPI / Supercore 偏热导致盘中单边抛售，且 13:00 拍卖未获充分让价并出现 ≥2 bp Tail。",
+      invalidation: "CPI 温和落地，或拍卖前已完成充分 Concession 并录得强终端 Stop-through。",
+      events: [cpi.id, auction.id],
+    });
+  }
   const definitions: Partial<Record<Kind, [string, string, string, string]>> = {
-    inflation: ["核心通胀意外", "区分前端政策路径冲击和长端期限溢价，再看曲线是否继续变平。", "核心月率及关键分项同向超出事前预期，2–5Y 出现成交确认。", "前端初动迅速回吐，或只有 headline 偏离预期。"],
-    ppi: ["PPI 对 core PCE 的传导", "关注可纳入 PCE 的服务分项，再判读前端和 belly 的反应。", "相关分项明显偏离事前预期，2Y/5Y 的价格和成交同步。", "变化集中于与 PCE 关联较弱的分项，或盘口修复后收益率回吐。"],
-    jobs: ["就业数据改变政策路径", "用非农、失业率和工资三个维度对比市场事前预期。", "就业、工资及修订指向同一方向，2–5Y 延续初动。", "分项方向互相抵消，或首轮利率反应快速回撤。"],
-    retail: ["消费韧性与 belly 重定价", "先看 control group 和前值修订，分辨名义销售与可持续的需求变化。", "control group 与修订同向，且 2Y/5Y 在首轮后维持移动。", "headline 主要由波动分项驱动，或同刻其他发布解释了初动。"],
-    minutes: ["纪要释放新增政策信息", "先比较前次声明和发布会，再检查政策路径或资产负债表的新增措辞。", "纪要揭示新的分歧，且 2Y/5Y 的成交支持重定价。", "措辞已由前次沟通覆盖，或收益率变化在发布前完成。"],
-    policy: ["决议与发布会带来二次定价", "分别记录 statement、SEP 和记者会的前后价格。", "政策路径或风险表述偏离已定价假设，前端成交持续。", "记者会消化首轮冲击，曲线回到声明前的区间。"],
-    longAuction: ["长端供给需要更深 concession", "先看 WI 与相邻期限，再分离拍卖后的市场方向和相对价值。", "stop 高于截标前 WI，且 dealer 获配和相对弱势支持供给解释。", "邻券同步移动且该期限 fly 迅速回归。"],
-    tips: ["实际收益率与 breakeven 分化", "用实际利率和名义曲线解释 TIPS 结果后的相对移动。", "TIPS tail 扩大并伴随 real yield 相对走弱，名义 10Y 不完全跟随。", "TIPS 相对弱势在深度恢复后消失。"],
-    holiday: ["休市与重开时段的流动性错配", "以 SIFMA 现券建议、NYSE 交易时段和 CME 合约日历各自核对。", "现券深度低于同时间基线，同时期货仍可交易或先行重开。", "两个市场重开后同步恢复，basis 和深度回归常态。"],
-    earlyClose: ["提前收市前的流动性压缩", "在窗口缩短时分别测量现券与期货深度、时间戳和跨市场 basis。", "报价来源变少且可执行数量低于正常交易日同时间基线。", "剔除过期报价后，跨市场可执行深度仍接近正常时段。"],
+    inflation: ["核心通胀意外", "区分未四舍五入精确值、Supercore 与 PCE 传导权重，并按当前周期判断熊平还是熊陡。", "精确核心月率与 Supercore 同向偏离预期，2–5Y 出现成交确认。", "仅由高权重住房 OER 或个别波动项引起，2Y 迅速回吐。"],
+    ppi: ["PPI 对 Core PCE 的桥接修正", "跳过 Headline 噪音，直查医疗/机票/投管分项与前月修正。", "PCE 桥接服务分项与前月方向一致，实质改写投行 Core PCE 预测。", "Headline 偏热仅由能源或 Trade Services 驱动，或前月大幅下修抵消。"],
+    jobs: ["非农与失业率改变降息路径", "企业调查（新增+修订+工时）与家庭调查（失业率+参与率）交叉核对。", "新增、失业率、修订与工资四维共振，2Y 引领曲线大幅重定价。", "新增与失业率/前两月修订冲突，拐点期优先跟随失业率与修订。"],
+    retail: ["消费韧性与曲线斜率分叉", "先看进入 GDP 的对照组与餐饮服务，再按当前利率周期判断熊陡还是熊平。", "对照组与前两月修订同向，且剔除油价后真实消费走强。", "Headline 仅由汽车/汽油波动带动，或被同刻数据冲淡。"],
+    minutes: ["纪要释放 QT 或鹰鸽增量", "先扣除三周内已被硬数据覆盖的旧表述，聚焦 QT 与人数词分歧。", "纪要披露 QT 节奏新信号或意外分歧，且成交持续。", "措辞完全落后于最新硬数据与主席讲话。"],
+    policy: ["FOMC 14:00 点阵图与 14:30 记者会两段博弈", "区分当年/明年点阵（2Y/5Y）、中性利率 r*（10Y/30Y）及 QT，防范记者会反转。", "点阵图/r* 与记者会问答指向一致，形成单边趋势。", "声明与记者会互相抵消，曲线回到决议前区间。"],
+    longAuction: ["长端供给测试期限溢价", "结合事前让价深度、Stop vs WI 与 Primary Dealer 兜底占比综合评估。", "Tail ≥2 bp 且 Dealer 获配飙升（30Y >20%），5s30s/fly 持续走弱。", "事前让价充分且终端买盘强劲，邻券同步走稳。"],
+    tips: ["TIPS 实际利率与 Breakeven 拆分", "用 TIPS 专属 Dealer 标尺（常规 5%–10%）区分真实利率抛压与通胀补偿变化。", "Real Yield 出现明显 Tail 且 Dealer >12%，名义债不完全跟随。", "TIPS 相对弱势在盘口恢复后收敛。"],
+    holiday: ["休市与重开时段的跨市场错配", "逐一核对 SIFMA 现券、NYSE 美股与 CME Globex 期货截点及重开时刻。", "现券停盘期间期货单边变动，重开首 15 分钟跳空补价。", "双市场重开后深度与基差快速恢复常态。"],
+    earlyClose: ["提前收市前的流动性压缩", "缩短窗口下缩减单笔、严防尾盘稀疏成交造成的非基本面假突破。", "报价源变少且可执行深度显著低于常态基线。", "剔除过期报价后跨市场深度维持正常。"],
   };
   for (const event of events) {
     if (result.length >= 5) break;
