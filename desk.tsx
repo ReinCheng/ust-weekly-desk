@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity, AlertTriangle, ArrowDownUp, BookOpen, CalendarDays, ChevronLeft,
   ChevronRight, Clock, Database, ExternalLink, Globe, History, Layers, LineChart, Moon,
-  RefreshCw, RotateCcw, Search, SlidersHorizontal, Sparkles, Sun, TrendingUp, X,
+  Play, RefreshCw, RotateCcw, Search, SlidersHorizontal, Sparkles, Sun, TrendingUp, X,
 } from "lucide-react";
 import { analysis, dimensions, scenariosFor } from "./analysis";
 import {
@@ -13,6 +13,7 @@ import {
 } from "./model";
 import { loadCalendars, loadLiveCurve, type LiveCurve } from "./pages-data";
 import { featuredPlaybookKeys, playbookByKey, playbookFor, type Playbook } from "./playbooks";
+import { projectionByKey, projectionFor, type EventProjectionSet } from "./projections";
 import { nowcastUrl } from "./releases";
 import { actualFor, priorFor, ruleFor, scenarioFor } from "./scenarios";
 import { seedCalendar } from "./seed";
@@ -223,7 +224,30 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
       const d = pv !== undefined ? Number((v - pv).toFixed(bpDigits)) : null;
       return { id, name, formula, value: v, delta: d, trend: d === null || d === 0 ? "持平" : d > 0 ? posWord : negWord };
     };
-    return [
+    const r10 = realCurveValue(latestEod, "10Y");
+    const eod10 = curveValue(latestEod, "10Y");
+    const be10 = eod10 !== undefined && r10 !== undefined ? eod10 - r10 : undefined;
+    const pr10 = realCurveValue(compareEod, "10Y");
+    const peod10 = curveValue(compareEod, "10Y");
+    const pbe10 = peod10 !== undefined && pr10 !== undefined ? peod10 - pr10 : undefined;
+    const tipsCards = [
+      r10 !== undefined ? {
+        id: "r10", name: "10Y 实际利率", formula: "TIPS 日终",
+        valueText: r10.toFixed(2) + "%",
+        delta: pr10 !== undefined ? Math.round((r10 - pr10) * 100) : null,
+        deltaDigits: 0,
+        trend: pr10 !== undefined ? (r10 > pr10 ? "实际利率↑" : r10 < pr10 ? "实际利率↓" : "持平") : "财政部日终",
+      } : null,
+      be10 !== undefined ? {
+        id: "be10", name: "10Y Breakeven", formula: "名义 − 实际 (日终)",
+        valueText: be10.toFixed(2) + "%",
+        delta: pbe10 !== undefined ? Math.round((be10 - pbe10) * 100) : null,
+        deltaDigits: 0,
+        trend: pbe10 !== undefined ? (be10 > pbe10 ? "通胀预期↑" : be10 < pbe10 ? "通胀预期↓" : "持平") : "财政部日终",
+      } : null,
+    ].filter((m): m is NonNullable<typeof m> => Boolean(m));
+
+    const shapeCards = [
       build("2s10s", "2s10s", "10Y − 2Y", a => {
         const a2 = valOf(a, "2Y"), a10 = valOf(a, "10Y");
         return a2 !== undefined && a10 !== undefined ? (a10 - a2) * 100 : undefined;
@@ -240,8 +264,14 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
         const a10 = valOf(a, "10Y"), a20 = valOf(a, "20Y"), a30 = valOf(a, "30Y");
         return a10 !== undefined && a20 !== undefined && a30 !== undefined ? (2 * a20 - a10 - a30) * 100 : undefined;
       }, "20Y 走弱", "20Y 走强"),
-    ].filter((m): m is NonNullable<typeof m> => Boolean(m));
-  }, [latestVals, compareVals, hasCompare, bpDigits, activeTenors]);
+    ].filter((m): m is NonNullable<typeof m> => Boolean(m)).map(m => ({
+      ...m,
+      valueText: sign(m.value, bpDigits) + " bp",
+      deltaDigits: bpDigits,
+    }));
+
+    return [...shapeCards, ...tipsCards];
+  }, [latestVals, compareVals, hasCompare, bpDigits, activeTenors, latestEod, compareEod]);
 
   const focusedIdx = focus !== null && focus < activeTenors.length ? focus : null;
 
@@ -325,7 +355,8 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
           const tenorY = hasCompare ? 288 : 176;
 
           return <g key={activeTenors[i]} className="curve-point"
-            onMouseEnter={() => setFocus(i)} onMouseLeave={() => setFocus(null)}
+            onPointerEnter={e => { if (e.pointerType === "mouse") setFocus(i); }}
+            onPointerLeave={e => { if (e.pointerType === "mouse") setFocus(null); }}
             onClick={() => setFocus(prev => prev === i ? null : i)}>
             {active && <line x1={cx} x2={cx} y1="24" y2={hasCompare ? 272 : 154} className="focus-guide" />}
             <circle cx={cx} cy={cy} r={active ? 6 : 3.8} className="curve-dot" />
@@ -349,20 +380,20 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
         })}
       </svg>
 
-      {/* Redesigned 4-Card Curve Spread & Butterfly Metrics Grid */}
-      {spreadMetrics.length > 0 && <div className="curve-metrics" aria-label="关键期限利差与蝶式结构">
+      {/* Redesigned 6-Card Curve Structure & TIPS Grid */}
+      {spreadMetrics.length > 0 && <div className="curve-metrics" aria-label="关键期限利差、蝶式结构与 TIPS 指标">
         {spreadMetrics.map(m => (
           <div className="cm-card" key={m.id}>
             <div className="cm-top">
               <strong>{m.name}</strong>
               <span>{m.formula}</span>
             </div>
-            <div className="cm-val">{sign(m.value, bpDigits)} bp</div>
+            <div className="cm-val">{m.valueText}</div>
             <div className="cm-foot">
               {m.delta !== null ? <>
-                <em className={m.delta > 0 ? "txt-up" : m.delta < 0 ? "txt-down" : "txt-muted"}>{sign(m.delta, bpDigits)} bp</em>
+                <em className={m.delta > 0 ? "txt-up" : m.delta < 0 ? "txt-down" : "txt-muted"}>{sign(m.delta, m.deltaDigits)} bp</em>
                 <span className="cm-trend">{m.trend}</span>
-              </> : <span className="cm-trend">较 {bench}</span>}
+              </> : <span className="cm-trend">{m.trend}</span>}
             </div>
           </div>
         ))}
@@ -371,65 +402,430 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
   </section>;
 }
 
-function RateCards({ points, live, showLive }: { points: CurvePoint[]; live: LiveCurve | null; showLive: boolean }) {
-  const latestEod = points.at(-1);
-  const prev1dEod = pickBenchmark(points, "1D");
-  const prev1w = pickBenchmark(points, "1W");
-  const usingLive = Boolean(showLive && live);
-  const heroTenors: Tenor[] = ["2Y", "5Y", "10Y", "30Y"];
+/* ---------- Interactive Animated UST Curve Projection Visualizer ---------- */
 
-  const valOf = (t: Tenor) => usingLive ? live!.values[tenors.indexOf(t)] : curveValue(latestEod, t);
-  const prevOf = (t: Tenor) => usingLive ? (live!.prevValues[tenors.indexOf(t)] ?? undefined) : curveValue(prev1dEod, t);
+const fallbackBaseCurve = [4.30, 4.52, 4.65, 4.68, 4.74, 4.83, 4.95, 5.36, 5.32];
 
-  const y3m = valOf("3M"), y1y = valOf("1Y"), y10 = valOf("10Y");
-  const p3m = prevOf("3M"), p1y = prevOf("1Y"), p10 = prevOf("10Y");
+function focusTenorIndexFor(key: string, event?: MarketEvent): number {
+  if (key === "auction_20y") return 7;
+  if (key === "auction_30y") return 8;
+  if (key === "auction_10y" || key === "tips" || key === "gdp" || key === "retail" || key === "durables") return 6;
+  if (key === "auction_belly") return event?.auctionKey?.startsWith("5y") ? 4 : 5;
+  if (key === "bills") return 0;
+  return 2; // 2Y default for inflation/jobs/ECI/FOMC/front auction
+}
 
-  const r10 = realCurveValue(latestEod, "10Y");
-  const eod10 = curveValue(latestEod, "10Y");
-  const be10 = eod10 !== undefined && r10 !== undefined ? eod10 - r10 : undefined;
-  const pr10 = realCurveValue(prev1dEod, "10Y");
-  const peod10 = curveValue(prev1dEod, "10Y");
-  const pbe10 = peod10 !== undefined && pr10 !== undefined ? peod10 - pr10 : undefined;
+function useAnimatedVector(target: number[], duration = 440, trigger = 0, resetKey = "") {
+  const [current, setCurrent] = useState<number[]>(target);
+  const currentRef = useRef<number[]>(target);
+  const initializedRef = useRef(false);
+  const prevResetKeyRef = useRef(resetKey);
+  const prevTriggerRef = useRef(trigger);
+  const targetKey = target.map(v => v.toFixed(3)).join(",");
 
-  const bpFmt = (a: number | undefined, b: number | undefined, d = 0) =>
-    a !== undefined && b !== undefined ? Number(((a - b) * 100).toFixed(d)) : null;
-  const bpDigits = usingLive ? 1 : 0;
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof requestAnimationFrame === "undefined") {
+      currentRef.current = target;
+      setCurrent(target);
+      return;
+    }
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      currentRef.current = target;
+      setCurrent(target);
+      initializedRef.current = true;
+      prevResetKeyRef.current = resetKey;
+      prevTriggerRef.current = trigger;
+      return;
+    }
 
-  const ribbon = [
-    y3m !== undefined ? { label: "3M 短端", value: y3m.toFixed(usingLive ? 3 : 2) + "%", delta: bpFmt(y3m, p3m, bpDigits) } : null,
-    y1y !== undefined ? { label: "1Y 短端", value: y1y.toFixed(usingLive ? 3 : 2) + "%", delta: bpFmt(y1y, p1y, bpDigits) } : null,
-    y3m !== undefined && y10 !== undefined ? { label: "3m10s 利差", value: sign((y10 - y3m) * 100, bpDigits) + " bp", delta: bpFmt(y10 - y3m, p10 !== undefined && p3m !== undefined ? p10 - p3m : undefined, bpDigits) } : null,
-    r10 !== undefined ? { label: usingLive ? "10Y 实际利率 (日终)" : "10Y 实际利率", value: r10.toFixed(2) + "%", delta: bpFmt(r10, pr10, 0) } : null,
-    be10 !== undefined ? { label: usingLive ? "10Y Breakeven (日终)" : "10Y Breakeven", value: be10.toFixed(2) + "%", delta: bpFmt(be10, pbe10, 0) } : null,
-  ].filter((item): item is { label: string; value: string; delta: number | null } => Boolean(item));
+    const shouldStartFromZero = !initializedRef.current
+      || prevResetKeyRef.current !== resetKey
+      || prevTriggerRef.current !== trigger;
+    initializedRef.current = true;
+    prevResetKeyRef.current = resetKey;
+    prevTriggerRef.current = trigger;
 
-  return <div className="rates-wrap">
-    <div className="rate-grid" aria-label="主要期限收益率">
-      {heroTenors.map(tenor => {
-        const val = valOf(tenor);
-        const d1 = bpFmt(val, prevOf(tenor), bpDigits);
-        const d1w = val !== undefined && curveValue(prev1w, tenor) !== undefined && (usingLive || prev1w?.date !== prev1dEod?.date)
-          ? Math.round((val - curveValue(prev1w, tenor)!) * 100) : null;
-        return <article className="rate-card glass-hero" key={tenor}>
-          <div className="rate-head">
-            <span>{tenor} 国债</span>
-            {d1 !== null && <em className={"delta-pill " + (d1 > 0 ? "up" : d1 < 0 ? "down" : "flat")}>{sign(d1, bpDigits)} bp</em>}
-          </div>
-          <strong>{val !== undefined ? val.toFixed(usingLive ? 3 : 2) + "%" : "—"}</strong>
-          <small>
-            {d1 === null ? "暂无日变动" : usingLive ? "较昨收" : "较上日"}
-            {d1w !== null && <> · 1W <b className={d1w > 0 ? "txt-up" : d1w < 0 ? "txt-down" : ""}>{sign(d1w, 0)} bp</b></>}
-          </small>
-        </article>;
-      })}
+    const from = shouldStartFromZero || currentRef.current.length !== target.length
+      ? target.map(() => 0)
+      : [...currentRef.current];
+
+    if (shouldStartFromZero) {
+      currentRef.current = from;
+      setCurrent(from);
+    }
+
+    const start = performance.now();
+    let raf = 0;
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const next = target.map((endVal, i) => from[i] + (endVal - from[i]) * eased);
+      currentRef.current = next;
+      setCurrent(next);
+      if (t < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [targetKey, duration, trigger, resetKey]);
+
+  return current;
+}
+
+type RibbonSeg = { d: string; cls: "ribbon-up" | "ribbon-down" };
+
+function buildSignedRibbon(
+  xs: number[],
+  baseYs: number[],
+  projYs: number[],
+  shifts: number[],
+): RibbonSeg[] {
+  const segs: RibbonSeg[] = [];
+  for (let i = 0; i < xs.length - 1; i++) {
+    const s0 = shifts[i] ?? 0, s1 = shifts[i + 1] ?? 0;
+    if (Math.abs(s0) < 0.05 && Math.abs(s1) < 0.05) continue;
+    const x0 = xs[i], x1 = xs[i + 1];
+    const b0 = baseYs[i], b1 = baseYs[i + 1];
+    const p0 = projYs[i], p1 = projYs[i + 1];
+
+    // If the curve twists across the baseline between i and i+1, split cleanly at the crossing
+    if ((s0 > 0 && s1 < 0) || (s0 < 0 && s1 > 0)) {
+      const t = s0 / (s0 - s1);
+      const xm = x0 + (x1 - x0) * t;
+      const ym = b0 + (b1 - b0) * t;
+      segs.push({
+        d: `M ${x0.toFixed(1)},${b0.toFixed(1)} L ${xm.toFixed(1)},${ym.toFixed(1)} L ${x0.toFixed(1)},${p0.toFixed(1)} Z`,
+        cls: s0 > 0 ? "ribbon-up" : "ribbon-down",
+      });
+      segs.push({
+        d: `M ${xm.toFixed(1)},${ym.toFixed(1)} L ${x1.toFixed(1)},${b1.toFixed(1)} L ${x1.toFixed(1)},${p1.toFixed(1)} Z`,
+        cls: s1 > 0 ? "ribbon-up" : "ribbon-down",
+      });
+    } else {
+      segs.push({
+        d: `M ${x0.toFixed(1)},${b0.toFixed(1)} L ${x1.toFixed(1)},${b1.toFixed(1)} L ${x1.toFixed(1)},${p1.toFixed(1)} L ${x0.toFixed(1)},${p0.toFixed(1)} Z`,
+        cls: s0 + s1 >= 0 ? "ribbon-up" : "ribbon-down",
+      });
+    }
+  }
+  return segs;
+}
+
+type ProjKpi = { label: string; value: number; sub: string };
+
+function buildProjectionKpis(key: string, base: number[], shifts: number[], real10Bp: number, be10Bp: number): ProjKpi[] {
+  const [d3m, d1y, d2y, , d5y, d7y, d10y, d20y, d30y] = shifts;
+  const slopeSub = (v: number) => Math.abs(v) < 0.4 ? "平行移动" : v > 0 ? "走陡" : "趋平";
+  const flySub = (v: number, center: string) => Math.abs(v) < 0.4 ? "形态平稳" : v > 0 ? `${center} 走弱/上凸` : `${center} 走强/收敛`;
+  const lvl = (idx: number, d: number) => `→ ${(base[idx] + d / 100).toFixed(2)}%`;
+
+  if (key === "auction_20y") {
+    const fly20 = Number((2 * d20y - d10y - d30y).toFixed(1));
+    const d5s30s = Number((d30y - d5y).toFixed(1));
+    return [
+      { label: "20Y 孤儿点", value: d20y, sub: lvl(7, d20y) },
+      { label: "10/20/30 Fly", value: fly20, sub: flySub(fly20, "20Y") },
+      { label: "10Y 邻券", value: d10y, sub: lvl(6, d10y) },
+      { label: "5s30s 斜率", value: d5s30s, sub: slopeSub(d5s30s) },
+    ];
+  }
+  if (key === "auction_belly") {
+    const fly5 = Number((2 * d5y - d2y - d10y).toFixed(1));
+    const d2s10s = Number((d10y - d2y).toFixed(1));
+    return [
+      { label: "5Y Belly", value: d5y, sub: lvl(4, d5y) },
+      { label: "7Y Belly", value: d7y, sub: lvl(5, d7y) },
+      { label: "2s5s10s Fly", value: fly5, sub: flySub(fly5, "Belly") },
+      { label: "2s10s 斜率", value: d2s10s, sub: slopeSub(d2s10s) },
+    ];
+  }
+  if (key === "auction_30y") {
+    const d5s30s = Number((d30y - d5y).toFixed(1));
+    const d10s30s = Number((d30y - d10y).toFixed(1));
+    return [
+      { label: "30Y 超长债", value: d30y, sub: lvl(8, d30y) },
+      { label: "10Y 基准", value: d10y, sub: lvl(6, d10y) },
+      { label: "5s30s 斜率", value: d5s30s, sub: slopeSub(d5s30s) },
+      { label: "10s30s 斜率", value: d10s30s, sub: slopeSub(d10s30s) },
+    ];
+  }
+  if (key === "tips") {
+    const d5s30s = Number((d30y - d5y).toFixed(1));
+    return [
+      { label: "10Y 实际利率", value: real10Bp, sub: real10Bp > 0.2 ? "TIPS 承压" : real10Bp < -0.2 ? "TIPS 走强" : "平稳" },
+      { label: "10Y Breakeven", value: be10Bp, sub: be10Bp > 0.2 ? "通胀预期走阔" : be10Bp < -0.2 ? "通胀预期收窄" : "平稳" },
+      { label: "10Y 名义联动", value: d10y, sub: lvl(6, d10y) },
+      { label: "5s30s 斜率", value: d5s30s, sub: slopeSub(d5s30s) },
+    ];
+  }
+  if (key === "bills") {
+    const d3m10s = Number((d10y - d3m).toFixed(1));
+    return [
+      { label: "3M 国库券", value: d3m, sub: lvl(0, d3m) },
+      { label: "1Y 短端", value: d1y, sub: lvl(1, d1y) },
+      { label: "2Y 附息", value: d2y, sub: lvl(2, d2y) },
+      { label: "3m10s 斜率", value: d3m10s, sub: slopeSub(d3m10s) },
+    ];
+  }
+
+  const d2s10s = Number((d10y - d2y).toFixed(1));
+  const d5s30s = Number((d30y - d5y).toFixed(1));
+  return [
+    { label: "2Y 预计", value: d2y, sub: lvl(2, d2y) },
+    { label: "10Y 预计", value: d10y, sub: lvl(6, d10y) },
+    { label: "2s10s 斜率", value: d2s10s, sub: slopeSub(d2s10s) },
+    { label: "5s30s 斜率", value: d5s30s, sub: slopeSub(d5s30s) },
+  ];
+}
+
+function CurveProjection({
+  projectionSet,
+  baseCurve,
+  baseLabel,
+  forcedSide,
+  forcedScale,
+  externalSide,
+  externalNonce,
+  onSelectSide,
+  focusIndex,
+}: {
+  projectionSet: EventProjectionSet;
+  baseCurve: number[];
+  baseLabel: string;
+  forcedSide?: "above" | "below" | null;
+  forcedScale?: number | null;
+  externalSide?: "above" | "below" | null;
+  externalNonce?: number;
+  onSelectSide?: (side: "above" | "below" | "alt") => void;
+  focusIndex: number;
+}) {
+  const [selectedId, setSelectedId] = useState<string>(projectionSet.scenarios[0].id);
+  const [scale, setScale] = useState<number>(1);
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [replayNonce, setReplayNonce] = useState(0);
+
+  // Reset when switching events/indicators
+  useEffect(() => {
+    setSelectedId(projectionSet.scenarios[0].id);
+    setScale(1);
+    setHoverIdx(null);
+  }, [projectionSet.key]);
+
+  // Auto-sync with ScenarioCalculator when user enters Expected & Hypothesis or picks Hawkish/Dovish
+  useEffect(() => {
+    if (!forcedSide) return;
+    const matched = projectionSet.scenarios.find(s => s.side === forcedSide);
+    if (matched) setSelectedId(matched.id);
+    if (forcedScale && Number.isFinite(forcedScale)) {
+      setScale(Number(Math.min(1.8, Math.max(0.5, forcedScale)).toFixed(2)));
+    }
+  }, [forcedSide, forcedScale, projectionSet]);
+
+  // Bi-directional sync when user clicks a scenario card below
+  useEffect(() => {
+    if (!externalSide || !externalNonce) return;
+    const matched = projectionSet.scenarios.find(s => s.side === externalSide);
+    if (matched) setSelectedId(matched.id);
+  }, [externalSide, externalNonce, projectionSet]);
+
+  const active = projectionSet.scenarios.find(s => s.id === selectedId) ?? projectionSet.scenarios[0];
+  const targetShifts = useMemo(
+    () => active.shifts.map(bp => Number((bp * scale).toFixed(2))),
+    [active, scale]
+  );
+
+  const animShifts = useAnimatedVector(targetShifts, 440, replayNonce, projectionSet.key);
+
+  function selectScenario(sc: EventProjectionSet["scenarios"][number]) {
+    setSelectedId(sc.id);
+    onSelectSide?.(sc.side);
+  }
+
+  function replayMorph() {
+    setReplayNonce(n => n + 1);
+  }
+
+  const base = baseCurve.length === tenors.length ? baseCurve : fallbackBaseCurve;
+  const projected = base.map((yVal, i) => yVal + (animShifts[i] ?? 0) / 100);
+  const avgShift = animShifts.reduce((a, b) => a + b, 0) / animShifts.length;
+  const shiftTone = avgShift > 0.35 ? "up" : avgShift < -0.35 ? "down" : "mixed";
+
+  // Fixed steady axis across all scenarios of this event so switching pills feels smooth & physical
+  const maxScenarioDelta = Math.max(
+    0.14,
+    ...projectionSet.scenarios.flatMap(s => s.shifts.map(bp => Math.abs(bp * Math.max(1.2, scale)) / 100))
+  );
+  const minY = Math.min(...base) - maxScenarioDelta - 0.06;
+  const maxY = Math.max(...base) + maxScenarioDelta + 0.08;
+
+  const width = 540, height = 286, padL = 46, padR = 20;
+  const x = (i: number) => padL + (width - padL - padR) * i / (tenors.length - 1);
+  const y = (val: number) => 142 - 114 * (val - minY) / Math.max(0.05, maxY - minY);
+  const colW = (width - padL - padR) / (tenors.length - 1);
+
+  const xs = tenors.map((_, i) => x(i));
+  const baseYs = base.map(v => y(v));
+  const projYs = projected.map(v => y(v));
+  const basePath = xs.map((cx, i) => `${cx.toFixed(1)},${baseYs[i].toFixed(1)}`).join(" ");
+  const projPath = xs.map((cx, i) => `${cx.toFixed(1)},${projYs[i].toFixed(1)}`).join(" ");
+  const ribbonSegments = buildSignedRibbon(xs, baseYs, projYs, animShifts);
+
+  const maxBarBp = Math.max(
+    8,
+    Math.ceil(Math.max(...projectionSet.scenarios.flatMap(s => s.shifts.map(bp => Math.abs(bp * Math.max(1.1, scale))))))
+  );
+  const zeroY = 216;
+  const barY = (bp: number) => zeroY - (bp / maxBarBp) * 30;
+
+  const real10Bp = Number((active.realBe10y[0] * scale).toFixed(1));
+  const be10Bp = Number((active.realBe10y[1] * scale).toFixed(1));
+  const maxDriver = Math.max(4, Math.abs(real10Bp), Math.abs(be10Bp));
+  const kpis = buildProjectionKpis(projectionSet.key, base, targetShifts, real10Bp, be10Bp);
+  const isCalcSynced = Boolean(forcedSide && active.side === forcedSide);
+
+  const driverBarStyle = (val: number) => {
+    const pct = Math.min(50, (Math.abs(val) / maxDriver) * 50);
+    return val >= 0
+      ? { left: "50%", width: `${pct}%` }
+      : { left: `${50 - pct}%`, width: `${pct}%` };
+  };
+
+  return <div className="proj-card" aria-label="曲线情景形变推演">
+    <div className="proj-head">
+      <div>
+        <div className="proj-title-row">
+          <h3>收益率曲线形变推演</h3>
+          <span className={"proj-morph-tag tone-" + active.tone}>{active.tag}</span>
+          {isCalcSynced && <span className="proj-sync-badge">试算联动</span>}
+        </div>
+        <p className="proj-sub">{projectionSet.headline}</p>
+      </div>
+      <button type="button" className="proj-replay" onClick={replayMorph} title="从基准曲线重播形变动画">
+        <Play size={12} />重播形变
+      </button>
     </div>
-    {ribbon.length > 0 && <div className="spread-ribbon glass" aria-label="短端与通胀预期指标">
-      {ribbon.map(item => <div className="spread-chip" key={item.label}>
-        <span>{item.label}</span>
-        <strong>{item.value}</strong>
-        {item.delta !== null && <em className={item.delta > 0 ? "txt-up" : item.delta < 0 ? "txt-down" : "txt-muted"}>{sign(item.delta, Math.abs(item.delta % 1) > 0.01 ? 1 : 0)} bp</em>}
-      </div>)}
-    </div>}
+
+    <div className="proj-pills" role="tablist" aria-label="选择情景路径">
+      {projectionSet.scenarios.map(sc => (
+        <button key={sc.id} type="button" role="tab" aria-selected={sc.id === active.id}
+          className={"proj-pill tone-" + sc.tone + (sc.id === active.id ? " active" : "")}
+          onClick={() => selectScenario(sc)}>
+          {sc.label}
+        </button>
+      ))}
+    </div>
+
+    <div className="proj-slider-row">
+      <span className="proj-base-lbl"><i className="swatch swatch-dashed" />基准：{baseLabel}</span>
+      <label className="proj-intensity">
+        <span>意外强度 <b>{scale.toFixed(1)}×</b></span>
+        <input type="range" min="0.5" max="1.8" step="0.1" value={scale} onChange={e => setScale(Number(e.target.value))} />
+      </label>
+    </div>
+
+    <svg className="proj-svg" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="基准曲线与预期情景曲线形变图">
+      {/* Top Pane: Baseline vs Animated Projected Curve */}
+      {[0, 1, 2, 3].map(i => {
+        const val = minY + (maxY - minY) * i / 3;
+        return <g key={i}>
+          <line x1={padL} x2={width - padR} y1={y(val)} y2={y(val)} className="grid-line" />
+          <text x={padL - 7} y={y(val) + 3.5} textAnchor="end">{val.toFixed(2)}%</text>
+        </g>;
+      })}
+
+      {/* Per-Segment Signed Shaded Morph Ribbon (handles twists cleanly!) */}
+      {ribbonSegments.map((seg, i) => (
+        <path key={i} d={seg.d} className={"proj-ribbon " + seg.cls} />
+      ))}
+      <polyline fill="none" className="compare-line" strokeWidth="1.7" strokeDasharray="4 4" points={basePath} />
+      <polyline fill="none" className={"proj-main-line proj-line-" + shiftTone} strokeWidth="2.8" strokeLinejoin="round" strokeLinecap="round" points={projPath} />
+
+      {/* Bottom Pane: Aligned Projected Δbp Bars */}
+      <line x1={padL} x2={width - padR} y1="158" y2="158" className="pane-divider" />
+      <text x={padL} y="172" className="pane-tag">预期变动 (bp)</text>
+      <text x={width - padR} y="172" textAnchor="end" className="pane-hint">点击期限对比前后利率</text>
+      <line x1={padL} x2={width - padR} y1={zeroY} y2={zeroY} className="zero-line" />
+      <text x={padL - 7} y={zeroY + 3.5} textAnchor="end">0</text>
+      <text x={padL - 7} y="190" textAnchor="end">+{maxBarBp}</text>
+      <text x={padL - 7} y="248" textAnchor="end">-{maxBarBp}</text>
+
+      {tenors.map((tenor, i) => {
+        const cx = xs[i];
+        const by = baseYs[i];
+        const py = projYs[i];
+        const bp = animShifts[i] ?? 0;
+        const isHovered = hoverIdx === i;
+        const isKey = i === focusIndex;
+        const bTop = bp >= 0 ? barY(bp) : zeroY;
+        const bH = Math.max(2, Math.abs(barY(bp) - zeroY));
+        const bpTextY = bp >= 0 ? bTop - 5 : bTop + bH + 11;
+        const tipX = Math.min(Math.max(cx, 92), width - 92);
+        const tipY = Math.min(by, py) < 46 ? Math.max(by, py) + 28 : Math.min(by, py) - 16;
+
+        return <g key={tenor} className="curve-point"
+          onPointerEnter={e => { if (e.pointerType === "mouse") setHoverIdx(i); }}
+          onPointerLeave={e => { if (e.pointerType === "mouse") setHoverIdx(null); }}
+          onClick={() => setHoverIdx(prev => prev === i ? null : i)}>
+          {isHovered && <line x1={cx} x2={cx} y1="22" y2="260" className="focus-guide" />}
+          {Math.abs(py - by) > 4 && (
+            <line x1={cx} x2={cx} y1={by} y2={py} className={"shift-stem stem-" + (bp >= 0 ? "up" : "down")} />
+          )}
+          <circle cx={cx} cy={by} r="2.6" className="base-dot" />
+          {isKey && <circle cx={cx} cy={py} r="8.5" className={"key-halo halo-" + (bp >= 0 ? "up" : "down")} />}
+          <circle cx={cx} cy={py} r={isHovered || isKey ? 5.2 : 3.6} className={"proj-dot dot-" + (bp >= 0 ? "up" : "down")} />
+
+          <rect x={cx - 11} y={bTop} width="22" height={bH} rx="4.5"
+            className={(bp > 0.2 ? "bar-up" : bp < -0.2 ? "bar-down" : "bar-flat") + (isHovered ? " bar-active" : "")} />
+          <text x={cx} y={bpTextY} textAnchor="middle"
+            className={"bp-val " + (bp > 0.2 ? "bp-up" : bp < -0.2 ? "bp-down" : "")}>
+            {Math.abs(bp) < 0.25 ? "0" : sign(bp, Math.abs(bp) < 10 ? 1 : 0)}
+          </text>
+          <text x={cx} y="276" textAnchor="middle" className={"tenor-lbl" + (isHovered || isKey ? " tenor-active" : "")}>{tenor}</text>
+          <rect x={cx - colW / 2} y="16" width={colW} height="266" fill="transparent" />
+
+          {isHovered && <g className="svg-callout">
+            <rect x={tipX - 80} y={tipY - 15} width="160" height="22" rx="11" />
+            <text x={tipX} y={tipY} textAnchor="middle" className="chart-value">
+              {tenor} {base[i].toFixed(2)}%→{projected[i].toFixed(2)}% ({sign(bp, 1)}bp)
+            </text>
+          </g>}
+        </g>;
+      })}
+    </svg>
+
+    <div className="proj-kpis">
+      {kpis.map(k => (
+        <div className="pk-item" key={k.label}>
+          <span>{k.label}</span>
+          <strong className={k.value > 0.2 ? "txt-up" : k.value < -0.2 ? "txt-down" : ""}>{sign(k.value, 1)} bp</strong>
+          <small>{k.sub}</small>
+        </div>
+      ))}
+    </div>
+
+    {(Math.abs(real10Bp) >= 0.3 || Math.abs(be10Bp) >= 0.3) && (
+      <div className="proj-drivers" aria-label="10年期实际利率与通胀预期拆解">
+        <div className="driver-row">
+          <span>10Y 实际利率</span>
+          <div className="driver-track">
+            <i className="driver-zero" />
+            <div className={"driver-fill " + (real10Bp >= 0 ? "up" : "down")} style={driverBarStyle(real10Bp)} />
+          </div>
+          <strong className={real10Bp > 0.1 ? "txt-up" : real10Bp < -0.1 ? "txt-down" : ""}>{sign(real10Bp, 1)} bp</strong>
+        </div>
+        <div className="driver-row">
+          <span>10Y Breakeven</span>
+          <div className="driver-track">
+            <i className="driver-zero" />
+            <div className={"driver-fill " + (be10Bp >= 0 ? "up" : "down")} style={driverBarStyle(be10Bp)} />
+          </div>
+          <strong className={be10Bp > 0.1 ? "txt-up" : be10Bp < -0.1 ? "txt-down" : ""}>{sign(be10Bp, 1)} bp</strong>
+        </div>
+      </div>
+    )}
+
+    <p className="proj-note">{active.note}</p>
+    <p className="proj-disclaimer">基于当前曲线叠加历史经验期限弹性推演，用于直观判断方向、斜率与关键节点形态，非精确点位预测。</p>
   </div>;
 }
 
@@ -536,8 +932,17 @@ function PlaybookView({ playbook, compact = false }: { playbook: Playbook; compa
   </div>;
 }
 
-function ScenarioCalculator({ event, sameTime, allEvents }: { event: MarketEvent; sameTime: MarketEvent[]; allEvents: MarketEvent[] }) {
+function ScenarioCalculator({
+  event, sameTime, allEvents, baseCurve, baseLabel,
+}: {
+  event: MarketEvent;
+  sameTime: MarketEvent[];
+  allEvents: MarketEvent[];
+  baseCurve: number[];
+  baseLabel: string;
+}) {
   const rule = ruleFor(event)!;
+  const projSet = useMemo(() => projectionFor(event), [event]);
   const official = actualFor(event, rule);
   const prior = useMemo(() => priorFor(event, allEvents, rule), [event, allEvents, rule]);
   const initialSaved = useMemo(() => loadSavedScenarios()[event.id] ?? {}, [event.id]);
@@ -546,6 +951,8 @@ function ScenarioCalculator({ event, sameTime, allEvents }: { event: MarketEvent
   const [hypothesis, setHypothesis] = useState(initialSaved.hypothesis ?? "");
   const [components, setComponents] = useState(initialSaved.components ?? "unknown");
   const [stance, setStance] = useState(initialSaved.stance ?? "none");
+  const [previewSide, setPreviewSide] = useState<"above" | "below" | "alt">("above");
+  const [cardPick, setCardPick] = useState<{ side: "above" | "below" | null; nonce: number }>({ side: null, nonce: 0 });
 
   useEffect(() => {
     saveScenarioInput(event.id, { expected, hypothesis, components, stance });
@@ -572,6 +979,12 @@ function ScenarioCalculator({ event, sameTime, allEvents }: { event: MarketEvent
     ? (stance === "above" || stance === "below" ? stance : null)
     : (diff === null || near ? null : diff > 0 ? "above" : "below");
 
+  const forcedScale = isQual
+    ? (verdict ? 1 : null)
+    : diff !== null && !near && Number.isFinite(bigBand) && bigBand > 0
+      ? Math.min(1.8, Math.max(0.5, Number((absDiff / bigBand * 1.15).toFixed(2))))
+      : null;
+
   const mixed = components === "mixed";
   const confirmed = components === "aligned" && !sameTime.length;
   const comparator = isAuction ? "截标前 WI" : useModel ? "模型" : "预期";
@@ -590,6 +1003,17 @@ function ScenarioCalculator({ event, sameTime, allEvents }: { event: MarketEvent
     : v + " 千人";
 
   return <div className="calc-wrap">
+    <CurveProjection
+      projectionSet={projSet}
+      baseCurve={baseCurve}
+      baseLabel={baseLabel}
+      forcedSide={mixed ? null : verdict}
+      forcedScale={mixed ? 0.5 : forcedScale}
+      externalSide={cardPick.side}
+      externalNonce={cardPick.nonce}
+      onSelectSide={setPreviewSide}
+      focusIndex={focusTenorIndexFor(projSet.key, event)}
+    />
     {isQual ? (
       <div className="scenario-inputs qual-inputs">
         <label>政策 / 纪要基调判断
@@ -658,8 +1082,23 @@ function ScenarioCalculator({ event, sameTime, allEvents }: { event: MarketEvent
 
     <div className="scenario-grid">{(["above", "below"] as const).map(comparison => {
       const scenario = scenarioFor(event, rule, comparison);
-      return <article key={comparison} className={verdict === comparison && !mixed ? "matched" : undefined}>
-        <span className={"scenario-tag dir-" + scenario.yieldDir}>{comparison === "above" ? positive : negative}</span>
+      const isMatched = verdict === comparison && !mixed;
+      const isPreviewed = !isMatched && (verdict === null || mixed) && previewSide === comparison;
+      return <article key={comparison}
+        role="button" tabIndex={0}
+        className={(isMatched ? "matched " : isPreviewed ? "previewed " : "") + "scenario-card-interactive"}
+        onClick={() => { setPreviewSide(comparison); setCardPick(prev => ({ side: comparison, nonce: prev.nonce + 1 })); }}
+        onKeyDown={e => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setPreviewSide(comparison);
+            setCardPick(prev => ({ side: comparison, nonce: prev.nonce + 1 }));
+          }
+        }}>
+        <div className="scenario-card-top">
+          <span className={"scenario-tag dir-" + scenario.yieldDir}>{comparison === "above" ? positive : negative}</span>
+          <span className="scenario-preview-hint">{isMatched ? "当前命中" : isPreviewed ? "曲线预览中" : "点击切图"}</span>
+        </div>
         <h3>{scenario.direction}</h3>
         <p>{scenario.text}</p>
         <p className="scenario-curve"><b>曲线：</b>{scenario.curve}</p>
@@ -694,11 +1133,13 @@ function MicrostructureGrid({ kind }: { kind: MarketEvent["kind"] }) {
 /* ---------- Unified Liquid Glass Slide-Over Inspector Drawer ---------- */
 
 function EventDrawer({
-  event, list, allEvents, tz, now, currentView, onClose, onStep, onJumpWeek, onOpenFullScenario,
+  event, list, allEvents, baseCurve, baseLabel, tz, now, currentView, onClose, onStep, onJumpWeek, onOpenFullScenario,
 }: {
   event: MarketEvent;
   list: MarketEvent[];
   allEvents: MarketEvent[];
+  baseCurve: number[];
+  baseLabel: string;
   tz: TzMode;
   now: Date;
   currentView: ViewId;
@@ -709,10 +1150,13 @@ function EventDrawer({
 }) {
   const rule = ruleFor(event);
   const playbook = playbookFor(event);
+  const projSet = useMemo(() => projectionFor(event), [event]);
   const [tab, setTab] = useState<DrawerTab>(() => (rule ? "scenario" : "history"));
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setTab(rule ? "scenario" : "history");
+    scrollRef.current?.scrollTo({ top: 0 });
   }, [event.id, Boolean(rule)]);
 
   const idx = list.findIndex(item => item.id === event.id);
@@ -751,41 +1195,50 @@ function EventDrawer({
         <button type="button" className="icon-button drawer-close" aria-label="关闭详情抽屉" onClick={onClose}><X size={17} /></button>
       </header>
 
-      <div className="drawer-title-block">
-        <h2 id="drawer-title">{event.title}</h2>
-        <p>{event.detail}</p>
-        <div className="event-meta">
-          <SourceLink url={event.url} label={sourceIndex[event.source].name.split(" · ")[0]} />
-          {event.resultUrl && <SourceLink url={event.resultUrl} label="官方发布原文" />}
-          {tz !== "ET" && event.time && <span>纽约原时 {short(event.date)} {event.time} ET</span>}
-          {event.officialDate && <span>来源更新 {event.officialDate}</span>}
+      <div className="drawer-scroll" ref={scrollRef}>
+        <div className="drawer-title-block">
+          <h2 id="drawer-title">{event.title}</h2>
+          <p>{event.detail}</p>
+          <div className="event-meta">
+            <SourceLink url={event.url} label={sourceIndex[event.source].name.split(" · ")[0]} />
+            {event.resultUrl && <SourceLink url={event.resultUrl} label="官方发布原文" />}
+            {tz !== "ET" && event.time && <span>纽约原时 {short(event.date)} {event.time} ET</span>}
+            {event.officialDate && <span>来源更新 {event.officialDate}</span>}
+          </div>
+
+          {event.readings?.length ? <div className="reading-grid">{event.readings.map(reading =>
+            <div key={reading.label}><span>{reading.label}</span><strong>{readingText(reading)}</strong></div>)}</div> :
+            event.actual && <p className="evidence">{event.actual}</p>}
+
+          {sameTime.length > 0 && <p className="evidence warn-note">同刻发布冲突：{sameTime.map(item => item.title).join("、")}。</p>}
         </div>
 
-        {event.readings?.length ? <div className="reading-grid">{event.readings.map(reading =>
-          <div key={reading.label}><span>{reading.label}</span><strong>{readingText(reading)}</strong></div>)}</div> :
-          event.actual && <p className="evidence">{event.actual}</p>}
-
-        {sameTime.length > 0 && <p className="evidence warn-note">同刻发布冲突：{sameTime.map(item => item.title).join("、")}。</p>}
-      </div>
-
-      <div className="drawer-tabs">
-        <div className="segmented full-seg" role="tablist" aria-label="事件分析视图">
-          {rule && <button type="button" role="tab" aria-selected={tab === "scenario"} className={tab === "scenario" ? "active" : ""} onClick={() => setTab("scenario")}>
-            <SlidersHorizontal size={13} />情景推演
-          </button>}
-          <button type="button" role="tab" aria-selected={tab === "history"} className={tab === "history" ? "active" : ""} onClick={() => setTab("history")}>
-            <History size={13} />历史与机制
-          </button>
-          <button type="button" role="tab" aria-selected={tab === "micro"} className={tab === "micro" ? "active" : ""} onClick={() => setTab("micro")}>
-            <Layers size={13} />交易台微结构
-          </button>
+        <div className="drawer-tabs">
+          <div className="segmented full-seg" role="tablist" aria-label="事件分析视图">
+            {rule && <button type="button" role="tab" aria-selected={tab === "scenario"} className={tab === "scenario" ? "active" : ""} onClick={() => setTab("scenario")}>
+              <SlidersHorizontal size={13} />情景推演
+            </button>}
+            <button type="button" role="tab" aria-selected={tab === "history"} className={tab === "history" ? "active" : ""} onClick={() => setTab("history")}>
+              <History size={13} />历史与机制
+            </button>
+            <button type="button" role="tab" aria-selected={tab === "micro"} className={tab === "micro" ? "active" : ""} onClick={() => setTab("micro")}>
+              <Layers size={13} />交易台微结构
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="drawer-scroll">
-        {tab === "scenario" && rule && <ScenarioCalculator key={event.id} event={event} sameTime={sameTime} allEvents={allEvents} />}
-        {tab === "history" && <PlaybookView playbook={playbook} compact />}
-        {tab === "micro" && <MicrostructureGrid kind={event.kind} />}
+        <div className="drawer-body">
+          {tab === "scenario" && rule && <ScenarioCalculator key={event.id} event={event} sameTime={sameTime} allEvents={allEvents} baseCurve={baseCurve} baseLabel={baseLabel} />}
+          {tab === "history" && <>
+            {!rule && (
+              <div className="drawer-proj-spacer">
+                <CurveProjection projectionSet={projSet} baseCurve={baseCurve} baseLabel={baseLabel} focusIndex={focusTenorIndexFor(projSet.key, event)} />
+              </div>
+            )}
+            <PlaybookView playbook={playbook} compact />
+          </>}
+          {tab === "micro" && <MicrostructureGrid kind={event.kind} />}
+        </div>
       </div>
 
       <footer className="drawer-foot">
@@ -1008,6 +1461,17 @@ export default function Desk() {
   }
 
   const activeLibraryPlaybook = playbookByKey(libraryKey) ?? playbookByKey("cpi")!;
+  const activeLibraryProj = projectionByKey(libraryKey);
+  const latestCurve9 = useMemo(() => {
+    if (week >= current && preferLive && liveCurve) {
+      return { values: liveCurve.values, label: `实时现券 (${liveCurve.exchange})` };
+    }
+    const last = points.at(-1);
+    if (last && last.values.length === tenors.length) {
+      return { values: last.values, label: `财政部日终 ${last.date}` };
+    }
+    return { values: fallbackBaseCurve, label: "参考美债曲线" };
+  }, [week, current, preferLive, liveCurve, points]);
 
   return <>
     <div className="ambient-mesh" aria-hidden="true">
@@ -1101,10 +1565,9 @@ export default function Desk() {
 
         {/* VIEW 1: OVERVIEW */}
         {view === "overview" && <>
-          <RateCards points={points} live={liveCurve} showLive={week >= current && preferLive} />
           <div className="overview-grid">
             <Curve points={points} live={liveCurve} showLive={preferLive} canLive={week >= current} onToggleLive={setPreferLive} tz={tz} />
-            <FocusList inspect={inspectEvent} tz={tz} now={now} events={upcoming.slice(0, 5)} />
+            <FocusList inspect={inspectEvent} tz={tz} now={now} events={upcoming.slice(0, 6)} />
           </div>
           <LatestReleases events={latestReleases} tz={tz} inspect={inspectEvent} />
 
@@ -1228,6 +1691,8 @@ export default function Desk() {
                   key={activeScenario.id}
                   event={activeScenario}
                   allEvents={allEvents}
+                  baseCurve={latestCurve9.values}
+                  baseLabel={latestCurve9.label}
                   sameTime={allEvents.filter(ev => ev.id !== activeScenario.id && ev.date === activeScenario.date && ev.time && ev.time === activeScenario.time && ev.impact >= 3)}
                 />
               </section>
@@ -1265,7 +1730,17 @@ export default function Desk() {
                   </button>;
                 })}
               </div>
-              <div className="panel-pad"><PlaybookView playbook={activeLibraryPlaybook} /></div>
+              <div className="panel-pad">
+                <div className="drawer-proj-spacer">
+                  <CurveProjection
+                    projectionSet={activeLibraryProj}
+                    baseCurve={latestCurve9.values}
+                    baseLabel={latestCurve9.label}
+                    focusIndex={focusTenorIndexFor(libraryKey)}
+                  />
+                </div>
+                <PlaybookView playbook={activeLibraryPlaybook} />
+              </div>
             </section>
           )}
         </div>}
@@ -1317,6 +1792,8 @@ export default function Desk() {
         event={inspected.event}
         list={inspected.list}
         allEvents={allEvents}
+        baseCurve={latestCurve9.values}
+        baseLabel={latestCurve9.label}
         tz={tz}
         now={now}
         currentView={view}

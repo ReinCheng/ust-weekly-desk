@@ -1,0 +1,850 @@
+import { playbookFor } from "./playbooks";
+import type { MarketEvent } from "./model";
+
+export type ProjectionScenario = {
+  id: string;
+  label: string;
+  tag: string;
+  tone: "bear" | "bull" | "mixed";
+  side: "above" | "below" | "alt";
+  /** Typical bp shift across ["3M", "1Y", "2Y", "3Y", "5Y", "7Y", "10Y", "20Y", "30Y"] */
+  shifts: [number, number, number, number, number, number, number, number, number];
+  /** Decomposition of 10Y shift into [realYieldBp, breakevenBp] */
+  realBe10y: [number, number];
+  note: string;
+};
+
+export type EventProjectionSet = {
+  key: string;
+  headline: string;
+  scenarios: ProjectionScenario[];
+};
+
+const sets: Record<string, EventProjectionSet> = {
+  cpi: {
+    key: "cpi",
+    headline: "CPI 曲线推演：区分鹰派熊平、通胀失锚熊陡与空头回补牛陡",
+    scenarios: [
+      {
+        id: "cpi-hot-flat",
+        label: "高于预期 · 鹰派熊平",
+        tag: "熊平 Bear Flattening",
+        tone: "bear",
+        side: "above",
+        shifts: [2, 11, 19, 17, 15, 12, 9, 6, 4],
+        realBe10y: [5, 4],
+        note: "加息/高利率锚定周期：前端迅速砍降息，2Y/3Y 领涨，长端涨幅明显小于前端，2s10s 大幅走平。",
+      },
+      {
+        id: "cpi-cold-steep",
+        label: "低于预期 · 牛陡 / 回补",
+        tag: "牛陡 Bull Steepening",
+        tone: "bull",
+        side: "below",
+        shifts: [-2, -12, -20, -19, -18, -16, -14, -11, -9],
+        realBe10y: [-9, -5],
+        note: "核心与 Supercore 同步降温，降息预期提前带动 2Y–5Y 领跌；若 5Y/10Y 空头极重，Belly 回补幅度可逼近甚至超过 2Y。",
+      },
+      {
+        id: "cpi-hot-steep",
+        label: "热 CPI · 通胀失锚（熊陡）",
+        tag: "熊陡 Bear Steepening",
+        tone: "mixed",
+        side: "alt",
+        shifts: [1, 6, 10, 12, 15, 17, 19, 21, 21],
+        realBe10y: [7, 12],
+        note: "财政赤字叠加央行偏鸽担忧：Breakeven 与长端期限溢价主导抛售，10Y–30Y 跌幅大于 2Y，曲线显著熊陡。",
+      },
+    ],
+  },
+
+  eci: {
+    key: "eci",
+    headline: "ECI 就业成本指数推演：固定权重工资通胀标尺（FOMC 首日权重倍增）",
+    scenarios: [
+      {
+        id: "eci-hot",
+        label: "高于预期（薪资粘性）",
+        tag: "熊平 Bear Flattening",
+        tone: "bear",
+        side: "above",
+        shifts: [1, 5, 8, 8, 7.5, 6.5, 5.5, 4, 3.5],
+        realBe10y: [4, 1.5],
+        note: "总体与私营部门薪资季率双双偏热（如 2024-04-30），直接抬高联储政策门槛，2Y–5Y 扎实上行且不易回吐。",
+      },
+      {
+        id: "eci-cold",
+        label: "低于预期（薪资降温）",
+        tag: "牛陡 Bull Steepening",
+        tone: "bull",
+        side: "below",
+        shifts: [-1, -4.5, -7.5, -7, -6.5, -5.5, -4.5, -3.5, -3],
+        realBe10y: [-3.5, -1],
+        note: "固定权重薪资增速向 3%–3.5% 目标区间收敛，消除工资-物价螺旋担忧，前端引领温和牛陡。",
+      },
+      {
+        id: "eci-benefits",
+        label: "仅福利异动（假热回吐）",
+        tag: "低波 / 回吐",
+        tone: "mixed",
+        side: "alt",
+        shifts: [0, 1, 2, 1.5, 1.5, 1, 1, 0.5, 0],
+        realBe10y: [0.8, 0.2],
+        note: "若超预期完全来自福利项一次性跳升而私营薪资温和，首轮上冲常迅速收敛，曲线变动极小。",
+      },
+    ],
+  },
+
+  pce: {
+    key: "pce",
+    headline: "PCE 物价 / 个人收支推演：重在前月修正与实际消费共振",
+    scenarios: [
+      {
+        id: "pce-hot",
+        label: "高于推算 + 上修 / 消费强",
+        tag: "熊平 Bear Flattening",
+        tone: "bear",
+        side: "above",
+        shifts: [1, 6, 11, 10, 9.5, 8, 7, 5.5, 4.5],
+        realBe10y: [5.5, 1.5],
+        note: "当 Core PCE 超预期叠加前月上修及 Real Spending 强劲（如 2023-02-24），打破低波常态，2Y/5Y 显著承压。",
+      },
+      {
+        id: "pce-cold",
+        label: "低于推算 / 消费转弱",
+        tag: "牛陡 Bull Steepening",
+        tone: "bull",
+        side: "below",
+        shifts: [-1, -5, -8.5, -8, -7.5, -6.5, -5.5, -4.5, -4],
+        realBe10y: [-4.5, -1],
+        note: "核心物价偏软叠加前月下修或实际消费转负，巩固降息路径，2Y–5Y 领跌。",
+      },
+      {
+        id: "pce-inline",
+        label: "落入 CPI/PPI 推算区间",
+        tag: "常态低波",
+        tone: "mixed",
+        side: "alt",
+        shifts: [0, -0.5, -1, -1.5, -2, -2, -2.5, -2.5, -3],
+        realBe10y: [-2, -0.5],
+        note: "因 CPI/PPI 已提前两周“泄题”，常规月份或前一日 GDP 已计价时（如 2024-04-26），全曲线仅小幅波动。",
+      },
+    ],
+  },
+
+  ppi: {
+    key: "ppi",
+    headline: "PPI 推演：盯医疗/机票/投管 PCE 桥接项，严防前月下修反转",
+    scenarios: [
+      {
+        id: "ppi-hot",
+        label: "PCE 桥接服务项偏热",
+        tag: "温和熊平",
+        tone: "bear",
+        side: "above",
+        shifts: [0.5, 4, 8, 7.5, 7, 6, 5.5, 4, 3],
+        realBe10y: [4, 1.5],
+        note: "医疗保健、机票与投管费用同步偏热且前月未下修（如 2024-02-16），实质抬高当月 Core PCE 追踪值。",
+      },
+      {
+        id: "ppi-cold",
+        label: "PCE 桥接服务项偏软",
+        tag: "温和牛陡",
+        tone: "bull",
+        side: "below",
+        shifts: [-0.5, -3.5, -6.5, -6, -5.5, -5, -4.5, -3.5, -3],
+        realBe10y: [-3.5, -1],
+        note: "关键服务项回落压低投行 Core PCE 预测，2Y/5Y 温和走强。",
+      },
+      {
+        id: "ppi-rev-trap",
+        label: "Headline 热但前月大下修（反转）",
+        tag: "反向走牛 Trap",
+        tone: "bull",
+        side: "alt",
+        shifts: [0, -2, -4, -4, -4, -3.5, -3, -3.5, -4],
+        realBe10y: [-2.5, -0.5],
+        note: "经典陷阱（2024-05-14）：表面 Headline 超预期冲高，但前月大幅下修且机票/医疗温和，收盘反而全线走低。",
+      },
+    ],
+  },
+
+  jobs: {
+    key: "jobs",
+    headline: "非农就业推演：四维共振、失业率 Sahm 触发与修订反转",
+    scenarios: [
+      {
+        id: "nfp-hot",
+        label: "四维偏强（新增+失业率+修订+薪资）",
+        tag: "剧烈熊平",
+        tone: "bear",
+        side: "above",
+        shifts: [3, 14, 22, 20, 18, 15, 12, 9, 7],
+        realBe10y: [11, 1],
+        note: "类似 2024-10-04：激进降息定价瞬间出清，2Y 领涨 +20bp 以上，2s10s 大幅熊平 -10bp。",
+      },
+      {
+        id: "nfp-cold",
+        label: "新增弱 + 失业率跳升（Sahm 警报）",
+        tag: "剧烈牛陡",
+        tone: "bull",
+        side: "below",
+        shifts: [-4, -18, -26, -24, -21, -19, -17, -14, -13],
+        realBe10y: [-14, -3],
+        note: "类似 2024-08-02：失业率非线性上升打开 50bp 降息定价，2Y 暴跌领跑，2s10s 剧烈牛陡 +9bp。",
+      },
+      {
+        id: "nfp-rev-trap",
+        label: "新增超预期但前两月大下修 + 失业率升",
+        tag: "修订反向走牛",
+        tone: "bull",
+        side: "alt",
+        shifts: [-1, -7, -11, -11, -10.5, -9.5, -8, -6.5, -6],
+        realBe10y: [-7, -1],
+        note: "类似 2024-07-05：拐点期美债优先定价家庭调查失业率上升与前两月下修，无视表面 Headline 偏强。",
+      },
+    ],
+  },
+
+  claims: {
+    key: "claims",
+    headline: "初请失业金推演：方向与通胀相反（申领上升 = 利多美债）",
+    scenarios: [
+      {
+        id: "claims-high",
+        label: "高于预期（申领突破区间 · 利多）",
+        tag: "牛陡 / 下行",
+        tone: "bull",
+        side: "above",
+        shifts: [-1, -4, -7, -6.5, -6, -5.5, -5, -4, -3.5],
+        realBe10y: [-4.5, -0.5],
+        note: "申领人数跳升且续请同步创高（尤其非农调查周），强化就业降温信号，2Y/5Y 收益率下行。",
+      },
+      {
+        id: "claims-low",
+        label: "低于预期（就业韧性 · 利空）",
+        tag: "温和熊平",
+        tone: "bear",
+        side: "below",
+        shifts: [0.5, 3, 5.5, 5, 4.5, 4, 3.5, 2.5, 2],
+        realBe10y: [3.2, 0.3],
+        note: "衰退担忧期录得低初请（如 2024-08-08），迅速缓解裁员恐慌，前端反弹带动曲线小幅熊平。",
+      },
+      {
+        id: "claims-holiday",
+        label: "假日季调噪音（±10k 内）",
+        tag: "噪音区间",
+        tone: "mixed",
+        side: "alt",
+        shifts: [0, -0.5, -1, -1, -1, -0.8, -0.5, -0.5, 0],
+        realBe10y: [-0.5, 0],
+        note: "节假日或单州季调扰动且无续请配合，市场迅速忽略。",
+      },
+    ],
+  },
+
+  jolts: {
+    key: "jolts",
+    headline: "JOLTS 推演：高利率平台期热数据走长端熊陡，降息期冷数据走前端牛陡",
+    scenarios: [
+      {
+        id: "jolts-hot-steep",
+        label: "高于预期 · 高利率平台期（长端熊陡）",
+        tag: "长端熊陡",
+        tone: "bear",
+        side: "above",
+        shifts: [0.5, 2, 4, 6, 8, 10, 11.5, 13, 13.5],
+        realBe10y: [10, 1.5],
+        note: "类似 2023-10-03：政策利率封顶后，过热职位空缺推高长期中性利率与期限溢价，10Y–30Y 跌幅远超 2Y。",
+      },
+      {
+        id: "jolts-cold-steep",
+        label: "低于预期 · 降息博弈期（前端牛陡）",
+        tag: "牛陡 Bull Steepening",
+        tone: "bull",
+        side: "below",
+        shifts: [-1.5, -7, -11.5, -10.5, -9.5, -8.5, -7.5, -6.5, -6.5],
+        realBe10y: [-6.5, -1],
+        note: "类似 2024-09-04：空缺与主动离职率（Quits）双降，确认工资降温，2Y 领跌推动 2s10s 走陡。",
+      },
+      {
+        id: "jolts-layoffs",
+        label: "空缺降 + 裁员率跳升（衰退加速）",
+        tag: "全线避险走牛",
+        tone: "bull",
+        side: "alt",
+        shifts: [-2, -10, -16, -15, -14, -13, -12, -10.5, -10],
+        realBe10y: [-10, -2],
+        note: "若不再是温和再平衡而是 Layoffs 实质跳升，全曲线加速下行。",
+      },
+    ],
+  },
+
+  retail: {
+    key: "retail",
+    headline: "零售销售推演：强消费在高利率期走熊陡、在降息定价期走熊平",
+    scenarios: [
+      {
+        id: "retail-hot-flat",
+        label: "对照组强 · 降息定价期（熊平）",
+        tag: "熊平 Bear Flattening",
+        tone: "bear",
+        side: "above",
+        shifts: [1.5, 8, 13.5, 12.5, 11.5, 10, 8.5, 6.5, 5.5],
+        realBe10y: [7.5, 1],
+        note: "类似 2024-08-15：市场原定价 50bp 降息时，强劲消费直接击碎衰退叙事，2Y 领涨走熊平。",
+      },
+      {
+        id: "retail-cold",
+        label: "对照组与餐饮偏弱（走牛）",
+        tag: "Belly 领跌走牛",
+        tone: "bull",
+        side: "below",
+        shifts: [-1, -5, -7.5, -8, -9, -8.5, -8, -6.5, -6],
+        realBe10y: [-7, -1],
+        note: "对照组直接下修当季 GDPNow，5Y/10Y 顺畅下行并带动 2Y 跟随。",
+      },
+      {
+        id: "retail-hot-steep",
+        label: "对照组强 · 高利率平台期（熊陡）",
+        tag: "熊陡 Bear Steepening",
+        tone: "mixed",
+        side: "alt",
+        shifts: [0.5, 2.5, 5, 7.5, 10.5, 11.5, 12.5, 12.5, 12.5],
+        realBe10y: [10.5, 2],
+        note: "类似 2024-04-15：2Y 已难大幅计价再加息，强劲增长直接重创 5Y–30Y 长端，2s10s 熊陡 +7.5bp。",
+      },
+    ],
+  },
+
+  gdp: {
+    key: "gdp",
+    headline: "GDP 推演：谨防“弱 GDP + 强季度 Core PCE”的滞胀反向抛售",
+    scenarios: [
+      {
+        id: "gdp-hot",
+        label: "私人内需强于预期（熊陡）",
+        tag: "成长熊陡",
+        tone: "bear",
+        side: "above",
+        shifts: [0.5, 2, 4, 5.5, 7.5, 8, 8.5, 8, 7.5],
+        realBe10y: [7.5, 1],
+        note: "剔除库存与净出口后私人国内最终销售强劲，抬升 5Y/10Y 实际增长定价。",
+      },
+      {
+        id: "gdp-cold",
+        label: "内需与季度 PCE 双软（走牛）",
+        tag: "中长端走牛",
+        tone: "bull",
+        side: "below",
+        shifts: [-1, -4, -6.5, -7.5, -9, -8.5, -8, -7, -6.5],
+        realBe10y: [-6, -2],
+        note: "内需放缓且季度 Core PCE 价格指数温和（如 2023-10-26），5Y/10Y 流畅下行。",
+      },
+      {
+        id: "gdp-stagflation",
+        label: "弱 Headline + 热 Core PCE（滞胀陷阱）",
+        tag: "反向抛售 Trap",
+        tone: "bear",
+        side: "alt",
+        shifts: [1, 4.5, 7.5, 7, 6.5, 5.5, 5, 4.5, 4],
+        realBe10y: [2.5, 2.5],
+        note: "类似 2024-04-25：进口激增拖累 GDP 仅 1.6%，但季度 Core PCE 飙至 3.7%，2Y/10Y 无视弱 Headline 全线上行！",
+      },
+    ],
+  },
+
+  policy: {
+    key: "policy",
+    headline: "FOMC 决议推演：14:00 点阵图 / r* 冲击 vs 14:30 记者会与 QT 转向",
+    scenarios: [
+      {
+        id: "fomc-hawk",
+        label: "偏鹰 / 鹰派降息（点阵削减）",
+        tag: "Belly 领跌熊平",
+        tone: "bear",
+        side: "above",
+        shifts: [1, 7, 11, 13, 14.5, 12.5, 10.5, 8, 6.5],
+        realBe10y: [9.5, 1],
+        note: "类似 2024-12-18：削减明年点阵图或上调中性利率 r* 时，反映 1–3 年路径的 5Y Belly 往往跌幅最深。",
+      },
+      {
+        id: "fomc-dove",
+        label: "偏鸽 / 政策转向 Pivot",
+        tag: "剧烈牛陡",
+        tone: "bull",
+        side: "below",
+        shifts: [-3, -18, -26, -24, -22, -19, -15, -12, -10],
+        realBe10y: [-16, 1],
+        note: "类似 2023-12-13：转向降息周期确认，实际利率主导暴跌，2Y 领跌推动 2s10s 剧烈牛陡 +11bp。",
+      },
+      {
+        id: "fomc-qt",
+        label: "放缓 QT + 记者会安抚反转",
+        tag: "全线温和走牛",
+        tone: "bull",
+        side: "alt",
+        shifts: [-1, -5, -8, -8, -8, -7, -6.5, -5.5, -5],
+        realBe10y: [-6, -0.5],
+        note: "类似 2024-05-01：宣布缩表减速且主席在 14:30 排除加息，盘中完全扭转声明初动。",
+      },
+    ],
+  },
+
+  minutes: {
+    key: "minutes",
+    headline: "FOMC 纪要推演：聚焦 QT 缩表路线与增量鹰鸽分歧",
+    scenarios: [
+      {
+        id: "min-hawk",
+        label: "鹰派 / 提前缩表增量",
+        tag: "温和上移",
+        tone: "bear",
+        side: "above",
+        shifts: [0.5, 3, 6, 6, 6, 5.5, 5, 3.5, 2.5],
+        realBe10y: [4.5, 0.5],
+        note: "类似 2022-01-05：披露超预期 QT 讨论或多数官员警示通胀风险时，全曲线承压。",
+      },
+      {
+        id: "min-dove-qt",
+        label: "讨论放缓 / 停止 QT（利好长端）",
+        tag: "温和牛平",
+        tone: "bull",
+        side: "below",
+        shifts: [0, -1.5, -3, -3.5, -4.5, -5, -5.5, -6, -6],
+        realBe10y: [-5, -0.5],
+        note: "缩表终点讨论直接减轻长端供给与准备金忧虑，10Y–30Y 表现优于短端。",
+      },
+      {
+        id: "min-stale",
+        label: "信息已被会后数据覆盖",
+        tag: "低波收敛",
+        tone: "mixed",
+        side: "alt",
+        shifts: [0, 0.5, 1, 1, 1, 0.5, 0.5, 0, 0],
+        realBe10y: [0.5, 0],
+        note: "三周滞后令旧表述迅速失效，波动停留在 1–2bp 内。",
+      },
+    ],
+  },
+
+  auction_front: {
+    key: "auction_front",
+    headline: "2Y / 3Y 短端国债拍卖推演：局部短端微调，长端外溢极小",
+    scenarios: [
+      {
+        id: "af-tail",
+        label: "Tail > WI（Dealer 获配偏高）",
+        tag: "短端局部微凸",
+        tone: "bear",
+        side: "above",
+        shifts: [0.5, 1.5, 3.5, 3.5, 2, 1.5, 1, 0.5, 0.5],
+        realBe10y: [1, 0],
+        note: "2Y/3Y 紧贴政策利率锚定、久期短，常规 Tail 主要表现为 2Y/3Y 局部小幅走弱，对长端外溢微弱。",
+      },
+      {
+        id: "af-stop",
+        label: "Stop-through < WI（强承接）",
+        tag: "短端回补",
+        tone: "bull",
+        side: "below",
+        shifts: [-0.5, -1.5, -3, -3, -2, -1.5, -1, -0.5, -0.5],
+        realBe10y: [-1, 0],
+        note: "前期 Concession 快速收复，短端相对 OIS 企稳修复。",
+      },
+      {
+        id: "af-double",
+        label: "假日后双拍均弱（供给外溢）",
+        tag: "温和熊陡",
+        tone: "mixed",
+        side: "alt",
+        shifts: [0, 0.5, 1.5, 2.5, 3.5, 5.5, 7.5, 8.5, 8.5],
+        realBe10y: [7, 0.5],
+        note: "类似 2024-05-28：单场 2Y 影响小，但若假日后薄流动性叠加密集供给，会触发长端供给焦虑。",
+      },
+    ],
+  },
+
+  auction_belly: {
+    key: "auction_belly",
+    headline: "5Y / 7Y Belly 拍卖推演：曲线腹部鼓包与 7Y 尾部外溢风险",
+    scenarios: [
+      {
+        id: "ab-tail",
+        label: "Tail > WI（Belly 承压 · Fly 上凸）",
+        tag: "Belly 鼓包",
+        tone: "bear",
+        side: "above",
+        shifts: [0, 1, 2.5, 4.5, 7.5, 9, 6.5, 5, 4],
+        realBe10y: [6, 0.5],
+        note: "5Y/7Y 拍卖弱拍直接在曲线中部顶出明显“鼓包”（2s5s10s Fly 走阔），并显著外溢至 10Y。",
+      },
+      {
+        id: "ab-stop",
+        label: "Stop-through < WI（Belly 修复）",
+        tag: "Belly 下凹修复",
+        tone: "bull",
+        side: "below",
+        shifts: [0, -1, -2, -3.5, -5.5, -6.5, -5, -4, -3.5],
+        realBe10y: [-4.5, -0.5],
+        note: "终端买盘消化前期让价，5Y/7Y 领涨跑赢两翼，2s5s10s Fly 收窄。",
+      },
+      {
+        id: "ab-flash",
+        label: "极端 7Y 大 Tail（2021-02-25 压力情景）",
+        tag: "Belly 闪崩冲击",
+        tone: "bear",
+        side: "alt",
+        shifts: [0.5, 2, 5, 11, 18, 21, 16, 12, 9],
+        realBe10y: [15, 1],
+        note: "历史极值参考（2021-02-25，BTC 2.04×）：流动性真空下 7Y 爆尾直接引发 5Y–10Y 剧烈抛售与 2s10s 急陡。",
+      },
+    ],
+  },
+
+  auction_10y: {
+    key: "auction_10y",
+    headline: "10Y 基准拍卖推演：中长端定价锚并直接为次日 30Y 定调",
+    scenarios: [
+      {
+        id: "a10-tail",
+        label: "Tail ≥2bp（Dealer >18% · 熊陡）",
+        tag: "中长端熊陡",
+        tone: "bear",
+        side: "above",
+        shifts: [0, 0.5, 2, 3.5, 5.5, 7, 9, 8.5, 8],
+        realBe10y: [8.5, 0.5],
+        note: "10Y 弱拍叠加高 Dealer 获配，立即压低长端风险偏好，并迫使次日 30Y 提前加深盘前 Concession。",
+      },
+      {
+        id: "a10-stop",
+        label: "Stop-through < WI（强终端买盘）",
+        tag: "长端修复牛平",
+        tone: "bull",
+        side: "below",
+        shifts: [0, -1, -3, -4, -5.5, -6.5, -7.5, -6.5, -6],
+        realBe10y: [-7, -0.5],
+        note: "类似 2024-06-11（-2bp Stop-through，Dealer 仅 11.6%）：10Y 领涨缓解供给忧虑，带动全曲线修复。",
+      },
+      {
+        id: "a10-cpi-combo",
+        label: "热 CPI + 10Y 弱拍同日双击",
+        tag: "全曲线重挫",
+        tone: "bear",
+        side: "alt",
+        shifts: [2, 10, 20, 21, 22, 20, 19, 16, 14],
+        realBe10y: [13, 6],
+        note: "类似 2024-04-10：早盘热通胀导致风险预算收缩，午后 10Y 录得 3.1bp 大 Tail，全线遭遇二次打击。",
+      },
+    ],
+  },
+
+  auction_20y: {
+    key: "auction_20y",
+    headline: "20Y 孤儿点拍卖推演：直观观察 10/20/30 Fly 局部尖峰与收敛",
+    scenarios: [
+      {
+        id: "a20-tail",
+        label: "20Y Tail（10/20/30 Fly 尖峰走阔）",
+        tag: "20Y Fly 走阔",
+        tone: "bear",
+        side: "above",
+        shifts: [0, 0, 0.5, 1, 1.5, 2, 2.5, 8.5, 3],
+        realBe10y: [2.5, 0],
+        note: "20Y 缺乏期货直锚且买家窄，弱拍会在 20Y 节点拉出醒目局部尖峰，10/20/30 Fly 大幅走阔，邻券外溢温和。",
+      },
+      {
+        id: "a20-stop",
+        label: "20Y Stop-through（Fly 快速收敛）",
+        tag: "20Y Fly 收窄",
+        tone: "bull",
+        side: "below",
+        shifts: [0, 0, 0, -0.5, -1, -1.5, -2, -6.5, -2],
+        realBe10y: [-2, 0],
+        note: "完美对应 2023-11-20：高绝对收益率下逢高抢筹令 20Y 独自领跌 -6bp，单日砸平 10/20/30 Fly -8bp。",
+      },
+      {
+        id: "a20-minutes-combo",
+        label: "撞车 14:00 纪要（全曲线主导）",
+        tag: "Fly 回归大盘",
+        tone: "mixed",
+        side: "alt",
+        shifts: [0, 1, 2.5, 3, 4, 4.5, 5, 5.5, 5],
+        realBe10y: [4.5, 0.5],
+        note: "20Y 高频与同日 14:00 FOMC 纪要撞车：若 13:00 局部折价快速均值回归、全曲线平行波动，须拆分供给与政策归因。",
+      },
+    ],
+  },
+
+  auction_30y: {
+    key: "auction_30y",
+    headline: "30Y 超长债拍卖推演：长端 DV01 集中与 5s30s 急剧熊陡风险",
+    scenarios: [
+      {
+        id: "a30-tail",
+        label: "Tail ≥2.5bp（Dealer >20% · 熊陡）",
+        tag: "长端急剧熊陡",
+        tone: "bear",
+        side: "above",
+        shifts: [0, 0.5, 2, 3, 5, 7, 9, 11, 12.5],
+        realBe10y: [8.5, 0.5],
+        note: "常规弱拍模板：高 DV01 兜底库存引发尾盘抛压与 UB 期货砸盘，5s30s 曲线尾部明显翘起。",
+      },
+      {
+        id: "a30-stop",
+        label: "Stop-through < WI（险资积极承接）",
+        tag: "长端牛平",
+        tone: "bull",
+        side: "below",
+        shifts: [0, -0.5, -1, -2, -3, -4, -5, -6.5, -7.5],
+        realBe10y: [-5, 0],
+        note: "LDI 养老金与海外长线锁久期，压低长期期限溢价，5s30s/10s30s 明显走平。",
+      },
+      {
+        id: "a30-shock",
+        label: "极端 5bp+ 巨幅 Tail（2023-11-09 压力）",
+        tag: "跨资产熊陡冲击",
+        tone: "bear",
+        side: "alt",
+        shifts: [0.5, 3, 7, 9, 12, 13, 13.5, 15, 16],
+        realBe10y: [12.5, 1],
+        note: "历史极值参考（2023-11-09，Dealer 被迫接盘 24.7%）：高 DV01 库存触发全曲线抛压并迅速外溢至权益市场。",
+      },
+    ],
+  },
+
+  tips: {
+    key: "tips",
+    headline: "TIPS 拍卖推演：名义曲线温和，核心看实际利率与 Breakeven 剪刀差",
+    scenarios: [
+      {
+        id: "tips-tail",
+        label: "实际利率 Tail（Dealer >12%）",
+        tag: "实际利率↑ · BE↓",
+        tone: "bear",
+        side: "above",
+        shifts: [0, 0.5, 1, 1.5, 2.5, 3, 3.5, 3, 2.5],
+        realBe10y: [5.5, -2],
+        note: "TIPS 承接偏弱推升实际收益率（+5.5bp），名义债仅部分跟随（+3.5bp），导致同期限 Breakeven 被动收窄 -2bp。",
+      },
+      {
+        id: "tips-stop",
+        label: "实际利率 Stop-through（强配置需求）",
+        tag: "实际利率↓ · BE↑",
+        tone: "bull",
+        side: "below",
+        shifts: [0, -0.5, -1, -1.5, -2, -2.5, -2.5, -2, -2],
+        realBe10y: [-4, 1.5],
+        note: "终端买盘（通常占 85%–93%）强劲压低实际收益率，名义债温和跟涨且同期限 Breakeven 走阔。",
+      },
+      {
+        id: "tips-diverge",
+        label: "名义走弱但 TIPS 强承接（2024-07-18 分化）",
+        tag: "再通胀 · BE 急阔",
+        tone: "mixed",
+        side: "alt",
+        shifts: [0, 0.5, 1.5, 2, 3, 3.5, 4, 3.5, 3],
+        realBe10y: [-1, 5],
+        note: "完美对应 2024-07-18 实证：当日名义 10Y 上行 +4bp，但 TIPS 强承接将实际利率压低 -1bp，推阔 10Y Breakeven +5bp。",
+      },
+    ],
+  },
+
+  bills: {
+    key: "bills",
+    headline: "T-bill / 2Y FRN 拍卖推演：超短端资金面微动，附息曲线基本无扰动",
+    scenarios: [
+      {
+        id: "bill-tight",
+        label: "资金面偏紧 / 结算日抽水",
+        tag: "超短端微升",
+        tone: "bear",
+        side: "above",
+        shifts: [3.5, 1.5, 0.5, 0, 0, 0, 0, 0, 0],
+        realBe10y: [0, 0],
+        note: "仅在 3M/1Y 超短端体现回购与 TGA 资金成本变化，对 2Y–30Y 附息国债几乎零外溢。",
+      },
+      {
+        id: "bill-easy",
+        label: "货基买盘充裕",
+        tag: "超短端回落",
+        tone: "bull",
+        side: "below",
+        shifts: [-2.5, -1, -0.5, 0, 0, 0, 0, 0, 0],
+        realBe10y: [0, 0],
+        note: "货币基金与 ON RRP 资金充裕承接顺畅，超短端贴现率温和回落。",
+      },
+    ],
+  },
+
+  durables: {
+    key: "durables",
+    headline: "耐用品订单推演：跳过飞机订单噪音，核心资本品温和影响 5Y/10Y",
+    scenarios: [
+      {
+        id: "dur-hot",
+        label: "核心资本品与出货超预期",
+        tag: "温和熊陡",
+        tone: "bear",
+        side: "above",
+        shifts: [0, 0.5, 1.5, 2, 3, 3.5, 3.5, 3, 2.5],
+        realBe10y: [3, 0.5],
+        note: "温和上修当季设备投资与 GDPNow，带动 Belly 与 10Y 小幅走弱。",
+      },
+      {
+        id: "dur-cold",
+        label: "核心资本品偏弱 / 下修",
+        tag: "温和走牛",
+        tone: "bull",
+        side: "below",
+        shifts: [0, -0.5, -1.5, -2, -3, -3.5, -3.5, -3, -2.5],
+        realBe10y: [-3, -0.5],
+        note: "企业资本开支降温，5Y/10Y 小幅下行。",
+      },
+    ],
+  },
+
+  productivity: {
+    key: "productivity",
+    headline: "生产率与 ULC 推演：反直觉——高生产率压低 ULC = 利多美债！",
+    scenarios: [
+      {
+        id: "prod-ulc-hot",
+        label: "ULC 偏热 / 生产率偏弱（利空）",
+        tag: "温和熊平",
+        tone: "bear",
+        side: "above",
+        shifts: [0.5, 2.5, 4.5, 4.5, 4, 3.5, 3, 2.5, 2],
+        realBe10y: [2, 1],
+        note: "低生产率叠加强工资推高单位劳动成本，强化服务通胀粘性担忧。",
+      },
+      {
+        id: "prod-strong",
+        label: "生产率大超预期 + ULC 回落（利多）",
+        tag: "反通胀走牛",
+        tone: "bull",
+        side: "below",
+        shifts: [0, -1.5, -3, -4, -5.5, -6, -7, -8, -8],
+        realBe10y: [-5, -2],
+        note: "类似 2023-11-02：“非通胀性高增长”压低长端通胀担忧与期限溢价，中长端显著受益。",
+      },
+    ],
+  },
+
+  growth_secondary: {
+    key: "growth_secondary",
+    headline: "二级增长 / 住房 / 工业 / 贸易推演：动态修正 GDPNow，单日影响温和",
+    scenarios: [
+      {
+        id: "gs-hot",
+        label: "分项显著超预期",
+        tag: "微幅熊陡",
+        tone: "bear",
+        side: "above",
+        shifts: [0, 0.5, 1, 1.5, 2.5, 2.5, 3, 2.5, 2.5],
+        realBe10y: [2.5, 0.5],
+        note: "单次发布难改政策路径，主要通过上修 GDPNow 微幅推高中长端。",
+      },
+      {
+        id: "gs-cold",
+        label: "分项走弱（高利率压制实体）",
+        tag: "微幅牛平",
+        tone: "bull",
+        side: "below",
+        shifts: [0, -0.5, -1, -1.5, -2.5, -2.5, -3, -2.5, -2.5],
+        realBe10y: [-2.5, -0.5],
+        note: "多作为趋势拼图积累降息仓位，单日波幅通常控制在 1–3bp。",
+      },
+    ],
+  },
+
+  speech: {
+    key: "speech",
+    headline: "联储官员讲话 / 褐皮书推演：核心投票委员边际反差最动前端",
+    scenarios: [
+      {
+        id: "sp-hawk",
+        label: "核心委员释放偏鹰新口径",
+        tag: "前端熊平",
+        tone: "bear",
+        side: "above",
+        shifts: [1, 5, 8, 7.5, 6.5, 5.5, 4.5, 3, 2],
+        realBe10y: [4, 0.5],
+        note: "主席/核心理事淡化降息紧迫性，2Y 领涨走熊平。",
+      },
+      {
+        id: "sp-dove",
+        label: "核心委员边际转鸽（如 2023-11-28 Waller）",
+        tag: "前端牛陡",
+        tone: "bull",
+        side: "below",
+        shifts: [-1.5, -7, -11, -10, -9, -7, -5, -2.5, -1.5],
+        realBe10y: [-5, 0],
+        note: "鹰派转鸽的边际反差极大，2Y 迅速领跌 -10bp 以上，2s10s 走陡 +6bp。",
+      },
+    ],
+  },
+
+  funding: {
+    key: "funding",
+    headline: "H.4.1 资产负债表推演：监控准备金下限与 QT 终点预期",
+    scenarios: [
+      {
+        id: "fund-tight",
+        label: "准备金逼近警戒线 / 资金抽水",
+        tag: "短端紧 · 长端期待停 QT",
+        tone: "mixed",
+        side: "above",
+        shifts: [3, 1.5, 0.5, 0, -1, -2, -2.5, -3, -3],
+        realBe10y: [-2.5, 0],
+        note: "短期抽水抬升回购/T-bill 利率，但若倒逼联储提前结束 QT，反而对长端形成中期支撑。",
+      },
+      {
+        id: "fund-ample",
+        label: "准备金充裕 / 流动性平稳",
+        tag: "全曲线中性",
+        tone: "bull",
+        side: "below",
+        shifts: [-1, -0.5, 0, 0, 0, 0, 0, 0, 0],
+        realBe10y: [0, 0],
+        note: "资金利率贴近政策下沿，曲线保持由宏观基本面主导。",
+      },
+    ],
+  },
+
+  market: {
+    key: "market",
+    headline: "跨市场休市 / 半日市推演：薄流动性放大跳空幅度",
+    scenarios: [
+      {
+        id: "mkt-gap-up",
+        label: "休市期海外/期货抛售（重开跳空）",
+        tag: "薄盘口放大上跳",
+        tone: "bear",
+        side: "above",
+        shifts: [0.5, 4, 10, 9, 8.5, 7.5, 6.5, 5.5, 5],
+        realBe10y: [6, 0.5],
+        note: "类似 2023-04-07 耶稣受难日半日市非农：稀薄深度令瞬时跳价与滑点显著放大。",
+      },
+      {
+        id: "mkt-gap-down",
+        label: "休市期避险买盘（重开低开）",
+        tag: "重开跳空走牛",
+        tone: "bull",
+        side: "below",
+        shifts: [-0.5, -4, -9, -8.5, -8, -7, -6, -5, -4.5],
+        realBe10y: [-5.5, -0.5],
+        note: "现券重开首 15 分钟一次性消化海外变动，需等深度恢复后再确认趋势。",
+      },
+    ],
+  },
+};
+
+export function projectionFor(event: MarketEvent): EventProjectionSet {
+  const pb = playbookFor(event);
+  return sets[pb.key] ?? sets.growth_secondary;
+}
+
+export function projectionByKey(key: string): EventProjectionSet {
+  return sets[key] ?? sets.cpi;
+}
