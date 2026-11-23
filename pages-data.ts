@@ -1,4 +1,5 @@
 import { tenors, type Calendar } from "./model";
+import type { ReplayCatalog } from "./replay-model";
 
 export type LiveCurve = {
   values: number[];
@@ -29,6 +30,12 @@ export async function loadCalendars(signal?: AbortSignal) {
   const response = await fetch("./calendar.json?_=" + Date.now(), { cache: "no-store", signal });
   if (!response.ok) throw new Error("暂时无法载入发布日历。");
   return await response.json() as Record<string, Calendar>;
+}
+
+export async function loadReplays(signal?: AbortSignal) {
+  const response = await fetch("./replays.json?_=" + Date.now(), { cache: "no-store", signal });
+  if (!response.ok) throw new Error("暂时无法载入历史回放数据。");
+  return await response.json() as ReplayCatalog;
 }
 
 export async function loadLiveCurve(signal?: AbortSignal): Promise<LiveCurve> {

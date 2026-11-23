@@ -1,6 +1,7 @@
 import { readFile, rename, writeFile } from "node:fs/promises";
 import { publicFeeds } from "./feeds";
 import { enrichRelease, loadNowcasts, type InflationModels } from "./releases";
+import { refreshReplaysFile } from "./replays";
 import { addDays, isWeek, newYorkDate, sourceKeys, timeSort, todayWeek, type Calendar, type MarketEvent, type SourceCheck } from "./model";
 import { seedCalendar } from "./seed";
 
@@ -157,3 +158,12 @@ for (const key of Object.keys(calendars)) {
 const ordered = Object.fromEntries(Object.keys(calendars).sort().map(k => [k, calendars[k]]));
 await writeFile(file + ".tmp", JSON.stringify(ordered, null, 2) + "\n");
 await rename(file + ".tmp", file);
+
+if (!requested.length) {
+  try {
+    const res = await refreshReplaysFile("replays.json");
+    console.log("replays.json", Object.keys(res.catalog.series).length + " series", res.changed ? "updated" : "unchanged");
+  } catch (err) {
+    console.warn("Historical replays refresh failed (keeping existing replays.json):", String(err));
+  }
+}

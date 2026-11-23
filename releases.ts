@@ -14,39 +14,47 @@ const figure = (value: string | undefined) => {
 };
 const signed = (verb: string | undefined, digits: string | undefined) => {
   const number = figure(digits);
-  return number === undefined ? undefined : /decreased|declined|fell|down|dropped/i.test(verb ?? "") ? -Math.abs(number) : number;
+  return number === undefined ? undefined : /decreased|declined|fell|dropped|down/i.test(verb ?? "") ? -Math.abs(number) : number;
 };
+const moveVerb = "(increased|rose|advanced|climbed|moved up|edged up|inched up|decreased|declined|fell|dropped|moved down|edged down|inched down)";
+const moveRe = new RegExp("\\b" + moveVerb + "\\s+(?:by\\s+)?(?:at an annual rate of\\s+)?([+-]?\\d+(?:\\.\\d+)?)\\s*percent", "i");
 const percentMove = (text: string, subject: RegExp) => {
   const clause = text.match(subject)?.[0];
   if (!clause) return undefined;
-  const match = clause.match(/\b(increased|rose|advanced|decreased|declined|fell|dropped|edged up|edged down)\s+(?:by\s+)?(?:at an annual rate of\s+)?([+-]?\d+(?:\.\d+)?)\s*percent/i);
+  const match = clause.match(moveRe);
   if (match) return signed(match[1], match[2]);
-  if (/\b(?:was|were|remained|changed)\s+(?:unchanged|little)\b|\blittle changed\b/i.test(clause)) return 0;
+  if (/\b(?:was|were|remained)\s+unchanged\b/i.test(clause)) return 0;
   return undefined;
 };
-const clause = (prefix: string, length = 110) => new RegExp(prefix + ".{0," + length + "}", "i");
+const sent = (prefix: string, length = 110) => new RegExp(prefix + "(?:[^.]|\\.\\d){0," + length + "}", "i");
 
-export type BlsKind = "cpi" | "ppi" | "empsit" | "jolts" | "eci";
+export type BlsKind = "cpi" | "ppi" | "empsit" | "jolts" | "eci" | "prod2";
 
 export function parseBlsReadings(kind: BlsKind, html: string): Reading[] {
   const release = html.match(/<pre\b[^>]*>([\s\S]*?)<\/pre>/gi)?.slice(0, 3).join(" ") ?? html;
   const intro = textOf(release).slice(0, 15500);
   if (kind === "cpi") {
-    const coreYoy = percentMove(intro, clause("The all items less food and energy index .{0,30}(?:rose|increased|decreased|declined|fell).{0,40}12 months", 15))
-      ?? percentMove(intro, clause("all items less food and energy index", 95).source.includes("12") ? clause("all items less food and energy index", 95) : /all items less food and energy index\s+(?:rose|increased|decreased|declined|fell)\s+\d+(?:\.\d+)?\s*percent\s+(?:over the last|for the)\s+12 months/i);
-    const headlineYoy = percentMove(intro, /The all items index\s+(?:rose|increased|decreased|declined|fell)\s+\d+(?:\.\d+)?\s*percent\s+(?:for the|over the last)\s+12 months/i);
+    const coreYoy = percentMove(intro, /(?:The\s+)?all items less food and energy index\s+(?:[^.]|\.\d){0,75}?(?:12 months|over the (?:last )?year)/i);
+    const headlineYoy = percentMove(intro, /Over the last 12 months,\s+the all items index\s+(?:[^.]|\.\d){0,75}/i)
+      ?? percentMove(intro, /The all items index\s+(?:[^.]|\.\d){0,75}?(?:12 months|over the (?:last )?year)/i);
     return [
-      ...percent("核心 CPI 月率", percentMove(intro, clause("The index for all items less food and energy", 85)), true),
-      ...percent("整体 CPI 月率", percentMove(intro, clause("The Consumer Price Index for All Urban Consumers", 115)), true),
-      ...percent("住房月率", percentMove(intro, clause("The index for shelter", 50)), true),
+      ...percent("核心 CPI 月率", percentMove(intro, sent("The index for all items less food and energy", 75)), true),
+      ...percent("整体 CPI 月率", percentMove(intro, sent("The Consumer Price Index for All Urban Consumers", 105)), true),
+      ...percent("住房月率", percentMove(intro, sent("(?:The index for shelter|The shelter index)", 55)), true),
       ...percent("核心 CPI 同比", coreYoy),
       ...percent("整体 CPI 同比", headlineYoy),
     ];
   }
   if (kind === "ppi") {
+    const headlineMom = percentMove(intro, sent("The Producer Price Index for final demand", 75));
+    const coreMom = percentMove(intro, /(?:The index|Prices) for final demand less foods?, energy, and trade services\s+(?:[^.]|\.\d){0,65}?\bin\s+[A-Z][a-z]+/i);
+    const headlineYoy = percentMove(intro, /the index for final demand\s+(?:[^.]|\.\d){0,55}?for the 12 months ended/i);
+    const coreYoy = percentMove(intro, /For the 12 months ended\s+[A-Za-z\s]+,\s*(?:the index|prices) for final demand less foods?, energy, and trade services\s+(?:[^.]|\.\d){0,55}/i);
     return [
-      ...percent("最终需求 PPI 月率", percentMove(intro, clause("The Producer Price Index for final demand", 65)), true),
-      ...percent("剔除食品、能源和贸易服务月率", percentMove(intro, clause("The index for final demand less foods?, energy, and trade services", 65)), true),
+      ...percent("最终需求 PPI 月率", headlineMom, true),
+      ...percent("剔除食能贸 PPI 月率", coreMom, true),
+      ...percent("最终需求 PPI 同比", headlineYoy),
+      ...percent("剔除食能贸 PPI 同比", coreYoy),
     ];
   }
   if (kind === "jolts") {
@@ -69,20 +77,33 @@ export function parseBlsReadings(kind: BlsKind, html: string): Reading[] {
       ...percent("就业成本指数同比", yoy),
     ];
   }
-  const payroll = intro.match(/Total nonfarm payroll employment\s+(rose|increased|fell|declined|decreased|edged up|edged down)\s+(?:by\s+)?([+-]?\d[\d,]*)/i);
-  const payrollLittle = intro.match(/Total nonfarm payroll employment\s+(?:was\s+)?(?:changed little|little changed)\s*\(([+-]?\d[\d,]*)\)/i);
-  const flat = /Total nonfarm payroll employment (?:was|remained) unchanged\b/i.test(intro);
-  const employment = flat ? 0 : payroll ? signed(payroll[1], payroll[2]) : payrollLittle ? figure(payrollLittle[1]) : undefined;
-  const unemployment = figure(intro.match(/the unemployment rate (?:[^.!?]|\.\d){0,65}?(?:to|at|was|of)\s+(\d(?:\.\d+)?)\s*percent/i)?.[1]);
-  const wages = intro.match(/average hourly earnings for all employees[^\d]{0,105}?(increased|rose|declined|decreased|fell|edged up|edged down)(?:[^.]|\.\d){0,75}?\bor\s+(\d+(?:\.\d+)?)\s*percent/i);
-  const wagesFlat = /average hourly earnings for all employees[^.]{0,90}?(?:was unchanged|remained unchanged|changed little|little changed)/i.test(intro);
+  if (kind === "prod2") {
+    const prod = percentMove(intro, sent("Nonfarm business sector labor productivity", 75));
+    const ulc = percentMove(intro, sent("Unit labor costs in the nonfarm business sector", 75));
+    return [
+      ...percent("非农生产率折年率", prod, true),
+      ...percent("单位劳动成本 ULC", ulc, true),
+    ];
+  }
+  const lead = intro.slice(0, 1400);
+  const payrollVerb = lead.match(/(?:Total )?nonfarm payroll employment\s+(increased|rose|advanced|climbed|moved up|edged up|decreased|declined|fell|dropped|moved down|edged down)\s+(?:by\s+)?([+-]?\d[\d,]*)/i);
+  const payrollParen = lead.match(/(?:Total |Both )?nonfarm payroll employment\s*\(([+-]?\d[\d,]*)\)/i)
+    ?? lead.match(/(?:Total )?nonfarm payroll employment\s+(?:was\s+)?(?:changed little|little changed)\s*\(([+-]?\d[\d,]*)\)/i);
+  const flat = /(?:Total )?nonfarm payroll employment\s+(?:was|remained) unchanged\b/i.test(lead);
+  const employment = flat ? 0 : payrollVerb ? signed(payrollVerb[1], payrollVerb[2]) : payrollParen ? figure(payrollParen[1]) : undefined;
+  const unempMatch = lead.match(/the unemployment rate\s*(?:\((\d(?:\.\d+)?)\s*percent\)|,\s*at\s+(\d(?:\.\d+)?)\s*percent|(?:[^.!?]|\.\d){0,45}?(?:to|at|was|of)\s+(\d(?:\.\d+)?)\s*percent)/i);
+  const unemployment = figure(unempMatch?.slice(1).find(Boolean));
+  const wages = intro.match(/average hourly earnings for all employees(?:[^.]|\.\d){0,115}?(increased|rose|advanced|moved up|edged up|decreased|declined|fell|moved down|edged down)(?:[^.]|\.\d){0,75}?\bor\s+(\d+(?:\.\d+)?)\s*percent/i);
+  const wagesFlat = /average hourly earnings for all employees(?:[^.]|\.\d){0,115}?(?:was|were|remained)\s+unchanged\b/i.test(intro);
   const wageMove = wages ? signed(wages[1], wages[2]) : wagesFlat ? 0 : undefined;
+  const wageYoy = percentMove(intro, sent("Over the (?:year|past 12 months),\\s+average hourly earnings", 70));
   const revisions = [...intro.matchAll(/was revised (up|down) by ([\d,]+), from [+-]?[\d,]+ to [+-]?[\d,]+/gi)].slice(0, 2);
   const netChange = revisions.reduce((sum, match) => sum + (match[1].toLowerCase() === "down" ? -1 : 1) * Number(match[2].replaceAll(",", "")), 0);
   return [
     ...(employment === undefined ? [] : [{ label: "非农新增就业", value: employment / 1000, unit: "千人" as const, signed: true }]),
     ...percent("失业率", unemployment),
     ...percent("平均时薪月率", wageMove, true),
+    ...percent("平均时薪同比", wageYoy),
     ...(revisions.length === 2 ? [{ label: "前两月非农合计修订", value: netChange / 1000, unit: "千人" as const, signed: true }] : []),
   ];
 }
@@ -98,18 +119,20 @@ export function parseBeaReadings(kind: "pce" | "gdp", html: string): Reading[] {
       ? (/less than\s+0\.1/i.test(realMatch[0]) ? 0 : signed(realMatch[1], realMatch[2]))
       : /\bunchanged\b/i.test(realPce) ? 0 : undefined;
     return [
-      ...percent("核心 PCE 月率", percentMove(monthly, clause("Excluding food and energy, the PCE price index", 68)), true),
-      ...percent("整体 PCE 月率", percentMove(monthly, clause("the PCE price index", 78)), true),
-      ...percent("核心 PCE 同比", percentMove(yearly, clause("Excluding food and energy, the PCE price index", 68))),
-      ...percent("整体 PCE 同比", percentMove(yearly, clause("the PCE price index", 78))),
+      ...percent("核心 PCE 月率", percentMove(monthly, sent("Excluding food and energy, the PCE price index", 68)), true),
+      ...percent("整体 PCE 月率", percentMove(monthly, sent("the PCE price index", 78)), true),
+      ...percent("核心 PCE 同比", percentMove(yearly, sent("Excluding food and energy, the PCE price index", 68))),
+      ...percent("整体 PCE 同比", percentMove(yearly, sent("the PCE price index", 78))),
       ...percent("实际消费月率", realVal, true),
     ];
   }
   const lead = paragraphs.find(p => /^Real gross domestic product \(GDP\)/i.test(p)) ?? "";
   const demand = paragraphs.find(p => /^Real final sales to private domestic purchasers/i.test(p)) ?? "";
+  const prices = paragraphs.find(p => /PCE price index,?\s*excluding food and energy/i.test(p)) ?? "";
   return [
-    ...percent("实际 GDP 季环比折年率", percentMove(lead, clause("Real gross domestic product", 110)), true),
-    ...percent("私人国内最终销售折年率", percentMove(demand, clause("Real final sales to private domestic purchasers", 170)), true),
+    ...percent("实际 GDP 季环比折年率", percentMove(lead, sent("Real gross domestic product", 110)), true),
+    ...percent("私人国内最终销售折年率", percentMove(demand, sent("Real final sales to private domestic purchasers", 160)), true),
+    ...percent("季度核心 PCE 折年率", percentMove(prices, sent("PCE price index,?\\s*excluding food and energy", 75)), true),
   ];
 }
 
@@ -119,6 +142,7 @@ function blsType(event: MarketEvent): BlsKind | undefined {
   if (event.title === "美国非农就业") return "empsit";
   if (event.title === "JOLTS 职位空缺") return "jolts";
   if (event.title === "就业成本指数（ECI）") return "eci";
+  if (event.title === "生产率与单位劳动成本") return "prod2";
 }
 
 function beaType(event: MarketEvent) {
@@ -126,7 +150,7 @@ function beaType(event: MarketEvent) {
   if (event.title === "美国 GDP") return "gdp";
 }
 
-function matchesBlsDate(html: string, expected: string) {
+export function matchesBlsDate(html: string, expected: string) {
   const intro = textOf(html.match(/<pre\b[^>]*>([\s\S]*?)<\/pre>/i)?.[1] ?? html).slice(0, 2000);
   const stamp = intro.match(/\(ET\)\s+\w+,\s+([A-Z][a-z]+ \d{1,2}, 20\d\d)/)?.[1];
   return stamp && dateOf(stamp) === expected;

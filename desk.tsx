@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Activity, AlertTriangle, ArrowDownUp, BookOpen, CalendarDays, ChevronLeft,
+  Activity, AlertTriangle, ArrowDownUp, BarChart3, BookOpen, CalendarDays, CheckCircle2, ChevronLeft,
   ChevronRight, Clock, Database, ExternalLink, Globe, History, Layers, LineChart, Moon,
   Play, RefreshCw, RotateCcw, Search, SlidersHorizontal, Sparkles, Sun, TrendingUp, X,
 } from "lucide-react";
@@ -11,15 +11,19 @@ import {
   timeSort, tzIana, tzLabel, tzShortTag, weekOf, type Calendar, type Category, type CurvePoint,
   type MarketEvent, type Reading, type SourceCheck, type Tenor, type TzMode,
 } from "./model";
-import { loadCalendars, loadLiveCurve, type LiveCurve } from "./pages-data";
+import { loadCalendars, loadLiveCurve, loadReplays, type LiveCurve } from "./pages-data";
 import { featuredPlaybookKeys, playbookByKey, playbookFor, type Playbook } from "./playbooks";
 import { projectionByKey, projectionFor, type EventProjectionSet } from "./projections";
+import {
+  focusTenorIndexForReplay, replayKeyForEvent, replayKeyForLibrary,
+  type HistoricalReplay, type ReplayCatalog, type ReplaySeries,
+} from "./replay-model";
 import { nowcastUrl } from "./releases";
 import { actualFor, priorFor, ruleFor, scenarioFor } from "./scenarios";
 import { seedCalendar } from "./seed";
 
 type ViewId = "overview" | "calendar" | "scenarios" | "sources";
-type DrawerTab = "scenario" | "history" | "micro";
+type DrawerTab = "scenario" | "replay" | "history" | "micro";
 type ThemeMode = "light" | "dark";
 type BenchMode = "1D" | "1W" | "1M";
 type SavedScenarioInput = { expected?: string; hypothesis?: string; components?: string; stance?: string };
@@ -829,6 +833,373 @@ function CurveProjection({
   </div>;
 }
 
+/* ---------- Verified Official Historical Replay Workbench ---------- */
+
+function replayKpiBucket(seriesKey: string): string {
+  if (seriesKey === "auction:20y-nominal") return "auction_20y";
+  if (seriesKey === "auction:30y-nominal") return "auction_30y";
+  if (seriesKey === "auction:5y-nominal" || seriesKey === "auction:7y-nominal") return "auction_belly";
+  if (seriesKey.includes("-tips")) return "tips";
+  if (seriesKey.endsWith("-bill") || seriesKey === "auction:2y-frn") return "bills";
+  return seriesKey;
+}
+
+function selectReplayItems(series: ReplaySeries, eventDate?: string): HistoricalReplay[] {
+  if (!eventDate) return series.items.slice(0, 4);
+  const upTo = series.items.filter(it => it.date <= eventDate).slice(0, 4);
+  return upTo.length >= 2 ? upTo : series.items.slice(0, 4);
+}
+
+function computeReplayStats(series: ReplaySeries, items: HistoricalReplay[]) {
+  const focusIdx = focusTenorIndexForReplay(series.key);
+  const focusTenor = tenors[focusIdx];
+  const focusMoves = items.map(it => it.shiftsBp[focusIdx] ?? 0);
+  const meanAbsFocus = focusMoves.reduce((s, v) => s + Math.abs(v), 0) / Math.max(1, items.length);
+  const minFocus = Math.min(...focusMoves);
+  const maxFocus = Math.max(...focusMoves);
+  const meanAbs10 = items.reduce((s, it) => s + Math.abs(it.shiftsBp[6] ?? 0), 0) / Math.max(1, items.length);
+  const cleanCount = items.filter(it => it.confounders.length === 0).length;
+
+  const isAuction = series.key.startsWith("auction:");
+  const btcs = items.map(it => it.readings.find(r => r.label === "投标倍数")?.num).filter((v): v is number => v !== undefined);
+  const dealers = items.map(it => it.readings.find(r => r.label === "一级交易商")?.num).filter((v): v is number => v !== undefined);
+  const avgBtc = btcs.length ? btcs.reduce((a, b) => a + b, 0) / btcs.length : null;
+  const avgDealer = dealers.length ? dealers.reduce((a, b) => a + b, 0) / dealers.length : null;
+
+  return { focusIdx, focusTenor, meanAbsFocus, minFocus, maxFocus, meanAbs10, cleanCount, isAuction, avgBtc, avgDealer };
+}
+
+function HistoricalReplayPanel({
+  series,
+  curveThrough,
+  event,
+  compact = false,
+}: {
+  series: ReplaySeries;
+  curveThrough?: string;
+  event?: MarketEvent;
+  compact?: boolean;
+}) {
+  const items = useMemo(() => selectReplayItems(series, event?.date), [series, event?.date]);
+  const [selectedDate, setSelectedDate] = useState<string>(() => items[0]?.date ?? "");
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [replayNonce, setReplayNonce] = useState(0);
+
+  useEffect(() => {
+    setSelectedDate(items[0]?.date ?? "");
+    setHoverIdx(null);
+  }, [series.key, event?.id, items[0]?.date]);
+
+  const active = items.find(it => it.date === selectedDate) ?? items[0];
+  const stats = useMemo(() => computeReplayStats(series, items), [series, items]);
+
+  const targetShifts = useMemo(
+    () => (active ? active.shiftsBp : tenors.map(() => 0)),
+    [active]
+  );
+  const animShifts = useAnimatedVector(targetShifts, 440, replayNonce, `${series.key}:${active?.date ?? ""}`);
+
+  if (!active || items.length === 0) return null;
+
+  const base = active.prevCurve.length === tenors.length ? active.prevCurve : fallbackBaseCurve;
+  const actualCurve = base.map((v, i) => v + (animShifts[i] ?? 0) / 100);
+  const avgShift = animShifts.reduce((a, b) => a + b, 0) / animShifts.length;
+  const shiftTone = avgShift > 0.35 ? "up" : avgShift < -0.35 ? "down" : "mixed";
+
+  // Keep SVG axis calibrated to the selected historical day's exact prev -> close curve
+  const allCurveVals = [...base, ...active.curve];
+  const padY = Math.max(0.1, (Math.max(...allCurveVals) - Math.min(...allCurveVals)) * 0.14);
+  const minY = Math.min(...allCurveVals) - padY;
+  const maxY = Math.max(...allCurveVals) + padY;
+
+  const width = 540, height = 286, padL = 46, padR = 20;
+  const x = (i: number) => padL + (width - padL - padR) * i / (tenors.length - 1);
+  const y = (val: number) => 142 - 114 * (val - minY) / Math.max(0.05, maxY - minY);
+  const colW = (width - padL - padR) / (tenors.length - 1);
+
+  const xs = tenors.map((_, i) => x(i));
+  const baseYs = base.map(v => y(v));
+  const actYs = actualCurve.map(v => y(v));
+  const basePath = xs.map((cx, i) => `${cx.toFixed(1)},${baseYs[i].toFixed(1)}`).join(" ");
+  const actPath = xs.map((cx, i) => `${cx.toFixed(1)},${actYs[i].toFixed(1)}`).join(" ");
+  const ribbonSegments = buildSignedRibbon(xs, baseYs, actYs, animShifts);
+
+  const maxBarBp = Math.max(
+    6,
+    Math.ceil(Math.max(...items.flatMap(it => it.shiftsBp.map(bp => Math.abs(bp)))))
+  );
+  const zeroY = 216;
+  const barY = (bp: number) => zeroY - (bp / maxBarBp) * 30;
+
+  const kpiBucket = replayKpiBucket(series.key);
+  const kpis = buildProjectionKpis(
+    kpiBucket,
+    base,
+    active.shiftsBp,
+    active.real10Bp ?? 0,
+    active.be10Bp ?? 0
+  );
+  const hasRealDecomp = active.real10Bp !== null && active.be10Bp !== null
+    && (Math.abs(active.real10Bp) >= 0.3 || Math.abs(active.be10Bp) >= 0.3);
+  const maxDriver = Math.max(4, Math.abs(active.real10Bp ?? 0), Math.abs(active.be10Bp ?? 0));
+  const driverBarStyle = (val: number) => {
+    const pct = Math.min(50, (Math.abs(val) / maxDriver) * 50);
+    return val >= 0
+      ? { left: "50%", width: `${pct}%` }
+      : { left: `${50 - pct}%`, width: `${pct}%` };
+  };
+
+  const eventInItems = Boolean(event && items.some(it => it.date === event.date));
+  const showCompareRow = Boolean(event && !eventInItems);
+  const currentSummary = event?.readings?.length
+    ? event.readings.slice(0, 2).map(r => `${r.label} ${readingText(r)}`).join(" · ")
+    : event?.reference
+      ? `模型预测核心月率 ${event.reference.value.toFixed(2)}% (Cleveland Fed)`
+      : event?.actual ?? "待公布 · 结合下方近次实测区间决策";
+
+  return <div className={"replay-card" + (compact ? " compact" : "")} aria-label="官方历史实证回放">
+    <div className="proj-head">
+      <div>
+        <div className="proj-title-row">
+          <h3>近 {items.length} 次官方实证回放</h3>
+          <span className={"proj-morph-tag tone-" + active.regimeTone}>{active.regimeTag}</span>
+          {curveThrough && <span className="replay-asof">曲线截至 {short(curveThrough)}</span>}
+        </div>
+        <p className="proj-sub">{series.name} · 逐次复盘真实发布值与财政部官方曲线 T-1 → T 实测反应</p>
+      </div>
+      <button type="button" className="proj-replay" onClick={() => setReplayNonce(n => n + 1)} title="重播该发布日真实形变">
+        <Play size={12} />重播实况
+      </button>
+    </div>
+
+    {/* Empirical Summary Statistics Strip */}
+    <div className="replay-stats">
+      <div className="rs-chip">
+        <span>|Δ{stats.focusTenor}| 均值</span>
+        <b>{stats.meanAbsFocus.toFixed(1)} bp</b>
+        <small>区间 {sign(stats.minFocus, 0)} ~ {sign(stats.maxFocus, 0)} bp</small>
+      </div>
+      {stats.isAuction && stats.avgBtc !== null ? (
+        <div className="rs-chip">
+          <span>近 {items.length} 次认购均值</span>
+          <b>BTC {stats.avgBtc.toFixed(2)}×</b>
+          <small>{stats.avgDealer !== null ? `Dealer 均值 ${stats.avgDealer.toFixed(1)}%` : `|Δ10Y| 均值 ${stats.meanAbs10.toFixed(1)} bp`}</small>
+        </div>
+      ) : (
+        <div className="rs-chip">
+          <span>|Δ10Y| 均值</span>
+          <b>{stats.meanAbs10.toFixed(1)} bp</b>
+          <small>收盘 T-1 → T</small>
+        </div>
+      )}
+      <div className="rs-chip">
+        <span>单日纯净窗口</span>
+        <b>{stats.cleanCount} / {items.length} 次</b>
+        <small>{stats.cleanCount === items.length ? "无同日一级撞车" : "已标注同日叠加事件"}</small>
+      </div>
+    </div>
+
+    {/* Interactive Historical Release Timeline Pills */}
+    <div className="replay-timeline" role="tablist" aria-label="选择历史发布日期">
+      {items.map(it => {
+        const focusBp = it.shiftsBp[stats.focusIdx] ?? 0;
+        const isCurrent = event?.date === it.date;
+        const isSelected = it.date === active.date;
+        return <button key={it.date} type="button" role="tab" aria-selected={isSelected}
+          className={"rt-pill" + (isSelected ? " active" : "") + (it.confounders.length ? " has-conf" : "")}
+          onClick={() => { setSelectedDate(it.date); setHoverIdx(null); }}>
+          <div className="rt-top">
+            <time>{short(it.date)}</time>
+            <span>{it.period}</span>
+            {isCurrent && <em className="rt-cur-tag">本次实测</em>}
+          </div>
+          <div className="rt-mid">{it.headline}</div>
+          <div className="rt-foot">
+            <b className={focusBp > 0.2 ? "txt-up" : focusBp < -0.2 ? "txt-down" : "txt-muted"}>
+              {stats.focusTenor} {sign(focusBp, 0)}bp
+            </b>
+            <span>{it.regimeTag}</span>
+            {it.confounders.length > 0 && <AlertTriangle size={11} className="rt-warn-icon" aria-label="同日有叠加事件" />}
+          </div>
+        </button>;
+      })}
+    </div>
+
+    {/* Scientific Confounder & Primary Source Verification Bar */}
+    <div className={"replay-audit " + (active.confounders.length ? "audit-warn" : "audit-clean")}>
+      <div className="audit-copy">
+        {active.confounders.length > 0 ? <>
+          <AlertTriangle size={13} />
+          <span><b>同日叠加：</b>{active.confounders.join("、")}（日终收盘反映当日综合走势，并非本项单一净效应）</span>
+        </> : <>
+          <CheckCircle2 size={13} />
+          <span><b>单日纯净窗口</b> · 财政部日终 {short(active.prevDate)} → {short(active.date)}（当日无其他重磅一级撞车）</span>
+        </>}
+      </div>
+      <SourceLink url={active.sourceUrl} label={active.sourceName} />
+    </div>
+
+    {/* Complete As-Released Official Readings for Selected Historical Date */}
+    <div className="replay-readings">
+      {active.readings.map(r => (
+        <div className="rr-item" key={r.label}>
+          <span>{r.label}</span>
+          <strong>{r.valueText}</strong>
+          {r.deltaText && <small>{r.deltaText}</small>}
+        </div>
+      ))}
+    </div>
+
+    {/* Animated 9-Tenor Actual Historical Curve Replay SVG */}
+    <svg className="proj-svg" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${active.date} 官方美债收益率曲线 T-1 至 T 实测形变`}>
+      {[0, 1, 2, 3].map(i => {
+        const val = minY + (maxY - minY) * i / 3;
+        return <g key={i}>
+          <line x1={padL} x2={width - padR} y1={y(val)} y2={y(val)} className="grid-line" />
+          <text x={padL - 7} y={y(val) + 3.5} textAnchor="end">{val.toFixed(2)}%</text>
+        </g>;
+      })}
+
+      {ribbonSegments.map((seg, i) => (
+        <path key={i} d={seg.d} className={"proj-ribbon " + seg.cls} />
+      ))}
+      <polyline fill="none" className="compare-line" strokeWidth="1.7" strokeDasharray="4 4" points={basePath} />
+      <polyline fill="none" className={"proj-main-line proj-line-" + shiftTone} strokeWidth="2.8" strokeLinejoin="round" strokeLinecap="round" points={actPath} />
+
+      <line x1={padL} x2={width - padR} y1="158" y2="158" className="pane-divider" />
+      <text x={padL} y="172" className="pane-tag">实测变动 (bp) · 虚线 {short(active.prevDate)} → 实线 {short(active.date)}</text>
+      <text x={width - padR} y="172" textAnchor="end" className="pane-hint">点击期限明细</text>
+      <line x1={padL} x2={width - padR} y1={zeroY} y2={zeroY} className="zero-line" />
+      <text x={padL - 7} y={zeroY + 3.5} textAnchor="end">0</text>
+      <text x={padL - 7} y="190" textAnchor="end">+{maxBarBp}</text>
+      <text x={padL - 7} y="248" textAnchor="end">-{maxBarBp}</text>
+
+      {tenors.map((tenor, i) => {
+        const cx = xs[i];
+        const by = baseYs[i];
+        const py = actYs[i];
+        const bp = animShifts[i] ?? 0;
+        const isHovered = hoverIdx === i;
+        const isKey = i === stats.focusIdx;
+        const bTop = bp >= 0 ? barY(bp) : zeroY;
+        const bH = Math.max(2, Math.abs(barY(bp) - zeroY));
+        const bpTextY = bp >= 0 ? bTop - 5 : bTop + bH + 11;
+        const tipX = Math.min(Math.max(cx, 92), width - 92);
+        const tipY = Math.min(by, py) < 46 ? Math.max(by, py) + 28 : Math.min(by, py) - 16;
+
+        return <g key={tenor} className="curve-point"
+          onPointerEnter={e => { if (e.pointerType === "mouse") setHoverIdx(i); }}
+          onPointerLeave={e => { if (e.pointerType === "mouse") setHoverIdx(null); }}
+          onClick={() => setHoverIdx(prev => prev === i ? null : i)}>
+          {isHovered && <line x1={cx} x2={cx} y1="22" y2="260" className="focus-guide" />}
+          {Math.abs(py - by) > 4 && (
+            <line x1={cx} x2={cx} y1={by} y2={py} className={"shift-stem stem-" + (bp >= 0 ? "up" : "down")} />
+          )}
+          <circle cx={cx} cy={by} r="2.6" className="base-dot" />
+          {isKey && <circle cx={cx} cy={py} r="8.5" className={"key-halo halo-" + (bp >= 0 ? "up" : "down")} />}
+          <circle cx={cx} cy={py} r={isHovered || isKey ? 5.2 : 3.6} className={"proj-dot dot-" + (bp >= 0 ? "up" : "down")} />
+
+          <rect x={cx - 11} y={bTop} width="22" height={bH} rx="4.5"
+            className={(bp > 0.2 ? "bar-up" : bp < -0.2 ? "bar-down" : "bar-flat") + (isHovered ? " bar-active" : "")} />
+          <text x={cx} y={bpTextY} textAnchor="middle"
+            className={"bp-val " + (bp > 0.2 ? "bp-up" : bp < -0.2 ? "bp-down" : "")}>
+            {Math.abs(bp) < 0.25 ? "0" : sign(bp, Math.abs(bp) < 10 ? 1 : 0)}
+          </text>
+          <text x={cx} y="276" textAnchor="middle" className={"tenor-lbl" + (isHovered || isKey ? " tenor-active" : "")}>{tenor}</text>
+          <rect x={cx - colW / 2} y="16" width={colW} height="266" fill="transparent" />
+
+          {isHovered && <g className="svg-callout">
+            <rect x={tipX - 80} y={tipY - 15} width="160" height="22" rx="11" />
+            <text x={tipX} y={tipY} textAnchor="middle" className="chart-value">
+              {tenor} {base[i].toFixed(2)}%→{actualCurve[i].toFixed(2)}% ({sign(bp, 1)}bp)
+            </text>
+          </g>}
+        </g>;
+      })}
+    </svg>
+
+    {/* Actual Reaction KPIs */}
+    <div className="proj-kpis">
+      {kpis.map(k => (
+        <div className="pk-item" key={k.label}>
+          <span>{k.label}</span>
+          <strong className={k.value > 0.2 ? "txt-up" : k.value < -0.2 ? "txt-down" : ""}>{sign(k.value, 1)} bp</strong>
+          <small>{k.sub}</small>
+        </div>
+      ))}
+    </div>
+
+    {/* Actual Official TIPS Real vs Breakeven Driver Split */}
+    {hasRealDecomp && (
+      <div className="proj-drivers" aria-label="10年期实际利率与通胀预期实测拆解">
+        <div className="driver-row">
+          <span>10Y 实际利率</span>
+          <div className="driver-track">
+            <i className="driver-zero" />
+            <div className={"driver-fill " + (active.real10Bp! >= 0 ? "up" : "down")} style={driverBarStyle(active.real10Bp!)} />
+          </div>
+          <strong className={active.real10Bp! > 0.1 ? "txt-up" : active.real10Bp! < -0.1 ? "txt-down" : ""}>{sign(active.real10Bp!, 1)} bp</strong>
+        </div>
+        <div className="driver-row">
+          <span>10Y Breakeven</span>
+          <div className="driver-track">
+            <i className="driver-zero" />
+            <div className={"driver-fill " + (active.be10Bp! >= 0 ? "up" : "down")} style={driverBarStyle(active.be10Bp!)} />
+          </div>
+          <strong className={active.be10Bp! > 0.1 ? "txt-up" : active.be10Bp! < -0.1 ? "txt-down" : ""}>{sign(active.be10Bp!, 1)} bp</strong>
+        </div>
+      </div>
+    )}
+
+    {/* Side-by-Side Comparison Table (Compare Past 3-4 Releases vs Current Event!) */}
+    <div className="replay-table-wrap">
+      <div className="replay-table-title">横向对比（点击任意行切换上方回放曲线）</div>
+      <div className="replay-table" role="table" aria-label="近次实证横向对比表">
+        <div className="rtbl-head" role="row">
+          <span role="columnheader">发布日 / 周期</span>
+          <span role="columnheader">官方原始读数</span>
+          <span role="columnheader">实测曲线反应</span>
+        </div>
+        {showCompareRow && event && (
+          <div className="rtbl-row rtbl-current" role="row">
+            <span className="rtbl-date" role="cell"><b>{short(event.date)}</b><em>本次对照</em></span>
+            <span className="rtbl-read" role="cell">{currentSummary}</span>
+            <span className="rtbl-react" role="cell"><em>{event.readings?.length ? "待收盘曲线" : "待公布"}</em></span>
+          </div>
+        )}
+        {items.map(it => {
+          const isSelected = it.date === active.date;
+          const isCur = event?.date === it.date;
+          const d2 = it.shiftsBp[2], d10 = it.shiftsBp[6], dFocus = it.shiftsBp[stats.focusIdx];
+          return <button key={it.date} type="button" role="row"
+            className={"rtbl-row rtbl-btn" + (isSelected ? " active" : "") + (isCur ? " rtbl-current" : "")}
+            onClick={() => { setSelectedDate(it.date); setHoverIdx(null); }}>
+            <span className="rtbl-date" role="cell">
+              <b>{short(it.date)}</b>
+              <small>{it.period}</small>
+              {isCur && <em>本次实测</em>}
+            </span>
+            <span className="rtbl-read" role="cell">
+              {it.headline}
+              {it.confounders.length > 0 && <i className="rtbl-conf">叠加：{it.confounders.join("+")}</i>}
+            </span>
+            <span className="rtbl-react" role="cell">
+              <strong className={dFocus > 0.2 ? "txt-up" : dFocus < -0.2 ? "txt-down" : "txt-muted"}>
+                {stats.focusTenor} {sign(dFocus, 0)}bp
+              </strong>
+              <small>
+                {stats.focusIdx === 2 ? `10Y ${sign(d10, 0)}bp` : `2Y ${sign(d2, 0)} · 10Y ${sign(d10, 0)}`} · {it.regimeTag}
+              </small>
+            </span>
+          </button>;
+        })}
+      </div>
+    </div>
+
+    <p className="proj-disclaimer">{series.methodology}</p>
+  </div>;
+}
+
 function FocusList({ events, tz, now, inspect }: { events: MarketEvent[]; tz: TzMode; now: Date; inspect: (event: MarketEvent, list: MarketEvent[]) => void }) {
   return <section className="panel glass focus-panel">
     <div className="panel-header">
@@ -933,13 +1304,15 @@ function PlaybookView({ playbook, compact = false }: { playbook: Playbook; compa
 }
 
 function ScenarioCalculator({
-  event, sameTime, allEvents, baseCurve, baseLabel,
+  event, sameTime, allEvents, baseCurve, baseLabel, replaySeries, onOpenReplay,
 }: {
   event: MarketEvent;
   sameTime: MarketEvent[];
   allEvents: MarketEvent[];
   baseCurve: number[];
   baseLabel: string;
+  replaySeries?: ReplaySeries | null;
+  onOpenReplay?: () => void;
 }) {
   const rule = ruleFor(event)!;
   const projSet = useMemo(() => projectionFor(event), [event]);
@@ -1002,6 +1375,15 @@ function ScenarioCalculator({
     : rule.unit === "百万" ? v.toFixed(1) + " 百万"
     : v + " 千人";
 
+  const replayItems = useMemo(
+    () => (replaySeries ? selectReplayItems(replaySeries, event.date) : []),
+    [replaySeries, event.date]
+  );
+  const replayStats = useMemo(
+    () => (replaySeries && replayItems.length ? computeReplayStats(replaySeries, replayItems) : null),
+    [replaySeries, replayItems]
+  );
+
   return <div className="calc-wrap">
     <CurveProjection
       projectionSet={projSet}
@@ -1014,6 +1396,18 @@ function ScenarioCalculator({
       onSelectSide={setPreviewSide}
       focusIndex={focusTenorIndexFor(projSet.key, event)}
     />
+    {replayStats && replayItems[0] && onOpenReplay && (
+      <button type="button" className="replay-teaser" onClick={onOpenReplay}>
+        <span className="teaser-copy">
+          <BarChart3 size={14} />
+          <span>
+            <b>近 {replayItems.length} 次官方实测：</b>
+            |Δ{replayStats.focusTenor}| 均值 {replayStats.meanAbsFocus.toFixed(1)}bp · 最近 ({short(replayItems[0].date)}) {replayItems[0].headline} → {replayStats.focusTenor} {sign(replayItems[0].shiftsBp[replayStats.focusIdx], 0)}bp
+          </span>
+        </span>
+        <span className="teaser-cta">逐次回放<ChevronRight size={14} /></span>
+      </button>
+    )}
     {isQual ? (
       <div className="scenario-inputs qual-inputs">
         <label>政策 / 纪要基调判断
@@ -1133,13 +1527,14 @@ function MicrostructureGrid({ kind }: { kind: MarketEvent["kind"] }) {
 /* ---------- Unified Liquid Glass Slide-Over Inspector Drawer ---------- */
 
 function EventDrawer({
-  event, list, allEvents, baseCurve, baseLabel, tz, now, currentView, onClose, onStep, onJumpWeek, onOpenFullScenario,
+  event, list, allEvents, baseCurve, baseLabel, replays, tz, now, currentView, onClose, onStep, onJumpWeek, onOpenFullScenario,
 }: {
   event: MarketEvent;
   list: MarketEvent[];
   allEvents: MarketEvent[];
   baseCurve: number[];
   baseLabel: string;
+  replays: ReplayCatalog | null;
   tz: TzMode;
   now: Date;
   currentView: ViewId;
@@ -1151,13 +1546,18 @@ function EventDrawer({
   const rule = ruleFor(event);
   const playbook = playbookFor(event);
   const projSet = useMemo(() => projectionFor(event), [event]);
-  const [tab, setTab] = useState<DrawerTab>(() => (rule ? "scenario" : "history"));
+  const replaySeries = useMemo(() => {
+    const key = replayKeyForEvent(event);
+    const s = key ? replays?.series?.[key] ?? null : null;
+    return s && s.items.length >= 2 ? s : null;
+  }, [event, replays]);
+  const [tab, setTab] = useState<DrawerTab>(() => (rule ? "scenario" : replaySeries ? "replay" : "history"));
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setTab(rule ? "scenario" : "history");
+    setTab(rule ? "scenario" : replaySeries ? "replay" : "history");
     scrollRef.current?.scrollTo({ top: 0 });
-  }, [event.id, Boolean(rule)]);
+  }, [event.id, Boolean(rule), Boolean(replaySeries)]);
 
   const idx = list.findIndex(item => item.id === event.id);
   const prevEv = idx > 0 ? list[idx - 1] : null;
@@ -1218,17 +1618,34 @@ function EventDrawer({
             {rule && <button type="button" role="tab" aria-selected={tab === "scenario"} className={tab === "scenario" ? "active" : ""} onClick={() => setTab("scenario")}>
               <SlidersHorizontal size={13} />情景推演
             </button>}
+            {replaySeries && <button type="button" role="tab" aria-selected={tab === "replay"} className={tab === "replay" ? "active" : ""} onClick={() => setTab("replay")}>
+              <BarChart3 size={13} />实证回放
+            </button>}
             <button type="button" role="tab" aria-selected={tab === "history"} className={tab === "history" ? "active" : ""} onClick={() => setTab("history")}>
-              <History size={13} />历史与机制
+              <History size={13} />机制案例
             </button>
             <button type="button" role="tab" aria-selected={tab === "micro"} className={tab === "micro" ? "active" : ""} onClick={() => setTab("micro")}>
-              <Layers size={13} />交易台微结构
+              <Layers size={13} />微结构
             </button>
           </div>
         </div>
 
         <div className="drawer-body">
-          {tab === "scenario" && rule && <ScenarioCalculator key={event.id} event={event} sameTime={sameTime} allEvents={allEvents} baseCurve={baseCurve} baseLabel={baseLabel} />}
+          {tab === "scenario" && rule && (
+            <ScenarioCalculator
+              key={event.id}
+              event={event}
+              sameTime={sameTime}
+              allEvents={allEvents}
+              baseCurve={baseCurve}
+              baseLabel={baseLabel}
+              replaySeries={replaySeries}
+              onOpenReplay={replaySeries ? () => { setTab("replay"); scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" }); } : undefined}
+            />
+          )}
+          {tab === "replay" && replaySeries && (
+            <HistoricalReplayPanel series={replaySeries} curveThrough={replays?.curveThrough} event={event} compact />
+          )}
           {tab === "history" && <>
             {!rule && (
               <div className="drawer-proj-spacer">
@@ -1286,6 +1703,7 @@ export default function Desk() {
   });
 
   const [calendars, setCalendars] = useState<Record<string, Calendar>>({});
+  const [replays, setReplays] = useState<ReplayCatalog | null>(null);
   const [liveCurve, setLiveCurve] = useState<LiveCurve | null>(null);
   const [liveFailed, setLiveFailed] = useState(false);
   const [preferLive, setPreferLive] = useState(true);
@@ -1330,9 +1748,10 @@ export default function Desk() {
   async function refreshAll(manual = false, signal?: AbortSignal) {
     if (manual) setRefreshing(true);
     const started = Date.now();
-    const [calRes, liveRes] = await Promise.allSettled([
+    const [calRes, liveRes, replayRes] = await Promise.allSettled([
       loadCalendars(signal),
       loadLiveCurve(signal),
+      loadReplays(signal),
     ]);
     if (signal?.aborted) return;
     if (calRes.status === "fulfilled") {
@@ -1346,6 +1765,9 @@ export default function Desk() {
       setLiveFailed(false);
     } else {
       setLiveFailed(true);
+    }
+    if (replayRes.status === "fulfilled") {
+      setReplays(replayRes.value);
     }
     setNow(new Date());
     setLastSyncedAt(new Date().toISOString());
@@ -1462,6 +1884,18 @@ export default function Desk() {
 
   const activeLibraryPlaybook = playbookByKey(libraryKey) ?? playbookByKey("cpi")!;
   const activeLibraryProj = projectionByKey(libraryKey);
+  const activeScenarioReplay = useMemo(() => {
+    if (!activeScenario || !replays) return null;
+    const key = replayKeyForEvent(activeScenario);
+    const s = key ? replays.series[key] ?? null : null;
+    return s && s.items.length >= 2 ? s : null;
+  }, [activeScenario, replays]);
+  const activeLibraryReplay = useMemo(() => {
+    if (!replays) return null;
+    const key = replayKeyForLibrary(libraryKey);
+    const s = key ? replays.series[key] ?? null : null;
+    return s && s.items.length >= 2 ? s : null;
+  }, [libraryKey, replays]);
   const latestCurve9 = useMemo(() => {
     if (week >= current && preferLive && liveCurve) {
       return { values: liveCurve.values, label: `实时现券 (${liveCurve.exchange})` };
@@ -1693,9 +2127,19 @@ export default function Desk() {
                   allEvents={allEvents}
                   baseCurve={latestCurve9.values}
                   baseLabel={latestCurve9.label}
+                  replaySeries={activeScenarioReplay}
+                  onOpenReplay={activeScenarioReplay ? () => { document.getElementById("standalone-replay")?.scrollIntoView({ behavior: "smooth", block: "start" }); } : undefined}
                   sameTime={allEvents.filter(ev => ev.id !== activeScenario.id && ev.date === activeScenario.date && ev.time && ev.time === activeScenario.time && ev.impact >= 3)}
                 />
               </section>
+
+              {activeScenarioReplay && (
+                <section id="standalone-replay" className="panel glass">
+                  <div className="panel-pad replay-standalone-pad">
+                    <HistoricalReplayPanel series={activeScenarioReplay} curveThrough={replays?.curveThrough} event={activeScenario} />
+                  </div>
+                </section>
+              )}
 
               <section className="panel glass">
                 <div className="panel-header">
@@ -1739,6 +2183,11 @@ export default function Desk() {
                     focusIndex={focusTenorIndexFor(libraryKey)}
                   />
                 </div>
+                {activeLibraryReplay && (
+                  <div className="drawer-proj-spacer">
+                    <HistoricalReplayPanel series={activeLibraryReplay} curveThrough={replays?.curveThrough} />
+                  </div>
+                )}
                 <PlaybookView playbook={activeLibraryPlaybook} />
               </div>
             </section>
@@ -1778,7 +2227,7 @@ export default function Desk() {
               <time>{formatStamp(check.checkedAt, tz)}</time>
             </article>)}
           </div>
-          <p className="source-note">财政部名义平价与 TIPS 实际收益率为日终数据。官方自动采集覆盖 CPI、PPI、非农、JOLTS、ECI、PCE（含同比与实际消费）、GDP 及国债拍卖结果（含一级交易商与间接/直接获配占比）。{" "}
+          <p className="source-note">财政部名义平价与 TIPS 实际收益率为日终数据。官方自动采集覆盖 CPI、PPI、非农、JOLTS、ECI、PCE、GDP、生产率/ULC 及国债拍卖结果，并结合 BLS/BEA/美联储原始发布存档与圣路易斯联储 ALFRED 发布日快照自动生成近次实证回放库（{replays ? `${Object.keys(replays.series).length} 个序列 · 截至 ${replays.curveThrough}` : "载入中"}）。{" "}
             <SourceLink url={nowcastUrl} label="Cleveland Fed 通胀模型" /></p>
         </section>}
 
@@ -1794,6 +2243,7 @@ export default function Desk() {
         allEvents={allEvents}
         baseCurve={latestCurve9.values}
         baseLabel={latestCurve9.label}
+        replays={replays}
         tz={tz}
         now={now}
         currentView={view}
