@@ -1,6 +1,6 @@
 import { readFile, rename, writeFile } from "node:fs/promises";
-import { auctionNames, dateOf, document, months, textOf } from "./feeds";
-import { addDays, newYorkDate, type Reading } from "./model";
+import { auctionNames, dateOf, document, dolUrl, months, parseDol, textOf } from "./feeds";
+import { addDays, newYorkDate, weekOf, type Reading } from "./model";
 import { matchesBlsDate, parseBeaReadings, parseBlsReadings, type BlsKind } from "./releases";
 import type { HistoricalReplay, ReplayCatalog, ReplayReading, ReplaySeries } from "./replay-model";
 
@@ -65,7 +65,7 @@ async function loadDailyTreasuryCurves(years: number[]): Promise<DailyCurves> {
         const parts = parseCsvLine(line);
         const date = parseUsDate(parts[0] ?? "");
         if (!date) continue;
-        const val = Number(parts[idx10]);
+        const val = parts[idx10] ? Number(parts[idx10]) : NaN;
         if (Number.isFinite(val)) real10.set(date, val);
       }
     }).catch(() => {}),
@@ -246,8 +246,8 @@ async function fetchAlfredTail(seriesId: string, vintageDate: string): Promise<A
   const rows: AlfredObs[] = [];
   for (const line of doc.html.trim().split(/\r?\n/).slice(1)) {
     const [d, v] = line.split(",");
-    const num = Number(v);
-    if (d && Number.isFinite(num)) rows.push({ obsDate: d.trim(), value: num });
+    const num = v?.trim() ? Number(v) : NaN;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d?.trim()) && Number.isFinite(num)) rows.push({ obsDate: d.trim(), value: num });
   }
   return rows.slice(-4);
 }
@@ -273,13 +273,14 @@ export async function buildReplayCatalog(now = new Date()): Promise<ReplayCatalo
   const currentYear = Number(today.slice(0, 4));
   const years = [currentYear - 1, currentYear];
 
-  const [curves, blsSched, beaSched, censusSched, fomcDoc, tdDoc] = await Promise.all([
+  const [curves, blsSched, beaSched, censusSched, fomcDoc, tdDoc, dolDoc] = await Promise.all([
     loadDailyTreasuryCurves(years),
     fetchBlsSchedule(years),
     fetchBeaSchedule(years, currentYear),
     fetchCensusSchedule(years),
     document("https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm").catch(() => null),
     document(treasuryAuctioned365).catch(() => null),
+    document(dolUrl).catch(() => null),
   ]);
 
   const curveThrough = curves.dates.at(-1) ?? "";
@@ -293,6 +294,20 @@ export async function buildReplayCatalog(now = new Date()): Promise<ReplayCatalo
     if (!set) { set = new Set(); confounderMap.set(date, set); }
     set.add(label);
   };
+  const claimsDates: string[] = [];
+  for (let back = 0; back < 8; back++) {
+    const week = addDays(weekOf(curveThrough), -back * 7);
+    let date = addDays(week, 3);
+    if (dolDoc) {
+      try {
+        date = parseDol(dolDoc.html, week).events[0].date;
+        if (eligible(date)) addConfounder(date, "初请失业金");
+      } catch {
+        // The vintage check below still excludes non-release Thursdays.
+      }
+    }
+    if (eligible(date) && !claimsDates.includes(date)) claimsDates.push(date);
+  }
 
   for (const row of blsSched) {
     if (/^Consumer Price Index\b/i.test(row.detail)) addConfounder(row.date, "美国 CPI");
@@ -709,15 +724,10 @@ export async function buildReplayCatalog(now = new Date()): Promise<ReplayCatalo
     }
   }
 
-  // Initial Claims: check recent 7 Thursdays via strict ALFRED vintage gate
+  // Use the DOL schedule for holiday moves, then verify a new ALFRED observation.
   {
-    const thursdays: string[] = [];
-    for (let back = 1; back <= 56 && thursdays.length < 7; back++) {
-      const d = addDays(curveThrough, -back + 1);
-      if (new Date(d + "T12:00:00Z").getUTCDay() === 4 && eligible(d)) thursdays.push(d);
-    }
     const items: HistoricalReplay[] = [];
-    for (const d of thursdays) {
+    for (const d of claimsDates) {
       if (items.length >= MAX_ITEMS) break;
       const react = reactionOn(curves, d);
       if (!react) continue;

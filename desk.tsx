@@ -12,10 +12,12 @@ import {
   type MarketEvent, type Reading, type SourceCheck, type Tenor, type TzMode,
 } from "./model";
 import { loadCalendars, loadLiveCurve, loadReplays, type LiveCurve } from "./pages-data";
-import { featuredPlaybookKeys, playbookByKey, playbookFor, type Playbook } from "./playbooks";
+import { playbookByKey, playbookFor, type Playbook } from "./playbooks";
+import { coReleases, groupReleases, lessonFor, lessons } from "./learning";
+import { CurveGuide, hasHistoricalPractice, HistoryPractice, LessonCard, LessonDirectory, ReleaseGroup } from "./learning-view";
 import { projectionByKey, projectionFor, type EventProjectionSet } from "./projections";
 import {
-  focusTenorIndexForReplay, replayKeyForEvent, replayKeyForLibrary,
+  eventCurveBase, focusTenorIndexForReplay, replayKeyForEvent, replayKeyForLibrary, selectReplayItems,
   type HistoricalReplay, type ReplayCatalog, type ReplaySeries,
 } from "./replay-model";
 import { nowcastUrl } from "./releases";
@@ -23,10 +25,11 @@ import { actualFor, priorFor, ruleFor, scenarioFor } from "./scenarios";
 import { seedCalendar } from "./seed";
 
 type ViewId = "overview" | "calendar" | "scenarios" | "sources";
-type DrawerTab = "scenario" | "replay" | "history" | "micro";
+type DrawerTab = "learn" | "scenario" | "replay";
 type ThemeMode = "light" | "dark";
 type BenchMode = "1D" | "1W" | "1M";
-type SavedScenarioInput = { expected?: string; hypothesis?: string; components?: string; stance?: string };
+type Comparison = "manual" | "model" | "prior";
+type SavedScenarioInput = { expected?: string; hypothesis?: string; components?: string; stance?: string; comparison?: Comparison };
 
 const STORAGE_THEME = "ust-desk-theme";
 const STORAGE_TZ = "ust-desk-tz";
@@ -90,12 +93,7 @@ function pickBenchmark(points: CurvePoint[], bench: BenchMode): CurvePoint | und
   if (bench === "1D") return points.at(-2);
   const target = addDays(latest.date, bench === "1W" ? -7 : -30);
   const prior = points.slice(0, -1);
-  let best = prior[0];
-  for (const pt of prior) {
-    if (pt.date <= target) best = pt;
-    else break;
-  }
-  return best;
+  return prior.findLast(point => point.date <= target);
 }
 
 function loadSavedScenarios(): Record<string, SavedScenarioInput> {
@@ -110,7 +108,7 @@ function loadSavedScenarios(): Record<string, SavedScenarioInput> {
 function saveScenarioInput(id: string, input: SavedScenarioInput) {
   try {
     const all = loadSavedScenarios();
-    const empty = !input.expected && !input.hypothesis && (!input.components || input.components === "unknown") && (!input.stance || input.stance === "none");
+    const empty = (!input.comparison || input.comparison === "manual") && !input.expected && !input.hypothesis && (!input.components || input.components === "unknown") && (!input.stance || input.stance === "none");
     if (empty) delete all[id];
     else all[id] = input;
     localStorage.setItem(STORAGE_SCENARIOS, JSON.stringify(all));
@@ -139,12 +137,13 @@ function SourceLink({ url, label }: { url: string; label: string }) {
 
 /* ---------- Overview Components ---------- */
 
-function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
+function Curve({ points, live, showLive, canLive, onToggleLive, onLearn, tz }: {
   points: CurvePoint[];
   live: LiveCurve | null;
   showLive: boolean;
   canLive: boolean;
   onToggleLive: (useLive: boolean) => void;
+  onLearn: () => void;
   tz: TzMode;
 }) {
   const latestEod = points.at(-1);
@@ -190,6 +189,11 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
       : compareEod
         ? `${bench === "1D" ? "上一观测日" : bench + " 基准"} ${compareEod.date} (财政部日终)`
         : null;
+  const front = deltasBp[activeTenors.indexOf("2Y")];
+  const back = deltasBp[activeTenors.indexOf("10Y")];
+  const curveObservation = front != null && back != null && dashedLegend ? {
+    front, back, window: dashedLegend + " → " + solidLegend, sameSource: !usingLive || bench === "1D",
+  } : undefined;
 
   // Dual-pane vertically aligned SVG geometry: Top = Yield Curve, Bottom = Aligned Δbp Bars
   const validVals = [...latestVals, ...(hasCompare ? compareVals : [])].filter(Number.isFinite);
@@ -247,7 +251,7 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
         valueText: be10.toFixed(2) + "%",
         delta: pbe10 !== undefined ? Math.round((be10 - pbe10) * 100) : null,
         deltaDigits: 0,
-        trend: pbe10 !== undefined ? (be10 > pbe10 ? "通胀预期↑" : be10 < pbe10 ? "通胀预期↓" : "持平") : "财政部日终",
+        trend: pbe10 !== undefined ? (be10 > pbe10 ? "通胀补偿↑" : be10 < pbe10 ? "通胀补偿↓" : "持平") : "财政部日终",
       } : null,
     ].filter((m): m is NonNullable<typeof m> => Boolean(m));
 
@@ -403,6 +407,7 @@ function Curve({ points, live, showLive, canLive, onToggleLive, tz }: {
         ))}
       </div>}
     </> : <p className="empty">该日期之前暂无可用的曲线数据。</p>}
+    <CurveGuide observation={curveObservation} onLearn={onLearn} />
   </section>;
 }
 
@@ -557,7 +562,7 @@ function buildProjectionKpis(key: string, base: number[], shifts: number[], real
     const d5s30s = Number((d30y - d5y).toFixed(1));
     return [
       { label: "10Y 实际利率", value: real10Bp, sub: real10Bp > 0.2 ? "TIPS 承压" : real10Bp < -0.2 ? "TIPS 走强" : "平稳" },
-      { label: "10Y Breakeven", value: be10Bp, sub: be10Bp > 0.2 ? "通胀预期走阔" : be10Bp < -0.2 ? "通胀预期收窄" : "平稳" },
+      { label: "10Y Breakeven", value: be10Bp, sub: be10Bp > 0.2 ? "通胀补偿走阔" : be10Bp < -0.2 ? "通胀补偿收窄" : "平稳" },
       { label: "10Y 名义联动", value: d10y, sub: lvl(6, d10y) },
       { label: "5s30s 斜率", value: d5s30s, sub: slopeSub(d5s30s) },
     ];
@@ -575,8 +580,8 @@ function buildProjectionKpis(key: string, base: number[], shifts: number[], real
   const d2s10s = Number((d10y - d2y).toFixed(1));
   const d5s30s = Number((d30y - d5y).toFixed(1));
   return [
-    { label: "2Y 预计", value: d2y, sub: lvl(2, d2y) },
-    { label: "10Y 预计", value: d10y, sub: lvl(6, d10y) },
+    { label: "2Y 收益率变动", value: d2y, sub: lvl(2, d2y) },
+    { label: "10Y 收益率变动", value: d10y, sub: lvl(6, d10y) },
     { label: "2s10s 斜率", value: d2s10s, sub: slopeSub(d2s10s) },
     { label: "5s30s 斜率", value: d5s30s, sub: slopeSub(d5s30s) },
   ];
@@ -649,7 +654,8 @@ function CurveProjection({
     setReplayNonce(n => n + 1);
   }
 
-  const base = baseCurve.length === tenors.length ? baseCurve : fallbackBaseCurve;
+  if (baseCurve.length !== tenors.length) return <p className="empty">{baseLabel}，暂缺情景点位。</p>;
+  const base = baseCurve;
   const projected = base.map((yVal, i) => yVal + (animShifts[i] ?? 0) / 100);
   const avgShift = animShifts.reduce((a, b) => a + b, 0) / animShifts.length;
   const shiftTone = avgShift > 0.35 ? "up" : avgShift < -0.35 ? "down" : "mixed";
@@ -698,7 +704,7 @@ function CurveProjection({
     <div className="proj-head">
       <div>
         <div className="proj-title-row">
-          <h3>收益率曲线形变推演</h3>
+          <h3>收益率曲线压力情景</h3>
           <span className={"proj-morph-tag tone-" + active.tone}>{active.tag}</span>
           {isCalcSynced && <span className="proj-sync-badge">试算联动</span>}
         </div>
@@ -808,7 +814,7 @@ function CurveProjection({
     </div>
 
     {(Math.abs(real10Bp) >= 0.3 || Math.abs(be10Bp) >= 0.3) && (
-      <div className="proj-drivers" aria-label="10年期实际利率与通胀预期拆解">
+      <div className="proj-drivers" aria-label="10年期实际利率与通胀补偿拆解">
         <div className="driver-row">
           <span>10Y 实际利率</span>
           <div className="driver-track">
@@ -829,7 +835,7 @@ function CurveProjection({
     )}
 
     <p className="proj-note">{active.note}</p>
-    <p className="proj-disclaimer">基于当前曲线叠加历史经验期限弹性推演，用于直观判断方向、斜率与关键节点形态，非精确点位预测。</p>
+    <p className="proj-disclaimer">每档 bp 和 10Y 实际利率拆分均为手工设定。滑块按比例缩放这些假设，用于比较不同冲击下的曲线形态。</p>
   </div>;
 }
 
@@ -842,12 +848,6 @@ function replayKpiBucket(seriesKey: string): string {
   if (seriesKey.includes("-tips")) return "tips";
   if (seriesKey.endsWith("-bill") || seriesKey === "auction:2y-frn") return "bills";
   return seriesKey;
-}
-
-function selectReplayItems(series: ReplaySeries, eventDate?: string): HistoricalReplay[] {
-  if (!eventDate) return series.items.slice(0, 4);
-  const upTo = series.items.filter(it => it.date <= eventDate).slice(0, 4);
-  return upTo.length >= 2 ? upTo : series.items.slice(0, 4);
 }
 
 function computeReplayStats(series: ReplaySeries, items: HistoricalReplay[]) {
@@ -899,9 +899,12 @@ function HistoricalReplayPanel({
   );
   const animShifts = useAnimatedVector(targetShifts, 440, replayNonce, `${series.key}:${active?.date ?? ""}`);
 
-  if (!active || items.length === 0) return null;
+  if (!active) return <p className="empty">截至 {event?.date ?? curveThrough}，本库暂无该序列的日终回放。</p>;
+  if (active.prevCurve.length !== tenors.length || active.curve.length !== tenors.length || active.shiftsBp.length !== tenors.length) {
+    return <p className="empty">这一日的九期限曲线记录不完整。</p>;
+  }
 
-  const base = active.prevCurve.length === tenors.length ? active.prevCurve : fallbackBaseCurve;
+  const base = active.prevCurve;
   const actualCurve = base.map((v, i) => v + (animShifts[i] ?? 0) / 100);
   const avgShift = animShifts.reduce((a, b) => a + b, 0) / animShifts.length;
   const shiftTone = avgShift > 0.35 ? "up" : avgShift < -0.35 ? "down" : "mixed";
@@ -993,9 +996,9 @@ function HistoricalReplayPanel({
         </div>
       )}
       <div className="rs-chip">
-        <span>单日纯净窗口</span>
+        <span>日历未标记同日叠加</span>
         <b>{stats.cleanCount} / {items.length} 次</b>
-        <small>{stats.cleanCount === items.length ? "无同日一级撞车" : "已标注同日叠加事件"}</small>
+        <small>仅覆盖回放日历收录的事件</small>
       </div>
     </div>
 
@@ -1033,7 +1036,7 @@ function HistoricalReplayPanel({
           <span><b>同日叠加：</b>{active.confounders.join("、")}（日终收盘反映当日综合走势，并非本项单一净效应）</span>
         </> : <>
           <CheckCircle2 size={13} />
-          <span><b>单日纯净窗口</b> · 财政部日终 {short(active.prevDate)} → {short(active.date)}（当日无其他重磅一级撞车）</span>
+          <span><b>日历未标记同日叠加</b> · 财政部日终 {short(active.prevDate)} → {short(active.date)} 的变动包含整个观察窗口的影响。</span>
         </>}
       </div>
       <SourceLink url={active.sourceUrl} label={active.sourceName} />
@@ -1131,7 +1134,7 @@ function HistoricalReplayPanel({
 
     {/* Actual Official TIPS Real vs Breakeven Driver Split */}
     {hasRealDecomp && (
-      <div className="proj-drivers" aria-label="10年期实际利率与通胀预期实测拆解">
+      <div className="proj-drivers" aria-label="10年期实际利率与通胀补偿实测拆解">
         <div className="driver-row">
           <span>10Y 实际利率</span>
           <div className="driver-track">
@@ -1203,7 +1206,7 @@ function HistoricalReplayPanel({
 function FocusList({ events, tz, now, inspect }: { events: MarketEvent[]; tz: TzMode; now: Date; inspect: (event: MarketEvent, list: MarketEvent[]) => void }) {
   return <section className="panel glass focus-panel">
     <div className="panel-header">
-      <div><h2>接下来关注</h2><p>点击任意事件直接右侧推演 · {tzLabel(tz)}</p></div>
+      <div><h2>接下来关注</h2><p>查看指标、传导与当次情景 · {tzLabel(tz)}</p></div>
       <span className="header-icon"><Activity size={18} /></span>
     </div>
     {events.length ? <ul>{events.map(event => {
@@ -1247,7 +1250,7 @@ function LatestReleases({ events, tz, inspect }: { events: MarketEvent[]; tz: Tz
 function PlaybookView({ playbook, compact = false }: { playbook: Playbook; compact?: boolean }) {
   return <div className={"playbook-body" + (compact ? " compact" : "")}>
     <div className="pb-hero">
-      <span className="vol-badge"><Activity size={13} />典型波动：{playbook.volatility}</span>
+      <span className="vol-badge"><Activity size={13} />经验波动参考 · {playbook.volatility}</span>
       <p className="pb-summary">{playbook.summary}</p>
     </div>
 
@@ -1285,7 +1288,7 @@ function PlaybookView({ playbook, compact = false }: { playbook: Playbook; compa
     </div>
 
     <div className="pb-block">
-      <h3><History size={14} />官方财政部历史实证案例</h3>
+      <h3><History size={14} />历史案例与传导解释</h3>
       <div className="history-list">
         {playbook.history.map(item => (
           <article className="history-card" key={item.date + item.title}>
@@ -1296,6 +1299,7 @@ function PlaybookView({ playbook, compact = false }: { playbook: Playbook; compa
             <p className="history-surprise"><b>意外：</b>{item.surprise}</p>
             <div className="history-move">{item.ustMove}</div>
             <p className="history-lesson">{item.lesson}</p>
+            {item.sources?.map(source => <SourceLink key={source.url} url={source.url} label={source.label} />)}
           </article>
         ))}
       </div>
@@ -1303,8 +1307,39 @@ function PlaybookView({ playbook, compact = false }: { playbook: Playbook; compa
   </div>;
 }
 
+function releaseReference(event: MarketEvent, now: Date) {
+  const model = event.reference;
+  return model && Number.isFinite(model.value) && model.asOf < event.date && model.asOf <= newYorkDate(now)
+    ? model : undefined;
+}
+
+function ReleaseEvidence({ event, related, now, archive }: {
+  event: MarketEvent; related: MarketEvent[]; now: Date; archive?: HistoricalReplay;
+}) {
+  const released = isPastEvent(event, now);
+  const model = releaseReference(event, now);
+  const isAuction = event.category === "auction";
+  const canCompare = event.category === "macro" || (isAuction && Boolean(ruleFor(event)));
+  const readings = released && (event.readings?.length
+    ? event.readings.map(reading => ({ label: reading.label, valueText: readingText(reading) }))
+    : archive?.readings);
+  return <div className="release-evidence">
+    <div className="study-heading"><h4>本次发布</h4></div>
+    <p>{event.detail}</p>
+    {readings && readings.length ? <dl className="evidence-values">{readings.map(reading =>
+      <div key={reading.label}><dt>{reading.label}</dt><dd>{reading.valueText}</dd></div>)}</dl> :
+      <p>{released ? event.actual ?? "官方结构化读数暂缺" : "等待官方发布"}</p>}
+    {model && <p>模型估计 {model.value.toFixed(2)}% · 报告期 {model.period} · 截至 {model.asOf}{" "}
+      <SourceLink url={nowcastUrl} label="Cleveland Fed" /></p>}
+    {canCompare && <p>{isAuction ? "截标前同券 WI 未接入" : "发布前市场调查预期未接入"}。可在情景试算中输入对应基准。</p>}
+    {related.length > 0 && <p className="co-release">同刻发布 {related.map(item => item.title).join("、")}。比较该时段行情时共同考虑。</p>}
+    {released && (event.resultUrl || archive) &&
+      <SourceLink url={event.resultUrl ?? archive!.sourceUrl} label={event.resultUrl ? "官方发布原文" : archive!.sourceName} />}
+  </div>;
+}
+
 function ScenarioCalculator({
-  event, sameTime, allEvents, baseCurve, baseLabel, replaySeries, onOpenReplay,
+  event, sameTime, allEvents, baseCurve, baseLabel, replaySeries, onOpenReplay, now,
 }: {
   event: MarketEvent;
   sameTime: MarketEvent[];
@@ -1313,14 +1348,17 @@ function ScenarioCalculator({
   baseLabel: string;
   replaySeries?: ReplaySeries | null;
   onOpenReplay?: () => void;
+  now: Date;
 }) {
   const rule = ruleFor(event)!;
   const projSet = useMemo(() => projectionFor(event), [event]);
-  const official = actualFor(event, rule);
+  const official = isPastEvent(event, now) ? actualFor(event, rule) : undefined;
+  const model = releaseReference(event, now);
   const prior = useMemo(() => priorFor(event, allEvents, rule), [event, allEvents, rule]);
   const initialSaved = useMemo(() => loadSavedScenarios()[event.id] ?? {}, [event.id]);
 
   const [expected, setExpected] = useState(initialSaved.expected ?? "");
+  const [comparison, setComparison] = useState<Comparison>(initialSaved.comparison ?? "manual");
   const [hypothesis, setHypothesis] = useState(initialSaved.hypothesis ?? "");
   const [components, setComponents] = useState(initialSaved.components ?? "unknown");
   const [stance, setStance] = useState(initialSaved.stance ?? "none");
@@ -1328,16 +1366,17 @@ function ScenarioCalculator({
   const [cardPick, setCardPick] = useState<{ side: "above" | "below" | null; nonce: number }>({ side: null, nonce: 0 });
 
   useEffect(() => {
-    saveScenarioInput(event.id, { expected, hypothesis, components, stance });
-  }, [event.id, expected, hypothesis, components, stance]);
+    saveScenarioInput(event.id, { expected, hypothesis, components, stance, comparison });
+  }, [event.id, expected, hypothesis, components, stance, comparison]);
 
-  const hasCustomInput = Boolean(expected || hypothesis || components !== "unknown" || stance !== "none");
-  const resetInputs = () => { setExpected(""); setHypothesis(""); setComponents("unknown"); setStance("none"); };
+  const hasCustomInput = Boolean(expected || hypothesis || components !== "unknown" || stance !== "none" || comparison !== "manual");
+  const resetInputs = () => { setExpected(""); setHypothesis(""); setComponents("unknown"); setStance("none"); setComparison("manual"); };
 
   const isAuction = event.category === "auction";
   const isQual = Boolean(rule.qualitative);
-  const useModel = !isQual && expected.trim() === "" && event.reference?.value !== undefined;
-  const expectedValue = expected.trim() === "" ? event.reference?.value : Number(expected);
+  const useModel = !isAuction && comparison === "model";
+  const usePrior = !isAuction && comparison === "prior";
+  const expectedValue = useModel ? model?.value : usePrior ? prior?.value : expected.trim() ? Number(expected) : undefined;
   const actualValue = hypothesis.trim() === "" ? official : Number(hypothesis);
   const diff = !isQual && expectedValue !== undefined && actualValue !== undefined && Number.isFinite(expectedValue) && Number.isFinite(actualValue)
     ? Number((actualValue - expectedValue).toFixed(6)) : null;
@@ -1346,11 +1385,12 @@ function ScenarioCalculator({
   const bigBand = rule.big ?? Infinity;
   const absDiff = diff === null ? 0 : Math.abs(diff);
   const near = diff !== null && (noiseBand > 0 ? absDiff < noiseBand : diff === 0);
-  const magnitude = diff === null ? null : near ? "噪音/符合预期" : absDiff >= bigBand ? "显著意外" : "小幅偏离";
+  const magnitude = diff === null ? null : useModel || usePrior ? null :
+    near ? "接近基准" : absDiff >= bigBand ? "超出情景阈值" : "小幅偏离";
 
   const verdict: "above" | "below" | null = isQual
     ? (stance === "above" || stance === "below" ? stance : null)
-    : (diff === null || near ? null : diff > 0 ? "above" : "below");
+    : (diff === null || near || useModel || usePrior ? null : diff > 0 ? "above" : "below");
 
   const forcedScale = isQual
     ? (verdict ? 1 : null)
@@ -1360,24 +1400,26 @@ function ScenarioCalculator({
 
   const mixed = components === "mixed";
   const confirmed = components === "aligned" && !sameTime.length;
-  const comparator = isAuction ? "截标前 WI" : useModel ? "模型" : "预期";
+  const comparator = isAuction ? "手动输入 WI" : useModel ? "模型估计" : usePrior ? "上次发布值" : "手动输入的调查预期";
   const positive = rule.aboveLabel ?? (isAuction ? "高于 WI (Tail)" : "高于预期");
   const negative = rule.belowLabel ?? (isAuction ? "低于 WI (Stop-through)" : "低于预期");
-  const resultLabel = hypothesis ? "假设值" : "官方值";
+  const resultLabel = hypothesis.trim() ? "假设值" : "官方值";
   const deltaValue = diff === null ? "" : isAuction
     ? sign(diff * 100, 1) + " bp"
     : rule.unit === "%" ? sign(diff, 2) + " 个百分点"
     : rule.unit === "百万" ? sign(diff, 2) + " 百万"
-    : sign(diff, 0) + " 千人";
+    : sign(diff, Number.isInteger(diff) ? 0 : 2) + " 千人";
 
   const formatUnitVal = (v: number) =>
     rule.unit === "%" ? (isAuction ? v.toFixed(3) + "%" : v.toFixed(2).replace(/\.00$/, ".0") + "%")
     : rule.unit === "百万" ? v.toFixed(1) + " 百万"
     : v + " 千人";
 
+  const today = newYorkDate(now);
+  const replayCutoff = addDays(event.date < today ? event.date : today, -1);
   const replayItems = useMemo(
-    () => (replaySeries ? selectReplayItems(replaySeries, event.date) : []),
-    [replaySeries, event.date]
+    () => (replaySeries ? selectReplayItems(replaySeries, replayCutoff) : []),
+    [replaySeries, replayCutoff]
   );
   const replayStats = useMemo(
     () => (replaySeries && replayItems.length ? computeReplayStats(replaySeries, replayItems) : null),
@@ -1389,8 +1431,8 @@ function ScenarioCalculator({
       projectionSet={projSet}
       baseCurve={baseCurve}
       baseLabel={baseLabel}
-      forcedSide={mixed ? null : verdict}
-      forcedScale={mixed ? 0.5 : forcedScale}
+      forcedSide={mixed || sameTime.length > 0 ? null : verdict}
+      forcedScale={forcedScale}
       externalSide={cardPick.side}
       externalNonce={cardPick.nonce}
       onSelectSide={setPreviewSide}
@@ -1401,7 +1443,7 @@ function ScenarioCalculator({
         <span className="teaser-copy">
           <BarChart3 size={14} />
           <span>
-            <b>近 {replayItems.length} 次官方实测：</b>
+            <b>事件前 {replayItems.length} 次日终观测：</b>
             |Δ{replayStats.focusTenor}| 均值 {replayStats.meanAbsFocus.toFixed(1)}bp · 最近 ({short(replayItems[0].date)}) {replayItems[0].headline} → {replayStats.focusTenor} {sign(replayItems[0].shiftsBp[replayStats.focusIdx], 0)}bp
           </span>
         </span>
@@ -1430,10 +1472,18 @@ function ScenarioCalculator({
       </div>
     ) : (
       <div className="scenario-inputs">
-        <label>{isAuction ? "截标前 WI 收益率" : "市场一致预期"} <span>{rule.unit}</span>
-          <input type="number" step="any" value={expected} onChange={e => setExpected(e.target.value)}
-            placeholder={event.reference ? "默认模型 " + event.reference.value.toFixed(2) : "填入预期"} />
-        </label>
+        <div className="study-comparison">
+          {!isAuction && <label>比较基准
+            <select value={comparison} onChange={e => setComparison(e.target.value as Comparison)}>
+              <option value="manual">手动输入发布前调查预期</option>
+              <option value="model" disabled={!model}>Cleveland Fed 模型估计</option>
+              <option value="prior" disabled={!prior}>上次发布值（教学比较）</option>
+            </select>
+          </label>}
+          {!useModel && !usePrior && <label>{isAuction ? "截标前同券 WI 收益率" : "发布前市场调查预期"} <span>{rule.unit}</span>
+            <input type="number" step="any" value={expected} onChange={e => setExpected(e.target.value)} placeholder={isAuction ? "填入带时间戳的 WI" : "填入调查预期"} />
+          </label>}
+        </div>
         <label>假设发布值 <span>{rule.unit}</span>
           <input type="number" step="any" value={hypothesis} onChange={e => setHypothesis(e.target.value)}
             placeholder={official === undefined ? "填入假设值试算" : "默认官方 " + official} />
@@ -1457,11 +1507,12 @@ function ScenarioCalculator({
       <span><b>比较指标</b> {rule.metric}</span>
       {official !== undefined && <span><b>官方值</b> {formatUnitVal(official)}</span>}
       {prior && <span>
-        <b>前值</b> {formatUnitVal(prior.value)} ({short(prior.date)})
-        {!isQual && expected === "" && <button type="button" className="inline-fill" onClick={() => setExpected(String(prior.value))}>填入预期</button>}
+        <b>{event.title === "美国 GDP" ? "同季度上一版" : "上次发布值"}</b> {formatUnitVal(prior.value)} ({short(prior.date)})
       </span>}
-      {event.reference && <span><b>模型参考</b> {event.reference.value.toFixed(2)}% ({event.reference.period}){" "}
+      {model && <span><b>模型估计</b> {model.value.toFixed(2)}% · {model.period} · 截至 {model.asOf}{" "}
         <SourceLink url={nowcastUrl} label="Cleveland Fed" /></span>}
+      {model && !useModel && actualValue !== undefined && Number.isFinite(actualValue) &&
+        <span><b>{resultLabel}减模型估计</b> {sign(actualValue - model.value, 2)} 个百分点</span>}
     </div>
 
     {(diff !== null || (isQual && verdict !== null)) && <div className="verdict" aria-live="polite">
@@ -1469,8 +1520,10 @@ function ScenarioCalculator({
         <strong>{isQual ? (verdict === "above" ? positive : negative) : `${resultLabel}减${comparator} ${deltaValue}`}</strong>
         {magnitude && <em className={"mag-pill " + (near ? "mag-near" : absDiff >= bigBand ? "mag-big" : "mag-mid")}>{magnitude}</em>}
       </div>
-      <p>{near ? (useModel ? "差值小于 0.05 个百分点，接近官方月率精度。优先核对未四舍五入精确值与分项。" : "处于噪音/符合预期区间，利率方向主要看分项、前值修订及同刻发布。") :
-        mixed ? "分项或沟通出现冲突，方向判断降级。先观察发布后 15–30 分钟价格是否延续。" :
+      <p>{useModel || usePrior ? "该差值用于对照。要判断市场意外，请切换到发布前调查预期。"
+        : near ? "处于接近所选基准的区间。继续核对分项、前值修订和同刻发布。" :
+        sameTime.length ? "同刻发布可能共同驱动曲线，先比较各项读数及同一窗口的行情。"
+        : mixed ? "分项或沟通出现冲突，方向判断降级。先观察发布后 15–30 分钟价格是否延续。" :
         scenarioFor(event, rule, verdict!).direction + (confirmed ? "。分项一致，仍需盘口成交确认。" : "。暂作条件判断，等待分项与价格确认。")}</p>
     </div>}
 
@@ -1551,13 +1604,13 @@ function EventDrawer({
     const s = key ? replays?.series?.[key] ?? null : null;
     return s && s.items.length >= 2 ? s : null;
   }, [event, replays]);
-  const [tab, setTab] = useState<DrawerTab>(() => (rule ? "scenario" : replaySeries ? "replay" : "history"));
+  const [tab, setTab] = useState<DrawerTab>("learn");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setTab(rule ? "scenario" : replaySeries ? "replay" : "history");
+    setTab("learn");
     scrollRef.current?.scrollTo({ top: 0 });
-  }, [event.id, Boolean(rule), Boolean(replaySeries)]);
+  }, [event.id]);
 
   const idx = list.findIndex(item => item.id === event.id);
   const prevEv = idx > 0 ? list[idx - 1] : null;
@@ -1577,7 +1630,8 @@ function EventDrawer({
 
   const display = formatEventClock(event, tz);
   const past = isPastEvent(event, now);
-  const sameTime = allEvents.filter(item => item.id !== event.id && item.date === event.date && item.time && item.time === event.time && item.impact >= 3);
+  const sameTime = coReleases(event, allEvents);
+  const lesson = lessonFor(playbook.key)!;
   const tagText = event.status === "tentative" ? categories[event.category] + " · 暂定" : categories[event.category];
   const impactLevel = event.impact >= 4 ? "high" : event.impact >= 3 ? "mid" : "low";
 
@@ -1606,35 +1660,37 @@ function EventDrawer({
             {event.officialDate && <span>来源更新 {event.officialDate}</span>}
           </div>
 
-          {event.readings?.length ? <div className="reading-grid">{event.readings.map(reading =>
-            <div key={reading.label}><span>{reading.label}</span><strong>{readingText(reading)}</strong></div>)}</div> :
-            event.actual && <p className="evidence">{event.actual}</p>}
 
-          {sameTime.length > 0 && <p className="evidence warn-note">同刻发布冲突：{sameTime.map(item => item.title).join("、")}。</p>}
         </div>
 
         <div className="drawer-tabs">
           <div className="segmented full-seg" role="tablist" aria-label="事件分析视图">
-            {rule && <button type="button" role="tab" aria-selected={tab === "scenario"} className={tab === "scenario" ? "active" : ""} onClick={() => setTab("scenario")}>
+            <button type="button" role="tab" aria-selected={tab === "learn"} className={tab === "learn" ? "active" : ""} onClick={() => setTab("learn")}>
+              <BookOpen size={13} />指标与传导
+            </button>
+            <button type="button" role="tab" aria-selected={tab === "scenario"} className={tab === "scenario" ? "active" : ""} onClick={() => setTab("scenario")}>
               <SlidersHorizontal size={13} />情景推演
-            </button>}
+            </button>
             {replaySeries && <button type="button" role="tab" aria-selected={tab === "replay"} className={tab === "replay" ? "active" : ""} onClick={() => setTab("replay")}>
               <BarChart3 size={13} />实证回放
             </button>}
-            <button type="button" role="tab" aria-selected={tab === "history"} className={tab === "history" ? "active" : ""} onClick={() => setTab("history")}>
-              <History size={13} />机制案例
-            </button>
-            <button type="button" role="tab" aria-selected={tab === "micro"} className={tab === "micro" ? "active" : ""} onClick={() => setTab("micro")}>
-              <Layers size={13} />微结构
-            </button>
+
           </div>
         </div>
 
         <div className="drawer-body">
+          {tab === "learn" && <>
+            <LessonCard lesson={lesson} evidence={<ReleaseEvidence event={event} related={sameTime} now={now}
+              archive={event.category === "macro" ? replaySeries?.items.find(item => item.date === event.date) : undefined} />} />
+            <HistoryPractice key={event.id} course={playbook.key} beforeDate={event.date} />
+            <details className="study-details"><summary>传导矩阵与案例</summary><PlaybookView playbook={playbook} compact /></details>
+            <details className="study-details"><summary>进阶 · 盘口、RFQ 与对冲</summary><MicrostructureGrid kind={event.kind} /></details>
+          </>}
           {tab === "scenario" && rule && (
             <ScenarioCalculator
               key={event.id}
               event={event}
+              now={now}
               sameTime={sameTime}
               allEvents={allEvents}
               baseCurve={baseCurve}
@@ -1643,18 +1699,10 @@ function EventDrawer({
               onOpenReplay={replaySeries ? () => { setTab("replay"); scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" }); } : undefined}
             />
           )}
-          {tab === "replay" && replaySeries && (
-            <HistoricalReplayPanel series={replaySeries} curveThrough={replays?.curveThrough} event={event} compact />
-          )}
-          {tab === "history" && <>
-            {!rule && (
-              <div className="drawer-proj-spacer">
-                <CurveProjection projectionSet={projSet} baseCurve={baseCurve} baseLabel={baseLabel} focusIndex={focusTenorIndexFor(projSet.key, event)} />
-              </div>
-            )}
-            <PlaybookView playbook={playbook} compact />
-          </>}
-          {tab === "micro" && <MicrostructureGrid kind={event.kind} />}
+          {tab === "scenario" && !rule &&
+            <CurveProjection projectionSet={projSet} baseCurve={baseCurve} baseLabel={baseLabel} focusIndex={focusTenorIndexFor(projSet.key, event)} />}
+          {tab === "replay" && replaySeries &&
+            <HistoricalReplayPanel series={replaySeries} curveThrough={replays?.curveThrough} event={event} compact />}
         </div>
       </div>
 
@@ -1719,9 +1767,10 @@ export default function Desk() {
   const [byImpact, setByImpact] = useState(false);
 
   // Scenarios standalone page state
-  const [scenarioMode, setScenarioMode] = useState<"event" | "library">("event");
+  const [scenarioMode, setScenarioMode] = useState<"event" | "library">(() =>
+    new URLSearchParams(location.search).has("lesson") ? "library" : "event");
   const [scenarioId, setScenarioId] = useState<string | null>(null);
-  const [libraryKey, setLibraryKey] = useState<string>("cpi");
+  const [libraryKey, setLibraryKey] = useState(() => lessonFor(new URLSearchParams(location.search).get("lesson") ?? "")?.key ?? "cpi");
 
   // Slide-over Inspector Drawer state (zero ping-pong!)
   const [inspected, setInspected] = useState<{ event: MarketEvent; list: MarketEvent[] } | null>(null);
@@ -1738,7 +1787,12 @@ export default function Desk() {
   useEffect(() => {
     const onPop = () => {
       setView(readViewFromUrl());
-      const requested = new URLSearchParams(location.search).get("week");
+      setInspected(null);
+      const params = new URLSearchParams(location.search);
+      const lesson = lessonFor(params.get("lesson") ?? "");
+      setScenarioMode(lesson ? "library" : "event");
+      if (lesson) setLibraryKey(lesson.key);
+      const requested = params.get("week");
       if (isWeek(requested)) setWeek(requested);
     };
     window.addEventListener("popstate", onPop);
@@ -1856,32 +1910,46 @@ export default function Desk() {
   const lastCovered = allWeeks.filter(value => value.week >= current && value.events.length > 0).at(-1);
   const dataChanged = allWeeks.map(value => value.refreshedAt).filter((value): value is string => Boolean(value)).sort().at(-1) ?? null;
 
-  function syncUrl(nextView: ViewId, nextWeek: string) {
+  function syncUrl(nextView: ViewId, nextWeek: string, lessonKey?: string) {
     const url = new URL(location.href);
     url.searchParams.set("view", nextView);
     url.searchParams.set("week", nextWeek);
+    if (lessonKey) url.searchParams.set("lesson", lessonKey);
+    else url.searchParams.delete("lesson");
     url.hash = "";
     history.pushState(null, "", url);
   }
 
-  function navigate(nextView: ViewId, nextWeek = week) {
+  function navigate(nextView: ViewId, nextWeek = week, lessonKey?: string) {
     setView(nextView);
     if (isWeek(nextWeek) && nextWeek !== week) setWeek(nextWeek);
     setInspected(null);
-    syncUrl(nextView, isWeek(nextWeek) ? nextWeek : week);
+    syncUrl(nextView, isWeek(nextWeek) ? nextWeek : week, lessonKey);
+    if (nextView === "scenarios") setScenarioMode(lessonKey ? "library" : "event");
     window.scrollTo?.({ top: 0, behavior: "instant" as ScrollBehavior });
   }
 
   function selectWeek(date: string) {
     if (!isWeek(date)) return;
     setWeek(date);
-    syncUrl(view, date);
+    syncUrl(view, date, view === "scenarios" && scenarioMode === "library" ? libraryKey : undefined);
   }
 
   function inspectEvent(event: MarketEvent, list: MarketEvent[]) {
     setInspected({ event, list });
   }
 
+  function openLesson(key: string) {
+    setLibraryKey(key);
+    navigate("scenarios", week, key);
+  }
+
+  function canReplayLesson(key: string) {
+    const series = replayKeyForLibrary(key);
+    return Boolean(series && replays?.series[series]?.items.length);
+  }
+
+  const activeLibraryLesson = lessonFor(libraryKey)!;
   const activeLibraryPlaybook = playbookByKey(libraryKey) ?? playbookByKey("cpi")!;
   const activeLibraryProj = projectionByKey(libraryKey);
   const activeScenarioReplay = useMemo(() => {
@@ -1904,8 +1972,16 @@ export default function Desk() {
     if (last && last.values.length === tenors.length) {
       return { values: last.values, label: `财政部日终 ${last.date}` };
     }
-    return { values: fallbackBaseCurve, label: "参考美债曲线" };
+    return { values: fallbackBaseCurve, label: "手工示例曲线" };
   }, [week, current, preferLive, liveCurve, points]);
+
+  function baseFor(event?: MarketEvent) {
+    if (!event) return latestCurve9;
+    const key = replayKeyForEvent(event);
+    return eventCurveBase(event, now, points, key ? replays?.series[key] : undefined, latestCurve9);
+  }
+  const scenarioBase = baseFor(activeScenario);
+  const drawerBase = baseFor(inspected?.event);
 
   return <>
     <div className="ambient-mesh" aria-hidden="true">
@@ -1979,7 +2055,7 @@ export default function Desk() {
                 ? `Tradeweb 实时现券 ${formatClockSec(liveCurve.asOf, tz)} · 点击任意事件在右侧玻璃抽屉推演`
                 : points.length ? "财政部日终观测 " + points.at(-1)!.date + " · 点击任意事件直接在右侧玻璃抽屉推演" : "收益率、经济数据、国债拍卖和美联储日程")}
               {view === "calendar" && `${short(week)} – ${short(weekEnd)} (${tzLabel(tz)}) · 点击任意行打开右侧详情与推演`}
-              {view === "scenarios" && "核对核心传导机制、周期分叉、常见反向陷阱与官方财政部历史实证案例"}
+              {view === "scenarios" && "比较宏观传导机制、不同政策环境与历史案例"}
               {view === "sources" && "Tradeweb 实时现券 + 12 个官方一级来源的核验状态与自动刷新排程说明"}
             </p>
           </div>
@@ -2000,7 +2076,7 @@ export default function Desk() {
         {/* VIEW 1: OVERVIEW */}
         {view === "overview" && <>
           <div className="overview-grid">
-            <Curve points={points} live={liveCurve} showLive={preferLive} canLive={week >= current} onToggleLive={setPreferLive} tz={tz} />
+            <Curve points={points} live={liveCurve} showLive={preferLive} canLive={week >= current} onToggleLive={setPreferLive} onLearn={() => openLesson("cpi")} tz={tz} />
             <FocusList inspect={inspectEvent} tz={tz} now={now} events={upcoming.slice(0, 6)} />
           </div>
           <LatestReleases events={latestReleases} tz={tz} inspect={inspectEvent} />
@@ -2051,40 +2127,47 @@ export default function Desk() {
               </b>
               <span>{events.length} 项</span>
             </div>}
-            {events.map(event => {
-              const display = formatEventClock(event, tz);
-              const past = isPastEvent(event, now);
-              const official = event.readings?.[0];
-              const secondaryBtc = event.category === "auction" ? event.readings?.find(r => r.label === "投标倍数") : undefined;
-              const tagText = event.status === "tentative" ? categories[event.category] + " · 暂定" : categories[event.category];
-              const impactLevel = event.impact >= 4 ? "high" : event.impact >= 3 ? "mid" : "low";
-              const isSelected = inspected?.event.id === event.id;
-              return <article key={event.id} className={"event-row impact-bar-" + impactLevel + (past ? " event-past" : "") + (isSelected ? " event-selected" : "")}>
-                <button className="event-line" type="button" onClick={() => inspectEvent(event, filtered)}>
-                  <span className="event-clock">
-                    {display.clock}
-                    {display.dayShift !== 0 && <em className="day-shift">{display.dayShift > 0 ? "+1日" : "-1日"}</em>}
-                  </span>
-                  <span className="event-copy">
-                    <span className="event-title-wrap">
-                      <strong>{event.title}</strong>
-                      {past && !official && !event.actual && <em className="past-pill">已过</em>}
+            {groupReleases(events).map(batch => {
+              const renderRow = (event: MarketEvent) => {
+                const display = formatEventClock(event, tz);
+                const past = isPastEvent(event, now);
+                const official = past ? event.readings?.[0] : undefined;
+                const secondaryBtc = event.category === "auction" ? event.readings?.find(r => r.label === "投标倍数") : undefined;
+                const tagText = event.status === "tentative" ? categories[event.category] + " · 暂定" : categories[event.category];
+                const impactLevel = event.impact >= 4 ? "high" : event.impact >= 3 ? "mid" : "low";
+                const isSelected = inspected?.event.id === event.id;
+                return <article key={event.id} className={"event-row impact-bar-" + impactLevel + (past ? " event-past" : "") + (isSelected ? " event-selected" : "")}>
+                  <button className="event-line" type="button" onClick={() => inspectEvent(event, filtered)}>
+                    <span className="event-clock">
+                      {display.clock}
+                      {display.dayShift !== 0 && <em className="day-shift">{display.dayShift > 0 ? "+1日" : "-1日"}</em>}
                     </span>
-                    <small>{event.detail}</small>
-                    <span className="mobile-meta">
-                      <span className={"tag tag-" + event.category}>{tagText}</span>
-                      <span className={"impact " + impactLevel}>{impactText(event.impact)}</span>
-                      {official && <span className="event-reading">{readingText(official)}</span>}
+                    <span className="event-copy">
+                      <span className="event-title-wrap">
+                        <strong>{event.title}</strong>
+                        {past && !official && !event.actual && <em className="past-pill">已过</em>}
+                      </span>
+                      <small>{event.detail}</small>
+                      <span className="mobile-meta">
+                        <span className={"tag tag-" + event.category}>{tagText}</span>
+                        <span className={"impact " + impactLevel}>{impactText(event.impact)}</span>
+                        {official && <span className="event-reading">{official.label} {readingText(official)}</span>}
+                      </span>
                     </span>
-                  </span>
-                  {official && <span className="event-reading desktop-reading">
-                    {readingText(official)}{secondaryBtc ? " · " + readingText(secondaryBtc) : ""}
-                  </span>}
-                  <span className={"tag desktop-meta tag-" + event.category}>{tagText}</span>
-                  <span className={"impact desktop-meta " + impactLevel}>{impactText(event.impact)}</span>
-                  <ChevronRight className="event-chevron" size={16} />
-                </button>
-              </article>;
+                    {official && <span className="event-reading desktop-reading">
+                      {readingText(official)}{secondaryBtc ? " · " + readingText(secondaryBtc) : ""}
+                    </span>}
+                    <span className={"tag desktop-meta tag-" + event.category}>{tagText}</span>
+                    <span className={"impact desktop-meta " + impactLevel}>{impactText(event.impact)}</span>
+                    <ChevronRight className="event-chevron" size={16} />
+                  </button>
+                </article>;
+              };
+              if (batch.length === 1) return renderRow(batch[0]);
+              const display = formatEventClock(batch[0], tz);
+              return <ReleaseGroup key={batch[0].id} events={batch} time={display.date + " " + display.clock + " " + tzShortTag(tz)}>
+                {batch.map(renderRow)}
+              </ReleaseGroup>;
             })}
           </div>) : <p className="empty">{calendar.events.length ? "没有符合筛选条件的事件。" :
             week > current ? "这一周尚无已收录日程。官方日期公布后会自动补入。" : "这周暂无已收录的公开日程。"}</p>}
@@ -2094,11 +2177,11 @@ export default function Desk() {
         {view === "scenarios" && <div className="scenarios-page">
           <div className="panel glass mode-bar">
             <div className="segmented" role="tablist" aria-label="推演室模式">
-              <button type="button" role="tab" aria-selected={scenarioMode === "event"} className={scenarioMode === "event" ? "active" : ""} onClick={() => setScenarioMode("event")}>
+              <button type="button" role="tab" aria-selected={scenarioMode === "event"} className={scenarioMode === "event" ? "active" : ""} onClick={() => navigate("scenarios")}>
                 <SlidersHorizontal size={14} />按近期日程试算
               </button>
-              <button type="button" role="tab" aria-selected={scenarioMode === "library"} className={scenarioMode === "library" ? "active" : ""} onClick={() => setScenarioMode("library")}>
-                <BookOpen size={14} />全指标历史影响手册 (16项)
+              <button type="button" role="tab" aria-selected={scenarioMode === "library"} className={scenarioMode === "library" ? "active" : ""} onClick={() => openLesson(libraryKey)}>
+                <BookOpen size={14} />指标手册 ({lessons.length} 项)
               </button>
             </div>
             {scenarioMode === "event" && activeScenario && (
@@ -2121,15 +2204,21 @@ export default function Desk() {
                     {activeScenario.resultUrl && <SourceLink url={activeScenario.resultUrl} label="官方原文" />}
                   </div>
                 </div>
+                <div className="panel-pad">
+                  <LessonCard lesson={lessonFor(playbookFor(activeScenario).key)!}
+                    evidence={<ReleaseEvidence event={activeScenario} now={now} related={coReleases(activeScenario, allEvents)}
+                      archive={activeScenario.category === "macro" ? activeScenarioReplay?.items.find(item => item.date === activeScenario.date) : undefined} />} />
+                </div>
                 <ScenarioCalculator
                   key={activeScenario.id}
+                  now={now}
                   event={activeScenario}
                   allEvents={allEvents}
-                  baseCurve={latestCurve9.values}
-                  baseLabel={latestCurve9.label}
+                  baseCurve={scenarioBase.values}
+                  baseLabel={scenarioBase.label}
                   replaySeries={activeScenarioReplay}
                   onOpenReplay={activeScenarioReplay ? () => { document.getElementById("standalone-replay")?.scrollIntoView({ behavior: "smooth", block: "start" }); } : undefined}
-                  sameTime={allEvents.filter(ev => ev.id !== activeScenario.id && ev.date === activeScenario.date && ev.time && ev.time === activeScenario.time && ev.impact >= 3)}
+                  sameTime={coReleases(activeScenario, allEvents)}
                 />
               </section>
 
@@ -2145,50 +2234,44 @@ export default function Desk() {
                 <div className="panel-header">
                   <div>
                     <h2>历史实证与周期分叉 · {playbookFor(activeScenario).name}</h2>
-                    <p>基于美国财政部官方日终收益率曲线核对的传导规律与典型案例</p>
+                    <p>用财政部日终曲线核对案例中的期限变化，再检验传导解释</p>
                   </div>
                 </div>
                 <div className="panel-pad"><PlaybookView playbook={playbookFor(activeScenario)} /></div>
               </section>
 
               <section className="panel glass">
-                <div className="panel-header">
-                  <div><h2>交易台 6 维微结构清单</h2><p>流动性、电子报价、RFQ 与现券/期货对冲检查项</p></div>
-                </div>
-                <div className="panel-pad"><MicrostructureGrid kind={activeScenario.kind} /></div>
+                <details className="panel-pad study-details"><summary>进阶 · 盘口、RFQ 与对冲</summary><MicrostructureGrid kind={activeScenario.kind} /></details>
               </section>
             </> : <section className="panel glass"><p className="empty">当前没有可推演的经济数据、FOMC 或国债拍卖事件。</p></section>
           ) : (
             <section className="panel glass">
               <div className="panel-header">
                 <div>
-                  <h2>UST 宏观与拍卖历史影响全手册</h2>
-                  <p>覆盖核心通胀、就业、增长、FOMC 与各期限拍卖的实证波幅、周期分叉与反向陷阱</p>
+                  <h2>美债宏观指标手册</h2>
+                  <p>学习如何读数据、推断影响期限，并用历史案例核对</p>
                 </div>
               </div>
-              <div className="library-chips">
-                {featuredPlaybookKeys.map(key => {
-                  const pb = playbookByKey(key)!;
-                  return <button key={key} type="button" className="chip" aria-pressed={libraryKey === key} onClick={() => setLibraryKey(key)}>
-                    {pb.name.split("（")[0]}
-                  </button>;
-                })}
-              </div>
-              <div className="panel-pad">
-                <div className="drawer-proj-spacer">
-                  <CurveProjection
-                    projectionSet={activeLibraryProj}
-                    baseCurve={latestCurve9.values}
-                    baseLabel={latestCurve9.label}
-                    focusIndex={focusTenorIndexFor(libraryKey)}
-                  />
-                </div>
-                {activeLibraryReplay && (
-                  <div className="drawer-proj-spacer">
+              <div className="lesson-layout panel-pad">
+                <LessonDirectory selected={libraryKey} onSelect={openLesson}
+                  canReplay={canReplayLesson} hasPractice={hasHistoricalPractice} />
+                <div className="lesson-content">
+                  <h2>{activeLibraryLesson.title}</h2>
+                  <LessonCard lesson={activeLibraryLesson} />
+                  <HistoryPractice key={libraryKey} course={libraryKey} />
+                  <details className="study-details">
+                    <summary>收益率曲线压力情景</summary>
+                    <CurveProjection projectionSet={activeLibraryProj} baseCurve={latestCurve9.values}
+                      baseLabel={latestCurve9.label} focusIndex={focusTenorIndexFor(libraryKey)} />
+                  </details>
+                  {activeLibraryReplay && <details className="study-details">
+                    <summary>近期日终回放</summary>
                     <HistoricalReplayPanel series={activeLibraryReplay} curveThrough={replays?.curveThrough} />
-                  </div>
-                )}
-                <PlaybookView playbook={activeLibraryPlaybook} />
+                  </details>}
+                  <details className="study-details">
+                    <summary>传导矩阵与案例</summary><PlaybookView playbook={activeLibraryPlaybook} />
+                  </details>
+                </div>
               </div>
             </section>
           )}
@@ -2241,8 +2324,8 @@ export default function Desk() {
         event={inspected.event}
         list={inspected.list}
         allEvents={allEvents}
-        baseCurve={latestCurve9.values}
-        baseLabel={latestCurve9.label}
+        baseCurve={drawerBase.values}
+        baseLabel={drawerBase.label}
         replays={replays}
         tz={tz}
         now={now}

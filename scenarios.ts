@@ -140,14 +140,14 @@ const rules: Record<string, Rule> = {
   "FOMC 利率决议": {
     metric: "声明 / SEP 点阵图 / 记者会基调", unit: "%", above: "up", channel: "policy", qualitative: true,
     aboveLabel: "偏鹰（高于市场定价）", belowLabel: "偏鸽（低于市场定价）",
-    aboveNote: "即使当次按预期降息，只要 SEP 点阵图削减明年降息次数、上调 Longer-run 中性利率 r* 或记者会强化通胀黏性（“鹰派降息”，如 2024-12-18），2Y/5Y/10Y 仍会大幅上行。",
+    aboveNote: "即使当次按预期降息，后续降息指引减少或记者会强调通胀风险，也可能推高 2Y 和 5Y 收益率。有 SEP 时核对次年利率点阵。",
     belowNote: "点阵图维持或增加降息、宣布放缓/停止 QT，或主席在 14:30 记者会强调就业下行风险与排除加息（如 2023-12-13 / 2024-05-01），2Y/5Y 易领跌全曲线。",
-    aboveCurve: "常规熊平，且点阵图改写 1–3 年路径时 Belly（5Y）往往抛压最重；若 Longer-run r* 上移，长端同步重挫。",
+    aboveCurve: "近端路径上移时检验 2Y 和 5Y 是否领升。若长期名义政策利率点阵也上移，单独检查 10Y 和 30Y 是否跟随。",
     belowCurve: "政策拐点确立时走出剧烈牛陡（2s10s +5~11 bp）；若以 QT 放缓为主导，长端同样显著跑赢。",
     checks: [
-      "14:00 声明逐词改动 + SEP 当年/明年点阵中位数与 Longer-run 中性利率 r*",
+      "14:00 声明逐词改动，有 SEP 时比较当年、次年及长期名义政策利率中位数",
       "是否调整 QT 缩表上限或 ON RRP / IORB 技术利率",
-      "14:30 主席记者会问答——历史上超半数会议会在记者会修正甚至反转 14:00 首轮行情",
+      "以 14:30 主席记者会前的报价为新基准，记录问答后首轮行情延续或回吐的幅度",
     ],
     invalidate: "14:00 声明与 14:30 记者会基调相反，或 2Y 在记者会结束后回到决议前区间时，按双向震荡处理。",
   },
@@ -281,11 +281,20 @@ export function actualFor(event: MarketEvent, rule: Rule) {
 
 export function priorFor(event: MarketEvent, allEvents: MarketEvent[], rule: Rule): { date: string; value: number } | undefined {
   if (rule.qualitative) return undefined;
+  const quarter = event.title === "美国 GDP" ? gdpQuarter(event.detail) : undefined;
   const previous = allEvents
     .filter(item => item.id !== event.id && item.date < event.date && (
       event.auctionKey ? item.auctionKey === event.auctionKey : item.title === event.title
-    ))
+    ) && (event.title !== "美国 GDP" || Boolean(quarter && quarter === gdpQuarter(item.detail))))
     .map(item => ({ date: item.date, value: actualFor(item, rule) }))
     .filter((item): item is { date: string; value: number } => item.value !== undefined);
   return previous.at(-1);
+}
+
+function gdpQuarter(detail: string) {
+  const match = detail.match(/\b(1st|2nd|3rd|4th|first|second|third|fourth) quarter(?: of)?\s+(20\d{2})\b/i);
+  if (!match) return undefined;
+  const name = match[1].toLowerCase();
+  const ordinal: Record<string, string> = { first: "1st", second: "2nd", third: "3rd", fourth: "4th" };
+  return (ordinal[name] ?? name) + " " + match[2];
 }

@@ -6,6 +6,7 @@ export type HistoricalCase = {
   surprise: string;
   ustMove: string;
   lesson: string;
+  sources?: { label: string; url: string }[];
 };
 
 export type TransmissionMatrix = {
@@ -41,7 +42,7 @@ const playbooks: Record<string, Playbook> = {
       "Supercore（剔除住房的核心服务）与 OER / 租金增速是否同步加速",
       "CPI → PCE 桥接差异：住房在 CPI 占 ~36%，在 PCE 仅占 ~16%；医疗在 PCE 用 PPI 口径而非 CPI",
     ],
-    regimeSplit: "在加息/鹰派按兵不动周期，热 CPI 通常引发 2Y 领涨、2s10s 剧烈熊平（如 2022-09-13，30Y 甚至微跌）；但在财政赤字担忧或通胀预期失锚期，热 CPI 会推高 10Y Breakeven 与期限溢价，转为整条曲线熊陡。极度一致的空头仓位遇冷 CPI 时，5Y/10Y 反弹幅度常超过 2Y（如 2022-11-10）。",
+    regimeSplit: "2022-09-13 核心 CPI 偏热，2Y 收益率上升 17 bp，30Y 下降 2 bp。若热 CPI 当天长端收益率领升，可用实际利率和通胀补偿检验另一种解释。遇到冷 CPI，也要比较各期限的降幅。2022-11-10 的 5Y 和 10Y 降幅均超过 2Y。",
     traps: [
       "只看四舍五入后的 0.3%：0.34% 是偏热、0.26% 是偏冷，公布后 30 秒交易台已用指数原值算到小数点后两位。",
       "把“住房单一项超预期”等同于 Core PCE 暴涨：由于权重差一倍，纯 OER 跳升对美联储决策的实际杀伤远小于机票/核心商品/服务全面偏热。",
@@ -67,10 +68,14 @@ const playbooks: Record<string, Playbook> = {
       },
       {
         date: "2022-11-10",
-        title: "2022 年 10 月 CPI 意外转冷（空头回补暴涨）",
-        surprise: "Core CPI 环比 +0.3%（预期 +0.5%），同比回落至 7.7%",
+        title: "2022 年 10 月 CPI 降温，5Y 和 10Y 收益率降幅超过 2Y",
+        surprise: "核心 CPI 环比 +0.3%（预期 +0.5%）、同比 +6.3%，整体 CPI 同比 +7.7%。",
         ustMove: "2Y -27 bp (4.34%) · 5Y -32 bp · 10Y -30 bp (3.82%) · 2s10s -3 bp",
-        lesson: "并非所有冷 CPI 都走牛陡：当市场在 5Y/10Y 积累极重空头时，Belly 与长端回补幅度反而大于 2Y。",
+        lesson: "当日 10Y 收益率比 2Y 多降 3 bp，2s10s 走平。空头回补是可能解释，验证它还需要仓位和盘中交易数据。",
+        sources: [
+          { label: "BLS 发布值", url: "https://www.bls.gov/news.release/archives/cpi_11102022.htm" },
+          { label: "财政部日终曲线", url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202211" },
+        ],
       },
       {
         date: "2024-04-10",
@@ -437,24 +442,24 @@ const playbooks: Record<string, Playbook> = {
     key: "policy",
     name: "FOMC 利率决议、SEP 点阵图与主席记者会",
     volatility: "2Y ±8–30 bp · 10Y ±6–18 bp（存在 14:00 vs 14:30 两段式反转）",
-    summary: "FOMC 交易日永远分两场：**14:00 ET 声明与 SEP 点阵图**（机器与短线定价近端路径与长期中性利率 r*）以及 **14:30 ET 主席记者会**（历史上超半数会议在问答阶段修正甚至反转首轮走势）。",
+    summary: "分别观察 14:00 ET 声明和 14:30 ET 主席记者会。发布 SEP 时，长期点阵记录委员对长期名义联邦基金利率的判断。估算实际中性利率 r* 还需考虑长期通胀假设。",
     first30s: [
-      "14:00 ET：政策决议 + 声明逐词改动 + 季末 SEP 点阵图（今年/明年中位数决定 2Y/5Y，Longer-run r* 锚定 10Y/30Y）",
+      "14:00 ET 核对决定与声明改动。有 SEP 时记录当年、次年和长期名义政策利率中位数，再比较各期限的反应。",
       "14:00 ET：是否调整 QT（国债/MBS 缩表上限）或 ON RRP / IORB 技术利率",
       "14:30 ET：主席记者会问答对“下一步加息门槛、就业下行风险、政策限制性程度”的口风校准",
     ],
-    regimeSplit: "“鹰派降息（Hawkish Cut）”与“鸽派按兵不动（Dovish Hold）”是美债最常见的反直觉走势：单次利率决定往往早已 95%+ 计价，真正引发 10–30 bp 波动的是点阵图斜率、中性利率 r* 与记者会预期管理。",
+    regimeSplit: "先记录会前市场计入的政策路径。即使当次决定符合预期，声明、点阵或记者会对后续路径的指引仍可能推动 2Y 和 5Y 重新定价。",
     traps: [
       "只看当次是否降息/加息：2024-12-18 明明降息 25 bp，但因 2025 点阵图从 4 次砍半至 2 次，5Y 暴涨 14 bp、10Y 冲破 4.50%。",
       "14:05 盲目追单不等 14:30 记者会：2024-05-01 声明偏鹰，但主席在记者会排除加息并配合 QT 放缓，2Y 盘中反转大跌 8 bp。",
-      "忽略 Longer-run 点阵（r*）上移：哪怕当年降息不变，中性利率中位数抬升也会系统性抬高 10Y/30Y 的估值底。",
+      "长期名义政策利率中位数上移时，分别检查 10Y 实际收益率与通胀补偿，再判断长端是否同步调整。",
     ],
     matrix: {
-      hotTitle: "偏鹰（点阵图上移 / r* 上调 / 记者会淡化宽松）",
+      hotTitle: "偏鹰（政策利率点阵上移或记者会淡化宽松）",
       coldTitle: "偏鸽（点阵图超预期降息 / 放缓 QT / 强调就业风险）",
       rows: [
         { dim: "前端 2Y", hot: "降息次数削减，2Y/5Y 快速重定价上行（+8~18 bp）", cold: "宽松路径提前，2Y 领跌（-8~27 bp）" },
-        { dim: "长端 10Y–30Y", hot: "若 Longer-run r* 上移或上调通胀预期，5Y/10Y 同步重挫", cold: "QT 放缓或明确转向鸽派时，10Y/30Y 同步下行（-6~16 bp）" },
+        { dim: "长端 10Y–30Y", hot: "长期名义政策利率预期上移可能推高长端，关注 10Y 实际利率与 5s30s", cold: "QT 放缓可能缓解长端供给压力，结合 10Y 和 30Y 的相对表现核对" },
         { dim: "曲线斜率", hot: "常规熊平；若 5Y 反映明年点阵削减，5Y 往往跌幅最深（hump 上凸）", cold: "经典牛陡（2s10s +5~11 bp）" },
         { dim: "实际利率 / BE", hot: "实际利率主导大幅走高", cold: "实际利率大幅下行，BE 趋稳或微升（再通胀预期）" },
       ],
@@ -1039,11 +1044,6 @@ export function playbookFor(event: MarketEvent): Playbook {
   };
   return byKind[event.kind];
 }
-
-export const featuredPlaybookKeys = [
-  "cpi", "jobs", "pce", "ppi", "retail", "gdp", "policy", "minutes",
-  "jolts", "eci", "claims", "auction_10y", "auction_30y", "auction_belly", "auction_20y", "tips",
-] as const;
 
 export function playbookByKey(key: string): Playbook | undefined {
   return playbooks[key];

@@ -1,4 +1,4 @@
-import type { MarketEvent } from "./model";
+import { isPastEvent, newYorkDate, tenors, type CurvePoint, type MarketEvent } from "./model";
 import { playbookFor } from "./playbooks";
 
 export type ReplayReading = {
@@ -38,6 +38,30 @@ export type ReplayCatalog = {
   curveThrough: string;
   series: Record<string, ReplaySeries>;
 };
+
+export function selectReplayItems(series: ReplaySeries, throughDate?: string) {
+  return series.items.filter(item => !throughDate || item.date <= throughDate).slice(0, 4);
+}
+
+export function eventCurveBase(
+  event: MarketEvent,
+  now: Date,
+  points: CurvePoint[],
+  series: ReplaySeries | undefined,
+  latest: { values: number[]; label: string },
+) {
+  if (event.date > newYorkDate(now) || (event.time && !isPastEvent(event, now))) return latest;
+
+  const replay = series?.items.find(item => item.date === event.date);
+  const point = points.findLast(item => item.date < event.date && item.values.length === tenors.length);
+  if (replay && replay.prevDate < event.date && replay.prevCurve.length === tenors.length &&
+      (!point || replay.prevDate > point.date)) {
+    return { values: replay.prevCurve, label: `事件前财政部日终 ${replay.prevDate}` };
+  }
+  return point
+    ? { values: point.values, label: `事件前财政部日终 ${point.date}` }
+    : { values: [], label: "缺少事件前的九期限曲线" };
+}
 
 const supportedMacro = new Set([
   "cpi", "eci", "pce", "ppi", "jobs", "claims", "jolts",

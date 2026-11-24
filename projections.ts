@@ -356,7 +356,7 @@ const sets: Record<string, EventProjectionSet> = {
 
   policy: {
     key: "policy",
-    headline: "FOMC 决议推演：14:00 点阵图 / r* 冲击 vs 14:30 记者会与 QT 转向",
+    headline: "分别推演 14:00 声明与 14:30 记者会，有 SEP 时纳入政策利率点阵",
     scenarios: [
       {
         id: "fomc-hawk",
@@ -366,7 +366,7 @@ const sets: Record<string, EventProjectionSet> = {
         side: "above",
         shifts: [1, 7, 11, 13, 14.5, 12.5, 10.5, 8, 6.5],
         realBe10y: [9.5, 1],
-        note: "类似 2024-12-18：削减明年点阵图或上调中性利率 r* 时，反映 1–3 年路径的 5Y Belly 往往跌幅最深。",
+        note: "参考 2024-12-18 的鹰派降息情景。若次年降息预期减少，此处假设 5Y 对政策路径的调整最敏感。",
       },
       {
         id: "fomc-dove",
