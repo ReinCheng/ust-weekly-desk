@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T00:45:19.523Z",
+  "generatedAt": "2026-11-24T06:09:49.924Z",
   "curveThrough": "2026-11-23",
   "series": {
     "auction:10y-nominal": {
@@ -468,7 +468,9 @@
           "be10Bp": -3,
           "regimeTag": "实际平 · BE 收窄",
           "regimeTone": "mixed",
-          "confounders": [],
+          "confounders": [
+            "初请失业金"
+          ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261119_3.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
         },
@@ -780,6 +782,81 @@
       "methodology": "中标收益率、投标倍数与一/二/三级获配占比直采 TreasuryDirect 官方拍卖结果；市场反应取财政部日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
         {
+          "date": "2026-11-23",
+          "prevDate": "2026-11-20",
+          "period": "续发 · $95bn",
+          "headline": "4.180% · BTC 2.74× · Dealer 31.7%",
+          "readings": [
+            {
+              "label": "最高贴现率",
+              "valueText": "4.180%",
+              "num": 4.18
+            },
+            {
+              "label": "投标倍数",
+              "valueText": "2.74×",
+              "num": 2.74,
+              "deltaText": "较近5次均值 -0.08×"
+            },
+            {
+              "label": "一级交易商",
+              "valueText": "31.7%",
+              "num": 31.7,
+              "deltaText": "较均值 -0.3pct"
+            },
+            {
+              "label": "间接投标",
+              "valueText": "59.9%",
+              "num": 59.9
+            },
+            {
+              "label": "直接投标",
+              "valueText": "8.5%",
+              "num": 8.5
+            }
+          ],
+          "prevCurve": [
+            4.32,
+            4.51,
+            4.63,
+            4.65,
+            4.71,
+            4.8,
+            4.92,
+            5.34,
+            5.31
+          ],
+          "curve": [
+            4.37,
+            4.57,
+            4.63,
+            4.69,
+            4.74,
+            4.81,
+            4.92,
+            5.33,
+            5.29
+          ],
+          "shiftsBp": [
+            5,
+            6,
+            0,
+            4,
+            3,
+            1,
+            0,
+            -1,
+            -2
+          ],
+          "real10Bp": 2,
+          "be10Bp": -2,
+          "regimeTag": "超短端上行",
+          "regimeTone": "bear",
+          "confounders": [],
+          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261123_2.pdf",
+          "sourceName": "TreasuryDirect 拍卖结果 PDF"
+        },
+        {
           "date": "2026-11-16",
           "prevDate": "2026-11-13",
           "period": "续发 · $95bn",
@@ -794,7 +871,7 @@
               "label": "投标倍数",
               "valueText": "2.76×",
               "num": 2.76,
-              "deltaText": "较近5次均值 -0.07×"
+              "deltaText": "较近5次均值 -0.06×"
             },
             {
               "label": "一级交易商",
@@ -869,7 +946,7 @@
               "label": "投标倍数",
               "valueText": "2.67×",
               "num": 2.67,
-              "deltaText": "较近5次均值 -0.16×"
+              "deltaText": "较近5次均值 -0.15×"
             },
             {
               "label": "一级交易商",
@@ -944,7 +1021,7 @@
               "label": "投标倍数",
               "valueText": "2.88×",
               "num": 2.88,
-              "deltaText": "较近5次均值 +0.05×"
+              "deltaText": "较近5次均值 +0.06×"
             },
             {
               "label": "一级交易商",
@@ -1019,7 +1096,7 @@
               "label": "投标倍数",
               "valueText": "3.07×",
               "num": 3.07,
-              "deltaText": "较近5次均值 +0.24×"
+              "deltaText": "较近5次均值 +0.25×"
             },
             {
               "label": "一级交易商",
@@ -1077,81 +1154,6 @@
           "regimeTone": "mixed",
           "confounders": [],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_1.pdf",
-          "sourceName": "TreasuryDirect 拍卖结果 PDF"
-        },
-        {
-          "date": "2026-10-19",
-          "prevDate": "2026-10-16",
-          "period": "续发 · $95bn",
-          "headline": "4.095% · BTC 2.77× · Dealer 31.5%",
-          "readings": [
-            {
-              "label": "最高贴现率",
-              "valueText": "4.095%",
-              "num": 4.095
-            },
-            {
-              "label": "投标倍数",
-              "valueText": "2.77×",
-              "num": 2.77,
-              "deltaText": "较近5次均值 -0.06×"
-            },
-            {
-              "label": "一级交易商",
-              "valueText": "31.5%",
-              "num": 31.5,
-              "deltaText": "较均值 -0.5pct"
-            },
-            {
-              "label": "间接投标",
-              "valueText": "60.5%",
-              "num": 60.5
-            },
-            {
-              "label": "直接投标",
-              "valueText": "8.0%",
-              "num": 8
-            }
-          ],
-          "prevCurve": [
-            4.26,
-            4.46,
-            4.74,
-            4.82,
-            4.89,
-            4.98,
-            5.09,
-            5.47,
-            5.43
-          ],
-          "curve": [
-            4.27,
-            4.5,
-            4.77,
-            4.85,
-            4.94,
-            5.04,
-            5.15,
-            5.53,
-            5.48
-          ],
-          "shiftsBp": [
-            1,
-            4,
-            3,
-            3,
-            5,
-            6,
-            6,
-            6,
-            5
-          ],
-          "real10Bp": 6,
-          "be10Bp": 0,
-          "regimeTag": "超短端平稳",
-          "regimeTone": "mixed",
-          "confounders": [],
-          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261019_2.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
         }
       ]
@@ -1311,6 +1313,7 @@
           "regimeTag": "超短端上行",
           "regimeTone": "bear",
           "confounders": [
+            "初请失业金",
             "30 年期国债拍卖"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261112_3.pdf",
@@ -1939,6 +1942,81 @@
       "methodology": "中标收益率、投标倍数与一/二/三级获配占比直采 TreasuryDirect 官方拍卖结果；市场反应取财政部日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
         {
+          "date": "2026-11-23",
+          "prevDate": "2026-11-20",
+          "period": "新发 · $82bn",
+          "headline": "4.340% · BTC 2.60× · Dealer 39.2%",
+          "readings": [
+            {
+              "label": "最高贴现率",
+              "valueText": "4.340%",
+              "num": 4.34
+            },
+            {
+              "label": "投标倍数",
+              "valueText": "2.60×",
+              "num": 2.6,
+              "deltaText": "较近5次均值 -0.17×"
+            },
+            {
+              "label": "一级交易商",
+              "valueText": "39.2%",
+              "num": 39.2,
+              "deltaText": "较均值 +6.9pct"
+            },
+            {
+              "label": "间接投标",
+              "valueText": "50.7%",
+              "num": 50.7
+            },
+            {
+              "label": "直接投标",
+              "valueText": "10.1%",
+              "num": 10.1
+            }
+          ],
+          "prevCurve": [
+            4.32,
+            4.51,
+            4.63,
+            4.65,
+            4.71,
+            4.8,
+            4.92,
+            5.34,
+            5.31
+          ],
+          "curve": [
+            4.37,
+            4.57,
+            4.63,
+            4.69,
+            4.74,
+            4.81,
+            4.92,
+            5.33,
+            5.29
+          ],
+          "shiftsBp": [
+            5,
+            6,
+            0,
+            4,
+            3,
+            1,
+            0,
+            -1,
+            -2
+          ],
+          "real10Bp": 2,
+          "be10Bp": -2,
+          "regimeTag": "超短端上行",
+          "regimeTone": "bear",
+          "confounders": [],
+          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261123_1.pdf",
+          "sourceName": "TreasuryDirect 拍卖结果 PDF"
+        },
+        {
           "date": "2026-11-16",
           "prevDate": "2026-11-13",
           "period": "新发 · $82bn",
@@ -1953,13 +2031,13 @@
               "label": "投标倍数",
               "valueText": "2.83×",
               "num": 2.83,
-              "deltaText": "较近5次均值 +0.01×"
+              "deltaText": "较近5次均值 +0.06×"
             },
             {
               "label": "一级交易商",
               "valueText": "30.6%",
               "num": 30.6,
-              "deltaText": "较均值 +1.4pct"
+              "deltaText": "较均值 -1.7pct"
             },
             {
               "label": "间接投标",
@@ -2028,13 +2106,13 @@
               "label": "投标倍数",
               "valueText": "2.92×",
               "num": 2.92,
-              "deltaText": "较近5次均值 +0.10×"
+              "deltaText": "较近5次均值 +0.15×"
             },
             {
               "label": "一级交易商",
               "valueText": "34.0%",
               "num": 34,
-              "deltaText": "较均值 +4.8pct"
+              "deltaText": "较均值 +1.7pct"
             },
             {
               "label": "间接投标",
@@ -2103,13 +2181,13 @@
               "label": "投标倍数",
               "valueText": "2.89×",
               "num": 2.89,
-              "deltaText": "较近5次均值 +0.07×"
+              "deltaText": "较近5次均值 +0.12×"
             },
             {
               "label": "一级交易商",
               "valueText": "24.4%",
               "num": 24.4,
-              "deltaText": "较均值 -4.8pct"
+              "deltaText": "较均值 -7.9pct"
             },
             {
               "label": "间接投标",
@@ -2178,13 +2256,13 @@
               "label": "投标倍数",
               "valueText": "2.63×",
               "num": 2.63,
-              "deltaText": "较近5次均值 -0.19×"
+              "deltaText": "较近5次均值 -0.14×"
             },
             {
               "label": "一级交易商",
               "valueText": "33.4%",
               "num": 33.4,
-              "deltaText": "较均值 +4.2pct"
+              "deltaText": "较均值 +1.1pct"
             },
             {
               "label": "间接投标",
@@ -2236,81 +2314,6 @@
           "regimeTone": "mixed",
           "confounders": [],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261026_2.pdf",
-          "sourceName": "TreasuryDirect 拍卖结果 PDF"
-        },
-        {
-          "date": "2026-10-19",
-          "prevDate": "2026-10-16",
-          "period": "新发 · $82bn",
-          "headline": "4.220% · BTC 2.84× · Dealer 23.6%",
-          "readings": [
-            {
-              "label": "最高贴现率",
-              "valueText": "4.220%",
-              "num": 4.22
-            },
-            {
-              "label": "投标倍数",
-              "valueText": "2.84×",
-              "num": 2.84,
-              "deltaText": "较近5次均值 +0.02×"
-            },
-            {
-              "label": "一级交易商",
-              "valueText": "23.6%",
-              "num": 23.6,
-              "deltaText": "较均值 -5.6pct"
-            },
-            {
-              "label": "间接投标",
-              "valueText": "65.6%",
-              "num": 65.6
-            },
-            {
-              "label": "直接投标",
-              "valueText": "10.8%",
-              "num": 10.8
-            }
-          ],
-          "prevCurve": [
-            4.26,
-            4.46,
-            4.74,
-            4.82,
-            4.89,
-            4.98,
-            5.09,
-            5.47,
-            5.43
-          ],
-          "curve": [
-            4.27,
-            4.5,
-            4.77,
-            4.85,
-            4.94,
-            5.04,
-            5.15,
-            5.53,
-            5.48
-          ],
-          "shiftsBp": [
-            1,
-            4,
-            3,
-            3,
-            5,
-            6,
-            6,
-            6,
-            5
-          ],
-          "real10Bp": 6,
-          "be10Bp": 0,
-          "regimeTag": "超短端平稳",
-          "regimeTone": "mixed",
-          "confounders": [],
-          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261019_1.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
         }
       ]
@@ -2711,6 +2714,81 @@
       "methodology": "中标收益率、投标倍数与一/二/三级获配占比直采 TreasuryDirect 官方拍卖结果；市场反应取财政部日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
         {
+          "date": "2026-11-23",
+          "prevDate": "2026-11-20",
+          "period": "新发 · $69bn",
+          "headline": "4.700% · BTC 2.65× · Dealer 10.4%",
+          "readings": [
+            {
+              "label": "中标收益率",
+              "valueText": "4.700%",
+              "num": 4.7
+            },
+            {
+              "label": "投标倍数",
+              "valueText": "2.65×",
+              "num": 2.65,
+              "deltaText": "较近5次均值 +0.02×"
+            },
+            {
+              "label": "一级交易商",
+              "valueText": "10.4%",
+              "num": 10.4,
+              "deltaText": "较均值 -1.0pct"
+            },
+            {
+              "label": "间接投标",
+              "valueText": "51.5%",
+              "num": 51.5
+            },
+            {
+              "label": "直接投标",
+              "valueText": "38.1%",
+              "num": 38.1
+            }
+          ],
+          "prevCurve": [
+            4.32,
+            4.51,
+            4.63,
+            4.65,
+            4.71,
+            4.8,
+            4.92,
+            5.34,
+            5.31
+          ],
+          "curve": [
+            4.37,
+            4.57,
+            4.63,
+            4.69,
+            4.74,
+            4.81,
+            4.92,
+            5.33,
+            5.29
+          ],
+          "shiftsBp": [
+            5,
+            6,
+            0,
+            4,
+            3,
+            1,
+            0,
+            -1,
+            -2
+          ],
+          "real10Bp": 2,
+          "be10Bp": -2,
+          "regimeTag": "窄幅震荡",
+          "regimeTone": "mixed",
+          "confounders": [],
+          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261123_3.pdf",
+          "sourceName": "TreasuryDirect 拍卖结果 PDF"
+        },
+        {
           "date": "2026-10-26",
           "prevDate": "2026-10-23",
           "period": "新发 · $69bn",
@@ -2725,13 +2803,13 @@
               "label": "投标倍数",
               "valueText": "2.59×",
               "num": 2.59,
-              "deltaText": "较近5次均值 -0.03×"
+              "deltaText": "较近5次均值 -0.04×"
             },
             {
               "label": "一级交易商",
               "valueText": "13.0%",
               "num": 13,
-              "deltaText": "较均值 +1.7pct"
+              "deltaText": "较均值 +1.6pct"
             },
             {
               "label": "间接投标",
@@ -2800,13 +2878,13 @@
               "label": "投标倍数",
               "valueText": "2.63×",
               "num": 2.63,
-              "deltaText": "较近5次均值 +0.01×"
+              "deltaText": "较近5次均值 0.00×"
             },
             {
               "label": "一级交易商",
               "valueText": "13.2%",
               "num": 13.2,
-              "deltaText": "较均值 +1.9pct"
+              "deltaText": "较均值 +1.8pct"
             },
             {
               "label": "间接投标",
@@ -2875,13 +2953,13 @@
               "label": "投标倍数",
               "valueText": "2.60×",
               "num": 2.6,
-              "deltaText": "较近5次均值 -0.02×"
+              "deltaText": "较近5次均值 -0.03×"
             },
             {
               "label": "一级交易商",
               "valueText": "10.9%",
               "num": 10.9,
-              "deltaText": "较均值 -0.4pct"
+              "deltaText": "较均值 -0.5pct"
             },
             {
               "label": "间接投标",
@@ -2950,13 +3028,13 @@
               "label": "投标倍数",
               "valueText": "2.66×",
               "num": 2.66,
-              "deltaText": "较近5次均值 +0.04×"
+              "deltaText": "较近5次均值 +0.03×"
             },
             {
               "label": "一级交易商",
               "valueText": "9.4%",
               "num": 9.4,
-              "deltaText": "较均值 -1.9pct"
+              "deltaText": "较均值 -2.0pct"
             },
             {
               "label": "间接投标",
@@ -3010,81 +3088,6 @@
             "耐用品订单初值"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20260727_2.pdf",
-          "sourceName": "TreasuryDirect 拍卖结果 PDF"
-        },
-        {
-          "date": "2026-06-23",
-          "prevDate": "2026-06-22",
-          "period": "新发 · $69bn",
-          "headline": "4.189% · BTC 2.64× · Dealer 10.2%",
-          "readings": [
-            {
-              "label": "中标收益率",
-              "valueText": "4.189%",
-              "num": 4.189
-            },
-            {
-              "label": "投标倍数",
-              "valueText": "2.64×",
-              "num": 2.64,
-              "deltaText": "较近5次均值 +0.02×"
-            },
-            {
-              "label": "一级交易商",
-              "valueText": "10.2%",
-              "num": 10.2,
-              "deltaText": "较均值 -1.1pct"
-            },
-            {
-              "label": "间接投标",
-              "valueText": "55.5%",
-              "num": 55.5
-            },
-            {
-              "label": "直接投标",
-              "valueText": "34.3%",
-              "num": 34.3
-            }
-          ],
-          "prevCurve": [
-            3.85,
-            4.04,
-            4.24,
-            4.25,
-            4.29,
-            4.39,
-            4.51,
-            4.97,
-            4.95
-          ],
-          "curve": [
-            3.85,
-            4.01,
-            4.16,
-            4.22,
-            4.27,
-            4.38,
-            4.5,
-            4.96,
-            4.94
-          ],
-          "shiftsBp": [
-            0,
-            -3,
-            -8,
-            -3,
-            -2,
-            -1,
-            -1,
-            -1,
-            -1
-          ],
-          "real10Bp": 1,
-          "be10Bp": -2,
-          "regimeTag": "曲线扭曲走陡",
-          "regimeTone": "mixed",
-          "confounders": [],
-          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20260623_2.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
         }
       ]
@@ -3165,7 +3168,9 @@
           "be10Bp": 4,
           "regimeTag": "全线熊市上移",
           "regimeTone": "bear",
-          "confounders": [],
+          "confounders": [
+            "初请失业金"
+          ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261112_4.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
         },
@@ -3240,7 +3245,9 @@
           "be10Bp": -1,
           "regimeTag": "牛平 Bull Flat",
           "regimeTone": "bull",
-          "confounders": [],
+          "confounders": [
+            "初请失业金"
+          ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261008_3.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
         },
@@ -4034,13 +4041,13 @@
               "label": "投标倍数",
               "valueText": "2.55×",
               "num": 2.55,
-              "deltaText": "较近5次均值 -0.22×"
+              "deltaText": "较近4次均值 -0.21×"
             },
             {
               "label": "一级交易商",
               "valueText": "36.4%",
               "num": 36.4,
-              "deltaText": "较均值 +4.5pct"
+              "deltaText": "较均值 +2.8pct"
             },
             {
               "label": "间接投标",
@@ -4091,6 +4098,7 @@
           "regimeTag": "超短端平稳",
           "regimeTone": "mixed",
           "confounders": [
+            "初请失业金",
             "10 年期 TIPS 拍卖"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261119_1.pdf",
@@ -4111,13 +4119,13 @@
               "label": "投标倍数",
               "valueText": "2.94×",
               "num": 2.94,
-              "deltaText": "较近5次均值 +0.17×"
+              "deltaText": "较近4次均值 +0.18×"
             },
             {
               "label": "一级交易商",
               "valueText": "25.2%",
               "num": 25.2,
-              "deltaText": "较均值 -6.7pct"
+              "deltaText": "较均值 -8.4pct"
             },
             {
               "label": "间接投标",
@@ -4168,6 +4176,7 @@
           "regimeTag": "超短端上行",
           "regimeTone": "bear",
           "confounders": [
+            "初请失业金",
             "30 年期国债拍卖"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261112_2.pdf",
@@ -4188,13 +4197,13 @@
               "label": "投标倍数",
               "valueText": "2.46×",
               "num": 2.46,
-              "deltaText": "较近5次均值 -0.31×"
+              "deltaText": "较近4次均值 -0.30×"
             },
             {
               "label": "一级交易商",
               "valueText": "48.4%",
               "num": 48.4,
-              "deltaText": "较均值 +16.5pct"
+              "deltaText": "较均值 +14.8pct"
             },
             {
               "label": "间接投标",
@@ -4245,6 +4254,7 @@
           "regimeTag": "超短端下行",
           "regimeTone": "bull",
           "confounders": [
+            "初请失业金",
             "生产率与 ULC 初值"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261105_1.pdf",
@@ -4265,13 +4275,13 @@
               "label": "投标倍数",
               "valueText": "3.10×",
               "num": 3.1,
-              "deltaText": "较近5次均值 +0.33×"
+              "deltaText": "较近4次均值 +0.34×"
             },
             {
               "label": "一级交易商",
               "valueText": "24.4%",
               "num": 24.4,
-              "deltaText": "较均值 -7.5pct"
+              "deltaText": "较均值 -9.2pct"
             },
             {
               "label": "间接投标",
@@ -4322,88 +4332,12 @@
           "regimeTag": "超短端平稳",
           "regimeTone": "mixed",
           "confounders": [
+            "初请失业金",
             "美国 GDP",
             "PCE 物价 / 个人收支",
             "7 年期国债拍卖"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_1.pdf",
-          "sourceName": "TreasuryDirect 拍卖结果 PDF"
-        },
-        {
-          "date": "2026-10-22",
-          "prevDate": "2026-10-21",
-          "period": "续发 · $110bn",
-          "headline": "3.945% · BTC 2.82× · Dealer 24.9%",
-          "readings": [
-            {
-              "label": "最高贴现率",
-              "valueText": "3.945%",
-              "num": 3.945
-            },
-            {
-              "label": "投标倍数",
-              "valueText": "2.82×",
-              "num": 2.82,
-              "deltaText": "较近5次均值 +0.05×"
-            },
-            {
-              "label": "一级交易商",
-              "valueText": "24.9%",
-              "num": 24.9,
-              "deltaText": "较均值 -7.0pct"
-            },
-            {
-              "label": "间接投标",
-              "valueText": "68.1%",
-              "num": 68.1
-            },
-            {
-              "label": "直接投标",
-              "valueText": "7.0%",
-              "num": 7
-            }
-          ],
-          "prevCurve": [
-            4.25,
-            4.52,
-            4.81,
-            4.89,
-            4.95,
-            5.03,
-            5.13,
-            5.47,
-            5.42
-          ],
-          "curve": [
-            4.22,
-            4.41,
-            4.65,
-            4.72,
-            4.78,
-            4.86,
-            4.96,
-            5.32,
-            5.29
-          ],
-          "shiftsBp": [
-            -3,
-            -11,
-            -16,
-            -17,
-            -17,
-            -17,
-            -17,
-            -15,
-            -13
-          ],
-          "real10Bp": -12,
-          "be10Bp": -5,
-          "regimeTag": "超短端下行",
-          "regimeTone": "bull",
-          "confounders": [
-            "5 年期 TIPS 拍卖"
-          ],
-          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261022_1.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
         }
       ]
@@ -5264,7 +5198,9 @@
           "be10Bp": -5,
           "regimeTag": "实际与 BE 同降",
           "regimeTone": "bull",
-          "confounders": [],
+          "confounders": [
+            "初请失业金"
+          ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261022_4.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
         },
@@ -5962,6 +5898,7 @@
           "regimeTag": "全线牛市下行",
           "regimeTone": "bull",
           "confounders": [
+            "初请失业金",
             "美国 GDP",
             "PCE 物价 / 个人收支"
           ],
@@ -6350,6 +6287,7 @@
           "regimeTag": "超短端平稳",
           "regimeTone": "mixed",
           "confounders": [
+            "初请失业金",
             "10 年期 TIPS 拍卖"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261119_2.pdf",
@@ -6427,6 +6365,7 @@
           "regimeTag": "超短端上行",
           "regimeTone": "bear",
           "confounders": [
+            "初请失业金",
             "30 年期国债拍卖"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261112_1.pdf",
@@ -6504,6 +6443,7 @@
           "regimeTag": "超短端下行",
           "regimeTone": "bull",
           "confounders": [
+            "初请失业金",
             "生产率与 ULC 初值"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261105_2.pdf",
@@ -6581,6 +6521,7 @@
           "regimeTag": "超短端平稳",
           "regimeTone": "mixed",
           "confounders": [
+            "初请失业金",
             "美国 GDP",
             "PCE 物价 / 个人收支",
             "7 年期国债拍卖"
@@ -6660,6 +6601,7 @@
           "regimeTag": "超短端下行",
           "regimeTone": "bull",
           "confounders": [
+            "初请失业金",
             "5 年期 TIPS 拍卖"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261022_2.pdf",
@@ -8057,6 +7999,7 @@
           "regimeTag": "全线牛市下行",
           "regimeTone": "bull",
           "confounders": [
+            "初请失业金",
             "PCE 物价 / 个人收支",
             "7 年期国债拍卖"
           ],
@@ -9402,6 +9345,7 @@
           "regimeTag": "全线牛市下行",
           "regimeTone": "bull",
           "confounders": [
+            "初请失业金",
             "美国 GDP",
             "7 年期国债拍卖"
           ],
@@ -10191,6 +10135,7 @@
           "regimeTag": "牛平 Bull Flat",
           "regimeTone": "bull",
           "confounders": [
+            "初请失业金",
             "美国零售销售"
           ],
           "sourceUrl": "https://www.bls.gov/news.release/archives/ppi_10152026.htm",
@@ -10468,7 +10413,9 @@
           "be10Bp": -2,
           "regimeTag": "牛陡 Bull Steep",
           "regimeTone": "bull",
-          "confounders": [],
+          "confounders": [
+            "初请失业金"
+          ],
           "sourceUrl": "https://www.bls.gov/news.release/archives/prod2_11052026.htm",
           "sourceName": "BLS 官方发布原文"
         },
@@ -10839,6 +10786,7 @@
           "regimeTag": "牛平 Bull Flat",
           "regimeTone": "bull",
           "confounders": [
+            "初请失业金",
             "美国 PPI"
           ],
           "sourceUrl": "https://www.census.gov/retail/index.html",
