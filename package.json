@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node build.mjs",
     "test": "node --test",
-    "refresh": "node refresh.mjs"
+    "refresh": "node refresh.mjs",
+    "refresh:markets": "node refresh-markets.mjs"
   },
   "dependencies": {
     "lucide-react": "1.31.0",

@@ -9,3 +9,5 @@
 
 本地开发需要 Node.js 24 和 pnpm 11：运行 `pnpm install --frozen-lockfile` 与 `pnpm run build`，用静态 HTTP 服务器打开 `dist/`。
 手工刷新数据用 `pnpm run refresh`，刷新指定周次用 `pnpm run refresh YYYY-MM-DD`（周一）。
+
+跨资产栏目含全球市场和统计两页。行情页在浏览器可见时每两分钟从 CNBC 检查报价，显示对应市场日期、延时状态和前月合约代码。统计页使用交易所、财政部、欧洲央行和 EIA 日线，盘中与统计口径分别标注。日线快照每天纽约时间 06:25 由 Pages 工作流更新，手动采集用 `pnpm run refresh:markets`。

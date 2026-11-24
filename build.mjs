@@ -14,4 +14,5 @@ await Promise.all([
   ...["index.html", "favicon.svg"].map(file => copyFile(file, "dist/" + file)),
   readFile("calendar.json", "utf8").then(raw => writeFile("dist/calendar.json", JSON.stringify(JSON.parse(raw)))),
   readFile("replays.json", "utf8").then(raw => writeFile("dist/replays.json", JSON.stringify(JSON.parse(raw)))),
+  readFile("market-history.json", "utf8").then(raw => writeFile("dist/market-history.json", JSON.stringify(JSON.parse(raw)))),
 ]);

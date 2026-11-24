@@ -23,8 +23,9 @@ import {
 import { nowcastUrl } from "./releases";
 import { actualFor, priorFor, ruleFor, scenarioFor } from "./scenarios";
 import { seedCalendar } from "./seed";
+import { MarketsView, MarketStatistics } from "./markets-view";
 
-type ViewId = "overview" | "calendar" | "scenarios" | "sources";
+type ViewId = "overview" | "calendar" | "scenarios" | "sources" | "markets" | "market-stats";
 type DrawerTab = "learn" | "scenario" | "replay";
 type ThemeMode = "light" | "dark";
 type BenchMode = "1D" | "1W" | "1M";
@@ -35,7 +36,7 @@ const STORAGE_THEME = "ust-desk-theme";
 const STORAGE_TZ = "ust-desk-tz";
 const STORAGE_SCENARIOS = "ust-desk-scenarios-v1";
 
-const validViews: ViewId[] = ["overview", "calendar", "scenarios", "sources"];
+const validViews: ViewId[] = ["overview", "calendar", "scenarios", "sources", "markets", "market-stats"];
 const short = (date: string) => date.slice(5).replace("-", "/");
 const sign = (value: number, digits = 1) => (value > 0 ? "+" : "") + value.toFixed(digits);
 
@@ -2007,6 +2008,16 @@ export default function Desk() {
           ))}
         </nav>
 
+        <nav className="nav-secondary market-nav" aria-label="跨资产市场">
+          <span>跨资产市场</span>
+          <button type="button" className={view === "markets" ? "active" : ""} aria-current={view === "markets" ? "page" : undefined} onClick={() => navigate("markets")}>
+            <Globe size={15} />全球市场
+          </button>
+          <button type="button" className={view === "market-stats" ? "active" : ""} aria-current={view === "market-stats" ? "page" : undefined} onClick={() => navigate("market-stats")}>
+            <BarChart3 size={15} />相关性与统计
+          </button>
+        </nav>
+
         <div className="nav-secondary" aria-label="辅助页面">
           <button type="button" className={view === "sources" ? "active" : ""} onClick={() => navigate("sources")}>
             <Database size={15} />数据来源与排程
@@ -2038,7 +2049,7 @@ export default function Desk() {
             <div className="eyebrow">
               <Sparkles size={13} />
               <span>US TREASURY MACRO &amp; RATES DESK</span>
-              {week !== current && view !== "sources" && (
+              {week !== current && view !== "sources" && view !== "markets" && view !== "market-stats" && (
                 <button type="button" className="history-pill" onClick={() => selectWeek(current)}>
                   当前周次 {short(week)}–{short(weekEnd)} · 返回本周
                 </button>
@@ -2049,6 +2060,8 @@ export default function Desk() {
               {view === "calendar" && "宏观、拍卖与美联储日历"}
               {view === "scenarios" && "经济数据情景与历史推演"}
               {view === "sources" && "数据来源与自动排程"}
+              {view === "markets" && "全球市场"}
+              {view === "market-stats" && "相关性与统计"}
             </h1>
             <p>
               {view === "overview" && (week >= current && preferLive && liveCurve
@@ -2057,9 +2070,10 @@ export default function Desk() {
               {view === "calendar" && `${short(week)} – ${short(weekEnd)} (${tzLabel(tz)}) · 点击任意行打开右侧详情与推演`}
               {view === "scenarios" && "比较宏观传导机制、不同政策环境与历史案例"}
               {view === "sources" && "Tradeweb 实时现券 + 12 个官方一级来源的核验状态与自动刷新排程说明"}
+              {view === "markets" && "主要股指、外汇、国债收益率、商品期货与比特币"}
             </p>
           </div>
-          <div className="sync">
+          {view !== "markets" && view !== "market-stats" && <div className="sync">
             <span className={"sync-pill" + (week >= current && preferLive && liveCurve ? " sync-live" : "")}>
               {week >= current && preferLive && liveCurve ? <i className="live-dot" /> : <Clock size={13} />}
               {failed ? "日历载入失败 · 保留缓存" :
@@ -2070,8 +2084,11 @@ export default function Desk() {
             <button type="button" className="action" onClick={() => { void refreshAll(true); }} disabled={loading || refreshing}>
               <RefreshCw size={14} className={loading || refreshing ? "spin" : ""} />{refreshing ? "刷新中" : loading ? "载入中" : "重新载入"}
             </button>
-          </div>
+          </div>}
         </header>
+
+        {view === "markets" && <MarketsView tz={tz} onStatistics={() => navigate("market-stats")} />}
+        {view === "market-stats" && <MarketStatistics tz={tz} />}
 
         {/* VIEW 1: OVERVIEW */}
         {view === "overview" && <>
