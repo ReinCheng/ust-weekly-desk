@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Activity, ArrowDown, ArrowUp, BarChart3, ExternalLink, RefreshCw } from "lucide-react";
+import { ArrowDown, ArrowUp, BarChart3, ExternalLink, RefreshCw } from "lucide-react";
 import { dateInZone, instruments, loadMarketQuotes, marketGroups, quoteRefreshMs, type MarketGroup, type Quote } from "./market-data";
 import { alignMoves, correlation, historyAssets, summarizeMoves, type HistoryAsset, type MarketHistory } from "./market-stats";
 import { tzIana, tzShortTag, type TzMode } from "./model";
@@ -26,7 +26,10 @@ function useRefresh<T>(load: (signal: AbortSignal) => Promise<T>, merge?: (previ
   useEffect(() => {
     let controller: AbortController | undefined;
     const check = async () => {
-      if (document.hidden) return;
+      if (document.hidden) {
+        setBusy(false);
+        return;
+      }
       controller?.abort();
       const request = new AbortController();
       controller = request;
@@ -224,9 +227,18 @@ function MarketChart({ points, kind, label, xLabel, yLabel, corrScale = false, a
           const offset = i === 0 ? 0 : i === 4 ? ctx.measureText(tick).width : ctx.measureText(tick).width / 2;
           ctx.fillText(tick, x(value) - offset, bottom + 14);
         }
-        if (minX < 0 && maxX > 0) { ctx.beginPath(); ctx.moveTo(x(0), top); ctx.lineTo(x(0), bottom); ctx.stroke(); }
       }
-      if (minY < 0 && maxY > 0) { ctx.beginPath(); ctx.moveTo(left, y(0)); ctx.lineTo(right, y(0)); ctx.stroke(); }
+      ctx.save();
+      ctx.setLineDash([4, 3]);
+      ctx.strokeStyle = text;
+      ctx.globalAlpha = 0.45;
+      if (kind === "scatter" && minX < 0 && maxX > 0) {
+        ctx.beginPath(); ctx.moveTo(x(0), top); ctx.lineTo(x(0), bottom); ctx.stroke();
+      }
+      if (minY < 0 && maxY > 0) {
+        ctx.beginPath(); ctx.moveTo(left, y(0)); ctx.lineTo(right, y(0)); ctx.stroke();
+      }
+      ctx.restore();
       ctx.fillText(xLabel, left, height - 7);
       ctx.strokeStyle = foreground;
       ctx.fillStyle = foreground;
@@ -256,26 +268,26 @@ function MarketChart({ points, kind, label, xLabel, yLabel, corrScale = false, a
 
 export function MarketStatistics({ tz }: { tz: TzMode }) {
   const { result, busy, error, refresh } = useRefresh(loadHistory);
-  const [window, setWindow] = useState<number>(60);
+  const [span, setSpan] = useState<number>(60);
   const [method, setMethod] = useState<"pearson" | "spearman">("pearson");
   const [selected, setSelected] = useState(["spx", "us10y"]);
   const [detail, setDetail] = useState("spx");
   const assets = useMemo(() => historyAssets.filter(asset => result?.series[asset.id]?.length), [result]);
-  const x = assets.find(asset => asset.id === selected[0]);
-  const y = assets.find(asset => asset.id === selected[1]);
-  const active = assets.find(asset => asset.id === detail);
-  const pair = (a: HistoryAsset, b: HistoryAsset, count = window) => alignMoves(result?.series[a.id] ?? [], result?.series[b.id] ?? [], count);
+  const x = assets.find(asset => asset.id === selected[0]) ?? assets[0];
+  const y = assets.find(asset => asset.id === selected[1]) ?? assets[1] ?? assets[0];
+  const active = assets.find(asset => asset.id === detail) ?? assets[0];
+  const pair = (a: HistoryAsset, b: HistoryAsset, count = span) => alignMoves(result?.series[a.id] ?? [], result?.series[b.id] ?? [], count);
   const measure = (samples: ReturnType<typeof alignMoves>) => correlation(samples.map(row => row.x), samples.map(row => row.y), method);
-  const extended = x && y ? pair(x, y, window + 19) : [];
-  const matched = extended.slice(-window);
+  const extended = x && y ? pair(x, y, span + 19) : [];
+  const matched = extended.slice(-span);
   const coefficient = measure(matched);
   const rolling: Dot[] = [];
   for (let i = 19; i < extended.length; i++) {
     const point = measure(extended.slice(i - 19, i + 1));
     if (point !== null) rolling.push([i, point]);
   }
-  const summaries = assets.map(asset => ({ asset, stats: summarizeMoves(result!.series[asset.id], window, asset)! }));
-  const report = summaries.find(row => row.asset.id === detail)?.stats;
+  const summaries = assets.map(asset => ({ asset, stats: summarizeMoves(result!.series[asset.id], span, asset)! }));
+  const report = summaries.find(row => row.asset.id === active?.id)?.stats;
   const latestDate = summaries.map(row => row.stats.end).sort().at(-1);
   return <div className="market-page">
     <section className="panel glass market-stats" aria-label="跨资产相关性">
@@ -288,7 +300,7 @@ export function MarketStatistics({ tz }: { tz: TzMode }) {
       {result && <>
         <div className="market-toolbar">
           <div className="chips" role="group" aria-label="样本窗口">
-            {windows.map(count => <button key={count} type="button" className="chip" aria-pressed={window === count} onClick={() => setWindow(count)}>{count} 个观测</button>)}
+            {windows.map(count => <button key={count} type="button" className="chip" aria-pressed={span === count} onClick={() => setSpan(count)}>{count} 个观测</button>)}
           </div>
           <label>相关系数<select value={method} onChange={event => setMethod(event.target.value as typeof method)}>
             <option value="pearson">Pearson · 线性</option><option value="spearman">Spearman · 秩</option>
@@ -300,7 +312,7 @@ export function MarketStatistics({ tz }: { tz: TzMode }) {
             <tbody>{assets.map(a => <tr key={a.id}><th scope="row">{a.short}</th>{assets.map(b => {
               const sample = pair(a, b);
               const value = measure(sample);
-              const chosen = a.id === selected[0] && b.id === selected[1];
+              const chosen = a.id === x?.id && b.id === y?.id;
               const strength = value === null ? 0 : Math.round(Math.abs(value) * 65);
               return <td key={b.id}>
                 <button type="button" disabled={value === null} aria-pressed={chosen}
@@ -316,7 +328,7 @@ export function MarketStatistics({ tz }: { tz: TzMode }) {
     </section>
     {x && y && <section className="panel glass market-stats" aria-label="配对详情">
       <div className="market-section-head">
-        <div><h2>{x.short} × {y.short}</h2><p>{method === "pearson" ? "Pearson" : "Spearman"} <b>{coefficient?.toFixed(3) ?? "—"}</b> · 匹配 {matched.length} / {window} · {matched[0]?.previous ?? "—"} 至 {matched.at(-1)?.date ?? "—"}</p></div>
+        <div><h2>{x.short} × {y.short}</h2><p>{method === "pearson" ? "Pearson" : "Spearman"} <b>{coefficient?.toFixed(3) ?? "—"}</b> · 匹配 {matched.length} / {span} · {matched[0]?.previous ?? "—"} 至 {matched.at(-1)?.date ?? "—"}</p></div>
         <div className="market-actions">
           {[x, y].map((asset, index) => <label key={index}>{index === 0 ? "横轴" : "纵轴"}<select value={asset.id} onChange={event => setSelected(keys => keys.map((key, i) => i === index ? event.target.value : key))}>
             {assets.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}
@@ -332,7 +344,7 @@ export function MarketStatistics({ tz }: { tz: TzMode }) {
     {result && <section className="panel glass market-stats" aria-label="单项统计">
       <div className="market-section-head">
         <div><h2>单项日线统计</h2><p>收益率的累计变动以 bp 相加。价格及指数变化用复利，最大回撤以初始值与后续峰值为基准。</p></div>
-        {active && <label>选择序列<select value={detail} onChange={event => setDetail(event.target.value)}>{assets.map(asset => <option key={asset.id} value={asset.id}>{asset.label}</option>)}</select></label>}
+        {active && <label>选择序列<select value={active.id} onChange={event => setDetail(event.target.value)}>{assets.map(asset => <option key={asset.id} value={asset.id}>{asset.label}</option>)}</select></label>}
       </div>
       {active && report && <>
         <p className="market-caption">{active.label} · {report.start} 至 {report.end} · n = {report.count} · <a href={active.url} target="_blank" rel="noreferrer">{active.source}</a></p>
@@ -356,7 +368,7 @@ export function MarketStatistics({ tz }: { tz: TzMode }) {
         <div className="market-table-wrap"><table className="market-table">
           <thead><tr><th scope="col">日线序列</th><th scope="col">累计变动</th><th scope="col">最新 Z 值</th><th scope="col">截至 / 样本</th></tr></thead>
           <tbody>{summaries.map(({ asset, stats }) => <tr key={asset.id}>
-            <th scope="row"><button type="button" className="market-series-button" aria-pressed={detail === asset.id} onClick={() => setDetail(asset.id)}>{asset.label}</button></th>
+            <th scope="row"><button type="button" className="market-series-button" aria-pressed={active?.id === asset.id} onClick={() => setDetail(asset.id)}>{asset.label}</button></th>
             <td className={changeTone(stats.total)}>{movement(stats.total, asset.unit)}</td>
             <td>{stats.z === null ? "—" : signed(stats.z)}</td>
             <td>{stats.end} <small>{stats.count} 个观测</small></td>

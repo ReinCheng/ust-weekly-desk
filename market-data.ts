@@ -93,6 +93,24 @@ export function parseQuote(raw: RawQuote, instrument: Instrument, now = new Date
   };
 }
 
+function withTimeout(signal: AbortSignal, ms: number) {
+  const controller = new AbortController();
+  const onAbort = () => controller.abort();
+  if (signal.aborted) {
+    controller.abort();
+    return { signal: controller.signal, cleanup() {} };
+  }
+  signal.addEventListener("abort", onAbort, { once: true });
+  const timer = setTimeout(() => controller.abort(), ms);
+  return {
+    signal: controller.signal,
+    cleanup() {
+      clearTimeout(timer);
+      signal.removeEventListener("abort", onAbort);
+    },
+  };
+}
+
 export async function loadMarketQuotes(signal: AbortSignal) {
   const groups = Object.values(instruments);
   const fetched = await Promise.allSettled(groups.map(async group => {
@@ -101,16 +119,21 @@ export async function loadMarketQuotes(signal: AbortSignal) {
       symbols: group.map(asset => asset.symbol).join("|"), requestMethod: "itv",
       noform: "1", partnerId: "2", fund: "1", exthrs: "1", output: "json", _: String(Date.now()),
     }).toString();
-    const response = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(12_000)]), cache: "no-store" });
-    if (!response.ok) throw new Error("Market quote " + response.status);
-    const body = await response.json() as { FormattedQuoteResult?: { FormattedQuote?: RawQuote | RawQuote[] } };
-    const list = body.FormattedQuoteResult?.FormattedQuote;
-    const bySymbol = new Map((Array.isArray(list) ? list : list ? [list] : []).map(row => [row.symbol, row]));
-    return group.flatMap(asset => {
-      const raw = bySymbol.get(asset.symbol);
-      const row = raw && parseQuote(raw, asset);
-      return row ? [row] : [];
-    });
+    const request = withTimeout(signal, 12_000);
+    try {
+      const response = await fetch(url, { signal: request.signal, cache: "no-store" });
+      if (!response.ok) throw new Error("Market quote " + response.status);
+      const body = await response.json() as { FormattedQuoteResult?: { FormattedQuote?: RawQuote | RawQuote[] } };
+      const list = body.FormattedQuoteResult?.FormattedQuote;
+      const bySymbol = new Map((Array.isArray(list) ? list : list ? [list] : []).map(row => [row.symbol, row]));
+      return group.flatMap(asset => {
+        const raw = bySymbol.get(asset.symbol);
+        const row = raw && parseQuote(raw, asset);
+        return row ? [row] : [];
+      });
+    } finally {
+      request.cleanup();
+    }
   }));
   return fetched.flatMap(outcome => outcome.status === "fulfilled" ? outcome.value : []);
 }

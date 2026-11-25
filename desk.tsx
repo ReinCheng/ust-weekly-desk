@@ -1375,8 +1375,11 @@ function ScenarioCalculator({
 
   const isAuction = event.category === "auction";
   const isQual = Boolean(rule.qualitative);
-  const useModel = !isAuction && comparison === "model";
-  const usePrior = !isAuction && comparison === "prior";
+  const effectiveComparison: Comparison = !isAuction && ((comparison === "model" && Boolean(model)) || (comparison === "prior" && Boolean(prior)))
+    ? comparison
+    : "manual";
+  const useModel = effectiveComparison === "model";
+  const usePrior = effectiveComparison === "prior";
   const expectedValue = useModel ? model?.value : usePrior ? prior?.value : expected.trim() ? Number(expected) : undefined;
   const actualValue = hypothesis.trim() === "" ? official : Number(hypothesis);
   const diff = !isQual && expectedValue !== undefined && actualValue !== undefined && Number.isFinite(expectedValue) && Number.isFinite(actualValue)
@@ -1475,7 +1478,7 @@ function ScenarioCalculator({
       <div className="scenario-inputs">
         <div className="study-comparison">
           {!isAuction && <label>比较基准
-            <select value={comparison} onChange={e => setComparison(e.target.value as Comparison)}>
+            <select value={effectiveComparison} onChange={e => setComparison(e.target.value as Comparison)}>
               <option value="manual">手动输入发布前调查预期</option>
               <option value="model" disabled={!model}>Cleveland Fed 模型估计</option>
               <option value="prior" disabled={!prior}>上次发布值（教学比较）</option>
@@ -1682,7 +1685,7 @@ function EventDrawer({
         <div className="drawer-body">
           {tab === "learn" && <>
             <LessonCard lesson={lesson} evidence={<ReleaseEvidence event={event} related={sameTime} now={now}
-              archive={event.category === "macro" ? replaySeries?.items.find(item => item.date === event.date) : undefined} />} />
+              archive={replaySeries?.items.find(item => item.date === event.date)} />} />
             <HistoryPractice key={event.id} course={playbook.key} beforeDate={event.date} />
             <details className="study-details"><summary>传导矩阵与案例</summary><PlaybookView playbook={playbook} compact /></details>
             <details className="study-details"><summary>进阶 · 盘口、RFQ 与对冲</summary><MicrostructureGrid kind={event.kind} /></details>
@@ -2002,7 +2005,7 @@ export default function Desk() {
 
         <nav className="nav-primary" aria-label="主功能导航">
           {primaryNav.map(({ id, title, icon: Icon }) => (
-            <button type="button" key={id} className={view === id ? "active" : ""} onClick={() => navigate(id)}>
+            <button type="button" key={id} className={view === id ? "active" : ""} aria-current={view === id ? "page" : undefined} onClick={() => navigate(id)}>
               <Icon size={16} />{title}
             </button>
           ))}
@@ -2019,7 +2022,7 @@ export default function Desk() {
         </nav>
 
         <div className="nav-secondary" aria-label="辅助页面">
-          <button type="button" className={view === "sources" ? "active" : ""} onClick={() => navigate("sources")}>
+          <button type="button" className={view === "sources" ? "active" : ""} aria-current={view === "sources" ? "page" : undefined} onClick={() => navigate("sources")}>
             <Database size={15} />数据来源与排程
           </button>
         </div>
@@ -2069,8 +2072,9 @@ export default function Desk() {
                 : points.length ? "财政部日终观测 " + points.at(-1)!.date + " · 点击任意事件直接在右侧玻璃抽屉推演" : "收益率、经济数据、国债拍卖和美联储日程")}
               {view === "calendar" && `${short(week)} – ${short(weekEnd)} (${tzLabel(tz)}) · 点击任意行打开右侧详情与推演`}
               {view === "scenarios" && "比较宏观传导机制、不同政策环境与历史案例"}
-              {view === "sources" && "Tradeweb 实时现券 + 12 个官方一级来源的核验状态与自动刷新排程说明"}
+              {view === "sources" && "Tradeweb 实时现券 + 12 个官方一级来源与跨资产日线快照的核验状态及自动排程说明"}
               {view === "markets" && "主要股指、外汇、国债收益率、商品期货与比特币"}
+              {view === "market-stats" && "Cboe、Nasdaq、财政部、欧洲央行、EIA 与 Coinbase 日线相关性、波动率与回撤统计"}
             </p>
           </div>
           {view !== "markets" && view !== "market-stats" && <div className="sync">
@@ -2224,7 +2228,7 @@ export default function Desk() {
                 <div className="panel-pad">
                   <LessonCard lesson={lessonFor(playbookFor(activeScenario).key)!}
                     evidence={<ReleaseEvidence event={activeScenario} now={now} related={coReleases(activeScenario, allEvents)}
-                      archive={activeScenario.category === "macro" ? activeScenarioReplay?.items.find(item => item.date === activeScenario.date) : undefined} />} />
+                      archive={activeScenarioReplay?.items.find(item => item.date === activeScenario.date)} />} />
                 </div>
                 <ScenarioCalculator
                   key={activeScenario.id}
@@ -2258,7 +2262,7 @@ export default function Desk() {
               </section>
 
               <section className="panel glass">
-                <details className="panel-pad study-details"><summary>进阶 · 盘口、RFQ 与对冲</summary><MicrostructureGrid kind={activeScenario.kind} /></details>
+                <details className="study-details study-panel-details"><summary>进阶 · 盘口、RFQ 与对冲</summary><MicrostructureGrid kind={activeScenario.kind} /></details>
               </section>
             </> : <section className="panel glass"><p className="empty">当前没有可推演的经济数据、FOMC 或国债拍卖事件。</p></section>
           ) : (
@@ -2299,7 +2303,7 @@ export default function Desk() {
           <div className="panel-header">
             <div>
               <h2>官方一级数据来源（{short(week)} – {short(weekEnd)}）</h2>
-              <p>工作日 08:07–16:52 ET 每 15 分钟核对近端发布，17:25 / 18:25 ET 补抓日终名义与 TIPS 曲线，周日 18:07 ET 刷新未来八周。</p>
+              <p>工作日 08:07–16:52 ET 每 15 分钟核对近端发布，17:25 / 18:25 ET 补抓日终名义与 TIPS 曲线，每日 06:25 ET 更新跨资产日线快照，周日 18:07 ET 刷新未来八周。</p>
             </div>
             <div className="week-control">
               <button className="icon-button" aria-label="上一周" onClick={() => selectWeek(addDays(week, -7))}><ChevronLeft size={18} /></button>
