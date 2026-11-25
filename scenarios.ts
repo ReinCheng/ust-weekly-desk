@@ -137,6 +137,24 @@ const rules: Record<string, Rule> = {
     ],
     invalidate: "超预期完全由福利分项一次性波动驱动、私营薪资同步温和，或前端初动迅速回吐时，降低政策冲击判断。",
   },
+  "耐用品订单初值": {
+    metric: "耐用品订单月率", unit: "%", above: "up", channel: "growth", noise: 0.3, big: 1.5,
+    aboveNote: "先剔除波音民用飞机等波动项，核心看「剔除国防与飞机的核心资本品订单」。若总体与核心资本品同强，指向企业设备投资韧性，温和推高 5Y/10Y。",
+    belowNote: "耐用品与核心资本品订单同步走弱，提示制造业资本开支放缓，温和利多美债。节假日前夕常与 GDP/PCE/初请同刻公布，须先拆开归因。",
+    aboveCurve: "温和熊陡或随同刻核心数据主导。",
+    belowCurve: "温和下行；单独驱动通常仅 1–3 bp。",
+    checks: ["核心资本品（Nondefense ex-aircraft）订单与出货——直接进 GDP 商业投资", "飞机/国防一次性大单噪音与前月修正", "同刻 08:30 是否与 GDP/PCE/初请撞车"],
+    invalidate: "波幅全由民航飞机订单驱动，或被同刻 PCE/GDP 主导走势时，忽略单月 Headline。",
+  },
+  "新屋销售": {
+    metric: "新屋销售月率", unit: "%", above: "up", channel: "growth", noise: 2.0, big: 8.0,
+    aboveNote: "新屋销售月度样本小、统计误差带宽（常 ±10%），单月暴涨若伴随前月大幅下修，对美债影响多为脉冲；持续高于 70 万套折年则验证高按揭利率下地产韧性。",
+    belowNote: "新屋销售显著下滑且库存月数攀升，提示高利率正压制利率敏感型地产部门，温和利多 5Y/10Y。",
+    aboveCurve: "温和偏空（1–3 bp），长端略弱于短端。",
+    belowCurve: "温和偏多（1–3 bp），5Y/10Y 小幅下行。",
+    checks: ["前月修正值（经常出现上月大跌、本月大反弹的锯齿拉锯）", "折年总套数（SAAR）与中位房价走势", "同刻 10:00 ET 是否有 T-bill 拍卖或 ISM/消费者信心"],
+    invalidate: "仅是前月大幅下修后的低基数反弹（如前月 -9.7% → 本月 +14.2%）时，勿过度外推地产过热。",
+  },
   "FOMC 利率决议": {
     metric: "声明 / SEP 点阵图 / 记者会基调", unit: "%", above: "up", channel: "policy", qualitative: true,
     aboveLabel: "偏鹰（高于市场定价）", belowLabel: "偏鸽（低于市场定价）",
@@ -289,6 +307,156 @@ export function priorFor(event: MarketEvent, allEvents: MarketEvent[], rule: Rul
     .map(item => ({ date: item.date, value: actualFor(item, rule) }))
     .filter((item): item is { date: string; value: number } => item.value !== undefined);
   return previous.at(-1);
+}
+
+export type InstantAnalysis = {
+  tone: "bearish" | "bullish" | "neutral";
+  tag: string;
+  summary: string;
+};
+
+/** Automatic post-release rates-desk interpretation once official readings / auction results arrive. */
+export function instantAnalysisFor(event: MarketEvent, allEvents: MarketEvent[]): InstantAnalysis | null {
+  const readings = event.readings ?? [];
+  if (!readings.length && !event.actual) return null;
+
+  // 1. Treasury Auctions (Coupons, TIPS, Bills)
+  if (event.category === "auction") {
+    const dealer = readings.find(r => r.label.includes("一级交易商"))?.value;
+    const indirect = readings.find(r => r.label.includes("间接投标"))?.value;
+    const direct = readings.find(r => r.label.includes("直接投标"))?.value;
+    const btc = readings.find(r => r.label.includes("投标倍数"))?.value;
+    const endUser = indirect !== undefined && direct !== undefined ? Number((indirect + direct).toFixed(1)) : undefined;
+
+    if (event.kind === "bills") {
+      const btcText = btc !== undefined ? `投标倍数 ${btc.toFixed(2)}×` : "";
+      const tone: InstantAnalysis["tone"] = btc !== undefined && btc >= 2.85 ? "bullish" : btc !== undefined && btc <= 2.5 ? "bearish" : "neutral";
+      const tag = tone === "bullish" ? "短债需求强" : tone === "bearish" ? "短债承接偏平" : "资金面平稳";
+      return {
+        tone,
+        tag,
+        summary: `${btcText}${dealer !== undefined ? ` · Dealer ${dealer.toFixed(1)}%` : ""}，属短端现金管理工具，主要反映资金面与 TGA 流动性，对中长端外溢有限。`,
+      };
+    }
+
+    const isTips = event.kind === "tips";
+    const is30y = /^30\s*年期/.test(event.title) || (event.auctionKey ?? "").startsWith("30y");
+    const weakDealer = isTips ? 12 : is30y ? 19 : 16;
+    const strongDealer = isTips ? 7 : 11;
+    if (dealer !== undefined) {
+      if (dealer <= strongDealer) {
+        return {
+          tone: "bullish",
+          tag: "拍卖承接强劲 · 偏利多美债",
+          summary: `一级交易商仅获配 ${dealer.toFixed(1)}%（显著低于常态），终端买盘高达 ${endUser ?? (100 - dealer).toFixed(1)}%${btc ? `（BTC ${btc.toFixed(2)}×）` : ""}；有利拍前让价回补与曲线修复。`,
+        };
+      }
+      if (dealer >= weakDealer) {
+        return {
+          tone: "bearish",
+          tag: "Dealer 兜底偏高 · 偏利空美债",
+          summary: `一级交易商被迫接盘 ${dealer.toFixed(1)}%（高于警惕线 ${weakDealer}%）${btc ? `，BTC ${btc.toFixed(2)}×` : ""}；承销商库存对冲易压制该期限与长端。`,
+        };
+      }
+      return {
+        tone: "neutral",
+        tag: "拍卖承接中性",
+        summary: `Dealer 获配 ${dealer.toFixed(1)}%（常规区间），终端买盘 ${endUser ?? (100 - dealer).toFixed(1)}%${btc ? `，BTC ${btc.toFixed(2)}×` : ""}；以截标前 WI Tail 决定短线方向。`,
+      };
+    }
+  }
+
+  // 2. Macro Releases (compare against prior / Cleveland Fed model / internal sub-components)
+  const rule = ruleFor(event);
+  if (!rule) return null;
+  const act = actualFor(event, rule);
+  if (act === undefined) return null;
+
+  if (event.title === "初请失业金") {
+    const chg = readings.find(r => r.label.includes("较前周"))?.value;
+    const cont = readings.find(r => r.label.includes("续请"))?.value;
+    if (chg !== undefined && chg <= -10) {
+      return {
+        tone: "bearish",
+        tag: "就业偏韧 · 偏利空美债",
+        summary: `初请降至 ${act} 千人（较前周 ${chg} 千人${cont ? `，续请 ${cont} 千人` : ""}），劳动力市场维持韧性，温和推高 2Y/5Y（注意节假日季调噪音）。`,
+      };
+    }
+    if (chg !== undefined && chg >= 15) {
+      return {
+        tone: "bullish",
+        tag: "申领走高 · 偏利多美债",
+        summary: `初请升至 ${act} 千人（较前周 +${chg} 千人${cont ? `，续请 ${cont} 千人` : ""}），边际降温利多 2Y/5Y，关注续请与四周均值验证。`,
+      };
+    }
+    return {
+      tone: "neutral",
+      tag: "就业平稳 · 影响温和",
+      summary: `初请 ${act} 千人${chg !== undefined ? `（较前周 ${chg > 0 ? "+" : ""}${chg} 千人）` : ""}，落在近期常规区间，单独对收益率冲击有限。`,
+    };
+  }
+
+  if (event.title === "PCE 物价 / 个人收支") {
+    const coreYoy = readings.find(r => r.label === "核心 PCE 同比")?.value;
+    const realC = readings.find(r => r.label === "实际消费月率")?.value;
+    if (act >= 0.3 || (coreYoy !== undefined && coreYoy >= 3.0)) {
+      return {
+        tone: "bearish",
+        tag: "核心通胀偏粘 · 偏利空 2Y/5Y",
+        summary: `核心 PCE 月率 ${act > 0 ? "+" : ""}${act.toFixed(1)}%${coreYoy !== undefined ? ` / 同比 ${coreYoy.toFixed(1)}%` : ""}${realC !== undefined ? `，实际消费 ${realC > 0 ? "+" : ""}${realC.toFixed(1)}%` : ""}；通胀粘性压制降息定价，2Y/5Y 偏承压。`,
+      };
+    }
+    if (act <= 0.1) {
+      return {
+        tone: "bullish",
+        tag: "核心通胀温和 · 偏利多美债",
+        summary: `核心 PCE 月率仅 ${act > 0 ? "+" : ""}${act.toFixed(1)}%${coreYoy !== undefined ? `（同比 ${coreYoy.toFixed(1)}%）` : ""}，巩固降息路径，2Y/5Y 偏牛陡下行。`,
+      };
+    }
+  }
+
+  if (event.title === "美国 GDP") {
+    const demand = readings.find(r => r.label.includes("私人国内"))?.value;
+    const qPce = readings.find(r => r.label.includes("核心 PCE"))?.value;
+    if (act >= 3.0 || (demand !== undefined && demand >= 3.5)) {
+      return {
+        tone: "bearish",
+        tag: "内需增长强劲 · 偏利空美债",
+        summary: `实际 GDP 折年 ${act > 0 ? "+" : ""}${act.toFixed(1)}%${demand !== undefined ? `，私人国内最终销售高达 +${demand.toFixed(1)}%` : ""}${qPce !== undefined ? `（季度核心 PCE +${qPce.toFixed(1)}%）` : ""}；高增长韧性支撑长端熊陡。`,
+      };
+    }
+  }
+
+  const prior = priorFor(event, allEvents, rule);
+  const bench = event.reference?.value ?? prior?.value;
+  const benchName = event.reference ? "Cleveland 模型" : prior ? "前值" : null;
+  if (bench !== undefined && benchName) {
+    const diff = act - bench;
+    const noise = rule.noise ?? 0.05;
+    if (Math.abs(diff) <= noise) {
+      return {
+        tone: "neutral",
+        tag: "基本符合参考 · 影响中性",
+        summary: `${rule.metric} 录得 ${act}${rule.unit}（${benchName} ${bench}${rule.unit}），偏差在常规噪音内，转向检查分项与前月修正。`,
+      };
+    }
+    const above = diff > 0;
+    const sc = scenarioFor(event, rule, above ? "above" : "below");
+    return {
+      tone: sc.yieldDir === "up" ? "bearish" : "bullish",
+      tag: `${above ? "高于" : "低于"}${benchName} · ${sc.yieldDir === "up" ? "偏利空美债" : "偏利多美债"}`,
+      summary: `${rule.metric} ${act}${rule.unit} vs ${benchName} ${bench}${rule.unit}；${sc.direction}（${sc.curve.slice(0, 46)}…）。`,
+    };
+  }
+
+  // Fallback for standalone macro reading without stored prior (e.g., Census with embedded prior reading!)
+  const prevR = readings.find(r => r.label.includes("前月"));
+  const tone: InstantAnalysis["tone"] = (act > 0 && rule.above === "up") ? "bearish" : (act < 0 && rule.above === "up") ? "bullish" : "neutral";
+  return {
+    tone,
+    tag: tone === "bearish" ? "读数偏强 · 温和偏空" : tone === "bullish" ? "读数偏弱 · 温和偏多" : "读数中性",
+    summary: `${rule.metric} 录得 ${act > 0 ? "+" : ""}${act}${rule.unit}${prevR ? `（${prevR.label} ${prevR.value > 0 ? "+" : ""}${prevR.value}${prevR.unit}）` : ""}；${act >= 0 ? rule.aboveCurve : rule.belowCurve}`,
+  };
 }
 
 function gdpQuarter(detail: string) {

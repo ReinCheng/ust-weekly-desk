@@ -23,7 +23,7 @@ export const sourceIndex = {
 export type SourceId = keyof typeof sourceIndex;
 export type Category = keyof typeof categories;
 export type Kind = "inflation" | "ppi" | "jobs" | "claims" | "retail" | "growth" | "policy" | "minutes" | "speech" | "technicalSpeech" | "longAuction" | "tips" | "coupon" | "bills" | "holiday" | "earlyClose" | "marketCheck" | "funding";
-export type Reading = { label: string; value: number; unit: "%" | "千人" | "百万" | "×"; signed?: boolean; digits?: number };
+export type Reading = { label: string; value: number; unit: "%" | "千人" | "百万" | "×" | "千套"; signed?: boolean; digits?: number };
 export type Reference = { value: number; period: string; asOf: string };
 export type MarketEvent = {
   id: string;

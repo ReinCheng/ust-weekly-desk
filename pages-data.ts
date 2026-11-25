@@ -1,4 +1,5 @@
-import { tenors, type Calendar } from "./model";
+import { isPastEvent, newYorkDate, tenors, type Calendar, type MarketEvent } from "./model";
+import { parseBeaReadings } from "./releases";
 import type { ReplayCatalog } from "./replay-model";
 
 export type LiveCurve = {
@@ -81,4 +82,92 @@ export async function loadLiveCurve(signal?: AbortSignal): Promise<LiveCurve> {
 
   if (values.length !== tenors.length) throw new Error("Incomplete live curve");
   return { values, prevValues, asOf, fetchedAt: new Date().toISOString(), exchange };
+}
+
+/**
+ * Directly live-patches today/yesterday past-due BEA releases (PCE / GDP) from browser
+ * via www.bea.gov (CORS Access-Control-Allow-Origin: *) whenever calendar.json lags behind.
+ */
+export async function patchLiveBeaReleases(
+  calendars: Record<string, Calendar>,
+  signal?: AbortSignal,
+): Promise<{ calendars: Record<string, Calendar>; patchedCount: number }> {
+  const now = new Date();
+  const today = newYorkDate(now);
+  const targets: { weekKey: string; event: MarketEvent; kind: "pce" | "gdp"; url: string }[] = [];
+  for (const [weekKey, cal] of Object.entries(calendars)) {
+    for (const ev of cal.events) {
+      if (ev.source !== "bea" || !ev.time || !isPastEvent(ev, now)) continue;
+      const kind = ev.title.startsWith("PCE") ? "pce" : ev.title === "美国 GDP" ? "gdp" : null;
+      if (!kind) continue;
+      const needsPatch = !ev.readings?.length || (kind === "gdp" && !ev.readings.some(r => r.label.includes("实际 GDP")));
+      if (!needsPatch) continue;
+      if (ev.date > today) continue;
+      const url = ev.resultUrl;
+      if (url && /^https:\/\/www\.bea\.gov\/news\/20\d\d\//.test(url)) {
+        targets.push({ weekKey, event: ev, kind, url });
+      }
+    }
+  }
+  if (!targets.length) return { calendars, patchedCount: 0 };
+
+  const updates = new Map<string, MarketEvent["readings"]>();
+  await Promise.allSettled(targets.slice(0, 4).map(async t => {
+    const resp = await fetch(t.url, { signal });
+    if (!resp.ok) return;
+    const html = await resp.text();
+    const readings = parseBeaReadings(t.kind, html);
+    if (readings.length) updates.set(t.event.id, readings);
+  }));
+  if (!updates.size) return { calendars, patchedCount: 0 };
+
+  const next: Record<string, Calendar> = {};
+  for (const [wk, cal] of Object.entries(calendars)) {
+    let changed = false;
+    const events = cal.events.map(ev => {
+      const r = updates.get(ev.id);
+      if (!r) return ev;
+      changed = true;
+      return { ...ev, readings: r };
+    });
+    next[wk] = changed ? { ...cal, events } : cal;
+  }
+  return { calendars: next, patchedCount: updates.size };
+}
+
+export const CLOUD_WORKFLOW_URL = "https://github.com/ReinCheng/ust-weekly-desk/actions/workflows/pages.yml";
+
+export async function triggerCloudRefresh(token: string, near = true): Promise<void> {
+  const resp = await fetch(
+    "https://api.github.com/repos/ReinCheng/ust-weekly-desk/actions/workflows/pages.yml/dispatches",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token.trim()}`,
+        Accept: "application/vnd.github+json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ref: "main", inputs: { refresh: true, near, run_alpha: false } }),
+    },
+  );
+  if (!resp.ok) {
+    const txt = await resp.text().catch(() => "");
+    throw new Error(`HTTP ${resp.status}${txt ? ": " + txt.slice(0, 90) : ""}`);
+  }
+}
+
+export async function pollLatestCloudRun(afterIso: string): Promise<{
+  id: number;
+  status: string;
+  conclusion: string | null;
+  htmlUrl: string;
+} | null> {
+  const resp = await fetch(
+    "https://api.github.com/repos/ReinCheng/ust-weekly-desk/actions/workflows/pages.yml/runs?per_page=3&_=" + Date.now(),
+    { cache: "no-store" },
+  );
+  if (!resp.ok) return null;
+  const body = await resp.json() as { workflow_runs?: { id: number; status: string; conclusion: string | null; created_at: string; html_url: string }[] };
+  const match = (body.workflow_runs ?? []).find(r => r.created_at >= afterIso);
+  return match ? { id: match.id, status: match.status, conclusion: match.conclusion, htmlUrl: match.html_url } : null;
 }

@@ -1,5 +1,5 @@
 import { dateOf, document, months, textOf } from "./feeds";
-import { isPastEvent, newYorkDate, type MarketEvent, type Reading, type Reference } from "./model";
+import { addDays, isPastEvent, newYorkDate, type MarketEvent, type Reading, type Reference } from "./model";
 
 export const nowcastUrl = "https://www.clevelandfed.org/indicators-and-data/inflation-nowcasting";
 
@@ -126,14 +126,128 @@ export function parseBeaReadings(kind: "pce" | "gdp", html: string): Reading[] {
       ...percent("实际消费月率", realVal, true),
     ];
   }
-  const lead = paragraphs.find(p => /^Real gross domestic product \(GDP\)/i.test(p)) ?? "";
+  const lead = paragraphs.find(p => /^Real gross domestic product\s*\(\s*GDP\s*\)/i.test(p)) ?? "";
   const demand = paragraphs.find(p => /^Real final sales to private domestic purchasers/i.test(p)) ?? "";
   const prices = paragraphs.find(p => /PCE price index,?\s*excluding food and energy/i.test(p)) ?? "";
   return [
-    ...percent("实际 GDP 季环比折年率", percentMove(lead, sent("Real gross domestic product", 110)), true),
+    ...percent("实际 GDP 季环比折年率", percentMove(lead, sent("Real gross domestic product", 145)), true),
     ...percent("私人国内最终销售折年率", percentMove(demand, sent("Real final sales to private domestic purchasers", 160)), true),
     ...percent("季度核心 PCE 折年率", percentMove(prices, sent("PCE price index,?\\s*excluding food and energy", 75)), true),
   ];
+}
+
+const censusIndicatorXmlUrl = "https://www.census.gov/economic-indicators/indicator.xml";
+const censusNrsUrl = "https://www.census.gov/construction/nrs/current/index.html";
+
+function parseRfc2822Date(raw: string): string | null {
+  const m = raw.match(/\b(\d{1,2})\s+([A-Z][a-z]{2})\s+(20\d\d)\b/);
+  if (!m) return null;
+  const mi = months.findIndex(mon => mon.slice(0, 3).toLowerCase() === m[2].toLowerCase());
+  if (mi < 0) return null;
+  return `${m[3]}-${String(mi + 1).padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+}
+
+type CensusRssItem = { title: string; date: string; description: string; link?: string };
+
+export function parseCensusIndicatorXml(xml: string): CensusRssItem[] {
+  const out: CensusRssItem[] = [];
+  for (const m of xml.matchAll(/<item>([\s\S]*?)<\/item>/gi)) {
+    const block = m[1];
+    const title = textOf(block.match(/<title>([\s\S]*?)<\/title>/i)?.[1] ?? "");
+    const pub = block.match(/<pubDate>([\s\S]*?)<\/pubDate>/i)?.[1] ?? "";
+    const descRaw = block.match(/<description>([\s\S]*?)<\/description>/i)?.[1] ?? "";
+    const desc = textOf(descRaw.replace(/^<!\[CDATA\[|\]\]>$/g, ""));
+    const link = textOf(block.match(/<link>([\s\S]*?)<\/link>/i)?.[1] ?? "");
+    const date = parseRfc2822Date(pub);
+    if (title && date && desc) out.push({ title, date, description: desc, link: link || undefined });
+  }
+  return out;
+}
+
+function censusSpecFor(event: MarketEvent): { match: RegExp; primaryLabel: string; priorLabel: string; nrsSaar?: boolean } | undefined {
+  if (event.title === "耐用品订单初值") {
+    return { match: /Advance Monthly Manufacturers' Shipments/i, primaryLabel: "耐用品订单月率", priorLabel: "前月修正" };
+  }
+  if (event.title === "新屋销售") {
+    return { match: /^New Home Sales$/i, primaryLabel: "新屋销售月率", priorLabel: "前月修正", nrsSaar: true };
+  }
+  if (event.title === "美国零售销售") {
+    return { match: /Advance Monthly Sales for Retail/i, primaryLabel: "零售销售月率", priorLabel: "前月修正" };
+  }
+  if (event.title === "新屋开工与营建许可") {
+    return { match: /^New Residential Construction$/i, primaryLabel: "新屋开工月率", priorLabel: "前月修正" };
+  }
+  if (event.title === "美国商品和服务贸易") {
+    return { match: /U\.S\. International Trade in Goods and Services/i, primaryLabel: "贸易差额月率", priorLabel: "前月修正" };
+  }
+}
+
+async function censusReadings(event: MarketEvent) {
+  const spec = censusSpecFor(event);
+  if (!spec) return {};
+  const xmlDoc = await document(censusIndicatorXmlUrl).catch(() => null);
+  if (!xmlDoc) return {};
+  const item = parseCensusIndicatorXml(xmlDoc.html).find(i => i.date === event.date && spec.match.test(i.title));
+  if (!item) return {};
+  const matches = [...item.description.matchAll(/:\s*([+-]?\d+(?:\.\d+)?)\s*[*°]?\s*%\s*Change/gi)];
+  if (!matches.length) return {};
+  const cur = figure(matches[0][1]);
+  const prev = matches[1] ? figure(matches[1][1]) : undefined;
+  const readings: Reading[] = [
+    ...percent(spec.primaryLabel, cur, true),
+    ...percent(spec.priorLabel, prev, true),
+  ];
+  if (spec.nrsSaar) {
+    const nrsDoc = await document(censusNrsUrl).catch(() => null);
+    if (nrsDoc) {
+      const saarRaw = textOf(nrsDoc.html).match(/seasonally-adjusted annual rate of\s+([\d,]+)/i)?.[1];
+      const saar = figure(saarRaw);
+      if (saar && saar > 100000) {
+        readings.push({ label: "折年总套数", value: Number((saar / 1000).toFixed(0)), unit: "千套", digits: 0 });
+      }
+    }
+  }
+  return readings.length ? { readings, resultUrl: item.link ?? event.resultUrl } : {};
+}
+
+async function fetchAlfredTail(seriesId: string, vintageDate: string): Promise<{ obsDate: string; value: number }[]> {
+  const url = `https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=${encodeURIComponent(seriesId)}&vintage_date=${vintageDate}`;
+  const doc = await document(url).catch(() => null);
+  if (!doc) return [];
+  const rows: { obsDate: string; value: number }[] = [];
+  for (const line of doc.html.trim().split(/\r?\n/).slice(1)) {
+    const [d, v] = line.split(",");
+    const num = v?.trim() ? Number(v) : NaN;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d?.trim()) && Number.isFinite(num)) rows.push({ obsDate: d.trim(), value: num });
+  }
+  return rows.slice(-4);
+}
+
+async function dolClaimsReadings(event: MarketEvent) {
+  if (event.source !== "dol" || event.title !== "初请失业金") return {};
+  const prevDate = addDays(event.date, -1);
+  const [icsaPrev, icsaNow, ccsaNow] = await Promise.all([
+    fetchAlfredTail("ICSA", prevDate),
+    fetchAlfredTail("ICSA", event.date),
+    fetchAlfredTail("CCSA", event.date),
+  ]);
+  if (icsaNow.length < 2 || !icsaPrev.length) return {};
+  const latest = icsaNow.at(-1)!;
+  const prior = icsaNow.at(-2)!;
+  const prevLatest = icsaPrev.at(-1)!;
+  // Strictly verify a brand-new weekly print arrived on event.date
+  if (latest.obsDate <= prevLatest.obsDate) return {};
+  const curK = Math.round(latest.value / 1000);
+  const diffK = Math.round((latest.value - prior.value) / 1000);
+  const readings: Reading[] = [
+    { label: "初请失业金", value: curK, unit: "千人", digits: 0 },
+    { label: "较前周变化", value: diffK, unit: "千人", digits: 0, signed: true },
+  ];
+  const latestCont = ccsaNow.at(-1);
+  if (latestCont && Number.isFinite(latestCont.value)) {
+    readings.push({ label: "续请失业金", value: Math.round(latestCont.value / 1000), unit: "千人", digits: 0 });
+  }
+  return { readings, resultUrl: "https://www.dol.gov/ui/data.pdf" };
 }
 
 function blsType(event: MarketEvent): BlsKind | undefined {
@@ -223,9 +337,15 @@ export async function enrichRelease(event: MarketEvent, models: InflationModels)
   const reference = estimate && estimate.asOf < event.date && (!event.reference || estimate.asOf >= event.reference.asOf) ? estimate : event.reference;
   const needsUpgrade = Boolean(event.readings?.length && (
     (bea === "pce" && !event.readings.some(r => r.label.includes("同比"))) ||
+    (bea === "gdp" && !event.readings.some(r => r.label.includes("实际 GDP"))) ||
     ((bls === "cpi" || bls === "ppi" || bls === "empsit" || bea === "gdp") && !event.readings.some(r => r.signed))
   ));
   const published = isPastEvent(event) && event.time && (!event.readings?.length || needsUpgrade);
-  const actual = !published ? {} : bls ? await blsReadings(event, bls) : bea ? await beaReadings(event, bea) : {};
+  const actual = !published ? {}
+    : bls ? await blsReadings(event, bls)
+    : bea ? await beaReadings(event, bea)
+    : event.source === "dol" ? await dolClaimsReadings(event)
+    : event.source === "census" ? await censusReadings(event)
+    : {};
   return { ...event, ...actual, reference };
 }

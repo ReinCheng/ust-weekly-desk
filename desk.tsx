@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity, AlertTriangle, ArrowDownUp, BarChart3, BookOpen, CalendarDays, CheckCircle2, ChevronLeft,
-  ChevronRight, Clock, Database, ExternalLink, GitBranch, Globe, History, Layers, LineChart, Moon,
+  ChevronRight, Clock, Cloud, Database, ExternalLink, GitBranch, Globe, History, Layers, LineChart, Moon,
   Play, RefreshCw, RotateCcw, Search, SlidersHorizontal, Sparkles, Sun, TrendingUp, X,
 } from "lucide-react";
 import { analysis, dimensions, scenariosFor } from "./analysis";
@@ -11,7 +11,10 @@ import {
   timeSort, tzIana, tzLabel, tzShortTag, weekOf, type Calendar, type Category, type CurvePoint,
   type MarketEvent, type Reading, type SourceCheck, type Tenor, type TzMode,
 } from "./model";
-import { loadCalendars, loadLiveCurve, loadReplays, type LiveCurve } from "./pages-data";
+import {
+  CLOUD_WORKFLOW_URL, loadCalendars, loadLiveCurve, loadReplays, patchLiveBeaReleases,
+  pollLatestCloudRun, triggerCloudRefresh, type LiveCurve,
+} from "./pages-data";
 import { playbookByKey, playbookFor, type Playbook } from "./playbooks";
 import { coReleases, groupReleases, lessonFor, lessons } from "./learning";
 import { CurveGuide, hasHistoricalPractice, HistoryPractice, LessonCard, LessonDirectory, ReleaseGroup } from "./learning-view";
@@ -21,7 +24,7 @@ import {
   type HistoricalReplay, type ReplayCatalog, type ReplaySeries,
 } from "./replay-model";
 import { nowcastUrl } from "./releases";
-import { actualFor, priorFor, ruleFor, scenarioFor } from "./scenarios";
+import { actualFor, instantAnalysisFor, priorFor, ruleFor, scenarioFor } from "./scenarios";
 import { seedCalendar } from "./seed";
 import { MarketsView, MarketStatistics } from "./markets-view";
 import { AlphaPaperView } from "./alpha-paper-view";
@@ -38,6 +41,7 @@ type SavedScenarioInput = { expected?: string; hypothesis?: string; components?:
 const STORAGE_THEME = "ust-desk-theme";
 const STORAGE_TZ = "ust-desk-tz";
 const STORAGE_SCENARIOS = "ust-desk-scenarios-v1";
+const STORAGE_CLOUD_TOKEN = "ust-desk-cloud-refresh-token-v1";
 
 const validViews: ViewId[] = ["overview", "calendar", "scenarios", "alpha", "alpha-explain", "alpha-briefing", "sources", "markets", "market-stats"];
 const short = (date: string) => date.slice(5).replace("-", "/");
@@ -1230,20 +1234,27 @@ function FocusList({ events, tz, now, inspect }: { events: MarketEvent[]; tz: Tz
   </section>;
 }
 
-function LatestReleases({ events, tz, inspect }: { events: MarketEvent[]; tz: TzMode; inspect: (event: MarketEvent, list: MarketEvent[]) => void }) {
+function LatestReleases({ events, allEvents, tz, inspect }: {
+  events: MarketEvent[]; allEvents: MarketEvent[]; tz: TzMode; inspect: (event: MarketEvent, list: MarketEvent[]) => void;
+}) {
   return <section className="panel glass latest-panel" aria-labelledby="latest-title">
     <div className="panel-header">
-      <div><h2 id="latest-title">最近公布</h2><p>点击直接查看实值、历史对照与交易台复盘 · {tzLabel(tz)}</p></div>
+      <div><h2 id="latest-title">最近公布与即时研判</h2><p>官方结果落地后自动生成利率倾向点评 · 点击查看完整曲线推演与历史对照 · {tzLabel(tz)}</p></div>
     </div>
     {events.length ? <div className="latest-grid">{events.map(event => {
       const display = formatEventClock(event, tz);
       const primary = event.readings?.[0];
       const secondary = event.readings?.slice(1, 3) ?? [];
+      const instant = instantAnalysisFor(event, allEvents);
       return <button className="latest-card" key={event.id} onClick={() => inspect(event, events)}>
-        <time>{short(display.date)} {display.clock}</time>
+        <div className="latest-card-top">
+          <time>{short(display.date)} {display.clock}</time>
+          {instant && <span className={"instant-pill " + instant.tone}>{instant.tag}</span>}
+        </div>
         <strong>{event.title}</strong>
         <span className="latest-primary">{primary ? primary.label + " " + readingText(primary) : event.actual}</span>
         {secondary.length > 0 && <small className="latest-sub">{secondary.map(r => r.label + " " + readingText(r)).join(" · ")}</small>}
+        {instant && <p className="latest-verdict">{instant.summary}</p>}
       </button>;
     })}</div> : <p className="empty">尚无已抓取的官方结果。</p>}
   </section>;
@@ -1317,8 +1328,8 @@ function releaseReference(event: MarketEvent, now: Date) {
     ? model : undefined;
 }
 
-function ReleaseEvidence({ event, related, now, archive }: {
-  event: MarketEvent; related: MarketEvent[]; now: Date; archive?: HistoricalReplay;
+function ReleaseEvidence({ event, related, allEvents = [], now, archive }: {
+  event: MarketEvent; related: MarketEvent[]; allEvents?: MarketEvent[]; now: Date; archive?: HistoricalReplay;
 }) {
   const released = isPastEvent(event, now);
   const model = releaseReference(event, now);
@@ -1327,12 +1338,19 @@ function ReleaseEvidence({ event, related, now, archive }: {
   const readings = released && (event.readings?.length
     ? event.readings.map(reading => ({ label: reading.label, valueText: readingText(reading) }))
     : archive?.readings);
+  const instant = released ? instantAnalysisFor(event, allEvents) : null;
   return <div className="release-evidence">
     <div className="study-heading"><h4>本次发布</h4></div>
     <p>{event.detail}</p>
     {readings && readings.length ? <dl className="evidence-values">{readings.map(reading =>
       <div key={reading.label}><dt>{reading.label}</dt><dd>{reading.valueText}</dd></div>)}</dl> :
       <p>{released ? event.actual ?? "官方结构化读数暂缺" : "等待官方发布"}</p>}
+    {instant && (
+      <div className={"instant-box " + instant.tone}>
+        <strong>{instant.tag}</strong>
+        <p>{instant.summary}</p>
+      </div>
+    )}
     {model && <p>模型估计 {model.value.toFixed(2)}% · 报告期 {model.period} · 截至 {model.asOf}{" "}
       <SourceLink url={nowcastUrl} label="Cleveland Fed" /></p>}
     {canCompare && <p>{isAuction ? "截标前同券 WI 未接入" : "发布前市场调查预期未接入"}。可在情景试算中输入对应基准。</p>}
@@ -1687,7 +1705,7 @@ function EventDrawer({
 
         <div className="drawer-body">
           {tab === "learn" && <>
-            <LessonCard lesson={lesson} evidence={<ReleaseEvidence event={event} related={sameTime} now={now}
+            <LessonCard lesson={lesson} evidence={<ReleaseEvidence event={event} related={sameTime} allEvents={allEvents} now={now}
               archive={replaySeries?.items.find(item => item.date === event.date)} />} />
             <HistoryPractice key={event.id} course={playbook.key} beforeDate={event.date} />
             <details className="study-details"><summary>传导矩阵与案例</summary><PlaybookView playbook={playbook} compact /></details>
@@ -1766,6 +1784,12 @@ export default function Desk() {
   const [refreshing, setRefreshing] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
+  const [cloudOpen, setCloudOpen] = useState(false);
+  const [cloudToken, setCloudToken] = useState(() => {
+    try { return localStorage.getItem(STORAGE_CLOUD_TOKEN) ?? ""; } catch { return ""; }
+  });
+  const [cloudBusy, setCloudBusy] = useState(false);
+  const [cloudStatus, setCloudStatus] = useState<string | null>(null);
 
   // Calendar filters
   const [filter, setFilter] = useState<Category | "all">("all");
@@ -1818,6 +1842,10 @@ export default function Desk() {
     if (calRes.status === "fulfilled") {
       setCalendars(calRes.value);
       setFailed(false);
+      // Immediately live-patch any past-due BEA GDP/PCE directly via CORS before GitHub Actions finishes!
+      void patchLiveBeaReleases(calRes.value, signal).then(patched => {
+        if (!signal?.aborted && patched.patchedCount > 0) setCalendars(patched.calendars);
+      }).catch(() => {});
     } else {
       setFailed(true);
     }
@@ -1879,6 +1907,45 @@ export default function Desk() {
     };
   }, []);
 
+  async function runCloudScraper(full = false) {
+    const tk = cloudToken.trim();
+    if (!tk) {
+      setCloudStatus("请先填入一个仅勾选本仓库 Actions 读写权限的 GitHub Token，或点右侧直接去 GitHub 页面点 Run workflow。");
+      return;
+    }
+    try { localStorage.setItem(STORAGE_CLOUD_TOKEN, tk); } catch {}
+    setCloudBusy(true);
+    setCloudStatus("正在请求 GitHub 云端服务器抓取 BLS/BEA/DOL/Census/TreasuryDirect 最新结果…");
+    const startedIso = new Date(Date.now() - 5000).toISOString();
+    try {
+      await triggerCloudRefresh(tk, !full);
+      setCloudStatus("☁️ 已触发云端任务！等待 GitHub Actions 完成抓取与部署（约 40–60 秒）…");
+      for (let i = 0; i < 24; i++) {
+        await new Promise(r => window.setTimeout(r, 5000));
+        const run = await pollLatestCloudRun(startedIso).catch(() => null);
+        if (!run) continue;
+        if (run.status === "completed") {
+          if (run.conclusion === "success") {
+            setCloudStatus("✅ 云端抓取与发布完成！正在自动刷新页面数据…");
+            await new Promise(r => window.setTimeout(r, 2500));
+            await refreshAll(true);
+            setCloudStatus("✅ 已同步云端最新官方经济数据、拍卖结果与即时分析！");
+          } else {
+            setCloudStatus(`云端运行结束（${run.conclusion ?? "unknown"}），请点击 GitHub Actions 查看日志。`);
+          }
+          setCloudBusy(false);
+          return;
+        }
+        setCloudStatus(`☁️ 云端运行中（${run.status === "queued" ? "排队中" : "正在抓取与部署"}，已耗时 ${(i + 1) * 5}s）…`);
+      }
+      setCloudStatus("云端仍在部署中，约 15 秒后点击「重新载入」即可看到最新结果。");
+    } catch (e) {
+      setCloudStatus("触发失败：" + (e instanceof Error ? e.message : "请检查 Token 是否勾选本仓库 Actions: Read & Write"));
+    } finally {
+      setCloudBusy(false);
+    }
+  }
+
   const allWeeks = useMemo(() => Object.values(calendars).sort((a, b) => a.week.localeCompare(b.week)), [calendars]);
   const weekEnd = addDays(week, 6);
   const calendar = calendars[week] ?? seedCalendar(week);
@@ -1889,10 +1956,15 @@ export default function Desk() {
     .map(event => [event.id, event])).values()].sort(timeSort), [allWeeks, calendar.events]);
   const upcoming = useMemo(() => allEvents.filter(event => event.status === "confirmed" && event.impact >= 4 && !isPastEvent(event, now)), [allEvents, now]);
   const released = useMemo(() => allEvents.filter(event => event.impact >= 3 && (event.readings?.length || event.actual) && isPastEvent(event, now)), [allEvents, now]);
-  const latestReleases = useMemo(() => [
-    ...released.filter(event => event.category === "macro").slice(-2),
-    ...released.filter(event => event.category !== "macro").slice(-2),
-  ].sort(timeSort).reverse(), [released]);
+  const latestReleases = useMemo(() => {
+    const todayItems = released.filter(event => event.date === todayNy);
+    if (todayItems.length >= 4) return [...todayItems].sort(timeSort).reverse().slice(0, 10);
+    return [...new Map([
+      ...todayItems,
+      ...released.filter(event => event.category === "macro").slice(-4),
+      ...released.filter(event => event.category !== "macro").slice(-4),
+    ].map(ev => [ev.id, ev])).values()].sort(timeSort).reverse().slice(0, 8);
+  }, [released, todayNy]);
 
   const scenarioChoices = useMemo(() => [...new Map([
     ...calendar.events,
@@ -2107,11 +2179,44 @@ export default function Desk() {
                 lastSyncedAt ? "已同步 " + formatClockSec(lastSyncedAt, tz) :
                 "更新 " + formatStamp(dataChanged, tz)}
             </span>
+            <button type="button" className="action" onClick={() => setCloudOpen(o => !o)} disabled={cloudBusy} title="让 GitHub 云端服务器立刻抓取最新官方经济数据与拍卖结果">
+              <Cloud size={14} className={cloudBusy ? "spin" : ""} />{cloudBusy ? "云端抓数中…" : "云端抓数"}
+            </button>
             <button type="button" className="action" onClick={() => { void refreshAll(true); }} disabled={loading || refreshing}>
               <RefreshCw size={14} className={loading || refreshing ? "spin" : ""} />{refreshing ? "刷新中" : loading ? "载入中" : "重新载入"}
             </button>
           </div>}
         </header>
+
+        {cloudOpen && view !== "markets" && view !== "market-stats" && view !== "alpha" && view !== "alpha-explain" && view !== "alpha-briefing" && (
+          <section className="panel glass cloud-refresh-bar" aria-label="GitHub 云端即时抓取面板">
+            <div className="cloud-bar-head">
+              <div>
+                <strong><Cloud size={15} style={{ verticalAlign: "-2px" }} /> GitHub 云端即时抓取官方经济数据与拍卖结果（无需开本地电脑）</strong>
+                <p>GitHub Actions 已按美盘发布时点（08:34 / 10:04 / 11:34 / 13:04 / 14:06 / 17:25 ET）纯 UTC 自动运行；若数据刚出 1 分钟内想立刻刷新全站，可在此一键触发云端抓取（约 45 秒后自动刷新页面）。</p>
+              </div>
+              <button type="button" className="icon-button" aria-label="关闭云端抓取面板" onClick={() => setCloudOpen(false)}><X size={16} /></button>
+            </div>
+            <div className="cloud-bar-controls">
+              <input
+                type="password"
+                value={cloudToken}
+                placeholder="可选：GitHub Token（仅本机保存，勾选本仓库 Actions: Read & Write）"
+                onChange={e => {
+                  setCloudToken(e.target.value);
+                  try { localStorage.setItem(STORAGE_CLOUD_TOKEN, e.target.value); } catch {}
+                }}
+              />
+              <button type="button" className="action alpha-primary-btn" disabled={cloudBusy} onClick={() => void runCloudScraper(false)}>
+                <RefreshCw size={14} className={cloudBusy ? "spin" : ""} />{cloudBusy ? "云端抓取中…" : "立即云端抓取 (≈45s)"}
+              </button>
+              <a className="action" href={CLOUD_WORKFLOW_URL} target="_blank" rel="noreferrer">
+                免 Token · 去 GitHub 点 Run<ExternalLink size={13} />
+              </a>
+            </div>
+            {cloudStatus && <div className="alpha-toast" style={{ marginTop: 10, marginBottom: 0 }}>{cloudStatus}</div>}
+          </section>
+        )}
 
         {view === "markets" && <MarketsView tz={tz} onStatistics={() => navigate("market-stats")} />}
         {view === "market-stats" && <MarketStatistics tz={tz} />}
@@ -2125,7 +2230,7 @@ export default function Desk() {
             <Curve points={points} live={liveCurve} showLive={preferLive} canLive={week >= current} onToggleLive={setPreferLive} onLearn={() => openLesson("cpi")} tz={tz} />
             <FocusList inspect={inspectEvent} tz={tz} now={now} events={upcoming.slice(0, 6)} />
           </div>
-          <LatestReleases events={latestReleases} tz={tz} inspect={inspectEvent} />
+          <LatestReleases events={latestReleases} allEvents={allEvents} tz={tz} inspect={inspectEvent} />
 
           {weeklyPlaybooks.length > 0 && <section className="panel glass">
             <div className="panel-header">
@@ -2252,7 +2357,7 @@ export default function Desk() {
                 </div>
                 <div className="panel-pad">
                   <LessonCard lesson={lessonFor(playbookFor(activeScenario).key)!}
-                    evidence={<ReleaseEvidence event={activeScenario} now={now} related={coReleases(activeScenario, allEvents)}
+                    evidence={<ReleaseEvidence event={activeScenario} allEvents={allEvents} now={now} related={coReleases(activeScenario, allEvents)}
                       archive={activeScenarioReplay?.items.find(item => item.date === activeScenario.date)} />} />
                 </div>
                 <ScenarioCalculator
@@ -2328,7 +2433,7 @@ export default function Desk() {
           <div className="panel-header">
             <div>
               <h2>官方一级数据来源（{short(week)} – {short(weekEnd)}）</h2>
-              <p>工作日 08:07–16:52 ET 每 15 分钟核对近端发布，17:25 / 18:25 ET 补抓日终名义与 TIPS 曲线，每日 06:25 ET 更新跨资产日线快照，周日 18:07 ET 刷新未来八周。</p>
+              <p>工作日按美盘官方发布窗口（08:34/08:48、10:04/10:16、11:34、13:04/13:16、14:06 ET，纯 UTC 稳定排程）自动抓取宏观与拍卖结果并生成即时分析；17:25 / 18:25 ET 更新财政部日终曲线与 Core3 纸面引擎；顶部「云端抓数」支持随时一键触发云端即时更新。</p>
             </div>
             <div className="week-control">
               <button className="icon-button" aria-label="上一周" onClick={() => selectWeek(addDays(week, -7))}><ChevronLeft size={18} /></button>
