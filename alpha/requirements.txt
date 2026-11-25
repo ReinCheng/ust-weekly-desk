@@ -1,0 +1,6 @@
+# Minimal pure-Python scientific stack for GitHub Actions Core3 Pure-Treasury Paper Engine
+numpy>=2.0.0
+pandas>=2.2.0
+scipy>=1.14.0
+statsmodels>=0.14.0
+requests>=2.31.0

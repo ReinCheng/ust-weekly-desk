@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "4.0_append_only_forward_ledger",
+  "freezeDate": "2026-11-25",
+  "entries": [
+    {
+      "mode": "ultra",
+      "venue": "cme_ultra",
+      "frozenAtUtc": "2026-11-25T06:10:07.662645+00:00",
+      "panelSha256": "876224076a84621f",
+      "g1Passed": true,
+      "riskNavUsd": 10000000.0,
+      "signalAsOfDate": "2026-11-24",
+      "execDate": "2026-11-25",
+      "valuationEndDate": "2026-11-27",
+      "orderWindowEt": "2026-11-25 07:00-17:00 ET",
+      "signals": {
+        "eom": 1,
+        "eomBdaysLeftOnExec": 2,
+        "preAuction": 0,
+        "curve2s10s": 0,
+        "curve5s30s": -1,
+        "z2s10s": 0.04,
+        "z5s30s": -0.99,
+        "damper": 0.752,
+        "move": 98.84,
+        "calRollWindow": true
+      },
+      "rpWeights": {
+        "P2_Flow": 0.608,
+        "P5a_2s10s": 0.494,
+        "P5c_5s30s": 0.402
+      },
+      "contracts": [
+        {
+          "leg": "TU",
+          "symbol": "ZTH27.CBT",
+          "contractCode": "TUH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 102.121094,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 2000.0,
+          "dv01PerLotUsd": 34.11,
+          "targetLots": 50,
+          "targetDv01Usd": 1705.9
+        },
+        {
+          "leg": "FV",
+          "symbol": "ZFH27.CBT",
+          "contractCode": "FVH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 104.929688,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 41.03,
+          "targetLots": -100,
+          "targetDv01Usd": -4104.6
+        },
+        {
+          "leg": "UXY",
+          "symbol": "TNH27.CBT",
+          "contractCode": "UXYH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 108.328125,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 87.96,
+          "targetLots": 24,
+          "targetDv01Usd": 2113.8
+        },
+        {
+          "leg": "WN",
+          "symbol": "UBH27.CBT",
+          "contractCode": "WNH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 109.21875,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 180.21,
+          "targetLots": 23,
+          "targetDv01Usd": 4154.3
+        }
+      ],
+      "etfOpenNotional": {
+        "2Y": 0.85256,
+        "5Y": -1.23289,
+        "10Y": 0.21659,
+        "30Y": 0.29924
+      },
+      "etfCloseNotional": {
+        "2Y": 0.90452,
+        "5Y": -0.95137,
+        "10Y": 0.2614,
+        "30Y": 0.23091
+      },
+      "netDv01Usd": 3869.5,
+      "grossDv01Usd": 12078.7,
+      "status": "PENDING",
+      "settlement": null
+    },
+    {
+      "mode": "enhanced",
+      "venue": "cme_enhanced",
+      "frozenAtUtc": "2026-11-25T06:10:07.999785+00:00",
+      "panelSha256": "876224076a84621f",
+      "g1Passed": true,
+      "riskNavUsd": 10000000.0,
+      "signalAsOfDate": "2026-11-24",
+      "execDate": "2026-11-25",
+      "valuationEndDate": "2026-11-27",
+      "orderWindowEt": "2026-11-25 07:00-17:00 ET",
+      "signals": {
+        "eom": 1,
+        "eomBdaysLeftOnExec": 2,
+        "preAuction": 0,
+        "curve2s10s": 0,
+        "curve5s30s": -1,
+        "z2s10s": 0.04,
+        "z5s30s": -0.99,
+        "damper": 0.752,
+        "move": 98.84,
+        "calRollWindow": true
+      },
+      "rpWeights": {
+        "P2_Flow": 0.613,
+        "P5a_2s10s": 0.478,
+        "P5c_5s30s": 0.414
+      },
+      "contracts": [
+        {
+          "leg": "TU",
+          "symbol": "ZTH27.CBT",
+          "contractCode": "TUH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 102.121094,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 2000.0,
+          "dv01PerLotUsd": 34.11,
+          "targetLots": 51,
+          "targetDv01Usd": 1740.1
+        },
+        {
+          "leg": "FV",
+          "symbol": "ZFH27.CBT",
+          "contractCode": "FVH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 104.929688,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 41.03,
+          "targetLots": -103,
+          "targetDv01Usd": -4227.7
+        },
+        {
+          "leg": "TY",
+          "symbol": "ZNH27.CBT",
+          "contractCode": "TYH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 106.8125,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 64.94,
+          "targetLots": 30,
+          "targetDv01Usd": 1949.1
+        },
+        {
+          "leg": "WN",
+          "symbol": "UBH27.CBT",
+          "contractCode": "WNH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 109.21875,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 180.21,
+          "targetLots": 23,
+          "targetDv01Usd": 4154.3
+        }
+      ],
+      "etfOpenNotional": {
+        "2Y": 0.85256,
+        "5Y": -1.23289,
+        "10Y": 0.21659,
+        "30Y": 0.29924
+      },
+      "etfCloseNotional": {
+        "2Y": 0.90452,
+        "5Y": -0.95137,
+        "10Y": 0.2614,
+        "30Y": 0.23091
+      },
+      "netDv01Usd": 3615.8,
+      "grossDv01Usd": 12071.2,
+      "status": "PENDING",
+      "settlement": null
+    }
+  ],
+  "updatedAtUtc": "2026-11-25T06:10:08.002874+00:00"
+}
