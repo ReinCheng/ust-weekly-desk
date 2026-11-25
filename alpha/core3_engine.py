@@ -555,19 +555,30 @@ def build_deadband_signal(z_series: pd.Series, entry_z: float = 1.25, exit_z: fl
     return pd.Series(out, index=z_series.index)
 
 
-def build_single_layer_damper(panel: pd.DataFrame, eval_idx: pd.DatetimeIndex) -> pd.Series:
-    # Causal 60d realized 10Y yield-return proxy vol + ^MOVE (strictly lagged <= d-1!)
+def build_single_layer_damper_details(panel: pd.DataFrame, eval_idx: pd.DatetimeIndex) -> dict[str, pd.Series]:
     dy10 = panel["ust_10y"].diff(1) * 0.01
     rv = (-7.5 * dy10).rolling(60, min_periods=42).std(ddof=1).reindex(eval_idx)
     mv = panel["move"].reindex(eval_idx)
     mv_lag, rv_lag = mv.shift(1), rv.shift(1)
     mv_p75 = mv_lag.rolling(252, min_periods=120).quantile(0.75)
     rv_p75 = rv_lag.rolling(252, min_periods=120).quantile(0.75)
-    mv_r = np.where(mv_lag > mv_p75, (mv_p75 / mv_lag) ** 1.5, 1.0)
-    rv_r = np.where(rv_lag > rv_p75, (rv_p75 / rv_lag) ** 1.5, 1.0)
+    mv_r = pd.Series(np.where(mv_lag > mv_p75, (mv_p75 / mv_lag) ** 1.5, 1.0), index=eval_idx)
+    rv_r = pd.Series(np.where(rv_lag > rv_p75, (rv_p75 / rv_lag) ** 1.5, 1.0), index=eval_idx)
     damp = np.sqrt(mv_r * rv_r)
-    damp = np.where(np.isfinite(damp), np.clip(damp, 0.35, 1.0), 1.0)
-    return pd.Series(damp, index=eval_idx)
+    damp = pd.Series(np.where(np.isfinite(damp), np.clip(damp, 0.35, 1.0), 1.0), index=eval_idx)
+    return {
+        "damper": damp,
+        "mv_lag": mv_lag,
+        "mv_p75": mv_p75,
+        "mv_ratio": mv_r,
+        "rv_lag_ann": rv_lag * np.sqrt(252.0),
+        "rv_p75_ann": rv_p75 * np.sqrt(252.0),
+        "rv_ratio": rv_r,
+    }
+
+
+def build_single_layer_damper(panel: pd.DataFrame, eval_idx: pd.DatetimeIndex) -> pd.Series:
+    return build_single_layer_damper_details(panel, eval_idx)["damper"]
 
 
 def _vol_scale(v60: pd.Series, tid: str) -> pd.Series:
@@ -632,7 +643,8 @@ def run_core3_engine(
     z_5s = build_self_rev_z(panel["s5s30s"]).reindex(eval_idx)
     sig_2s = build_deadband_signal(z_2s)
     sig_5s = build_deadband_signal(z_5s)
-    damper = build_single_layer_damper(panel, eval_idx)
+    damp_info = build_single_layer_damper_details(panel, eval_idx)
+    damper = damp_info["damper"]
 
     # Strictly causal warm returns for 252d inverse-vol RP
     w_eom2 = _sim_warm(tgts[leg2], leg2, sig_eom.reindex(panel.index), vol_map[leg2].reindex(panel.index), warm_start)
@@ -670,6 +682,7 @@ def run_core3_engine(
     n = len(oos_idx)
     net_not = np.zeros((n, 4), dtype=float)
     rp_w = np.zeros((n, 3), dtype=float)
+    last_diag: dict = {}
 
     for i in range(n):
         fi = pos_in_full[i]
@@ -679,22 +692,72 @@ def run_core3_engine(
         inv = 1.0 / vols
         raw_w = np.clip(inv / inv.mean(), 0.35, 1.8) / 3.0
         est_vol = max(0.02, float((hist @ raw_w).std(ddof=1) * np.sqrt(252.0))) if len(hist) >= 60 else 0.06
-        w = raw_w * float(np.clip(0.06 / est_vol, 0.5, 2.0))
+        port_scale = float(np.clip(0.06 / est_vol, 0.5, 2.0))
+        w = raw_w * port_scale
         if damp_mode == "port_only":
             w = w * float(d_arr[i])
         rp_w[i] = w
 
         wp2, w2s, w5s = w[0], w[1], w[2]
-        n_p2_2 = 0.5 * wp2 * s_eom[i] * vs_2[i]
-        n_p2_10 = wp2 * (0.5 * s_eom[i] + s_auc[i]) * vs_10[i]
+        n_p2_eom_2 = 0.5 * wp2 * s_eom[i] * vs_2[i]
+        n_p2_eom_10 = 0.5 * wp2 * s_eom[i] * vs_10[i]
+        n_p2_auc_10 = wp2 * s_auc[i] * vs_10[i]
+        n_p2_10 = n_p2_eom_10 + n_p2_auc_10
         n_2s = w2s * s_2s[i] * vs_2s[i]
         n_5s = w5s * s_5s[i] * vs_5s[i]
         net_not[i] = [
-            n_p2_2 + n_2s * (base_d[i] / dur_2[i]),
+            n_p2_eom_2 + n_2s * (base_d[i] / dur_2[i]),
             n_5s * (base_d[i] / dur_5[i]),
             n_p2_10 - n_2s * (base_d[i] / dur_10[i]),
             -n_5s * (base_d[i] / dur_30[i]),
         ]
+        if i == n - 1:
+            last_diag = {
+                "vols_252_ann": [round(float(x * 100.0), 2) for x in vols],
+                "raw_w": [round(float(x), 4) for x in raw_w],
+                "est_port_vol_ann": round(float(est_vol * 100.0), 2),
+                "port_scale": round(port_scale, 3),
+                "damper": round(float(d_arr[i]), 3),
+                "w_eff": [round(float(x), 4) for x in w],
+                "vol_scales": {
+                    "leg2": round(float(vs_2[i]), 3),
+                    "leg10": round(float(vs_10[i]), 3),
+                    "c2s": round(float(vs_2s[i]), 3),
+                    "c5s": round(float(vs_5s[i]), 3),
+                },
+                "inst_vols_60_ann": {
+                    "leg2": round(float(vol_map[leg2].shift(1).reindex(oos_idx).iloc[-1] * np.sqrt(252.0) * 100.0), 2),
+                    "leg10": round(float(vol_map[leg10].shift(1).reindex(oos_idx).iloc[-1] * np.sqrt(252.0) * 100.0), 2),
+                    "c2s": round(float(vol_map[c2s].shift(1).reindex(oos_idx).iloc[-1] * np.sqrt(252.0) * 100.0), 2),
+                    "c5s": round(float(vol_map[c5s].shift(1).reindex(oos_idx).iloc[-1] * np.sqrt(252.0) * 100.0), 2),
+                },
+                "pillar_leg_dv01": {
+                    "P2_EOM": [
+                        round(float(n_p2_eom_2 * dur_2[i] * risk_nav * 1e-4), 1),
+                        0.0,
+                        round(float(n_p2_eom_10 * dur_10[i] * risk_nav * 1e-4), 1),
+                        0.0,
+                    ],
+                    "P2_PreAuction": [
+                        0.0,
+                        0.0,
+                        round(float(n_p2_auc_10 * dur_10[i] * risk_nav * 1e-4), 1),
+                        0.0,
+                    ],
+                    "P5a_2s10s": [
+                        round(float(n_2s * base_d[i] * risk_nav * 1e-4), 1),
+                        0.0,
+                        round(float(-n_2s * base_d[i] * risk_nav * 1e-4), 1),
+                        0.0,
+                    ],
+                    "P5c_5s30s": [
+                        0.0,
+                        round(float(n_5s * base_d[i] * risk_nav * 1e-4), 1),
+                        0.0,
+                        round(float(-n_5s * base_d[i] * risk_nav * 1e-4), 1),
+                    ],
+                },
+            }
 
     if flat_calendar_roll:
         net_not[cal_roll, :] = 0.0
@@ -746,6 +809,18 @@ def run_core3_engine(
             "damper": d_arr,
         }, index=oos_idx),
         "warm_df": pd.concat(warm_list, axis=1),
+        "latest_explain": {
+            **last_diag,
+            "damper_details": {
+                "move": round(float(damp_info["mv_lag"].iloc[-1]), 2),
+                "move_p75": round(float(damp_info["mv_p75"].iloc[-1]), 2),
+                "move_ratio": round(float(damp_info["mv_ratio"].iloc[-1]), 3),
+                "rv10y_ann_pct": round(float(damp_info["rv_lag_ann"].iloc[-1] * 100.0), 2),
+                "rv10y_p75_ann_pct": round(float(damp_info["rv_p75_ann"].iloc[-1] * 100.0), 2),
+                "rv_ratio": round(float(damp_info["rv_ratio"].iloc[-1]), 3),
+                "damper": round(float(damp_info["damper"].iloc[-1]), 3),
+            },
+        },
     }
 
 

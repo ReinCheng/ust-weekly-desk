@@ -14,7 +14,7 @@ Runs automatically in GitHub Actions (17:25 / 18:25 ET post-close & 06:25 ET pre
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import json
 from pathlib import Path
 import time
@@ -27,7 +27,9 @@ from core3_engine import (
     CME_POINT_VALUE,
     DESK_COST_TIERS,
     ETF_MOD_DUR,
+    build_deadband_signal,
     build_etf_targets,
+    build_self_rev_z,
     fetch_all_core3_data,
     n_eff_diversity,
     next_sifma_bday,
@@ -37,6 +39,7 @@ from core3_engine import (
     run_core3_engine,
     run_g1_verification_suite,
     select_live_contract,
+    sifma_bdays_ahead,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -355,6 +358,86 @@ def _build_historical_summary(panel: pd.DataFrame, auctions: list[dict]) -> dict
     }
 
 
+def _build_explain_bundle(panel: pd.DataFrame, auctions: list[dict]) -> dict:
+    """Export 100% transparent, Python-computed 5-layer Glass-Box decomposition for UI visualization."""
+    eng_u = run_core3_engine(panel, auctions, venue="cme_ultra", cost_tier="DESK_50K_DV01", risk_nav=BASE_RISK_NAV,
+                             damp_mode="port_only", integer_lots=True, include_next_live_day=True)
+    eng_e = run_core3_engine(panel, auctions, venue="cme_enhanced", cost_tier="DESK_50K_DV01", risk_nav=BASE_RISK_NAV,
+                             damp_mode="port_only", integer_lots=True, include_next_live_day=True)
+
+    def _curve_trace(col: str) -> dict:
+        s = panel[col]
+        dy = s.diff(1)
+        mu60 = dy.shift(5).rolling(60, min_periods=35).mean()
+        sd60 = dy.shift(5).rolling(60, min_periods=35).std(ddof=1)
+        cum5 = dy.rolling(5, min_periods=5).sum()
+        z = build_self_rev_z(s)
+        # Include T_next so state aligns with next-session exec
+        t_next = pd.Timestamp(next_sifma_bday(panel.index[-1].date()))
+        z_ext = z.reindex(panel.index.append(pd.DatetimeIndex([t_next])))
+        st = build_deadband_signal(z_ext)
+        tail_idx = panel.index[-15:]
+        history = []
+        for ts in tail_idx:
+            # Active position triggered on next day using ts close
+            nxt_pos_idx = z_ext.index.get_loc(ts) + 1
+            history.append({
+                "date": ts.strftime("%Y-%m-%d"),
+                "levelBp": round(float(s.loc[ts] * 100.0), 1),
+                "move5dBp": round(float(cum5.loc[ts] * 100.0), 1),
+                "z": round(float(z.loc[ts]), 2) if pd.notna(z.loc[ts]) else None,
+                "stateNext": int(st.iloc[nxt_pos_idx]),
+            })
+        return {
+            "latestLevelBp": round(float(s.iloc[-1] * 100.0), 1),
+            "move5dBp": round(float(cum5.iloc[-1] * 100.0), 1),
+            "mu60DailyBp": round(float(mu60.iloc[-1] * 100.0), 3),
+            "sd60DailyBp": round(float(sd60.iloc[-1] * 100.0), 2),
+            "expected5dSdBp": round(float(sd60.iloc[-1] * np.sqrt(5.0) * 100.0), 2),
+            "latestZ": round(float(z.iloc[-1]), 2),
+            "activeState": int(st.iloc[-1]),
+            "entryThreshold": 1.25,
+            "exitThreshold": 0.35,
+            "maxHoldDays": 10,
+            "history15d": history,
+        }
+
+    exec_dt = next_sifma_bday(panel.index[-1].date())
+    last_dt = panel.index[-1].date()
+    recent_aucs = []
+    for a in auctions:
+        a_dt = date.fromisoformat(a["auctionDate"])
+        if (a_dt - last_dt).days >= -15:
+            ann_dt = date.fromisoformat(a["announcementDate"]) if a.get("announcementDate") else None
+            ahead = sifma_bdays_ahead(exec_dt, a_dt) if a_dt > exec_dt else 0
+            recent_aucs.append({
+                "termYears": a["termYears"],
+                "auctionDate": a["auctionDate"],
+                "announcementDate": a.get("announcementDate"),
+                "bdaysAheadFromExec": ahead,
+                "isAnnounced": bool(ann_dt is not None and ann_dt <= last_dt),
+                "triggersShort": bool(2 <= ahead <= 4 and ann_dt is not None and ann_dt <= last_dt),
+            })
+
+    return {
+        "curves": {
+            "s2s10s": _curve_trace("s2s10s"),
+            "s5s30s": _curve_trace("s5s30s"),
+        },
+        "auctionsWindow": recent_aucs[-6:],
+        "modes": {
+            "ultra": {
+                "legs": eng_u["legs"],
+                **eng_u["latest_explain"],
+            },
+            "enhanced": {
+                "legs": eng_e["legs"],
+                **eng_e["latest_explain"],
+            },
+        },
+    }
+
+
 def main() -> None:
     t0 = time.time()
     print("[alpha/update_paper.py] Fetching primary public Treasury, ETF & Active CME Contract data...")
@@ -413,9 +496,10 @@ def main() -> None:
                 }
 
     hist_summary = _build_historical_summary(panel, auctions)
+    explain_bundle = _build_explain_bundle(panel, auctions)
     last_mkt = panel.iloc[-1]
     bundle = {
-        "schemaVersion": "4.0_web_paper_bundle",
+        "schemaVersion": "4.1_web_paper_glassbox",
         "generatedAtUtc": datetime.now(timezone.utc).isoformat(),
         "defaultMode": "ultra",
         "freezeDate": ledger["freezeDate"],
@@ -435,6 +519,7 @@ def main() -> None:
             "move": round(float(last_mkt["move"]), 2),
         },
         "todayTickets": tickets,
+        "explain": explain_bundle,
         "forward": {
             "ultra": _summarize_forward_mode(ledger["entries"], "ultra"),
             "enhanced": _summarize_forward_mode(ledger["entries"], "enhanced"),

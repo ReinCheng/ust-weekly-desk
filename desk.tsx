@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity, AlertTriangle, ArrowDownUp, BarChart3, BookOpen, CalendarDays, CheckCircle2, ChevronLeft,
-  ChevronRight, Clock, Database, ExternalLink, Globe, History, Layers, LineChart, Moon,
+  ChevronRight, Clock, Database, ExternalLink, GitBranch, Globe, History, Layers, LineChart, Moon,
   Play, RefreshCw, RotateCcw, Search, SlidersHorizontal, Sparkles, Sun, TrendingUp, X,
 } from "lucide-react";
 import { analysis, dimensions, scenariosFor } from "./analysis";
@@ -25,8 +25,9 @@ import { actualFor, priorFor, ruleFor, scenarioFor } from "./scenarios";
 import { seedCalendar } from "./seed";
 import { MarketsView, MarketStatistics } from "./markets-view";
 import { AlphaPaperView } from "./alpha-paper-view";
+import { AlphaExplainView } from "./alpha-explain-view";
 
-type ViewId = "overview" | "calendar" | "scenarios" | "alpha" | "sources" | "markets" | "market-stats";
+type ViewId = "overview" | "calendar" | "scenarios" | "alpha" | "alpha-explain" | "sources" | "markets" | "market-stats";
 type DrawerTab = "learn" | "scenario" | "replay";
 type ThemeMode = "light" | "dark";
 type BenchMode = "1D" | "1W" | "1M";
@@ -37,7 +38,7 @@ const STORAGE_THEME = "ust-desk-theme";
 const STORAGE_TZ = "ust-desk-tz";
 const STORAGE_SCENARIOS = "ust-desk-scenarios-v1";
 
-const validViews: ViewId[] = ["overview", "calendar", "scenarios", "alpha", "sources", "markets", "market-stats"];
+const validViews: ViewId[] = ["overview", "calendar", "scenarios", "alpha", "alpha-explain", "sources", "markets", "market-stats"];
 const short = (date: string) => date.slice(5).replace("-", "/");
 const sign = (value: number, digits = 1) => (value > 0 ? "+" : "") + value.toFixed(digits);
 
@@ -131,7 +132,6 @@ const primaryNav: { id: ViewId; title: string; icon: typeof LineChart }[] = [
   { id: "overview", title: "利率总览", icon: LineChart },
   { id: "calendar", title: "发布日历", icon: CalendarDays },
   { id: "scenarios", title: "情景与历史", icon: Activity },
-  { id: "alpha", title: "Alpha 纸面交易", icon: TrendingUp },
 ];
 
 function SourceLink({ url, label }: { url: string; label: string }) {
@@ -2013,6 +2013,16 @@ export default function Desk() {
           ))}
         </nav>
 
+        <nav className="nav-secondary market-nav" aria-label="Alpha 策略">
+          <span>Alpha 策略</span>
+          <button type="button" className={view === "alpha" ? "active" : ""} aria-current={view === "alpha" ? "page" : undefined} onClick={() => navigate("alpha")}>
+            <TrendingUp size={15} />Alpha 纸面交易
+          </button>
+          <button type="button" className={view === "alpha-explain" ? "active" : ""} aria-current={view === "alpha-explain" ? "page" : undefined} onClick={() => navigate("alpha-explain")}>
+            <GitBranch size={15} />信号白盒拆解
+          </button>
+        </nav>
+
         <nav className="nav-secondary market-nav" aria-label="跨资产市场">
           <span>跨资产市场</span>
           <button type="button" className={view === "markets" ? "active" : ""} aria-current={view === "markets" ? "page" : undefined} onClick={() => navigate("markets")}>
@@ -2054,7 +2064,7 @@ export default function Desk() {
             <div className="eyebrow">
               <Sparkles size={13} />
               <span>US TREASURY MACRO &amp; RATES DESK</span>
-              {week !== current && view !== "sources" && view !== "markets" && view !== "market-stats" && view !== "alpha" && (
+              {week !== current && view !== "sources" && view !== "markets" && view !== "market-stats" && view !== "alpha" && view !== "alpha-explain" && (
                 <button type="button" className="history-pill" onClick={() => selectWeek(current)}>
                   当前周次 {short(week)}–{short(weekEnd)} · 返回本周
                 </button>
@@ -2065,6 +2075,7 @@ export default function Desk() {
               {view === "calendar" && "宏观、拍卖与美联储日历"}
               {view === "scenarios" && "经济数据情景与历史推演"}
               {view === "alpha" && "Core3 纯美债纸面交易与验证台"}
+              {view === "alpha-explain" && "Core3 信号白盒拆解与经济学传导"}
               {view === "sources" && "数据来源与自动排程"}
               {view === "markets" && "全球市场"}
               {view === "market-stats" && "相关性与统计"}
@@ -2076,12 +2087,13 @@ export default function Desk() {
               {view === "calendar" && `${short(week)} – ${short(weekEnd)} (${tzLabel(tz)}) · 点击任意行打开右侧详情与推演`}
               {view === "scenarios" && "比较宏观传导机制、不同政策环境与历史案例"}
               {view === "alpha" && "GitHub Actions 云端纯 Python 每日自动锁单与结算验证 · 支持 07:00–17:00 ET 下单与私密录单"}
+              {view === "alpha-explain" && "零黑箱可视化拆解：从原始美债数据、3 大经济支柱系数、252 日风险平价、^MOVE 阻尼到每份期货合约目标手数"}
               {view === "sources" && "Tradeweb 实时现券 + 12 个官方一级来源与跨资产日线快照的核验状态及自动排程说明"}
               {view === "markets" && "主要股指、外汇、国债收益率、商品期货与比特币"}
               {view === "market-stats" && "Cboe、Nasdaq、财政部、欧洲央行、EIA 与 Coinbase 日线相关性、波动率与回撤统计"}
             </p>
           </div>
-          {view !== "markets" && view !== "market-stats" && view !== "alpha" && <div className="sync">
+          {view !== "markets" && view !== "market-stats" && view !== "alpha" && view !== "alpha-explain" && <div className="sync">
             <span className={"sync-pill" + (week >= current && preferLive && liveCurve ? " sync-live" : "")}>
               {week >= current && preferLive && liveCurve ? <i className="live-dot" /> : <Clock size={13} />}
               {failed ? "日历载入失败 · 保留缓存" :
@@ -2097,7 +2109,8 @@ export default function Desk() {
 
         {view === "markets" && <MarketsView tz={tz} onStatistics={() => navigate("market-stats")} />}
         {view === "market-stats" && <MarketStatistics tz={tz} />}
-        {view === "alpha" && <AlphaPaperView tz={tz} />}
+        {view === "alpha" && <AlphaPaperView tz={tz} onExplain={() => navigate("alpha-explain")} />}
+        {view === "alpha-explain" && <AlphaExplainView onBackToPaper={() => navigate("alpha")} />}
 
         {/* VIEW 1: OVERVIEW */}
         {view === "overview" && <>

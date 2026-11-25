@@ -39,4 +39,17 @@ test("alpha-paper.json and alpha-ledger.json conform to Phase 4 Pure-Python Core
   assert.ok(paper.historical10yOos.models.ultra_50k.sharpe > 1.2);
   assert.ok(paper.historical10yOos.models.etf_open_50k.sharpe > 1.0);
   assert.ok(paper.historical10yOos.monthlyEquity.length >= 100);
+
+  // Glass-Box Explainability Bundle
+  assert.ok(paper.explain, "Missing explain bundle");
+  assert.equal(paper.explain.curves.s2s10s.history15d.length, 15);
+  assert.equal(paper.explain.curves.s5s30s.history15d.length, 15);
+  for (const mode of ["ultra", "enhanced"]) {
+    const m = paper.explain.modes[mode];
+    assert.ok(m, `Missing explain.modes.${mode}`);
+    assert.equal(m.raw_w.length, 3);
+    assert.ok(m.damper_details.damper >= 0.35 && m.damper_details.damper <= 1.0);
+    assert.equal(m.pillar_leg_dv01.P2_EOM.length, 4);
+    assert.equal(m.pillar_leg_dv01.P5c_5s30s.length, 4);
+  }
 });

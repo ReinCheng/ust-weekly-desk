@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity, AlertTriangle, CheckCircle2, Cloud, CloudDownload, CloudUpload, Copy, Download,
-  Lock, Plus, RefreshCw, ShieldCheck, SlidersHorizontal, Trash2, Upload, Zap,
+  GitBranch, Lock, Plus, RefreshCw, ShieldCheck, SlidersHorizontal, Trash2, Upload, Zap,
 } from "lucide-react";
 import { tzIana, tzShortTag, type TzMode } from "./model";
 
@@ -287,7 +287,7 @@ function EquityChart({
   );
 }
 
-export function AlphaPaperView({ tz }: { tz: TzMode }) {
+export function AlphaPaperView({ tz, onExplain }: { tz: TzMode; onExplain?: () => void }) {
   const [data, setData] = useState<AlphaPaperBundle | null>(null);
   const [busy, setBusy] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -559,9 +559,16 @@ export function AlphaPaperView({ tz }: { tz: TzMode }) {
               零 FRED / 零跨资产 Ridge · 仅含 <b>月末延展 + 已公告拍前空头 + 2s10s/5s30s 曲线自身回归</b> + 单层 ^MOVE 波动阻尼。GitHub Actions 工作日 17:25 ET &amp; 06:25 ET 自动锁仓并核对盈亏，无需开个人电脑。
             </p>
           </div>
-          <button type="button" className="action" disabled={busy} onClick={() => void loadData()}>
-            <RefreshCw size={14} className={busy ? "spin" : ""} />刷新快照
-          </button>
+          <div className="alpha-btn-row">
+            {onExplain && (
+              <button type="button" className="action" onClick={onExplain}>
+                <GitBranch size={14} />信号白盒拆解
+              </button>
+            )}
+            <button type="button" className="action" disabled={busy} onClick={() => void loadData()}>
+              <RefreshCw size={14} className={busy ? "spin" : ""} />刷新快照
+            </button>
+          </div>
         </div>
 
         <div className="alpha-controls">
@@ -614,9 +621,16 @@ export function AlphaPaperView({ tz }: { tz: TzMode }) {
               信号截至 <b>{ticket.signalAsOfDate} 16:00 ET</b> · 精确估值结算区间 <b>{ticket.execDate} → {ticket.valuationEndDate}</b> · 状态：<b>{statusLabel(ticket.status)}</b>
             </p>
           </div>
-          <button type="button" className="action alpha-primary-btn" onClick={openBatchFromTicket}>
-            <Plus size={15} />一键按今日指令录入成交
-          </button>
+          <div className="alpha-btn-row">
+            {onExplain && (
+              <button type="button" className="action" onClick={onExplain}>
+                <GitBranch size={14} />今日怎么算的？
+              </button>
+            )}
+            <button type="button" className="action alpha-primary-btn" onClick={openBatchFromTicket}>
+              <Plus size={15} />一键按今日指令录入成交
+            </button>
+          </div>
         </div>
 
         <div className="panel-pad">
