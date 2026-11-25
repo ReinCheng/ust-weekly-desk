@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Activity, AlertTriangle, CheckCircle2, Cloud, CloudDownload, CloudUpload, Copy, Download,
+  Activity, AlertTriangle, CheckCircle2, Clock, Cloud, CloudDownload, CloudUpload, Copy, Download,
   GitBranch, Lock, Plus, RefreshCw, ShieldCheck, SlidersHorizontal, Trash2, Upload, Zap,
 } from "lucide-react";
 import { tzIana, tzShortTag, type TzMode } from "./model";
 
 export type AlphaMode = "ultra" | "enhanced";
+
+export type LegActionCode = "NEW_LONG" | "NEW_SHORT" | "UNWIND" | "FLIP" | "ADD" | "TRIM" | "HOLD_NOISE" | "FLAT";
 
 export type ContractOrder = {
   leg: string;
@@ -16,8 +18,32 @@ export type ContractOrder = {
   refDate: string;
   pointValueUsd: number;
   dv01PerLotUsd: number;
+  prevTargetLots?: number;
   targetLots: number;
+  deltaLots?: number;
+  actionCode?: LegActionCode;
+  owners?: string[];
+  unwindHint?: string;
   targetDv01Usd: number;
+};
+
+export type TicketLifecycle = {
+  actionSummary: {
+    verdict: "TRADE_REQUIRED" | "HOLD_MOSTLY" | "FLAT";
+    headline: string;
+    subtext: string;
+    totalAbsDeltaLots: number;
+    optimalWindowEt: string;
+    isPreHolidayThin: boolean;
+    preHolidayNote: string | null;
+    nextUnwindSummary: string;
+  };
+  pillars: {
+    eom: { active: boolean; state: number; daysHeld: number; maxDays: number; entryDate: string | null; expectedUnwindDate: string | null; unwindText: string };
+    preAuction: { active: boolean; state: number; daysHeld: number; maxDays: number; entryDate: string | null; expectedUnwindDate: string | null; unwindText: string };
+    curve2s10s: { active: boolean; state: number; daysHeld: number; maxDays: number; entryDate: string | null; hardStopDate: string | null; move5dBp: number; bpGapToExit: number | null; exitDirection: string | null; unwindText: string };
+    curve5s30s: { active: boolean; state: number; daysHeld: number; maxDays: number; entryDate: string | null; hardStopDate: string | null; move5dBp: number; bpGapToExit: number | null; exitDirection: string | null; unwindText: string };
+  };
 };
 
 export type TicketSettlement = {
@@ -58,6 +84,7 @@ export type AlphaTicket = {
   };
   rpWeights: Record<string, number>;
   contracts: ContractOrder[];
+  lifecycle?: TicketLifecycle;
   netDv01Usd: number;
   grossDv01Usd: number;
   status: "PENDING" | "IN_SESSION" | "SETTLED_VERIFIED";
@@ -150,8 +177,24 @@ const STORAGE_GIST = "ust-alpha-gist-sync-v1";
 
 const fmtUsd = (v: number) => (v > 0 ? "+" : v < 0 ? "-" : "") + "$" + Math.abs(Math.round(v)).toLocaleString("en-US");
 const fmtSigned = (v: number, d = 2) => (v > 0 ? "+" : "") + v.toFixed(d);
+const fmtLots = (v: number) => (v > 0 ? `+${v}` : `${v}`);
 const statusLabel = (s: AlphaTicket["status"]) =>
   s === "SETTLED_VERIFIED" ? "已结算验证" : s === "IN_SESSION" ? "持仓中" : "已冻结 · 待开盘";
+
+function actionBadgeFor(prevLots: number, targetLots: number, fallback?: LegActionCode): { label: string; cls: string; delta: number } {
+  const delta = targetLots - prevLots;
+  if (prevLots === 0 && targetLots === 0) return { label: "空仓观望", cls: "flat", delta };
+  if (prevLots === 0 && targetLots > 0) return { label: `新开多 ${fmtLots(delta)}`, cls: "long", delta };
+  if (prevLots === 0 && targetLots < 0) return { label: `新开空 ${fmtLots(delta)}`, cls: "short", delta };
+  if (prevLots !== 0 && targetLots === 0) return { label: `全平 UNWIND (${fmtLots(delta)})`, cls: "unwind", delta };
+  if (prevLots * targetLots < 0) return { label: `反手 FLIP (${fmtLots(delta)})`, cls: "unwind", delta };
+  const noiseBand = Math.max(1, Math.round(0.10 * Math.abs(prevLots)));
+  if (fallback === "HOLD_NOISE" || Math.abs(delta) <= noiseBand) {
+    return { label: delta === 0 ? "续持 HOLD (0)" : `续持 HOLD (${fmtLots(delta)} 可略)`, cls: "hold", delta };
+  }
+  if (Math.abs(targetLots) > Math.abs(prevLots)) return { label: `加仓 ${fmtLots(delta)}`, cls: targetLots > 0 ? "long" : "short", delta };
+  return { label: `减仓 ${fmtLots(delta)}`, cls: "warn", delta };
+}
 
 function formatTs(iso: string, tz: TzMode) {
   try {
@@ -351,19 +394,28 @@ export function AlphaPaperView({ tz, onExplain }: { tz: TzMode; onExplain?: () =
     };
   }, [fills, data]);
 
-  function openBatchFromTicket() {
+  function openBatchFromTicket(kind: "target" | "delta" = "target") {
     if (!ticket) return;
-    const active = ticket.contracts
-      .map(c => ({ ...c, scaledLots: Math.round(c.targetLots * navScale) }))
-      .filter(c => c.scaledLots !== 0);
-    const list = (active.length ? active : ticket.contracts.map(c => ({ ...c, scaledLots: Math.round(c.targetLots * navScale) }))).map(c => ({
+    const rows = ticket.contracts
+      .map(c => {
+        const tgt = Math.round(c.targetLots * navScale);
+        const prv = Math.round((c.prevTargetLots ?? 0) * navScale);
+        const qty = kind === "delta" ? tgt - prv : tgt;
+        return { ...c, qty };
+      })
+      .filter(c => c.qty !== 0);
+    if (kind === "delta" && rows.length === 0) {
+      setSyncMsg("当前资金规模下今日与昨日目标变动为 0 手（续持不动），无需新录调仓单。");
+      return;
+    }
+    const list = (rows.length ? rows : ticket.contracts.map(c => ({ ...c, qty: Math.round(c.targetLots * navScale) }))).map(c => ({
       symbol: c.symbol,
       leg: c.leg,
-      lots: String(c.scaledLots),
+      lots: String(c.qty),
       fillPrice: String(c.refPrice),
       refPrice: c.refPrice,
       timeEt: "09:30",
-      notes: `${mode.toUpperCase()} Core3`,
+      notes: `${mode.toUpperCase()} Core3${kind === "delta" ? " Δ调仓" : ""}`,
     }));
     setBatchDraft(list);
     journalRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -627,13 +679,48 @@ export function AlphaPaperView({ tz, onExplain }: { tz: TzMode; onExplain?: () =
                 <GitBranch size={14} />今日怎么算的？
               </button>
             )}
-            <button type="button" className="action alpha-primary-btn" onClick={openBatchFromTicket}>
+            <button type="button" className="action alpha-primary-btn" onClick={() => openBatchFromTicket("target")}>
               <Plus size={15} />一键按今日指令录入成交
             </button>
           </div>
         </div>
 
         <div className="panel-pad">
+          {/* 3-Second Executive Action Verdict & Unwind Strip */}
+          {ticket.lifecycle && (() => {
+            const sum = ticket.lifecycle.actionSummary;
+            const scaledAbsDelta = ticket.contracts.reduce((acc, c) => {
+              const t = Math.round(c.targetLots * navScale);
+              const p = Math.round((c.prevTargetLots ?? 0) * navScale);
+              return acc + Math.abs(t - p);
+            }, 0);
+            const cls = sum.verdict === "TRADE_REQUIRED" ? "trade" : sum.verdict === "HOLD_MOSTLY" ? "hold" : "flat";
+            const badge = sum.verdict === "TRADE_REQUIRED" ? "⚡ 今日需调仓" : sum.verdict === "HOLD_MOSTLY" ? "🟢 续持为主" : "⚪ 今日空仓";
+            const headline = sum.verdict === "HOLD_MOSTLY"
+              ? `续持为主（按当前规模仅微调 ${scaledAbsDelta} 手，已在仓可忽略省点差）`
+              : sum.headline;
+            return (
+              <div className={`alpha-verdict ${cls}`}>
+                <div className="alpha-verdict-top">
+                  <span className={`alpha-verdict-pill ${cls}`}>{badge}</span>
+                  <strong>{headline}</strong>
+                </div>
+                <p>{sum.subtext}</p>
+                <div className="alpha-verdict-meta">
+                  <span><Clock size={13} /> <b>首选下单窗：</b>{sum.optimalWindowEt}</span>
+                  <span><Zap size={13} /> <b>下次预计平仓 (Unwind)：</b>{sum.nextUnwindSummary}</span>
+                </div>
+              </div>
+            );
+          })()}
+
+          {ticket.lifecycle?.actionSummary.preHolidayNote && (
+            <div className="alpha-callout">
+              <AlertTriangle size={15} />
+              <span>{ticket.lifecycle.actionSummary.preHolidayNote}</span>
+            </div>
+          )}
+
           {ticket.signals.calRollWindow && (
             <div className="alpha-callout">
               <Zap size={15} />
@@ -641,38 +728,52 @@ export function AlphaPaperView({ tz, onExplain }: { tz: TzMode; onExplain?: () =
             </div>
           )}
 
-          {/* Live 3-Pillar Signal Status Strip */}
+          {/* Live 3-Pillar Signal Status & Unwind Countdown Strip */}
           <div className="alpha-signal-grid">
             <div className="alpha-sig-card">
-              <span>P2 · 月末延展 (EOM)</span>
+              <div className="alpha-sig-top">
+                <span>P2 · 月末延展 (EOM)</span>
+                {ticket.lifecycle?.pillars.eom.active && <em className="alpha-hold-tag">第 {ticket.lifecycle.pillars.eom.daysHeld}/3 天</em>}
+              </div>
               <strong className={ticket.signals.eom > 0 ? "tone-long" : "tone-flat"}>
                 {ticket.signals.eom > 0 ? "做多 +1" : "空仓 0"}
               </strong>
-              <small>执行日距月末剩 {ticket.signals.eomBdaysLeftOnExec} 交易日</small>
+              <small>{ticket.lifecycle ? ticket.lifecycle.pillars.eom.unwindText : `执行日距月末剩 ${ticket.signals.eomBdaysLeftOnExec} 交易日`}</small>
             </div>
             <div className="alpha-sig-card">
-              <span>P2 · 已公告拍前空头</span>
+              <div className="alpha-sig-top">
+                <span>P2 · 已公告拍前空头</span>
+                {ticket.lifecycle?.pillars.preAuction.active && <em className="alpha-hold-tag">第 {ticket.lifecycle.pillars.preAuction.daysHeld}/3 天</em>}
+              </div>
               <strong className={ticket.signals.preAuction < 0 ? "tone-short" : "tone-flat"}>
                 {ticket.signals.preAuction < 0 ? "做空 -1" : "空仓 0"}
               </strong>
-              <small>严格要求 announcementDate ≤ T-1</small>
+              <small>{ticket.lifecycle ? ticket.lifecycle.pillars.preAuction.unwindText : "严格要求 announcementDate ≤ T-1"}</small>
             </div>
             <div className="alpha-sig-card">
-              <span>P5a · 2s10s 自身回归</span>
+              <div className="alpha-sig-top">
+                <span>P5a · 2s10s 自身回归</span>
+                {ticket.lifecycle?.pillars.curve2s10s.active && <em className="alpha-hold-tag">第 {ticket.lifecycle.pillars.curve2s10s.daysHeld}/10 天</em>}
+              </div>
               <strong className={ticket.signals.curve2s10s > 0 ? "tone-long" : ticket.signals.curve2s10s < 0 ? "tone-short" : "tone-flat"}>
                 {ticket.signals.curve2s10s > 0 ? "做陡 +1" : ticket.signals.curve2s10s < 0 ? "做平 -1" : "死区空仓 0"}
               </strong>
-              <small>Z = {ticket.signals.z2s10s !== null ? fmtSigned(ticket.signals.z2s10s) : "—"}（±1.25 进 / ±0.35 出）</small>
+              <small>Z={ticket.signals.z2s10s !== null ? fmtSigned(ticket.signals.z2s10s) : "—"} · {ticket.lifecycle ? ticket.lifecycle.pillars.curve2s10s.unwindText : "±1.25 进 / ±0.35 出"}</small>
             </div>
             <div className="alpha-sig-card">
-              <span>P5c · 5s30s 自身回归</span>
+              <div className="alpha-sig-top">
+                <span>P5c · 5s30s 自身回归</span>
+                {ticket.lifecycle?.pillars.curve5s30s.active && <em className="alpha-hold-tag">第 {ticket.lifecycle.pillars.curve5s30s.daysHeld}/10 天</em>}
+              </div>
               <strong className={ticket.signals.curve5s30s > 0 ? "tone-long" : ticket.signals.curve5s30s < 0 ? "tone-short" : "tone-flat"}>
                 {ticket.signals.curve5s30s > 0 ? "做陡 +1" : ticket.signals.curve5s30s < 0 ? "做平 -1" : "死区空仓 0"}
               </strong>
-              <small>Z = {ticket.signals.z5s30s !== null ? fmtSigned(ticket.signals.z5s30s) : "—"}（±1.25 进 / ±0.35 出）</small>
+              <small>Z={ticket.signals.z5s30s !== null ? fmtSigned(ticket.signals.z5s30s) : "—"} · {ticket.lifecycle ? ticket.lifecycle.pillars.curve5s30s.unwindText : "±1.25 进 / ±0.35 出"}</small>
             </div>
             <div className="alpha-sig-card">
-              <span>单层 ^MOVE 波动阻尼</span>
+              <div className="alpha-sig-top">
+                <span>单层 ^MOVE 波动阻尼</span>
+              </div>
               <strong className={ticket.signals.damper < 0.99 ? "tone-warn" : "tone-long"}>
                 {ticket.signals.damper.toFixed(2)}×
               </strong>
@@ -680,39 +781,41 @@ export function AlphaPaperView({ tz, onExplain }: { tz: TzMode; onExplain?: () =
             </div>
           </div>
 
-          {/* Aggregated Net Live Contract Orders Table */}
+          {/* Aggregated Net Live Contract Orders Table (Yesterday -> Today -> Delta Action + Unwind Hint) */}
           <div className="alpha-table-wrap">
-            <table className="alpha-table">
+            <table className="alpha-table alpha-order-tbl">
               <thead>
                 <tr>
                   <th>真实 CME 合约</th>
-                  <th>方向</th>
-                  <th className="num">目标手数 ({riskNav >= 1_000_000 ? `$${(riskNav / 1_000_000).toFixed(1)}M` : `$${Math.round(riskNav / 1000)}k`})</th>
+                  <th className="num">昨日目标</th>
+                  <th className="num">今日目标 ({riskNav >= 1_000_000 ? `$${(riskNav / 1_000_000).toFixed(1)}M` : `$${Math.round(riskNav / 1000)}k`})</th>
+                  <th>今日动作 (Δ)</th>
                   <th className="num">净 DV01</th>
-                  <th className="num">参考结算价</th>
-                  <th className="num">点值 / 单手 DV01</th>
+                  <th className="num">昨收参考价</th>
+                  <th>归属支柱与平仓 (Unwind) 触发</th>
                 </tr>
               </thead>
               <tbody>
                 {ticket.contracts.map(c => {
+                  const scaledPrev = Math.round((c.prevTargetLots ?? 0) * navScale);
                   const scaledLots = Math.round(c.targetLots * navScale);
                   const scaledDv01 = c.targetDv01Usd * navScale;
                   const dir = scaledLots > 0 ? "long" : scaledLots < 0 ? "short" : "flat";
+                  const act = actionBadgeFor(scaledPrev, scaledLots, c.actionCode);
                   return (
                     <tr key={c.symbol}>
                       <td>
                         <strong>{c.symbol}</strong> <span className="alpha-muted">({c.leg})</span>
                         {c.rolledAheadOfFnd && <span className="alpha-roll-tag">H27</span>}
                       </td>
+                      <td className="num alpha-muted">{fmtLots(scaledPrev)} 手</td>
+                      <td className={"num alpha-lots " + dir}>{fmtLots(scaledLots)} 手</td>
                       <td>
-                        <span className={"alpha-dir-pill " + dir}>
-                          {dir === "long" ? "做多 LONG" : dir === "short" ? "做空 SHORT" : "空仓 FLAT"}
-                        </span>
+                        <span className={"alpha-act-pill " + act.cls}>{act.label}</span>
                       </td>
-                      <td className={"num alpha-lots " + dir}>{scaledLots > 0 ? `+${scaledLots}` : scaledLots} 手</td>
                       <td className="num">{fmtUsd(scaledDv01)}/bp</td>
                       <td className="num">{c.refPrice.toFixed(4)} <small className="alpha-muted">({c.refDate.slice(5)})</small></td>
-                      <td className="num">${c.pointValueUsd.toLocaleString()} · ~${c.dv01PerLotUsd.toFixed(0)}/bp</td>
+                      <td className="alpha-unwind-cell">{c.unwindHint || "—"}</td>
                     </tr>
                   );
                 })}
@@ -722,6 +825,22 @@ export function AlphaPaperView({ tz, onExplain }: { tz: TzMode; onExplain?: () =
           <div className="alpha-ticket-foot">
             <span><b>净久期 DV01：</b>{fmtUsd(ticket.netDv01Usd * navScale)}/bp（毛腿 {fmtUsd(ticket.grossDv01Usd * navScale)}/bp · 合计 {ticket.contracts.reduce((s, c) => s + Math.abs(Math.round(c.targetLots * navScale)), 0)} 手）</span>
             <span className="alpha-muted">RP 权重: P2 {ticket.rpWeights.P2_Flow} / 2s10s {ticket.rpWeights.P5a_2s10s} / 5s30s {ticket.rpWeights.P5c_5s30s} · 2Y {data.marketSnapshot.ust2y}% / 10Y {data.marketSnapshot.ust10y}% / 30Y {data.marketSnapshot.ust30y}%</span>
+          </div>
+
+          {/* Compact 3-Step Execution & Unwind Clock Guide */}
+          <div className="alpha-clock-strip" aria-label="下单与平仓纪律速览">
+            <div>
+              <strong>① 何时建仓 / 调仓</strong>
+              <span>每日 06:25 ET 前指令自动更新；纽约盘 <b>07:00–17:00 ET</b> 均可下单，首选 <b>08:30–11:30 ET</b>（数据落地后、午盘变薄前）。</span>
+            </div>
+            <div>
+              <strong>② 续持与微调纪律</strong>
+              <span>若昨日已在仓且「今日动作」标为 <b>续持 HOLD (微调可略)</b>（变动 ≤10%），直接按兵不动省点差；新首日跟单直接按「今日目标」建仓。</span>
+            </div>
+            <div>
+              <strong>③ 何时 Unwind 平仓</strong>
+              <span>平均持有 <b>3.7 天</b>：EOM 固定月末最后交易日平；拍前空头固定拍卖前一日平；曲线腿 <b>Z 回到 ±0.35 内</b> 或满 <b>10 天硬止损</b> 自动提示「全平 UNWIND」。</span>
+            </div>
           </div>
         </div>
       </section>
@@ -839,7 +958,8 @@ export function AlphaPaperView({ tz, onExplain }: { tz: TzMode; onExplain?: () =
             <p><Lock size={12} style={{ verticalAlign: "-1px" }} /> 仅保存在本机浏览器或你的私人 Secret Gist，<b>绝不会提交到公开 GitHub 仓库</b>。支持自动按 CME 官方结算价算滑点与次日盈亏。</p>
           </div>
           <div className="alpha-btn-row">
-            <button type="button" className="action" onClick={openBatchFromTicket}><Copy size={14} />带入今日全部腿</button>
+            <button type="button" className="action" onClick={() => openBatchFromTicket("target")}><Copy size={14} />带入全部目标</button>
+            <button type="button" className="action" onClick={() => openBatchFromTicket("delta")}><Zap size={14} />仅带入今日 Δ 变动</button>
             <button type="button" className="action" onClick={exportFillsJson}><Download size={14} />导出 JSON</button>
             <button type="button" className="action" onClick={() => fileInputRef.current?.click()}><Upload size={14} />导入</button>
             <input ref={fileInputRef} type="file" accept="application/json" style={{ display: "none" }} onChange={importFillsJson} />

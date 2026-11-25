@@ -1,6 +1,6 @@
 {
   "schemaVersion": "4.1_web_paper_glassbox",
-  "generatedAtUtc": "2026-11-25T07:04:05.583869+00:00",
+  "generatedAtUtc": "2026-11-25T07:39:08.940250+00:00",
   "defaultMode": "ultra",
   "freezeDate": "2026-11-25",
   "panelAsOfDate": "2026-11-24",
@@ -63,48 +63,76 @@
           "symbol": "ZTH27.CBT",
           "contractCode": "TUH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 102.121094,
-          "refDate": "2026-11-25",
+          "refPrice": 102.082031,
+          "refDate": "2026-11-24",
           "pointValueUsd": 2000.0,
           "dv01PerLotUsd": 34.11,
           "targetLots": 50,
-          "targetDv01Usd": 1705.9
+          "targetDv01Usd": 1705.9,
+          "prevTargetLots": 49,
+          "deltaLots": 1,
+          "actionCode": "HOLD_NOISE",
+          "owners": [
+            "EOM"
+          ],
+          "unwindHint": "EOM \u7b2c2/3\u5929 \u00b7 11-30\u5e73\u4ed3"
         },
         {
           "leg": "FV",
           "symbol": "ZFH27.CBT",
           "contractCode": "FVH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 104.929688,
-          "refDate": "2026-11-25",
+          "refPrice": 104.867188,
+          "refDate": "2026-11-24",
           "pointValueUsd": 1000.0,
           "dv01PerLotUsd": 41.03,
           "targetLots": -100,
-          "targetDv01Usd": -4104.6
+          "targetDv01Usd": -4104.6,
+          "prevTargetLots": -98,
+          "deltaLots": -2,
+          "actionCode": "HOLD_NOISE",
+          "owners": [
+            "5s30s"
+          ],
+          "unwindHint": "5s30s \u7b2c4/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
         },
         {
           "leg": "UXY",
           "symbol": "TNH27.CBT",
           "contractCode": "UXYH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 108.328125,
-          "refDate": "2026-11-25",
+          "refPrice": 108.265625,
+          "refDate": "2026-11-24",
           "pointValueUsd": 1000.0,
           "dv01PerLotUsd": 87.96,
           "targetLots": 24,
-          "targetDv01Usd": 2113.8
+          "targetDv01Usd": 2113.8,
+          "prevTargetLots": 23,
+          "deltaLots": 1,
+          "actionCode": "HOLD_NOISE",
+          "owners": [
+            "EOM"
+          ],
+          "unwindHint": "EOM \u7b2c2/3\u5929 \u00b7 11-30\u5e73\u4ed3"
         },
         {
           "leg": "WN",
           "symbol": "UBH27.CBT",
           "contractCode": "WNH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 109.21875,
-          "refDate": "2026-11-25",
+          "refPrice": 109.15625,
+          "refDate": "2026-11-24",
           "pointValueUsd": 1000.0,
           "dv01PerLotUsd": 180.21,
           "targetLots": 23,
-          "targetDv01Usd": 4154.3
+          "targetDv01Usd": 4154.3,
+          "prevTargetLots": 22,
+          "deltaLots": 1,
+          "actionCode": "HOLD_NOISE",
+          "owners": [
+            "5s30s"
+          ],
+          "unwindHint": "5s30s \u7b2c4/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
         }
       ],
       "etfOpenNotional": {
@@ -122,7 +150,63 @@
       "netDv01Usd": 3869.5,
       "grossDv01Usd": 12078.7,
       "status": "PENDING",
-      "settlement": null
+      "settlement": null,
+      "lifecycle": {
+        "actionSummary": {
+          "verdict": "HOLD_MOSTLY",
+          "headline": "\u7eed\u6301\u4e3a\u4e3b\uff08\u4ec5\u5fae\u8c03 5 \u624b\uff0c\u5df2\u5728\u4ed3\u53ef\u5ffd\u7565\u7701\u70b9\u5dee\uff09",
+          "subtext": "\u6d3b\u8dc3\u652f\u67f1\u5ef6\u7eed\uff1aEOM \u505a\u591a(\u7b2c2/3\u5929) + 5s30s \u505a\u5e73(\u7b2c4/10\u5929)\u3002\u5982\u679c\u4f60\u6628\u65e5\u5df2\u5728\u4ed3\uff0c\u4eca\u65e5\u53ef\u6309\u5175\u4e0d\u52a8\uff1b\u82e5\u4eca\u5929\u9996\u6b21\u5efa\u4ed3\uff0c\u76f4\u63a5\u6309\u300c\u4eca\u65e5\u76ee\u6807\u300d\u5217\u4e0b\u5355\u3002",
+          "totalAbsDeltaLots": 5,
+          "optimalWindowEt": "08:30\u201311:30 ET\uff08\u65e9\u76d8\u6570\u636e\u6d88\u5316\u540e\u3001\u5348\u76d8\u524d\uff09",
+          "isPreHolidayThin": true,
+          "preHolidayNote": "\u8282\u5047\u65e5\u524d\u5915\u6d41\u52a8\u6027\u63d0\u793a\uff1a\u6b21\u65e5\u4f11\u5e02\uff0c\u672c\u7b14\u4f30\u503c\u8de8\u81f3 2026-11-27\uff0c\u5348\u540e\u76d8\u53e3\u6613\u53d8\u8584\uff0c\u5efa\u8bae\u4e0a\u5348 08:30\u201311:30 ET \u89c2\u5bdf\u6216\u6267\u884c\u3002",
+          "nextUnwindSummary": "EOM \u2192 2026-11-30 \u5e73\u4ed3 \uff5c 5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
+        },
+        "pillars": {
+          "eom": {
+            "active": true,
+            "state": 1,
+            "daysHeld": 2,
+            "maxDays": 3,
+            "entryDate": "2026-11-24",
+            "expectedUnwindDate": "2026-11-30",
+            "unwindText": "\u7b2c 2/3 \u5929 \u00b7 \u9884\u8ba1 2026-11-30 (07:00-17:00 ET) \u5e73\u4ed3"
+          },
+          "preAuction": {
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
+            "maxDays": 3,
+            "entryDate": null,
+            "expectedUnwindDate": null,
+            "unwindText": "\u901a\u5e38\u6bcf\u6708 8\u201313 \u53f7 10Y/30Y \u62cd\u5356\uff0c\u516c\u544a\u540e\u81ea\u52a8\u8fdb\u5165 A-4..A-2 \u505a\u7a7a"
+          },
+          "curve2s10s": {
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
+            "maxDays": 10,
+            "entryDate": null,
+            "hardStopDate": null,
+            "move5dBp": -2.0,
+            "bpGapToExit": null,
+            "exitDirection": null,
+            "unwindText": "Z \u5728\u6b7b\u533a\u5185\uff08\u9700\u7a81\u7834 \u00b11.25 \u5165\u573a\uff09"
+          },
+          "curve5s30s": {
+            "active": true,
+            "state": -1,
+            "daysHeld": 4,
+            "maxDays": 10,
+            "entryDate": "2026-11-20",
+            "hardStopDate": "2026-12-07",
+            "move5dBp": 5.0,
+            "bpGapToExit": -4.7,
+            "exitDirection": "flatten",
+            "unwindText": "\u5df2\u6301\u7b2c 4/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~4.7bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
+          }
+        }
+      }
     },
     "enhanced": {
       "mode": "enhanced",
@@ -158,48 +242,76 @@
           "symbol": "ZTH27.CBT",
           "contractCode": "TUH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 102.121094,
-          "refDate": "2026-11-25",
+          "refPrice": 102.082031,
+          "refDate": "2026-11-24",
           "pointValueUsd": 2000.0,
           "dv01PerLotUsd": 34.11,
           "targetLots": 51,
-          "targetDv01Usd": 1740.1
+          "targetDv01Usd": 1740.1,
+          "prevTargetLots": 49,
+          "deltaLots": 2,
+          "actionCode": "HOLD_NOISE",
+          "owners": [
+            "EOM"
+          ],
+          "unwindHint": "EOM \u7b2c2/3\u5929 \u00b7 11-30\u5e73\u4ed3"
         },
         {
           "leg": "FV",
           "symbol": "ZFH27.CBT",
           "contractCode": "FVH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 104.929688,
-          "refDate": "2026-11-25",
+          "refPrice": 104.867188,
+          "refDate": "2026-11-24",
           "pointValueUsd": 1000.0,
           "dv01PerLotUsd": 41.03,
           "targetLots": -103,
-          "targetDv01Usd": -4227.7
+          "targetDv01Usd": -4227.7,
+          "prevTargetLots": -101,
+          "deltaLots": -2,
+          "actionCode": "HOLD_NOISE",
+          "owners": [
+            "5s30s"
+          ],
+          "unwindHint": "5s30s \u7b2c4/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
         },
         {
           "leg": "TY",
           "symbol": "ZNH27.CBT",
           "contractCode": "TYH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 106.8125,
-          "refDate": "2026-11-25",
+          "refPrice": 106.734375,
+          "refDate": "2026-11-24",
           "pointValueUsd": 1000.0,
           "dv01PerLotUsd": 64.94,
           "targetLots": 30,
-          "targetDv01Usd": 1949.1
+          "targetDv01Usd": 1949.1,
+          "prevTargetLots": 29,
+          "deltaLots": 1,
+          "actionCode": "HOLD_NOISE",
+          "owners": [
+            "EOM"
+          ],
+          "unwindHint": "EOM \u7b2c2/3\u5929 \u00b7 11-30\u5e73\u4ed3"
         },
         {
           "leg": "WN",
           "symbol": "UBH27.CBT",
           "contractCode": "WNH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 109.21875,
-          "refDate": "2026-11-25",
+          "refPrice": 109.15625,
+          "refDate": "2026-11-24",
           "pointValueUsd": 1000.0,
           "dv01PerLotUsd": 180.21,
           "targetLots": 23,
-          "targetDv01Usd": 4154.3
+          "targetDv01Usd": 4154.3,
+          "prevTargetLots": 23,
+          "deltaLots": 0,
+          "actionCode": "HOLD_NOISE",
+          "owners": [
+            "5s30s"
+          ],
+          "unwindHint": "5s30s \u7b2c4/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
         }
       ],
       "etfOpenNotional": {
@@ -217,7 +329,63 @@
       "netDv01Usd": 3615.8,
       "grossDv01Usd": 12071.2,
       "status": "PENDING",
-      "settlement": null
+      "settlement": null,
+      "lifecycle": {
+        "actionSummary": {
+          "verdict": "HOLD_MOSTLY",
+          "headline": "\u7eed\u6301\u4e3a\u4e3b\uff08\u4ec5\u5fae\u8c03 5 \u624b\uff0c\u5df2\u5728\u4ed3\u53ef\u5ffd\u7565\u7701\u70b9\u5dee\uff09",
+          "subtext": "\u6d3b\u8dc3\u652f\u67f1\u5ef6\u7eed\uff1aEOM \u505a\u591a(\u7b2c2/3\u5929) + 5s30s \u505a\u5e73(\u7b2c4/10\u5929)\u3002\u5982\u679c\u4f60\u6628\u65e5\u5df2\u5728\u4ed3\uff0c\u4eca\u65e5\u53ef\u6309\u5175\u4e0d\u52a8\uff1b\u82e5\u4eca\u5929\u9996\u6b21\u5efa\u4ed3\uff0c\u76f4\u63a5\u6309\u300c\u4eca\u65e5\u76ee\u6807\u300d\u5217\u4e0b\u5355\u3002",
+          "totalAbsDeltaLots": 5,
+          "optimalWindowEt": "08:30\u201311:30 ET\uff08\u65e9\u76d8\u6570\u636e\u6d88\u5316\u540e\u3001\u5348\u76d8\u524d\uff09",
+          "isPreHolidayThin": true,
+          "preHolidayNote": "\u8282\u5047\u65e5\u524d\u5915\u6d41\u52a8\u6027\u63d0\u793a\uff1a\u6b21\u65e5\u4f11\u5e02\uff0c\u672c\u7b14\u4f30\u503c\u8de8\u81f3 2026-11-27\uff0c\u5348\u540e\u76d8\u53e3\u6613\u53d8\u8584\uff0c\u5efa\u8bae\u4e0a\u5348 08:30\u201311:30 ET \u89c2\u5bdf\u6216\u6267\u884c\u3002",
+          "nextUnwindSummary": "EOM \u2192 2026-11-30 \u5e73\u4ed3 \uff5c 5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
+        },
+        "pillars": {
+          "eom": {
+            "active": true,
+            "state": 1,
+            "daysHeld": 2,
+            "maxDays": 3,
+            "entryDate": "2026-11-24",
+            "expectedUnwindDate": "2026-11-30",
+            "unwindText": "\u7b2c 2/3 \u5929 \u00b7 \u9884\u8ba1 2026-11-30 (07:00-17:00 ET) \u5e73\u4ed3"
+          },
+          "preAuction": {
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
+            "maxDays": 3,
+            "entryDate": null,
+            "expectedUnwindDate": null,
+            "unwindText": "\u901a\u5e38\u6bcf\u6708 8\u201313 \u53f7 10Y/30Y \u62cd\u5356\uff0c\u516c\u544a\u540e\u81ea\u52a8\u8fdb\u5165 A-4..A-2 \u505a\u7a7a"
+          },
+          "curve2s10s": {
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
+            "maxDays": 10,
+            "entryDate": null,
+            "hardStopDate": null,
+            "move5dBp": -2.0,
+            "bpGapToExit": null,
+            "exitDirection": null,
+            "unwindText": "Z \u5728\u6b7b\u533a\u5185\uff08\u9700\u7a81\u7834 \u00b11.25 \u5165\u573a\uff09"
+          },
+          "curve5s30s": {
+            "active": true,
+            "state": -1,
+            "daysHeld": 4,
+            "maxDays": 10,
+            "entryDate": "2026-11-20",
+            "hardStopDate": "2026-12-07",
+            "move5dBp": 5.0,
+            "bpGapToExit": -4.7,
+            "exitDirection": "flatten",
+            "unwindText": "\u5df2\u6301\u7b2c 4/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~4.7bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
+          }
+        }
+      }
     }
   },
   "explain": {
@@ -884,7 +1052,7 @@
         "2026-11-20": 102.242188,
         "2026-11-23": 102.164062,
         "2026-11-24": 102.152344,
-        "2026-11-25": 102.203125
+        "2026-11-25": 102.25
       }
     },
     "ZTH27.CBT": {
@@ -916,7 +1084,7 @@
         "2026-11-20": 102.167969,
         "2026-11-23": 102.09375,
         "2026-11-24": 102.082031,
-        "2026-11-25": 102.132812
+        "2026-11-25": 102.183594
       }
     },
     "ZFZ26.CBT": {
@@ -948,7 +1116,7 @@
         "2026-11-20": 105.007812,
         "2026-11-23": 104.914062,
         "2026-11-24": 104.976562,
-        "2026-11-25": 105.085938
+        "2026-11-25": 105.203125
       }
     },
     "ZFH27.CBT": {
@@ -980,7 +1148,7 @@
         "2026-11-20": 104.882812,
         "2026-11-23": 104.796875,
         "2026-11-24": 104.867188,
-        "2026-11-25": 104.96875
+        "2026-11-25": 105.085938
       }
     },
     "ZNZ26.CBT": {
@@ -1012,7 +1180,7 @@
         "2026-11-20": 106.84375,
         "2026-11-23": 106.75,
         "2026-11-24": 106.859375,
-        "2026-11-25": 107.0
+        "2026-11-25": 107.15625
       }
     },
     "ZNH27.CBT": {
@@ -1044,7 +1212,7 @@
         "2026-11-20": 106.71875,
         "2026-11-23": 106.625,
         "2026-11-24": 106.734375,
-        "2026-11-25": 106.875
+        "2026-11-25": 107.046875
       }
     },
     "TNZ26.CBT": {
@@ -1076,7 +1244,7 @@
         "2026-11-20": 108.34375,
         "2026-11-23": 108.359375,
         "2026-11-24": 108.46875,
-        "2026-11-25": 108.640625
+        "2026-11-25": 108.828125
       }
     },
     "TNH27.CBT": {
@@ -1108,7 +1276,7 @@
         "2026-11-20": 108.125,
         "2026-11-23": 108.140625,
         "2026-11-24": 108.265625,
-        "2026-11-25": 108.421875
+        "2026-11-25": 108.609375
       }
     },
     "ZBZ26.CBT": {
@@ -1140,7 +1308,7 @@
         "2026-11-20": 107.625,
         "2026-11-23": 107.90625,
         "2026-11-24": 107.9375,
-        "2026-11-25": 108.0625
+        "2026-11-25": 108.28125
       }
     },
     "ZBH27.CBT": {
@@ -1172,7 +1340,7 @@
         "2026-11-20": 107.09375,
         "2026-11-23": 107.375,
         "2026-11-24": 107.4375,
-        "2026-11-25": 107.5625
+        "2026-11-25": 107.78125
       }
     },
     "UBZ26.CBT": {
@@ -1204,7 +1372,7 @@
         "2026-11-20": 109.34375,
         "2026-11-23": 109.5,
         "2026-11-24": 109.46875,
-        "2026-11-25": 109.71875
+        "2026-11-25": 109.9375
       }
     },
     "UBH27.CBT": {
@@ -1236,12 +1404,12 @@
         "2026-11-20": 109.03125,
         "2026-11-23": 109.1875,
         "2026-11-24": 109.15625,
-        "2026-11-25": 109.40625
+        "2026-11-25": 109.625
       }
     }
   },
   "historical10yOos": {
-    "sampleRange": "2017-01-03 -> 2026-11-23",
+    "sampleRange": "2017-01-03 -> 2026-11-24 (T\u2192T+1 \u7ed3\u7b97)",
     "models": {
       "ultra_50k": {
         "n": 2473,
@@ -1532,7 +1700,7 @@
         "yearly": {
           "2017": {
             "retPct": 6.27,
-            "sr": 1.59
+            "sr": 1.58
           },
           "2018": {
             "retPct": 12.07,
@@ -1655,7 +1823,7 @@
         "ultra": 0.9958,
         "enhanced": 0.9948,
         "etfOpen": 0.9951,
-        "etfClose": 0.9978
+        "etfClose": 0.9979
       },
       {
         "date": "2017-02-28",
@@ -1683,14 +1851,14 @@
         "ultra": 1.0134,
         "enhanced": 1.0104,
         "etfOpen": 1.0138,
-        "etfClose": 1.0121
+        "etfClose": 1.0122
       },
       {
         "date": "2017-06-30",
         "ultra": 1.0231,
         "enhanced": 1.0192,
         "etfOpen": 0.9967,
-        "etfClose": 0.9955
+        "etfClose": 0.9956
       },
       {
         "date": "2017-07-31",
@@ -1767,7 +1935,7 @@
         "ultra": 1.1435,
         "enhanced": 1.1197,
         "etfOpen": 1.0896,
-        "etfClose": 1.1142
+        "etfClose": 1.1141
       },
       {
         "date": "2018-06-30",
@@ -1815,7 +1983,7 @@
         "date": "2018-12-31",
         "ultra": 1.211,
         "enhanced": 1.1821,
-        "etfOpen": 1.1381,
+        "etfOpen": 1.1382,
         "etfClose": 1.191
       },
       {
@@ -1858,20 +2026,20 @@
         "ultra": 1.2818,
         "enhanced": 1.2474,
         "etfOpen": 1.1964,
-        "etfClose": 1.2611
+        "etfClose": 1.2612
       },
       {
         "date": "2019-07-31",
         "ultra": 1.2945,
         "enhanced": 1.2569,
-        "etfOpen": 1.2054,
+        "etfOpen": 1.2055,
         "etfClose": 1.271
       },
       {
         "date": "2019-08-31",
         "ultra": 1.2711,
         "enhanced": 1.241,
-        "etfOpen": 1.182,
+        "etfOpen": 1.1821,
         "etfClose": 1.2541
       },
       {
@@ -1879,14 +2047,14 @@
         "ultra": 1.2811,
         "enhanced": 1.2481,
         "etfOpen": 1.192,
-        "etfClose": 1.2693
+        "etfClose": 1.2694
       },
       {
         "date": "2019-10-31",
         "ultra": 1.2941,
         "enhanced": 1.2604,
         "etfOpen": 1.1905,
-        "etfClose": 1.2823
+        "etfClose": 1.2824
       },
       {
         "date": "2019-11-30",
@@ -1906,14 +2074,14 @@
         "date": "2020-01-31",
         "ultra": 1.3094,
         "enhanced": 1.2741,
-        "etfOpen": 1.2025,
+        "etfOpen": 1.2026,
         "etfClose": 1.3083
       },
       {
         "date": "2020-02-29",
         "ultra": 1.3136,
         "enhanced": 1.2779,
-        "etfOpen": 1.1957,
+        "etfOpen": 1.1958,
         "etfClose": 1.3226
       },
       {
@@ -1983,7 +2151,7 @@
         "date": "2020-12-31",
         "ultra": 1.4784,
         "enhanced": 1.4032,
-        "etfOpen": 1.4122,
+        "etfOpen": 1.4123,
         "etfClose": 1.4696
       },
       {
@@ -1997,8 +2165,8 @@
         "date": "2021-02-28",
         "ultra": 1.4631,
         "enhanced": 1.3727,
-        "etfOpen": 1.4072,
-        "etfClose": 1.4692
+        "etfOpen": 1.4073,
+        "etfClose": 1.4693
       },
       {
         "date": "2021-03-31",
@@ -2018,14 +2186,14 @@
         "date": "2021-05-31",
         "ultra": 1.4942,
         "enhanced": 1.4025,
-        "etfOpen": 1.4236,
-        "etfClose": 1.4844
+        "etfOpen": 1.4237,
+        "etfClose": 1.4845
       },
       {
         "date": "2021-06-30",
         "ultra": 1.5063,
         "enhanced": 1.4205,
-        "etfOpen": 1.415,
+        "etfOpen": 1.4151,
         "etfClose": 1.4861
       },
       {
@@ -2039,14 +2207,14 @@
         "date": "2021-08-31",
         "ultra": 1.5343,
         "enhanced": 1.4466,
-        "etfOpen": 1.4581,
+        "etfOpen": 1.4582,
         "etfClose": 1.5092
       },
       {
         "date": "2021-09-30",
         "ultra": 1.5572,
         "enhanced": 1.4738,
-        "etfOpen": 1.462,
+        "etfOpen": 1.4621,
         "etfClose": 1.517
       },
       {
@@ -2067,8 +2235,8 @@
         "date": "2021-12-31",
         "ultra": 1.5869,
         "enhanced": 1.5049,
-        "etfOpen": 1.4988,
-        "etfClose": 1.5491
+        "etfOpen": 1.4989,
+        "etfClose": 1.5492
       },
       {
         "date": "2022-01-31",
@@ -2081,15 +2249,15 @@
         "date": "2022-02-28",
         "ultra": 1.6012,
         "enhanced": 1.5183,
-        "etfOpen": 1.5112,
-        "etfClose": 1.5618
+        "etfOpen": 1.5113,
+        "etfClose": 1.5619
       },
       {
         "date": "2022-03-31",
         "ultra": 1.6073,
         "enhanced": 1.5253,
         "etfOpen": 1.5121,
-        "etfClose": 1.5548
+        "etfClose": 1.5549
       },
       {
         "date": "2022-04-30",
@@ -2109,8 +2277,8 @@
         "date": "2022-06-30",
         "ultra": 1.6272,
         "enhanced": 1.5434,
-        "etfOpen": 1.5183,
-        "etfClose": 1.5755
+        "etfOpen": 1.5184,
+        "etfClose": 1.5756
       },
       {
         "date": "2022-07-31",
@@ -2123,7 +2291,7 @@
         "date": "2022-08-31",
         "ultra": 1.645,
         "enhanced": 1.5616,
-        "etfOpen": 1.523,
+        "etfOpen": 1.5231,
         "etfClose": 1.5825
       },
       {
@@ -2144,7 +2312,7 @@
         "date": "2022-11-30",
         "ultra": 1.7033,
         "enhanced": 1.614,
-        "etfOpen": 1.5596,
+        "etfOpen": 1.5597,
         "etfClose": 1.6217
       },
       {
@@ -2158,14 +2326,14 @@
         "date": "2023-01-31",
         "ultra": 1.7034,
         "enhanced": 1.6104,
-        "etfOpen": 1.5474,
+        "etfOpen": 1.5475,
         "etfClose": 1.618
       },
       {
         "date": "2023-02-28",
         "ultra": 1.7051,
         "enhanced": 1.6139,
-        "etfOpen": 1.5544,
+        "etfOpen": 1.5545,
         "etfClose": 1.6176
       },
       {
@@ -2180,20 +2348,20 @@
         "ultra": 1.786,
         "enhanced": 1.6989,
         "etfOpen": 1.6114,
-        "etfClose": 1.6887
+        "etfClose": 1.6888
       },
       {
         "date": "2023-05-31",
         "ultra": 1.7897,
         "enhanced": 1.7007,
         "etfOpen": 1.6137,
-        "etfClose": 1.6916
+        "etfClose": 1.6917
       },
       {
         "date": "2023-06-30",
         "ultra": 1.7732,
         "enhanced": 1.6825,
-        "etfOpen": 1.5975,
+        "etfOpen": 1.5976,
         "etfClose": 1.6715
       },
       {
@@ -2201,14 +2369,14 @@
         "ultra": 1.7618,
         "enhanced": 1.6738,
         "etfOpen": 1.588,
-        "etfClose": 1.6634
+        "etfClose": 1.6635
       },
       {
         "date": "2023-08-31",
         "ultra": 1.7772,
         "enhanced": 1.6891,
         "etfOpen": 1.6009,
-        "etfClose": 1.6728
+        "etfClose": 1.6729
       },
       {
         "date": "2023-09-30",
@@ -2236,7 +2404,7 @@
         "ultra": 1.7748,
         "enhanced": 1.6934,
         "etfOpen": 1.6231,
-        "etfClose": 1.6704
+        "etfClose": 1.6705
       },
       {
         "date": "2024-01-31",
@@ -2250,13 +2418,13 @@
         "ultra": 1.8217,
         "enhanced": 1.7353,
         "etfOpen": 1.6625,
-        "etfClose": 1.7151
+        "etfClose": 1.7152
       },
       {
         "date": "2024-03-31",
         "ultra": 1.8326,
         "enhanced": 1.746,
-        "etfOpen": 1.6709,
+        "etfOpen": 1.671,
         "etfClose": 1.7332
       },
       {
@@ -2264,14 +2432,14 @@
         "ultra": 1.8574,
         "enhanced": 1.7737,
         "etfOpen": 1.6992,
-        "etfClose": 1.7486
+        "etfClose": 1.7487
       },
       {
         "date": "2024-05-31",
         "ultra": 1.8643,
         "enhanced": 1.7814,
-        "etfOpen": 1.6873,
-        "etfClose": 1.7532
+        "etfOpen": 1.6874,
+        "etfClose": 1.7533
       },
       {
         "date": "2024-06-30",
@@ -2291,7 +2459,7 @@
         "date": "2024-08-31",
         "ultra": 1.8779,
         "enhanced": 1.7998,
-        "etfOpen": 1.7021,
+        "etfOpen": 1.7022,
         "etfClose": 1.7533
       },
       {
@@ -2305,28 +2473,28 @@
         "date": "2024-10-31",
         "ultra": 1.8216,
         "enhanced": 1.7438,
-        "etfOpen": 1.6624,
+        "etfOpen": 1.6625,
         "etfClose": 1.703
       },
       {
         "date": "2024-11-30",
         "ultra": 1.82,
         "enhanced": 1.7418,
-        "etfOpen": 1.6797,
-        "etfClose": 1.701
+        "etfOpen": 1.6798,
+        "etfClose": 1.7011
       },
       {
         "date": "2024-12-31",
         "ultra": 1.8103,
         "enhanced": 1.7276,
-        "etfOpen": 1.6729,
+        "etfOpen": 1.673,
         "etfClose": 1.698
       },
       {
         "date": "2025-01-31",
         "ultra": 1.8291,
         "enhanced": 1.7419,
-        "etfOpen": 1.6979,
+        "etfOpen": 1.698,
         "etfClose": 1.7168
       },
       {
@@ -2341,14 +2509,14 @@
         "ultra": 1.8775,
         "enhanced": 1.7858,
         "etfOpen": 1.7561,
-        "etfClose": 1.7803
+        "etfClose": 1.7804
       },
       {
         "date": "2025-04-30",
         "ultra": 1.9091,
         "enhanced": 1.8193,
         "etfOpen": 1.812,
-        "etfClose": 1.8353
+        "etfClose": 1.8354
       },
       {
         "date": "2025-05-31",
@@ -2361,7 +2529,7 @@
         "date": "2025-06-30",
         "ultra": 1.905,
         "enhanced": 1.8152,
-        "etfOpen": 1.8237,
+        "etfOpen": 1.8238,
         "etfClose": 1.8378
       },
       {
@@ -2375,7 +2543,7 @@
         "date": "2025-08-31",
         "ultra": 1.924,
         "enhanced": 1.8283,
-        "etfOpen": 1.865,
+        "etfOpen": 1.8651,
         "etfClose": 1.8642
       },
       {
@@ -2410,14 +2578,14 @@
         "date": "2026-01-31",
         "ultra": 1.9255,
         "enhanced": 1.8386,
-        "etfOpen": 1.8726,
+        "etfOpen": 1.8727,
         "etfClose": 1.8739
       },
       {
         "date": "2026-02-28",
         "ultra": 1.9013,
         "enhanced": 1.8175,
-        "etfOpen": 1.8456,
+        "etfOpen": 1.8457,
         "etfClose": 1.8564
       },
       {
@@ -2431,14 +2599,14 @@
         "date": "2026-04-30",
         "ultra": 1.9264,
         "enhanced": 1.8397,
-        "etfOpen": 1.8462,
+        "etfOpen": 1.8463,
         "etfClose": 1.8689
       },
       {
         "date": "2026-05-31",
         "ultra": 1.9541,
         "enhanced": 1.8666,
-        "etfOpen": 1.8815,
+        "etfOpen": 1.8816,
         "etfClose": 1.8925
       },
       {
@@ -2473,7 +2641,7 @@
         "date": "2026-10-31",
         "ultra": 1.9861,
         "enhanced": 1.9004,
-        "etfOpen": 1.8636,
+        "etfOpen": 1.8637,
         "etfClose": 1.8701
       },
       {

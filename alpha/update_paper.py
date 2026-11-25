@@ -27,14 +27,17 @@ from core3_engine import (
     CME_POINT_VALUE,
     DESK_COST_TIERS,
     ETF_MOD_DUR,
+    add_sifma_bdays,
     build_deadband_signal,
     build_etf_targets,
     build_self_rev_z,
     fetch_all_core3_data,
+    last_sifma_bday_of_month,
     n_eff_diversity,
     next_sifma_bday,
     perf_stats,
     politis_romano_ci,
+    prev_sifma_bday,
     remaining_sifma_days_in_month,
     run_core3_engine,
     run_g1_verification_suite,
@@ -47,6 +50,250 @@ LEDGER_PATH = REPO_ROOT / "alpha-ledger.json"
 OUTPUT_PATH = REPO_ROOT / "alpha-paper.json"
 BASE_RISK_NAV = 10_000_000.0
 G6_TARGET_SESSIONS = 20
+
+
+def _classify_leg_action(prev_lots: int, target_lots: int) -> str:
+    delta = target_lots - prev_lots
+    if prev_lots == 0 and target_lots == 0:
+        return "FLAT"
+    if prev_lots == 0 and target_lots > 0:
+        return "NEW_LONG"
+    if prev_lots == 0 and target_lots < 0:
+        return "NEW_SHORT"
+    if prev_lots != 0 and target_lots == 0:
+        return "UNWIND"
+    if prev_lots * target_lots < 0:
+        return "FLIP"
+    # Same direction: distinguish tiny vol/damper drift (<= 10% or <= 1 lot) from meaningful add/trim
+    noise_band = max(1, round(0.10 * abs(prev_lots)))
+    if abs(delta) <= noise_band:
+        return "HOLD_NOISE"
+    return "ADD" if abs(target_lots) > abs(prev_lots) else "TRIM"
+
+
+def _spell_days_and_entry(sig_series: pd.Series) -> tuple[int, str | None]:
+    """Count exact consecutive active days on the final row of sig_series and return entry date."""
+    cur_val = int(round(float(sig_series.iloc[-1])))
+    if cur_val == 0:
+        return 0, None
+    days = 0
+    entry_ts = sig_series.index[-1]
+    for i in range(len(sig_series) - 1, -1, -1):
+        if int(round(float(sig_series.iloc[i]))) == cur_val:
+            days += 1
+            entry_ts = sig_series.index[i]
+        else:
+            break
+    return days, entry_ts.strftime("%Y-%m-%d")
+
+
+def _curve_bp_gap_to_exit(panel: pd.DataFrame, col: str, active_state: int) -> dict:
+    """Compute exact bp move needed on 5d spread change to cross the ±0.35 deadband exit."""
+    s = panel[col].dropna()
+    dy = s.diff(1)
+    mu60 = float(dy.shift(5).rolling(60, min_periods=35).mean().iloc[-1]) * 100.0
+    sd60 = float(dy.shift(5).rolling(60, min_periods=35).std(ddof=1).iloc[-1]) * 100.0
+    move5d = float(dy.rolling(5, min_periods=5).sum().iloc[-1]) * 100.0
+    if active_state == 0 or not np.isfinite(sd60) or sd60 <= 0:
+        return {"move5dBp": round(move5d, 1), "bpGapToExit": None, "exitDirection": None}
+    # Z = -(move5d - 5*mu60) / (sd60 * sqrt(5))
+    # Flattener (state=-1, Z < -0.35): unwinds when Z >= -0.35 => move5d <= 5*mu60 + 0.35*sd60*sqrt(5)
+    # Steepener (state=+1, Z > +0.35): unwinds when Z <= +0.35 => move5d >= 5*mu60 - 0.35*sd60*sqrt(5)
+    if active_state < 0:
+        target_move5d = 5.0 * mu60 + 0.35 * sd60 * np.sqrt(5.0)
+        gap = target_move5d - move5d  # negative = needs to flatten by |gap| bp
+        return {"move5dBp": round(move5d, 1), "bpGapToExit": round(float(gap), 1), "exitDirection": "flatten"}
+    target_move5d = 5.0 * mu60 - 0.35 * sd60 * np.sqrt(5.0)
+    gap = target_move5d - move5d  # positive = needs to steepen by gap bp
+    return {"move5dBp": round(move5d, 1), "bpGapToExit": round(float(gap), 1), "exitDirection": "steepen"}
+
+
+def _build_ticket_lifecycle(
+    panel: pd.DataFrame,
+    auctions: list[dict],
+    eng: dict,
+    exec_dt: date,
+    val_end: date,
+    contracts: list[dict],
+) -> dict:
+    sig_df = eng["signals_df"]
+    sig = sig_df.iloc[-1]
+    sig_as_of_dt = panel.index[-1].date()
+
+    # 1. P2 EOM lifecycle
+    eom_state = int(sig["eom"])
+    eom_rem = remaining_sifma_days_in_month(exec_dt)
+    eom_days_held, eom_entry = _spell_days_and_entry(sig_df["eom"])
+    eom_unwind = last_sifma_bday_of_month(exec_dt).isoformat() if eom_state != 0 else None
+
+    # 2. P2 Pre-Auction lifecycle
+    auc_state = int(sig["auc"])
+    auc_days_held, auc_entry = _spell_days_and_entry(sig_df["auc"])
+    active_auc_dates = []
+    upcoming_auc_dates = []
+    for a in auctions:
+        if a.get("termYears") not in (10, 30):
+            continue
+        a_dt = date.fromisoformat(a["auctionDate"])
+        ann_dt = date.fromisoformat(a["announcementDate"]) if a.get("announcementDate") else None
+        if a_dt > exec_dt:
+            ahead = sifma_bdays_ahead(exec_dt, a_dt)
+            if 2 <= ahead <= 4 and ann_dt is not None and ann_dt <= sig_as_of_dt:
+                active_auc_dates.append(a_dt)
+            elif ann_dt is not None and ann_dt <= sig_as_of_dt:
+                upcoming_auc_dates.append((a_dt, a["termYears"]))
+    auc_unwind = prev_sifma_bday(max(active_auc_dates)).isoformat() if active_auc_dates else None
+    next_auc_note = (
+        f"下次已公告拍卖：{upcoming_auc_dates[0][1]}Y ({upcoming_auc_dates[0][0].isoformat()})"
+        if upcoming_auc_dates
+        else "通常每月 8–13 号 10Y/30Y 拍卖，公告后自动进入 A-4..A-2 做空"
+    )
+
+    # 3. Curve pillars (2s10s & 5s30s) lifecycle
+    c2_state = int(sig["c2s"])
+    c2_days, c2_entry = _spell_days_and_entry(sig_df["c2s"])
+    c2_stop = add_sifma_bdays(exec_dt, max(0, 10 - c2_days) + 1).isoformat() if c2_state != 0 else None
+    c2_gap = _curve_bp_gap_to_exit(panel, "s2s10s", c2_state)
+
+    c5_state = int(sig["c5s"])
+    c5_days, c5_entry = _spell_days_and_entry(sig_df["c5s"])
+    c5_stop = add_sifma_bdays(exec_dt, max(0, 10 - c5_days) + 1).isoformat() if c5_state != 0 else None
+    c5_gap = _curve_bp_gap_to_exit(panel, "s5s30s", c5_state)
+
+    pillars = {
+        "eom": {
+            "active": eom_state != 0,
+            "state": eom_state,
+            "daysHeld": eom_days_held,
+            "maxDays": 3,
+            "entryDate": eom_entry,
+            "expectedUnwindDate": eom_unwind,
+            "unwindText": (
+                f"第 {eom_days_held}/3 天 · 预计 {eom_unwind} (07:00-17:00 ET) 平仓"
+                if eom_state != 0
+                else f"非月末窗口（距月末剩 {eom_rem} 交易日 · 最后 3 日自动触发）"
+            ),
+        },
+        "preAuction": {
+            "active": auc_state != 0,
+            "state": auc_state,
+            "daysHeld": auc_days_held,
+            "maxDays": 3,
+            "entryDate": auc_entry,
+            "expectedUnwindDate": auc_unwind,
+            "unwindText": (
+                f"第 {auc_days_held}/3 天 · 预计 {auc_unwind} (拍卖前一日) 平仓"
+                if auc_state != 0
+                else next_auc_note
+            ),
+        },
+        "curve2s10s": {
+            "active": c2_state != 0,
+            "state": c2_state,
+            "daysHeld": c2_days,
+            "maxDays": 10,
+            "entryDate": c2_entry,
+            "hardStopDate": c2_stop,
+            **c2_gap,
+            "unwindText": (
+                f"已持第 {c2_days}/10 天 ({c2_entry[5:]}入场) · Z回±0.35（再{'趋平' if c2_gap['exitDirection']=='flatten' else '走陡'}~{abs(c2_gap['bpGapToExit']):.1f}bp）或最晚 {c2_stop[5:]} 硬止损"
+                if c2_state != 0 and c2_gap["bpGapToExit"] is not None
+                else "Z 在死区内（需突破 ±1.25 入场）"
+            ),
+        },
+        "curve5s30s": {
+            "active": c5_state != 0,
+            "state": c5_state,
+            "daysHeld": c5_days,
+            "maxDays": 10,
+            "entryDate": c5_entry,
+            "hardStopDate": c5_stop,
+            **c5_gap,
+            "unwindText": (
+                f"已持第 {c5_days}/10 天 ({c5_entry[5:]}入场) · Z回±0.35（再{'趋平' if c5_gap['exitDirection']=='flatten' else '走陡'}~{abs(c5_gap['bpGapToExit']):.1f}bp）或最晚 {c5_stop[5:]} 硬止损"
+                if c5_state != 0 and c5_gap["bpGapToExit"] is not None
+                else "Z 在死区内（需突破 ±1.25 入场）"
+            ),
+        },
+    }
+
+    # Build per-contract owner & unwind hint
+    p_dv01 = eng["latest_explain"]["pillar_leg_dv01"]
+    p_labels = {
+        "P2_EOM": ("EOM", f"EOM 第{eom_days_held}/3天 · {eom_unwind[5:]}平仓" if eom_unwind else ""),
+        "P2_PreAuction": ("拍前空头", f"拍前 第{auc_days_held}/3天 · {auc_unwind[5:]}平仓" if auc_unwind else ""),
+        "P5a_2s10s": ("2s10s", f"2s10s 第{c2_days}/10天 · Z回±0.35或{c2_stop[5:]}平" if c2_stop else ""),
+        "P5c_5s30s": ("5s30s", f"5s30s 第{c5_days}/10天 · Z回±0.35或{c5_stop[5:]}平" if c5_stop else ""),
+    }
+    for idx_j, c in enumerate(contracts):
+        owners = []
+        hints = []
+        for pk, (short_nm, h_txt) in p_labels.items():
+            if abs(p_dv01.get(pk, [0, 0, 0, 0])[idx_j]) >= 1.0:
+                owners.append(short_nm)
+                if h_txt:
+                    hints.append(h_txt)
+        c["owners"] = owners
+        c["unwindHint"] = " + ".join(hints) if hints else "当前无活跃支柱（空仓）"
+
+    # Overall action verdict for busy desk trader at 07:30 ET
+    codes = [c["actionCode"] for c in contracts]
+    has_major_trade = any(cd in ("NEW_LONG", "NEW_SHORT", "UNWIND", "FLIP", "ADD", "TRIM") for cd in codes)
+    all_flat = all(cd == "FLAT" for cd in codes)
+    total_abs_delta = sum(abs(c["deltaLots"]) for c in contracts)
+    active_names = []
+    if eom_state != 0:
+        active_names.append(f"EOM 做多(第{eom_days_held}/3天)")
+    if auc_state != 0:
+        active_names.append(f"拍前空头(第{auc_days_held}/3天)")
+    if c2_state != 0:
+        active_names.append(f"2s10s {'做陡' if c2_state > 0 else '做平'}(第{c2_days}/10天)")
+    if c5_state != 0:
+        active_names.append(f"5s30s {'做陡' if c5_state > 0 else '做平'}(第{c5_days}/10天)")
+
+    if all_flat:
+        verdict = "FLAT"
+        headline = "今日全部信号空仓（0 手）· 耐心休息"
+        subtext = "未触发月末、拍前或曲线极端偏离，今日零敞口观望，不强行交易。"
+    elif has_major_trade:
+        verdict = "TRADE_REQUIRED"
+        major_parts = [f"{c['leg']} {c['deltaLots']:+d}手" for c in contracts if c["actionCode"] not in ("FLAT", "HOLD_NOISE")]
+        headline = f"今日需调仓执行（变动：{' / '.join(major_parts)}）"
+        subtext = f"活跃支柱：{' + '.join(active_names)}。请于纽约盘 08:30–11:30 ET 流动性充裕时段按下方「今日动作」列完成调仓。"
+    else:
+        verdict = "HOLD_MOSTLY"
+        headline = f"续持为主（仅微调 {total_abs_delta} 手，已在仓可忽略省点差）"
+        subtext = f"活跃支柱延续：{' + '.join(active_names)}。如果你昨日已在仓，今日可按兵不动；若今天首次建仓，直接按「今日目标」列下单。"
+
+    # Detect pre-holiday thin liquidity (Mon-Thu where next SIFMA bday skips >= 1 weekday holiday)
+    is_pre_holiday = (exec_dt.weekday() < 4) and ((val_end - exec_dt).days >= 2)
+    next_unwinds = []
+    if eom_unwind:
+        next_unwinds.append(f"EOM → {eom_unwind} 平仓")
+    if auc_unwind:
+        next_unwinds.append(f"拍前空头 → {auc_unwind} 平仓")
+    if c2_stop:
+        next_unwinds.append(f"2s10s → Z回±0.35 或最晚 {c2_stop}")
+    if c5_stop:
+        next_unwinds.append(f"5s30s → Z回±0.35 或最晚 {c5_stop}")
+
+    return {
+        "actionSummary": {
+            "verdict": verdict,
+            "headline": headline,
+            "subtext": subtext,
+            "totalAbsDeltaLots": int(total_abs_delta),
+            "optimalWindowEt": "08:30–11:30 ET（早盘数据消化后、午盘前）",
+            "isPreHolidayThin": is_pre_holiday,
+            "preHolidayNote": (
+                f"节假日前夕流动性提示：次日休市，本笔估值跨至 {val_end.isoformat()}，午后盘口易变薄，建议上午 08:30–11:30 ET 观察或执行。"
+                if is_pre_holiday
+                else None
+            ),
+            "nextUnwindSummary": " ｜ ".join(next_unwinds) if next_unwinds else "当前无持仓待平仓",
+        },
+        "pillars": pillars,
+    }
 
 
 def _build_live_ticket(
@@ -67,32 +314,40 @@ def _build_live_ticket(
                                  damp_mode="port_only", integer_lots=False, include_next_live_day=True)
 
     sig_as_of = panel.index[-1]
+    sig_as_of_iso = sig_as_of.strftime("%Y-%m-%d")
     exec_ts = eng["notional_df"].index[-1]
     val_end = next_sifma_bday(exec_ts.date())
     sig = eng["signals_df"].iloc[-1]
     lots = eng["lots_df"].iloc[-1]
+    prev_lots = eng["lots_df"].iloc[-2] if len(eng["lots_df"]) >= 2 else pd.Series(0, index=lots.index)
     dv01 = eng["dv01_df"].iloc[-1]
     rp = eng["rp_df"].iloc[-1]
 
     contracts = []
     for leg in eng["legs"]:
-        cm = select_live_contract(exec_ts.date(), active_cme, leg)
+        cm = select_live_contract(exec_ts.date(), active_cme, leg, as_of_iso=sig_as_of_iso)
         px = cm["refPrice"] if cm["refPrice"] is not None else float(panel[f"fut_{leg.lower()}"].iloc[-1])
         pt = CME_POINT_VALUE[leg]
         dv01_lot = px * pt * CME_CTD_MOD_DUR[leg] * 1e-4
+        tgt_i = int(lots[leg])
+        prv_i = int(prev_lots[leg])
         contracts.append({
             "leg": leg,
             "symbol": cm["symbol"],
             "contractCode": cm["contractCode"],
             "rolledAheadOfFnd": cm["rolledAheadOfFnd"],
             "refPrice": round(float(px), 6),
-            "refDate": cm["refDate"] or sig_as_of.strftime("%Y-%m-%d"),
+            "refDate": cm["refDate"] or sig_as_of_iso,
             "pointValueUsd": pt,
             "dv01PerLotUsd": round(float(dv01_lot), 2),
-            "targetLots": int(lots[leg]),
+            "prevTargetLots": prv_i,
+            "targetLots": tgt_i,
+            "deltaLots": tgt_i - prv_i,
+            "actionCode": _classify_leg_action(prv_i, tgt_i),
             "targetDv01Usd": round(float(dv01[leg]), 1),
         })
 
+    lifecycle = _build_ticket_lifecycle(panel, auctions, eng, exec_ts.date(), val_end, contracts)
     etf_open_not = {k: round(float(v), 5) for k, v in eng_etf_o["notional_df"].iloc[-1].items()}
     etf_close_not = {k: round(float(v), 5) for k, v in eng_etf_c["notional_df"].iloc[-1].items()}
 
@@ -103,7 +358,7 @@ def _build_live_ticket(
         "panelSha256": panel_sha,
         "g1Passed": g1_passed,
         "riskNavUsd": BASE_RISK_NAV,
-        "signalAsOfDate": sig_as_of.strftime("%Y-%m-%d"),
+        "signalAsOfDate": sig_as_of_iso,
         "execDate": exec_ts.strftime("%Y-%m-%d"),
         "valuationEndDate": val_end.isoformat(),
         "orderWindowEt": f"{exec_ts.strftime('%Y-%m-%d')} 07:00-17:00 ET",
@@ -121,6 +376,7 @@ def _build_live_ticket(
         },
         "rpWeights": {k: round(float(v), 3) for k, v in rp.items()},
         "contracts": contracts,
+        "lifecycle": lifecycle,
         "etfOpenNotional": etf_open_not,
         "etfCloseNotional": etf_close_not,
         "netDv01Usd": round(float(dv01.sum()), 1),
@@ -338,7 +594,7 @@ def _build_historical_summary(panel: pd.DataFrame, auctions: list[dict]) -> dict
         monthly = pd.concat([monthly, eq_df.iloc[[-1]]])
 
     return {
-        "sampleRange": f"{idx[0].strftime('%Y-%m-%d')} -> {idx[-1].strftime('%Y-%m-%d')}",
+        "sampleRange": f"{idx[0].strftime('%Y-%m-%d')} -> {panel.index[-1].strftime('%Y-%m-%d')} (T→T+1 结算)",
         "models": {k: _pack(k) for k in runs.keys()},
         "bootstraps": {
             "ultra": politis_romano_ci(runs["ultra_50k"]["daily"]["net"], 20, 800, 42),
@@ -472,9 +728,28 @@ def main() -> None:
             existing_keys.add(key)
             appended += 1
         else:
-            # Preserve originally frozen target lots/signals (NEVER mutate frozen targets!)
+            # Preserve originally frozen target lots/signals in ledger (NEVER mutate frozen targets!),
+            # while enriching the live UI display view with lifecycle/delta/unwind metadata + T-1 capped refPrice.
             orig = next(e for e in ledger["entries"] if e["execDate"] == tk["execDate"] and e["mode"] == mode)
-            tickets[mode] = orig
+            tk_by_leg = {c["leg"]: c for c in tk["contracts"]}
+            merged_contracts = []
+            for oc in orig["contracts"]:
+                nc = tk_by_leg.get(oc["leg"], {})
+                merged_contracts.append({
+                    **oc,
+                    "refPrice": nc.get("refPrice", oc["refPrice"]),
+                    "refDate": nc.get("refDate", oc["refDate"]),
+                    "prevTargetLots": nc.get("prevTargetLots", 0),
+                    "deltaLots": oc["targetLots"] - nc.get("prevTargetLots", 0),
+                    "actionCode": _classify_leg_action(nc.get("prevTargetLots", 0), oc["targetLots"]),
+                    "owners": nc.get("owners", []),
+                    "unwindHint": nc.get("unwindHint", ""),
+                })
+            tickets[mode] = {
+                **orig,
+                "contracts": merged_contracts,
+                "lifecycle": tk["lifecycle"],
+            }
 
     # Auto-settle & verify all completed forward sessions
     ledger = _settle_ledger(ledger, panel, active_cme)

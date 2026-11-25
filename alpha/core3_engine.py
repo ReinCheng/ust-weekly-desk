@@ -122,6 +122,32 @@ def next_sifma_bday(d: date) -> date:
     return cur
 
 
+def prev_sifma_bday(d: date) -> date:
+    cur = d - timedelta(days=1)
+    while not is_sifma_bday(cur):
+        cur -= timedelta(days=1)
+    return cur
+
+
+def add_sifma_bdays(d: date, n: int) -> date:
+    cur = d
+    step = 1 if n >= 0 else -1
+    rem = abs(n)
+    while rem > 0:
+        cur += timedelta(days=step)
+        if is_sifma_bday(cur):
+            rem -= 1
+    return cur
+
+
+def last_sifma_bday_of_month(d: date) -> date:
+    nxt = date(d.year + 1, 1, 1) if d.month == 12 else date(d.year, d.month + 1, 1)
+    cur = nxt - timedelta(days=1)
+    while not is_sifma_bday(cur):
+        cur -= timedelta(days=1)
+    return cur
+
+
 def remaining_sifma_days_in_month(d: date) -> int:
     nxt = date(d.year + 1, 1, 1) if d.month == 12 else date(d.year, d.month + 1, 1)
     cur = d + timedelta(days=1)
@@ -935,17 +961,26 @@ def run_g1_verification_suite(panel: pd.DataFrame, auctions: list[dict]) -> dict
     }
 
 
-def select_live_contract(exec_date: date, active_cme: dict, leg: str) -> dict:
+def select_live_contract(exec_date: date, active_cme: dict, leg: str, as_of_iso: str | None = None) -> dict:
     info = active_cme.get(leg, {})
     near_fnd = (exec_date.month in (2, 5, 8, 11)) and (remaining_sifma_days_in_month(exec_date) <= 5)
     slot = "next" if (near_fnd and "next" in info and "close" in info["next"]) else "front"
     chosen = info.get(slot, info.get("front", {}))
+    raw_hist = chosen.get("history", {})
+    # Strictly cap reference settle price at <= signalAsOfDate (never leak overnight Globex T+0 ticks!)
+    capped = {d: v for d, v in raw_hist.items() if (not as_of_iso) or d <= as_of_iso}
+    if capped:
+        ref_d = max(capped.keys())
+        ref_px = capped[ref_d]
+    else:
+        ref_d = chosen.get("last_date")
+        ref_px = chosen.get("close")
     return {
         "slot": slot,
         "rolledAheadOfFnd": near_fnd,
         "symbol": chosen.get("symbol", f"{leg}_ACTIVE"),
         "contractCode": chosen.get("contract_code", leg),
-        "refPrice": chosen.get("close"),
-        "refDate": chosen.get("last_date"),
-        "history": chosen.get("history", {}),
+        "refPrice": ref_px,
+        "refDate": ref_d,
+        "history": raw_hist,
     }

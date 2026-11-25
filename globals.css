@@ -1087,9 +1087,61 @@ main > footer { text-align: center; padding-bottom: 24px; }
 }
 .alpha-primary-btn:hover { background: var(--accent-strong) !important; }
 .alpha-callout {
-  display: flex; align-items: center; gap: 9px; padding: 10px 13px; border-radius: 12px; margin-bottom: 14px;
-  background: var(--tag-auction-bg); color: var(--tag-auction-ink); font-size: .83rem; line-height: 1.45;
+  display: flex; align-items: center; gap: 9px; padding: 10px 13px; border-radius: 12px; margin-bottom: 12px;
+  background: var(--tag-auction-bg); color: var(--tag-auction-ink); font-size: .82rem; line-height: 1.45;
 }
+.alpha-verdict {
+  padding: 13px 15px; border-radius: 14px; margin-bottom: 12px; border: 1.5px solid var(--glass-divider);
+  background: var(--glass-bg-subtle); display: flex; flex-direction: column; gap: 7px;
+}
+.alpha-verdict.trade { border-color: var(--up-border); background: var(--up-bg); }
+.alpha-verdict.hold { border-color: var(--down-border); background: var(--down-bg); }
+.alpha-verdict.flat { border-color: var(--glass-divider); background: var(--glass-bg-subtle); }
+.alpha-verdict-top { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.alpha-verdict-top strong { font-size: .96rem; color: var(--ink-strong); }
+.alpha-verdict p { margin: 0; font-size: .82rem; color: var(--ink); line-height: 1.5; }
+.alpha-verdict-pill {
+  padding: 2px 9px; border-radius: 999px; font-size: .74rem; font-weight: 700; white-space: nowrap;
+}
+.alpha-verdict-pill.trade { background: var(--up); color: #fff; }
+.alpha-verdict-pill.hold { background: var(--down); color: #fff; }
+:root[data-theme="dark"] .alpha-verdict-pill.trade,
+:root[data-theme="dark"] .alpha-verdict-pill.hold,
+:root[data-theme="dark"] .alpha-act-pill.unwind { color: #04130f; }
+.alpha-verdict-pill.flat { background: var(--glass-input); color: var(--muted); border: 1px solid var(--glass-divider); }
+.alpha-verdict-meta {
+  display: flex; flex-wrap: wrap; gap: 14px; padding-top: 6px; border-top: 1px solid var(--glass-divider);
+  font-size: .78rem; color: var(--ink);
+}
+.alpha-verdict-meta span { display: inline-flex; align-items: center; gap: 5px; }
+
+.alpha-sig-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.alpha-hold-tag {
+  font-style: normal; font-size: .68rem; font-weight: 700; font-family: var(--mono);
+  padding: 1px 6px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap;
+}
+.alpha-act-pill {
+  display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .72rem; font-weight: 700; font-family: var(--mono);
+  white-space: nowrap;
+}
+.alpha-act-pill.long { background: var(--down-bg); color: var(--down); border: 1px solid var(--down-border); }
+.alpha-act-pill.short { background: var(--up-bg); color: var(--up); border: 1px solid var(--up-border); }
+.alpha-act-pill.unwind { background: var(--up); color: #fff; }
+.alpha-act-pill.hold { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-glow); }
+.alpha-act-pill.warn { background: var(--tag-auction-bg); color: var(--tag-auction-ink); }
+.alpha-act-pill.flat { background: var(--glass-input); color: var(--muted); border: 1px solid var(--glass-divider); }
+.alpha-order-tbl th, .alpha-order-tbl td { padding: 8px 8px; font-size: .79rem; }
+.alpha-unwind-cell { font-size: .75rem !important; color: var(--muted); white-space: normal !important; min-width: 165px; line-height: 1.38; }
+
+.alpha-clock-strip {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px;
+}
+.alpha-clock-strip > div {
+  padding: 10px 12px; border-radius: 12px; background: var(--glass-bg-subtle); border: 1px solid var(--glass-divider);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.alpha-clock-strip strong { font-size: .79rem; color: var(--ink-strong); }
+.alpha-clock-strip span { font-size: .75rem; color: var(--muted); line-height: 1.48; }
 
 .alpha-signal-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
 .alpha-sig-card {
@@ -1324,6 +1376,7 @@ main > footer { text-align: center; padding-bottom: 24px; }
   .alpha-yearly-strip { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .xai-two-col { grid-template-columns: minmax(0, 1fr); }
   .xai-sim-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .alpha-clock-strip { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 840px) {

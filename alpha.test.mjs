@@ -20,9 +20,16 @@ test("alpha-paper.json and alpha-ledger.json conform to Phase 4 Pure-Python Core
     assert.equal(tk.contracts.length, 4);
     for (const c of tk.contracts) {
       assert.ok(Number.isInteger(c.targetLots));
+      assert.ok(Number.isInteger(c.prevTargetLots));
+      assert.equal(c.deltaLots, c.targetLots - c.prevTargetLots);
+      assert.ok(c.refDate <= tk.signalAsOfDate, `refDate ${c.refDate} must be <= signalAsOfDate ${tk.signalAsOfDate} (no overnight T+0 leak)`);
       assert.equal(c.pointValueUsd, c.leg === "TU" ? 2000 : 1000);
       assert.ok(c.refPrice > 50 && c.refPrice < 200);
+      assert.ok(typeof c.unwindHint === "string" && c.unwindHint.length > 0);
     }
+    assert.ok(tk.lifecycle?.actionSummary?.verdict);
+    assert.ok(tk.lifecycle?.pillars?.eom);
+    assert.ok(tk.lifecycle?.pillars?.curve5s30s);
     const fwd = paper.forward?.[mode];
     assert.ok(fwd && fwd.totalSessionsLogged >= 1);
   }
