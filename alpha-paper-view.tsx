@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Activity, AlertTriangle, CheckCircle2, Clock, Cloud, CloudDownload, CloudUpload, Copy, Download,
+  Activity, AlertTriangle, BookOpen, CheckCircle2, Clock, Cloud, CloudDownload, CloudUpload, Copy, Download,
   GitBranch, Lock, Plus, RefreshCw, ShieldCheck, SlidersHorizontal, Trash2, Upload, Zap,
 } from "lucide-react";
 import { tzIana, tzShortTag, type TzMode } from "./model";
@@ -330,7 +330,7 @@ function EquityChart({
   );
 }
 
-export function AlphaPaperView({ tz, onExplain }: { tz: TzMode; onExplain?: () => void }) {
+export function AlphaPaperView({ tz, onExplain, onBriefing }: { tz: TzMode; onExplain?: () => void; onBriefing?: () => void }) {
   const [data, setData] = useState<AlphaPaperBundle | null>(null);
   const [busy, setBusy] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -612,6 +612,11 @@ export function AlphaPaperView({ tz, onExplain }: { tz: TzMode; onExplain?: () =
             </p>
           </div>
           <div className="alpha-btn-row">
+            {onBriefing && (
+              <button type="button" className="action" onClick={onBriefing}>
+                <BookOpen size={14} />盘后复盘简报
+              </button>
+            )}
             {onExplain && (
               <button type="button" className="action" onClick={onExplain}>
                 <GitBranch size={14} />信号白盒拆解

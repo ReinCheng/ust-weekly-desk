@@ -76,7 +76,7 @@ jobs:
       - name: Check whether to publish
         id: cache
         run: |
-          if [[ "$GITHUB_EVENT_NAME" == "schedule" ]] && git diff --quiet -- calendar.json replays.json market-history.json alpha-paper.json alpha-ledger.json; then
+          if [[ "$GITHUB_EVENT_NAME" == "schedule" ]] && git diff --quiet -- calendar.json replays.json market-history.json alpha-paper.json alpha-ledger.json alpha-briefings.json; then
             echo "publish=false" >> "$GITHUB_OUTPUT"
           else
             echo "publish=true" >> "$GITHUB_OUTPUT"
@@ -90,12 +90,12 @@ jobs:
       - name: Save new public data
         if: github.event_name == 'schedule' || inputs.refresh
         run: |
-          if git diff --quiet -- calendar.json replays.json market-history.json alpha-paper.json alpha-ledger.json; then
+          if git diff --quiet -- calendar.json replays.json market-history.json alpha-paper.json alpha-ledger.json alpha-briefings.json; then
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- calendar.json replays.json market-history.json alpha-paper.json alpha-ledger.json
+          git add -- calendar.json replays.json market-history.json alpha-paper.json alpha-ledger.json alpha-briefings.json
           git commit -m "Refresh public market, macro, and Core3 paper ledger data"
           git pull --rebase origin main
           git push origin HEAD:main

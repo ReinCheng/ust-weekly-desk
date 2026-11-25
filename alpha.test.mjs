@@ -59,4 +59,15 @@ test("alpha-paper.json and alpha-ledger.json conform to Phase 4 Pure-Python Core
     assert.equal(m.pillar_leg_dv01.P2_EOM.length, 4);
     assert.equal(m.pillar_leg_dv01.P5c_5s30s.length, 4);
   }
+
+  // Cloud Daily Post-Close Briefings archive
+  const briefings = JSON.parse(readFileSync("alpha-briefings.json", "utf8"));
+  assert.ok(Array.isArray(briefings.entries) && briefings.entries.length >= 1);
+  assert.equal(briefings.latestAsOfDate, paper.panelAsOfDate);
+  assert.ok(briefings.ideaCatalog.length >= 12);
+  const latestBrief = briefings.entries[0];
+  assert.ok(latestBrief.regimeDiagnosis?.volRegime);
+  assert.ok(latestBrief.reviews?.ultra);
+  assert.ok(latestBrief.nextAction?.ultra?.actionSummary?.verdict);
+  assert.ok(latestBrief.researchSpotlight?.title);
 });

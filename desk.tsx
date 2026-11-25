@@ -26,8 +26,9 @@ import { seedCalendar } from "./seed";
 import { MarketsView, MarketStatistics } from "./markets-view";
 import { AlphaPaperView } from "./alpha-paper-view";
 import { AlphaExplainView } from "./alpha-explain-view";
+import { AlphaBriefingView } from "./alpha-briefing-view";
 
-type ViewId = "overview" | "calendar" | "scenarios" | "alpha" | "alpha-explain" | "sources" | "markets" | "market-stats";
+type ViewId = "overview" | "calendar" | "scenarios" | "alpha" | "alpha-explain" | "alpha-briefing" | "sources" | "markets" | "market-stats";
 type DrawerTab = "learn" | "scenario" | "replay";
 type ThemeMode = "light" | "dark";
 type BenchMode = "1D" | "1W" | "1M";
@@ -38,7 +39,7 @@ const STORAGE_THEME = "ust-desk-theme";
 const STORAGE_TZ = "ust-desk-tz";
 const STORAGE_SCENARIOS = "ust-desk-scenarios-v1";
 
-const validViews: ViewId[] = ["overview", "calendar", "scenarios", "alpha", "alpha-explain", "sources", "markets", "market-stats"];
+const validViews: ViewId[] = ["overview", "calendar", "scenarios", "alpha", "alpha-explain", "alpha-briefing", "sources", "markets", "market-stats"];
 const short = (date: string) => date.slice(5).replace("-", "/");
 const sign = (value: number, digits = 1) => (value > 0 ? "+" : "") + value.toFixed(digits);
 
@@ -2021,6 +2022,9 @@ export default function Desk() {
           <button type="button" className={view === "alpha-explain" ? "active" : ""} aria-current={view === "alpha-explain" ? "page" : undefined} onClick={() => navigate("alpha-explain")}>
             <GitBranch size={15} />信号白盒拆解
           </button>
+          <button type="button" className={view === "alpha-briefing" ? "active" : ""} aria-current={view === "alpha-briefing" ? "page" : undefined} onClick={() => navigate("alpha-briefing")}>
+            <BookOpen size={15} />盘后复盘简报
+          </button>
         </nav>
 
         <nav className="nav-secondary market-nav" aria-label="跨资产市场">
@@ -2064,7 +2068,7 @@ export default function Desk() {
             <div className="eyebrow">
               <Sparkles size={13} />
               <span>US TREASURY MACRO &amp; RATES DESK</span>
-              {week !== current && view !== "sources" && view !== "markets" && view !== "market-stats" && view !== "alpha" && view !== "alpha-explain" && (
+              {week !== current && view !== "sources" && view !== "markets" && view !== "market-stats" && view !== "alpha" && view !== "alpha-explain" && view !== "alpha-briefing" && (
                 <button type="button" className="history-pill" onClick={() => selectWeek(current)}>
                   当前周次 {short(week)}–{short(weekEnd)} · 返回本周
                 </button>
@@ -2076,6 +2080,7 @@ export default function Desk() {
               {view === "scenarios" && "经济数据情景与历史推演"}
               {view === "alpha" && "Core3 纯美债纸面交易与验证台"}
               {view === "alpha-explain" && "Core3 信号白盒拆解与经济学传导"}
+              {view === "alpha-briefing" && "Core3 云端盘后复盘与研究简报"}
               {view === "sources" && "数据来源与自动排程"}
               {view === "markets" && "全球市场"}
               {view === "market-stats" && "相关性与统计"}
@@ -2088,12 +2093,13 @@ export default function Desk() {
               {view === "scenarios" && "比较宏观传导机制、不同政策环境与历史案例"}
               {view === "alpha" && "GitHub Actions 云端纯 Python 每日自动锁单与结算验证 · 支持 07:00–17:00 ET 下单与私密录单"}
               {view === "alpha-explain" && "零黑箱可视化拆解：从原始美债数据、3 大经济支柱系数、252 日风险平价、^MOVE 阻尼到每份期货合约目标手数"}
+              {view === "alpha-briefing" && "100% 云端每日自动生成并归档（无需开个人电脑）· G6 锁箱三轨复盘 + 明日平仓倒计时 + 每日轮动新 Alpha 构想"}
               {view === "sources" && "Tradeweb 实时现券 + 12 个官方一级来源与跨资产日线快照的核验状态及自动排程说明"}
               {view === "markets" && "主要股指、外汇、国债收益率、商品期货与比特币"}
               {view === "market-stats" && "Cboe、Nasdaq、财政部、欧洲央行、EIA 与 Coinbase 日线相关性、波动率与回撤统计"}
             </p>
           </div>
-          {view !== "markets" && view !== "market-stats" && view !== "alpha" && view !== "alpha-explain" && <div className="sync">
+          {view !== "markets" && view !== "market-stats" && view !== "alpha" && view !== "alpha-explain" && view !== "alpha-briefing" && <div className="sync">
             <span className={"sync-pill" + (week >= current && preferLive && liveCurve ? " sync-live" : "")}>
               {week >= current && preferLive && liveCurve ? <i className="live-dot" /> : <Clock size={13} />}
               {failed ? "日历载入失败 · 保留缓存" :
@@ -2109,8 +2115,9 @@ export default function Desk() {
 
         {view === "markets" && <MarketsView tz={tz} onStatistics={() => navigate("market-stats")} />}
         {view === "market-stats" && <MarketStatistics tz={tz} />}
-        {view === "alpha" && <AlphaPaperView tz={tz} onExplain={() => navigate("alpha-explain")} />}
+        {view === "alpha" && <AlphaPaperView tz={tz} onExplain={() => navigate("alpha-explain")} onBriefing={() => navigate("alpha-briefing")} />}
         {view === "alpha-explain" && <AlphaExplainView onBackToPaper={() => navigate("alpha")} />}
+        {view === "alpha-briefing" && <AlphaBriefingView tz={tz} onBackToPaper={() => navigate("alpha")} onExplain={() => navigate("alpha-explain")} />}
 
         {/* VIEW 1: OVERVIEW */}
         {view === "overview" && <>

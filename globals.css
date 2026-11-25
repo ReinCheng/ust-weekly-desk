@@ -1063,7 +1063,9 @@ main > footer { text-align: center; padding-bottom: 24px; }
 .alpha-badge {
   display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px;
   font-size: .75rem; font-weight: 600; border: 1px solid var(--glass-divider); background: var(--glass-input); color: var(--ink);
+  white-space: nowrap; flex-shrink: 0;
 }
+.alpha-page .panel-header { flex-wrap: wrap; gap: 10px; }
 .alpha-badge.ok { background: var(--down-bg); color: var(--down); border-color: var(--down-border); }
 .alpha-badge.warn { background: var(--up-bg); color: var(--up); border-color: var(--up-border); }
 .alpha-badge.neutral { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-glow); }
@@ -1361,6 +1363,52 @@ main > footer { text-align: center; padding-bottom: 24px; }
 .xai-sim-controls .segmented { width: 100%; }
 .xai-sim-controls .segmented button { flex: 1; padding: 6px 6px; font-size: .74rem; }
 
+/* ---------- Cloud Daily Post-Close Briefing View (.brief-*) ---------- */
+.brief-summary-card {
+  padding: 13px 15px; border-radius: 13px; background: var(--glass-bg-subtle); border: 1px solid var(--accent-glow);
+}
+.brief-summary-card p { margin: 0; font-size: .86rem; color: var(--ink-strong); line-height: 1.6; }
+
+.brief-regime-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.brief-mini-box {
+  padding: 12px 13px; border-radius: 13px; background: var(--glass-bg-subtle); border: 1px solid var(--glass-divider);
+  display: flex; flex-direction: column; gap: 5px;
+}
+.brief-mini-box span { font-size: .73rem; font-weight: 600; color: var(--muted); }
+.brief-mini-box strong { font-size: .92rem; color: var(--ink-strong); line-height: 1.35; }
+.brief-mini-box p { margin: 0; font-size: .78rem; color: var(--muted); line-height: 1.5; }
+
+.brief-idea-head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.brief-idea-head h3 { margin: 6px 0 0; font-size: 1.04rem; color: var(--ink-strong); }
+.brief-cat-pill {
+  display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: .72rem; font-weight: 700;
+  background: var(--accent-soft); color: var(--accent);
+}
+.brief-idea-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+.brief-idea-cell {
+  padding: 12px 14px; border-radius: 12px; background: var(--glass-bg-subtle); border: 1px solid var(--glass-divider);
+}
+.brief-idea-cell strong { display: block; font-size: .8rem; color: var(--ink-strong); margin-bottom: 5px; }
+.brief-idea-cell p { margin: 0; font-size: .8rem; color: var(--ink); line-height: 1.55; }
+.brief-plan-strip {
+  display: flex; align-items: flex-start; gap: 9px; margin-top: 12px; padding: 11px 13px; border-radius: 12px;
+  background: var(--matched-bg); border: 1px solid var(--matched-border); font-size: .81rem; color: var(--ink-strong); line-height: 1.5;
+}
+.brief-catalog-list {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px;
+}
+.brief-cat-btn {
+  text-align: left; padding: 9px 11px; border-radius: 11px; cursor: pointer;
+  background: var(--glass-bg-subtle); border: 1px solid var(--glass-divider); color: var(--ink);
+  display: flex; flex-direction: column; gap: 3px; font-size: .8rem; transition: border-color .15s ease, background .15s ease;
+}
+.brief-cat-btn:hover { border-color: var(--accent); }
+.brief-cat-btn.active { border-color: var(--accent); background: var(--accent-soft); }
+.brief-cat-btn small { font-size: .72rem; color: var(--muted); }
+
 /* Responsive */
 @media (max-width: 1120px) {
   .sidebar { width: 198px; left: 12px; }
@@ -1376,7 +1424,7 @@ main > footer { text-align: center; padding-bottom: 24px; }
   .alpha-yearly-strip { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .xai-two-col { grid-template-columns: minmax(0, 1fr); }
   .xai-sim-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .alpha-clock-strip { grid-template-columns: minmax(0, 1fr); }
+  .alpha-clock-strip, .brief-regime-grid, .brief-idea-grid, .brief-catalog-list { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 840px) {

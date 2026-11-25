@@ -17,4 +17,5 @@ await Promise.all([
   readFile("market-history.json", "utf8").then(raw => writeFile("dist/market-history.json", JSON.stringify(JSON.parse(raw)))),
   readFile("alpha-paper.json", "utf8").then(raw => writeFile("dist/alpha-paper.json", JSON.stringify(JSON.parse(raw)))),
   readFile("alpha-ledger.json", "utf8").then(raw => writeFile("dist/alpha-ledger.json", JSON.stringify(JSON.parse(raw)))),
+  readFile("alpha-briefings.json", "utf8").then(raw => writeFile("dist/alpha-briefings.json", JSON.stringify(JSON.parse(raw)))),
 ]);

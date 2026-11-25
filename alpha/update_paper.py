@@ -44,10 +44,12 @@ from core3_engine import (
     select_live_contract,
     sifma_bdays_ahead,
 )
+from research_spotlight import upsert_daily_briefing
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 LEDGER_PATH = REPO_ROOT / "alpha-ledger.json"
 OUTPUT_PATH = REPO_ROOT / "alpha-paper.json"
+BRIEFINGS_PATH = REPO_ROOT / "alpha-briefings.json"
 BASE_RISK_NAV = 10_000_000.0
 G6_TARGET_SESSIONS = 20
 
@@ -803,7 +805,8 @@ def main() -> None:
         "historical10yOos": hist_summary,
     }
     OUTPUT_PATH.write_text(json.dumps(bundle, indent=2) + "\n")
-    print(f"[alpha/update_paper.py] Done in {time.time() - t0:.2f}s | Appended {appended} frozen tickets | Ultra settled={bundle['forward']['ultra']['settledSessions']}/{G6_TARGET_SESSIONS}")
+    brief_out = upsert_daily_briefing(BRIEFINGS_PATH, panel, bundle, ledger)
+    print(f"[alpha/update_paper.py] Done in {time.time() - t0:.2f}s | Appended {appended} frozen tickets | Briefings archived={len(brief_out['entries'])} | Ultra settled={bundle['forward']['ultra']['settledSessions']}/{G6_TARGET_SESSIONS}")
     print(f"  Ultra Today ({tickets['ultra']['execDate']}): {[(c['symbol'], c['targetLots']) for c in tickets['ultra']['contracts']]} | Net DV01 = ${tickets['ultra']['netDv01Usd']:+,.0f}/bp")
     print(f"  Enh   Today ({tickets['enhanced']['execDate']}): {[(c['symbol'], c['targetLots']) for c in tickets['enhanced']['contracts']]} | Net DV01 = ${tickets['enhanced']['netDv01Usd']:+,.0f}/bp")
 
