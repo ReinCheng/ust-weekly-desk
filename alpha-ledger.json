@@ -94,7 +94,7 @@
       },
       "netDv01Usd": 3869.5,
       "grossDv01Usd": 12078.7,
-      "status": "PENDING",
+      "status": "IN_SESSION",
       "settlement": null
     },
     {
@@ -189,9 +189,367 @@
       },
       "netDv01Usd": 3615.8,
       "grossDv01Usd": 12071.2,
+      "status": "IN_SESSION",
+      "settlement": null
+    },
+    {
+      "mode": "ultra",
+      "venue": "cme_ultra",
+      "frozenAtUtc": "2026-11-26T03:40:27.253655+00:00",
+      "panelSha256": "40e7108ece2d468c",
+      "g1Passed": true,
+      "riskNavUsd": 10000000.0,
+      "signalAsOfDate": "2026-11-25",
+      "execDate": "2026-11-27",
+      "valuationEndDate": "2026-11-30",
+      "orderWindowEt": "2026-11-27 07:00-17:00 ET",
+      "signals": {
+        "eom": 1,
+        "eomBdaysLeftOnExec": 1,
+        "preAuction": 0,
+        "curve2s10s": 0,
+        "curve5s30s": -1,
+        "z2s10s": 0.14,
+        "z5s30s": -1.29,
+        "damper": 0.761,
+        "move": 97.54,
+        "calRollWindow": true
+      },
+      "rpWeights": {
+        "P2_Flow": 0.615,
+        "P5a_2s10s": 0.501,
+        "P5c_5s30s": 0.407
+      },
+      "contracts": [
+        {
+          "leg": "TU",
+          "symbol": "ZTH27.CBT",
+          "contractCode": "TUH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 102.089844,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 2000.0,
+          "dv01PerLotUsd": 34.1,
+          "prevTargetLots": 50,
+          "targetLots": 52,
+          "deltaLots": 2,
+          "actionCode": "HOLD_NOISE",
+          "targetDv01Usd": 1773.1,
+          "owners": [
+            "EOM"
+          ],
+          "unwindHint": "EOM \u7b2c3/3\u5929 \u00b7 11-30\u5e73\u4ed3"
+        },
+        {
+          "leg": "FV",
+          "symbol": "ZFH27.CBT",
+          "contractCode": "FVH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 104.914062,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 41.02,
+          "prevTargetLots": -100,
+          "targetLots": -104,
+          "deltaLots": -4,
+          "actionCode": "HOLD_NOISE",
+          "targetDv01Usd": -4266.2,
+          "owners": [
+            "5s30s"
+          ],
+          "unwindHint": "5s30s \u7b2c5/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+        },
+        {
+          "leg": "UXY",
+          "symbol": "TNH27.CBT",
+          "contractCode": "UXYH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 108.4375,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 88.05,
+          "prevTargetLots": 24,
+          "targetLots": 24,
+          "deltaLots": 0,
+          "actionCode": "HOLD_NOISE",
+          "targetDv01Usd": 2113.2,
+          "owners": [
+            "EOM"
+          ],
+          "unwindHint": "EOM \u7b2c3/3\u5929 \u00b7 11-30\u5e73\u4ed3"
+        },
+        {
+          "leg": "WN",
+          "symbol": "UBH27.CBT",
+          "contractCode": "WNH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 109.6875,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 180.98,
+          "prevTargetLots": 23,
+          "targetLots": 24,
+          "deltaLots": 1,
+          "actionCode": "HOLD_NOISE",
+          "targetDv01Usd": 4343.6,
+          "owners": [
+            "5s30s"
+          ],
+          "unwindHint": "5s30s \u7b2c5/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+        }
+      ],
+      "lifecycle": {
+        "actionSummary": {
+          "verdict": "HOLD_MOSTLY",
+          "headline": "\u7eed\u6301\u4e3a\u4e3b\uff08\u4ec5\u5fae\u8c03 7 \u624b\uff0c\u5df2\u5728\u4ed3\u53ef\u5ffd\u7565\u7701\u70b9\u5dee\uff09",
+          "subtext": "\u6d3b\u8dc3\u652f\u67f1\u5ef6\u7eed\uff1aEOM \u505a\u591a(\u7b2c3/3\u5929) + 5s30s \u505a\u5e73(\u7b2c5/10\u5929)\u3002\u5982\u679c\u4f60\u6628\u65e5\u5df2\u5728\u4ed3\uff0c\u4eca\u65e5\u53ef\u6309\u5175\u4e0d\u52a8\uff1b\u82e5\u4eca\u5929\u9996\u6b21\u5efa\u4ed3\uff0c\u76f4\u63a5\u6309\u300c\u4eca\u65e5\u76ee\u6807\u300d\u5217\u4e0b\u5355\u3002",
+          "totalAbsDeltaLots": 7,
+          "optimalWindowEt": "08:30\u201311:30 ET\uff08\u65e9\u76d8\u6570\u636e\u6d88\u5316\u540e\u3001\u5348\u76d8\u524d\uff09",
+          "isPreHolidayThin": false,
+          "preHolidayNote": null,
+          "nextUnwindSummary": "EOM \u2192 2026-11-30 \u5e73\u4ed3 \uff5c 5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
+        },
+        "pillars": {
+          "eom": {
+            "active": true,
+            "state": 1,
+            "daysHeld": 3,
+            "maxDays": 3,
+            "entryDate": "2026-11-24",
+            "expectedUnwindDate": "2026-11-30",
+            "unwindText": "\u7b2c 3/3 \u5929 \u00b7 \u9884\u8ba1 2026-11-30 (07:00-17:00 ET) \u5e73\u4ed3"
+          },
+          "preAuction": {
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
+            "maxDays": 3,
+            "entryDate": null,
+            "expectedUnwindDate": null,
+            "unwindText": "\u901a\u5e38\u6bcf\u6708 8\u201313 \u53f7 10Y/30Y \u62cd\u5356\uff0c\u516c\u544a\u540e\u81ea\u52a8\u8fdb\u5165 A-4..A-2 \u505a\u7a7a"
+          },
+          "curve2s10s": {
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
+            "maxDays": 10,
+            "entryDate": null,
+            "hardStopDate": null,
+            "move5dBp": -3.0,
+            "bpGapToExit": null,
+            "exitDirection": null,
+            "unwindText": "Z \u5728\u6b7b\u533a\u5185\uff08\u9700\u7a81\u7834 \u00b11.25 \u5165\u573a\uff09"
+          },
+          "curve5s30s": {
+            "active": true,
+            "state": -1,
+            "daysHeld": 5,
+            "maxDays": 10,
+            "entryDate": "2026-11-20",
+            "hardStopDate": "2026-12-07",
+            "move5dBp": 7.0,
+            "bpGapToExit": -7.0,
+            "exitDirection": "flatten",
+            "unwindText": "\u5df2\u6301\u7b2c 5/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~7.0bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
+          }
+        }
+      },
+      "etfOpenNotional": {
+        "2Y": 0.8527,
+        "5Y": -1.23364,
+        "10Y": 0.21611,
+        "30Y": 0.29943
+      },
+      "etfCloseNotional": {
+        "2Y": 0.93345,
+        "5Y": -0.99364,
+        "10Y": 0.26344,
+        "30Y": 0.24117
+      },
+      "netDv01Usd": 3963.7,
+      "grossDv01Usd": 12496.2,
+      "status": "PENDING",
+      "settlement": null
+    },
+    {
+      "mode": "enhanced",
+      "venue": "cme_enhanced",
+      "frozenAtUtc": "2026-11-26T03:40:28.008562+00:00",
+      "panelSha256": "40e7108ece2d468c",
+      "g1Passed": true,
+      "riskNavUsd": 10000000.0,
+      "signalAsOfDate": "2026-11-25",
+      "execDate": "2026-11-27",
+      "valuationEndDate": "2026-11-30",
+      "orderWindowEt": "2026-11-27 07:00-17:00 ET",
+      "signals": {
+        "eom": 1,
+        "eomBdaysLeftOnExec": 1,
+        "preAuction": 0,
+        "curve2s10s": 0,
+        "curve5s30s": -1,
+        "z2s10s": 0.14,
+        "z5s30s": -1.29,
+        "damper": 0.761,
+        "move": 97.54,
+        "calRollWindow": true
+      },
+      "rpWeights": {
+        "P2_Flow": 0.62,
+        "P5a_2s10s": 0.484,
+        "P5c_5s30s": 0.418
+      },
+      "contracts": [
+        {
+          "leg": "TU",
+          "symbol": "ZTH27.CBT",
+          "contractCode": "TUH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 102.089844,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 2000.0,
+          "dv01PerLotUsd": 34.1,
+          "prevTargetLots": 51,
+          "targetLots": 52,
+          "deltaLots": 1,
+          "actionCode": "HOLD_NOISE",
+          "targetDv01Usd": 1773.1,
+          "owners": [
+            "EOM"
+          ],
+          "unwindHint": "EOM \u7b2c3/3\u5929 \u00b7 11-30\u5e73\u4ed3"
+        },
+        {
+          "leg": "FV",
+          "symbol": "ZFH27.CBT",
+          "contractCode": "FVH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 104.914062,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 41.02,
+          "prevTargetLots": -103,
+          "targetLots": -107,
+          "deltaLots": -4,
+          "actionCode": "HOLD_NOISE",
+          "targetDv01Usd": -4389.3,
+          "owners": [
+            "5s30s"
+          ],
+          "unwindHint": "5s30s \u7b2c5/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+        },
+        {
+          "leg": "TY",
+          "symbol": "ZNH27.CBT",
+          "contractCode": "TYH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 106.84375,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 64.96,
+          "prevTargetLots": 30,
+          "targetLots": 30,
+          "deltaLots": 0,
+          "actionCode": "HOLD_NOISE",
+          "targetDv01Usd": 1948.8,
+          "owners": [
+            "EOM"
+          ],
+          "unwindHint": "EOM \u7b2c3/3\u5929 \u00b7 11-30\u5e73\u4ed3"
+        },
+        {
+          "leg": "WN",
+          "symbol": "UBH27.CBT",
+          "contractCode": "WNH27",
+          "rolledAheadOfFnd": true,
+          "refPrice": 109.6875,
+          "refDate": "2026-11-25",
+          "pointValueUsd": 1000.0,
+          "dv01PerLotUsd": 180.98,
+          "prevTargetLots": 23,
+          "targetLots": 24,
+          "deltaLots": 1,
+          "actionCode": "HOLD_NOISE",
+          "targetDv01Usd": 4343.6,
+          "owners": [
+            "5s30s"
+          ],
+          "unwindHint": "5s30s \u7b2c5/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+        }
+      ],
+      "lifecycle": {
+        "actionSummary": {
+          "verdict": "HOLD_MOSTLY",
+          "headline": "\u7eed\u6301\u4e3a\u4e3b\uff08\u4ec5\u5fae\u8c03 6 \u624b\uff0c\u5df2\u5728\u4ed3\u53ef\u5ffd\u7565\u7701\u70b9\u5dee\uff09",
+          "subtext": "\u6d3b\u8dc3\u652f\u67f1\u5ef6\u7eed\uff1aEOM \u505a\u591a(\u7b2c3/3\u5929) + 5s30s \u505a\u5e73(\u7b2c5/10\u5929)\u3002\u5982\u679c\u4f60\u6628\u65e5\u5df2\u5728\u4ed3\uff0c\u4eca\u65e5\u53ef\u6309\u5175\u4e0d\u52a8\uff1b\u82e5\u4eca\u5929\u9996\u6b21\u5efa\u4ed3\uff0c\u76f4\u63a5\u6309\u300c\u4eca\u65e5\u76ee\u6807\u300d\u5217\u4e0b\u5355\u3002",
+          "totalAbsDeltaLots": 6,
+          "optimalWindowEt": "08:30\u201311:30 ET\uff08\u65e9\u76d8\u6570\u636e\u6d88\u5316\u540e\u3001\u5348\u76d8\u524d\uff09",
+          "isPreHolidayThin": false,
+          "preHolidayNote": null,
+          "nextUnwindSummary": "EOM \u2192 2026-11-30 \u5e73\u4ed3 \uff5c 5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
+        },
+        "pillars": {
+          "eom": {
+            "active": true,
+            "state": 1,
+            "daysHeld": 3,
+            "maxDays": 3,
+            "entryDate": "2026-11-24",
+            "expectedUnwindDate": "2026-11-30",
+            "unwindText": "\u7b2c 3/3 \u5929 \u00b7 \u9884\u8ba1 2026-11-30 (07:00-17:00 ET) \u5e73\u4ed3"
+          },
+          "preAuction": {
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
+            "maxDays": 3,
+            "entryDate": null,
+            "expectedUnwindDate": null,
+            "unwindText": "\u901a\u5e38\u6bcf\u6708 8\u201313 \u53f7 10Y/30Y \u62cd\u5356\uff0c\u516c\u544a\u540e\u81ea\u52a8\u8fdb\u5165 A-4..A-2 \u505a\u7a7a"
+          },
+          "curve2s10s": {
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
+            "maxDays": 10,
+            "entryDate": null,
+            "hardStopDate": null,
+            "move5dBp": -3.0,
+            "bpGapToExit": null,
+            "exitDirection": null,
+            "unwindText": "Z \u5728\u6b7b\u533a\u5185\uff08\u9700\u7a81\u7834 \u00b11.25 \u5165\u573a\uff09"
+          },
+          "curve5s30s": {
+            "active": true,
+            "state": -1,
+            "daysHeld": 5,
+            "maxDays": 10,
+            "entryDate": "2026-11-20",
+            "hardStopDate": "2026-12-07",
+            "move5dBp": 7.0,
+            "bpGapToExit": -7.0,
+            "exitDirection": "flatten",
+            "unwindText": "\u5df2\u6301\u7b2c 5/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~7.0bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
+          }
+        }
+      },
+      "etfOpenNotional": {
+        "2Y": 0.8527,
+        "5Y": -1.23364,
+        "10Y": 0.21611,
+        "30Y": 0.29943
+      },
+      "etfCloseNotional": {
+        "2Y": 0.93345,
+        "5Y": -0.99364,
+        "10Y": 0.26344,
+        "30Y": 0.24117
+      },
+      "netDv01Usd": 3676.3,
+      "grossDv01Usd": 12454.8,
       "status": "PENDING",
       "settlement": null
     }
   ],
-  "updatedAtUtc": "2026-11-25T08:02:13.323104+00:00"
+  "updatedAtUtc": "2026-11-26T03:40:28.016666+00:00"
 }

@@ -1,9 +1,359 @@
 {
   "schemaVersion": "1.0_cloud_daily_briefings",
-  "updatedAtUtc": "2026-11-25T08:02:14.519354+00:00",
+  "updatedAtUtc": "2026-11-26T03:40:30.545545+00:00",
   "totalCatalogIdeas": 12,
-  "latestAsOfDate": "2026-11-24",
+  "latestAsOfDate": "2026-11-25",
   "entries": [
+    {
+      "asOfDate": "2026-11-25",
+      "execDate": "2026-11-27",
+      "valuationEndDate": "2026-11-30",
+      "generatedAtUtc": "2026-11-26T03:40:30.545512+00:00",
+      "g1AllPassed": true,
+      "g1Count": "4/4",
+      "marketSnapshot": {
+        "date": "2026-11-25",
+        "ust2y": 4.61,
+        "ust5y": 4.65,
+        "ust10y": 4.85,
+        "ust30y": 5.24,
+        "s2s10sBp": 24.0,
+        "s5s30sBp": 59.0,
+        "move": 97.54
+      },
+      "regimeDiagnosis": {
+        "volRegime": "偏高波动温和降仓",
+        "volTone": "warn",
+        "volNote": "^MOVE=97.5 高于 252d 75 分位 (83.3)，系统自动按 0.76× 轻度降仓，兼顾收益与回撤控制。",
+        "curveShape": "正斜率陡峭",
+        "dailyMoveSummary": "上一交易日美债收线：2Y 4.61% (-2.0bp) · 10Y 4.85% (-6.0bp) · 30Y 5.24% (-6.0bp)，2s10s=+24.0bp (-4.0bp) / 5s30s=+59.0bp（正斜率陡峭）。",
+        "d2yBp": -2.0,
+        "d10yBp": -6.0,
+        "d30yBp": -6.0
+      },
+      "reviews": {
+        "ultra": {
+          "hasSettlement": false,
+          "summary": "前瞻锁箱已于 2026-11-25 正式冻结启动（当前 0 / 20 日已结算）。首笔冻结单（执行日 2026-11-27 → 结算日 2026-11-30）将在 2026-11-30 收盘后由云端自动完成首次 Auto CME H27 + 零换月 ETF 双轨结算。",
+          "latestSettled": null,
+          "cumCmeNetUsd": 0.0,
+          "cumCmeNetPct": 0.0,
+          "cumEtfOpenNetUsd": 0.0,
+          "cumEtfCloseNetUsd": 0.0,
+          "cmeVsEtfCloseUsd": null,
+          "g6Settled": 0,
+          "g6Target": 20,
+          "forwardSharpe": null,
+          "forwardHitRatePct": null,
+          "histBenchmarkSr": 1.77,
+          "histBenchmarkMaxDd": -4.1
+        },
+        "enhanced": {
+          "hasSettlement": false,
+          "summary": "前瞻锁箱已于 2026-11-25 正式冻结启动（当前 0 / 20 日已结算）。首笔冻结单（执行日 2026-11-27 → 结算日 2026-11-30）将在 2026-11-30 收盘后由云端自动完成首次 Auto CME H27 + 零换月 ETF 双轨结算。",
+          "latestSettled": null,
+          "cumCmeNetUsd": 0.0,
+          "cumCmeNetPct": 0.0,
+          "cumEtfOpenNetUsd": 0.0,
+          "cumEtfCloseNetUsd": 0.0,
+          "cmeVsEtfCloseUsd": null,
+          "g6Settled": 0,
+          "g6Target": 20,
+          "forwardSharpe": null,
+          "forwardHitRatePct": null,
+          "histBenchmarkSr": 1.68,
+          "histBenchmarkMaxDd": -4.5
+        }
+      },
+      "nextAction": {
+        "ultra": {
+          "actionSummary": {
+            "verdict": "HOLD_MOSTLY",
+            "headline": "续持为主（仅微调 7 手，已在仓可忽略省点差）",
+            "subtext": "活跃支柱延续：EOM 做多(第3/3天) + 5s30s 做平(第5/10天)。如果你昨日已在仓，今日可按兵不动；若今天首次建仓，直接按「今日目标」列下单。",
+            "totalAbsDeltaLots": 7,
+            "optimalWindowEt": "08:30–11:30 ET（早盘数据消化后、午盘前）",
+            "isPreHolidayThin": false,
+            "preHolidayNote": null,
+            "nextUnwindSummary": "EOM → 2026-11-30 平仓 ｜ 5s30s → Z回±0.35 或最晚 2026-12-07"
+          },
+          "pillars": {
+            "eom": {
+              "active": true,
+              "state": 1,
+              "daysHeld": 3,
+              "maxDays": 3,
+              "entryDate": "2026-11-24",
+              "expectedUnwindDate": "2026-11-30",
+              "unwindText": "第 3/3 天 · 预计 2026-11-30 (07:00-17:00 ET) 平仓"
+            },
+            "preAuction": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 3,
+              "entryDate": null,
+              "expectedUnwindDate": null,
+              "unwindText": "通常每月 8–13 号 10Y/30Y 拍卖，公告后自动进入 A-4..A-2 做空"
+            },
+            "curve2s10s": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 10,
+              "entryDate": null,
+              "hardStopDate": null,
+              "move5dBp": -3.0,
+              "bpGapToExit": null,
+              "exitDirection": null,
+              "unwindText": "Z 在死区内（需突破 ±1.25 入场）"
+            },
+            "curve5s30s": {
+              "active": true,
+              "state": -1,
+              "daysHeld": 5,
+              "maxDays": 10,
+              "entryDate": "2026-11-20",
+              "hardStopDate": "2026-12-07",
+              "move5dBp": 7.0,
+              "bpGapToExit": -7.0,
+              "exitDirection": "flatten",
+              "unwindText": "已持第 5/10 天 (11-20入场) · Z回±0.35（再趋平~7.0bp）或最晚 12-07 硬止损"
+            }
+          },
+          "netDv01Usd": 3963.7,
+          "grossDv01Usd": 12496.2,
+          "contracts": [
+            {
+              "leg": "TU",
+              "symbol": "ZTH27.CBT",
+              "contractCode": "TUH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 102.089844,
+              "refDate": "2026-11-25",
+              "pointValueUsd": 2000.0,
+              "dv01PerLotUsd": 34.1,
+              "prevTargetLots": 50,
+              "targetLots": 52,
+              "deltaLots": 2,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 1773.1,
+              "owners": [
+                "EOM"
+              ],
+              "unwindHint": "EOM 第3/3天 · 11-30平仓"
+            },
+            {
+              "leg": "FV",
+              "symbol": "ZFH27.CBT",
+              "contractCode": "FVH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 104.914062,
+              "refDate": "2026-11-25",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 41.02,
+              "prevTargetLots": -100,
+              "targetLots": -104,
+              "deltaLots": -4,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": -4266.2,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s 第5/10天 · Z回±0.35或12-07平"
+            },
+            {
+              "leg": "UXY",
+              "symbol": "TNH27.CBT",
+              "contractCode": "UXYH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 108.4375,
+              "refDate": "2026-11-25",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 88.05,
+              "prevTargetLots": 24,
+              "targetLots": 24,
+              "deltaLots": 0,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 2113.2,
+              "owners": [
+                "EOM"
+              ],
+              "unwindHint": "EOM 第3/3天 · 11-30平仓"
+            },
+            {
+              "leg": "WN",
+              "symbol": "UBH27.CBT",
+              "contractCode": "WNH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 109.6875,
+              "refDate": "2026-11-25",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 180.98,
+              "prevTargetLots": 23,
+              "targetLots": 24,
+              "deltaLots": 1,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 4343.6,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s 第5/10天 · Z回±0.35或12-07平"
+            }
+          ]
+        },
+        "enhanced": {
+          "actionSummary": {
+            "verdict": "HOLD_MOSTLY",
+            "headline": "续持为主（仅微调 6 手，已在仓可忽略省点差）",
+            "subtext": "活跃支柱延续：EOM 做多(第3/3天) + 5s30s 做平(第5/10天)。如果你昨日已在仓，今日可按兵不动；若今天首次建仓，直接按「今日目标」列下单。",
+            "totalAbsDeltaLots": 6,
+            "optimalWindowEt": "08:30–11:30 ET（早盘数据消化后、午盘前）",
+            "isPreHolidayThin": false,
+            "preHolidayNote": null,
+            "nextUnwindSummary": "EOM → 2026-11-30 平仓 ｜ 5s30s → Z回±0.35 或最晚 2026-12-07"
+          },
+          "pillars": {
+            "eom": {
+              "active": true,
+              "state": 1,
+              "daysHeld": 3,
+              "maxDays": 3,
+              "entryDate": "2026-11-24",
+              "expectedUnwindDate": "2026-11-30",
+              "unwindText": "第 3/3 天 · 预计 2026-11-30 (07:00-17:00 ET) 平仓"
+            },
+            "preAuction": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 3,
+              "entryDate": null,
+              "expectedUnwindDate": null,
+              "unwindText": "通常每月 8–13 号 10Y/30Y 拍卖，公告后自动进入 A-4..A-2 做空"
+            },
+            "curve2s10s": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 10,
+              "entryDate": null,
+              "hardStopDate": null,
+              "move5dBp": -3.0,
+              "bpGapToExit": null,
+              "exitDirection": null,
+              "unwindText": "Z 在死区内（需突破 ±1.25 入场）"
+            },
+            "curve5s30s": {
+              "active": true,
+              "state": -1,
+              "daysHeld": 5,
+              "maxDays": 10,
+              "entryDate": "2026-11-20",
+              "hardStopDate": "2026-12-07",
+              "move5dBp": 7.0,
+              "bpGapToExit": -7.0,
+              "exitDirection": "flatten",
+              "unwindText": "已持第 5/10 天 (11-20入场) · Z回±0.35（再趋平~7.0bp）或最晚 12-07 硬止损"
+            }
+          },
+          "netDv01Usd": 3676.3,
+          "grossDv01Usd": 12454.8,
+          "contracts": [
+            {
+              "leg": "TU",
+              "symbol": "ZTH27.CBT",
+              "contractCode": "TUH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 102.089844,
+              "refDate": "2026-11-25",
+              "pointValueUsd": 2000.0,
+              "dv01PerLotUsd": 34.1,
+              "prevTargetLots": 51,
+              "targetLots": 52,
+              "deltaLots": 1,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 1773.1,
+              "owners": [
+                "EOM"
+              ],
+              "unwindHint": "EOM 第3/3天 · 11-30平仓"
+            },
+            {
+              "leg": "FV",
+              "symbol": "ZFH27.CBT",
+              "contractCode": "FVH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 104.914062,
+              "refDate": "2026-11-25",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 41.02,
+              "prevTargetLots": -103,
+              "targetLots": -107,
+              "deltaLots": -4,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": -4389.3,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s 第5/10天 · Z回±0.35或12-07平"
+            },
+            {
+              "leg": "TY",
+              "symbol": "ZNH27.CBT",
+              "contractCode": "TYH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 106.84375,
+              "refDate": "2026-11-25",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 64.96,
+              "prevTargetLots": 30,
+              "targetLots": 30,
+              "deltaLots": 0,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 1948.8,
+              "owners": [
+                "EOM"
+              ],
+              "unwindHint": "EOM 第3/3天 · 11-30平仓"
+            },
+            {
+              "leg": "WN",
+              "symbol": "UBH27.CBT",
+              "contractCode": "WNH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 109.6875,
+              "refDate": "2026-11-25",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 180.98,
+              "prevTargetLots": 23,
+              "targetLots": 24,
+              "deltaLots": 1,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 4343.6,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s 第5/10天 · Z回±0.35或12-07平"
+            }
+          ]
+        }
+      },
+      "researchSpotlight": {
+        "id": "IDEA-002",
+        "title": "FOMC 缄默期（Blackout Window）前端 SOFR 路径漂移与波动率收敛",
+        "instruments": "CME 3M SOFR 期货（SR3 第 2–5 季）与 Fed Funds 期货（ZQ）",
+        "category": "央行日程 × 前端定价",
+        "horizon": "5–8 交易日",
+        "priorConfidencePct": 54,
+        "mechanism": "FOMC 议息前 10 个自然日进入美联储官员缄默期（Blackout），政策口风冲击骤降、市场逐步向基准共识收敛；历史上在非极端通胀冲击期，前端利率隐含风险溢价会在缄默期至议息日早盘前出现温和收窄（FOMC Pre-Drift）。",
+        "publicFeeds": "美联储官网 FOMC 历史与未来排期表（已知提前 1 年公布，零前视）+ CME SR3/ZQ 日线与 2Y 美债曲线 + ^MOVE 门控过滤。",
+        "orthogonality": "瞄准 3M–18M 货币政策前端路径，与 Core3 的长端/中端国债结构流几乎零重叠。",
+        "costAndFalsification": "仅在 ^MOVE 未处于极端飙升区时有效；2022 激进加息周期里若缄默期遭遇超预期 CPI/WSJ 放风，单次尾损较大，必须加 CPI 公布日避险过滤与固定 1× 波动止损。",
+        "validationPlan": "以 2014–2026 全部 ~100 次 FOMC 会议做严格事件研究，对比 CPI 撞期与非撞期子样本，检验净成本后 HAC t 与 2022–2026 近年稳健性。"
+      },
+      "pmConfidencePct": 86
+    },
     {
       "asOfDate": "2026-11-24",
       "execDate": "2026-11-25",
