@@ -2922,7 +2922,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-25",
+        "officialDate": "2026-11-26",
         "resultUrl": "https://www.census.gov/retail/index.html",
         "readings": [
           {
@@ -2993,7 +2993,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-25"
+        "officialDate": "2026-11-26"
       },
       {
         "id": "tsy-6w-bill-2026-11-17",
@@ -3056,7 +3056,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-25"
+        "officialDate": "2026-11-26"
       },
       {
         "id": "tsy-17w-bill-2026-11-18",
@@ -3505,82 +3505,82 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "officialUpdate": "2026-11-19",
         "count": 9
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "officialUpdate": "2026-11-05",
         "count": 8
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "officialUpdate": "2026-11-03",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "officialUpdate": "2026-11-25",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
-        "officialUpdate": "2026-11-25",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
+        "officialUpdate": "2026-11-26",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "officialUpdate": "2026-11-24",
         "count": 11
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "officialUpdate": "2026-11-18",
         "count": 1
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-25T19:06:16.313Z",
+        "checkedAt": "2026-11-26T21:51:46.176Z",
         "officialUpdate": "2026-11-20",
         "count": 9
       }
@@ -3776,7 +3776,7 @@
         ]
       }
     ],
-    "refreshedAt": "2026-11-25T19:06:16.313Z"
+    "refreshedAt": "2026-11-26T21:51:46.176Z"
   },
   "2026-11-23": {
     "week": "2026-11-23",
@@ -4271,7 +4271,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-25",
+        "officialDate": "2026-11-26",
         "resultUrl": "https://www.census.gov/manufacturing/m3/",
         "readings": [
           {
@@ -4300,7 +4300,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-25",
+        "officialDate": "2026-11-26",
         "resultUrl": "https://www.census.gov/construction/nrs/",
         "readings": [
           {
@@ -4598,7 +4598,7 @@
         "status": "confirmed",
         "source": "census",
         "url": "https://www.census.gov/economic-indicators/calendar-listview-2026.html",
-        "officialDate": "2026-11-25"
+        "officialDate": "2026-11-26"
       },
       {
         "id": "cme-2026-11-27",
@@ -4672,82 +4672,82 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "officialUpdate": "2026-11-25",
         "count": 11
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "officialUpdate": "2026-11-05",
         "count": 11
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "officialUpdate": "2026-11-03",
         "count": 0
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "officialUpdate": "2026-11-25",
         "count": 2
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
-        "officialUpdate": "2026-11-25",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
+        "officialUpdate": "2026-11-26",
         "count": 3
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "officialUpdate": "2026-11-24",
         "count": 3
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "officialUpdate": "2026-11-12",
         "count": 2
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "count": 2
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "count": 2
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:16.619Z",
+        "checkedAt": "2026-11-26T21:51:46.916Z",
         "officialUpdate": "2026-11-25",
         "count": 8
       }
@@ -4922,7 +4922,7 @@
         ]
       }
     ],
-    "refreshedAt": "2026-11-26T02:24:16.619Z"
+    "refreshedAt": "2026-11-26T21:51:46.916Z"
   },
   "2026-11-30": {
     "week": "2026-11-30",
@@ -5078,82 +5078,82 @@
       {
         "id": "treasury",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "officialUpdate": "2026-11-25",
         "count": 3
       },
       {
         "id": "tentative",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "officialUpdate": "2026-11-05",
         "count": 6
       },
       {
         "id": "bls",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "officialUpdate": "2026-11-09",
         "count": 2
       },
       {
         "id": "bea",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "officialUpdate": "2026-11-25",
         "count": 0
       },
       {
         "id": "census",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
-        "officialUpdate": "2026-11-25",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
+        "officialUpdate": "2026-11-26",
         "count": 0
       },
       {
         "id": "fed",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "officialUpdate": "2026-11-25",
         "count": 1
       },
       {
         "id": "fomc",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "officialUpdate": "2026-11-18",
         "count": 0
       },
       {
         "id": "dol",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "officialUpdate": "2026-09-11",
         "count": 1
       },
       {
         "id": "sifma",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "officialUpdate": "2026-11-12",
         "count": 0
       },
       {
         "id": "nyse",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "count": 0
       },
       {
         "id": "cme",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "count": 0
       },
       {
         "id": "curve",
         "state": "verified",
-        "checkedAt": "2026-11-26T02:24:17.024Z",
+        "checkedAt": "2026-11-26T21:51:47.259Z",
         "officialUpdate": "2026-11-25",
         "count": 3
       }
@@ -5223,7 +5223,7 @@
         ]
       }
     ],
-    "refreshedAt": "2026-11-26T02:24:17.024Z"
+    "refreshedAt": "2026-11-26T21:51:47.259Z"
   },
   "2026-12-07": {
     "week": "2026-12-07",

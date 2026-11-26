@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T02:24:33.946Z",
+  "generatedAt": "2026-11-26T21:51:58.992Z",
   "curveThrough": "2026-11-25",
   "series": {
     "auction:10y-nominal": {
@@ -1164,6 +1164,87 @@
       "methodology": "中标收益率、投标倍数与一/二/三级获配占比直采 TreasuryDirect 官方拍卖结果；市场反应取财政部日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
         {
+          "date": "2026-11-25",
+          "prevDate": "2026-11-24",
+          "period": "新发 · $75bn",
+          "headline": "4.250% · BTC 3.01× · Dealer 35.9%",
+          "readings": [
+            {
+              "label": "最高贴现率",
+              "valueText": "4.250%",
+              "num": 4.25
+            },
+            {
+              "label": "投标倍数",
+              "valueText": "3.01×",
+              "num": 3.01,
+              "deltaText": "较近5次均值 -0.03×"
+            },
+            {
+              "label": "一级交易商",
+              "valueText": "35.9%",
+              "num": 35.9,
+              "deltaText": "较均值 -2.8pct"
+            },
+            {
+              "label": "间接投标",
+              "valueText": "57.2%",
+              "num": 57.2
+            },
+            {
+              "label": "直接投标",
+              "valueText": "6.9%",
+              "num": 6.9
+            }
+          ],
+          "prevCurve": [
+            4.36,
+            4.59,
+            4.63,
+            4.67,
+            4.69,
+            4.79,
+            4.91,
+            5.33,
+            5.3
+          ],
+          "curve": [
+            4.34,
+            4.56,
+            4.61,
+            4.64,
+            4.65,
+            4.74,
+            4.85,
+            5.28,
+            5.24
+          ],
+          "shiftsBp": [
+            -2,
+            -3,
+            -2,
+            -3,
+            -4,
+            -5,
+            -6,
+            -5,
+            -6
+          ],
+          "real10Bp": -6,
+          "be10Bp": 0,
+          "regimeTag": "超短端下行",
+          "regimeTone": "bull",
+          "confounders": [
+            "初请失业金",
+            "美国 GDP",
+            "PCE 物价 / 个人收支",
+            "耐用品订单初值",
+            "7 年期国债拍卖"
+          ],
+          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261125_4.pdf",
+          "sourceName": "TreasuryDirect 拍卖结果 PDF"
+        },
+        {
           "date": "2026-11-18",
           "prevDate": "2026-11-17",
           "period": "新发 · $75bn",
@@ -1178,13 +1259,13 @@
               "label": "投标倍数",
               "valueText": "3.05×",
               "num": 3.05,
-              "deltaText": "较近5次均值 +0.06×"
+              "deltaText": "较近5次均值 +0.01×"
             },
             {
               "label": "一级交易商",
               "valueText": "37.5%",
               "num": 37.5,
-              "deltaText": "较均值 -1.8pct"
+              "deltaText": "较均值 -1.2pct"
             },
             {
               "label": "间接投标",
@@ -1256,13 +1337,13 @@
               "label": "投标倍数",
               "valueText": "2.78×",
               "num": 2.78,
-              "deltaText": "较近5次均值 -0.21×"
+              "deltaText": "较近5次均值 -0.26×"
             },
             {
               "label": "一级交易商",
               "valueText": "42.3%",
               "num": 42.3,
-              "deltaText": "较均值 +3.0pct"
+              "deltaText": "较均值 +3.6pct"
             },
             {
               "label": "间接投标",
@@ -1334,13 +1415,13 @@
               "label": "投标倍数",
               "valueText": "3.26×",
               "num": 3.26,
-              "deltaText": "较近5次均值 +0.27×"
+              "deltaText": "较近5次均值 +0.22×"
             },
             {
               "label": "一级交易商",
               "valueText": "42.5%",
               "num": 42.5,
-              "deltaText": "较均值 +3.2pct"
+              "deltaText": "较均值 +3.8pct"
             },
             {
               "label": "间接投标",
@@ -1409,13 +1490,13 @@
               "label": "投标倍数",
               "valueText": "3.08×",
               "num": 3.08,
-              "deltaText": "较近5次均值 +0.09×"
+              "deltaText": "较近5次均值 +0.04×"
             },
             {
               "label": "一级交易商",
               "valueText": "35.1%",
               "num": 35.1,
-              "deltaText": "较均值 -4.2pct"
+              "deltaText": "较均值 -3.6pct"
             },
             {
               "label": "间接投标",
@@ -1469,83 +1550,6 @@
             "FOMC 利率决议"
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261028_2.pdf",
-          "sourceName": "TreasuryDirect 拍卖结果 PDF"
-        },
-        {
-          "date": "2026-10-21",
-          "prevDate": "2026-10-20",
-          "period": "新发 · $75bn",
-          "headline": "4.155% · BTC 2.76× · Dealer 38.9%",
-          "readings": [
-            {
-              "label": "最高贴现率",
-              "valueText": "4.155%",
-              "num": 4.155
-            },
-            {
-              "label": "投标倍数",
-              "valueText": "2.76×",
-              "num": 2.76,
-              "deltaText": "较近5次均值 -0.23×"
-            },
-            {
-              "label": "一级交易商",
-              "valueText": "38.9%",
-              "num": 38.9,
-              "deltaText": "较均值 -0.4pct"
-            },
-            {
-              "label": "间接投标",
-              "valueText": "52.8%",
-              "num": 52.8
-            },
-            {
-              "label": "直接投标",
-              "valueText": "8.3%",
-              "num": 8.3
-            }
-          ],
-          "prevCurve": [
-            4.26,
-            4.51,
-            4.79,
-            4.86,
-            4.94,
-            5.02,
-            5.12,
-            5.47,
-            5.42
-          ],
-          "curve": [
-            4.25,
-            4.52,
-            4.81,
-            4.89,
-            4.95,
-            5.03,
-            5.13,
-            5.47,
-            5.42
-          ],
-          "shiftsBp": [
-            -1,
-            1,
-            2,
-            3,
-            1,
-            1,
-            1,
-            0,
-            0
-          ],
-          "real10Bp": -1,
-          "be10Bp": 2,
-          "regimeTag": "超短端平稳",
-          "regimeTone": "mixed",
-          "confounders": [
-            "20 年期国债拍卖"
-          ],
-          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261021_1.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
         }
       ]
@@ -4027,6 +4031,87 @@
       "methodology": "中标收益率、投标倍数与一/二/三级获配占比直采 TreasuryDirect 官方拍卖结果；市场反应取财政部日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
         {
+          "date": "2026-11-25",
+          "prevDate": "2026-11-24",
+          "period": "续发 · $105bn",
+          "headline": "4.115% · BTC 2.64× · Dealer 27.9%",
+          "readings": [
+            {
+              "label": "最高贴现率",
+              "valueText": "4.115%",
+              "num": 4.115
+            },
+            {
+              "label": "投标倍数",
+              "valueText": "2.64×",
+              "num": 2.64,
+              "deltaText": "较近5次均值 -0.10×"
+            },
+            {
+              "label": "一级交易商",
+              "valueText": "27.9%",
+              "num": 27.9,
+              "deltaText": "较均值 -4.6pct"
+            },
+            {
+              "label": "间接投标",
+              "valueText": "67.2%",
+              "num": 67.2
+            },
+            {
+              "label": "直接投标",
+              "valueText": "4.9%",
+              "num": 4.9
+            }
+          ],
+          "prevCurve": [
+            4.36,
+            4.59,
+            4.63,
+            4.67,
+            4.69,
+            4.79,
+            4.91,
+            5.33,
+            5.3
+          ],
+          "curve": [
+            4.34,
+            4.56,
+            4.61,
+            4.64,
+            4.65,
+            4.74,
+            4.85,
+            5.28,
+            5.24
+          ],
+          "shiftsBp": [
+            -2,
+            -3,
+            -2,
+            -3,
+            -4,
+            -5,
+            -6,
+            -5,
+            -6
+          ],
+          "real10Bp": -6,
+          "be10Bp": 0,
+          "regimeTag": "超短端下行",
+          "regimeTone": "bull",
+          "confounders": [
+            "初请失业金",
+            "美国 GDP",
+            "PCE 物价 / 个人收支",
+            "耐用品订单初值",
+            "7 年期国债拍卖"
+          ],
+          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261125_1.pdf",
+          "sourceName": "TreasuryDirect 拍卖结果 PDF"
+        },
+        {
           "date": "2026-11-19",
           "prevDate": "2026-11-18",
           "period": "续发 · $115bn",
@@ -4041,13 +4126,13 @@
               "label": "投标倍数",
               "valueText": "2.55×",
               "num": 2.55,
-              "deltaText": "较近4次均值 -0.21×"
+              "deltaText": "较近5次均值 -0.19×"
             },
             {
               "label": "一级交易商",
               "valueText": "36.4%",
               "num": 36.4,
-              "deltaText": "较均值 +2.8pct"
+              "deltaText": "较均值 +3.9pct"
             },
             {
               "label": "间接投标",
@@ -4119,13 +4204,13 @@
               "label": "投标倍数",
               "valueText": "2.94×",
               "num": 2.94,
-              "deltaText": "较近4次均值 +0.18×"
+              "deltaText": "较近5次均值 +0.20×"
             },
             {
               "label": "一级交易商",
               "valueText": "25.2%",
               "num": 25.2,
-              "deltaText": "较均值 -8.4pct"
+              "deltaText": "较均值 -7.3pct"
             },
             {
               "label": "间接投标",
@@ -4197,13 +4282,13 @@
               "label": "投标倍数",
               "valueText": "2.46×",
               "num": 2.46,
-              "deltaText": "较近4次均值 -0.30×"
+              "deltaText": "较近5次均值 -0.28×"
             },
             {
               "label": "一级交易商",
               "valueText": "48.4%",
               "num": 48.4,
-              "deltaText": "较均值 +14.8pct"
+              "deltaText": "较均值 +15.9pct"
             },
             {
               "label": "间接投标",
@@ -4275,13 +4360,13 @@
               "label": "投标倍数",
               "valueText": "3.10×",
               "num": 3.1,
-              "deltaText": "较近4次均值 +0.34×"
+              "deltaText": "较近5次均值 +0.36×"
             },
             {
               "label": "一级交易商",
               "valueText": "24.4%",
               "num": 24.4,
-              "deltaText": "较均值 -9.2pct"
+              "deltaText": "较均值 -8.1pct"
             },
             {
               "label": "间接投标",
@@ -5827,6 +5912,86 @@
       "methodology": "中标收益率、投标倍数与一/二/三级获配占比直采 TreasuryDirect 官方拍卖结果；市场反应取财政部日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
         {
+          "date": "2026-11-25",
+          "prevDate": "2026-11-24",
+          "period": "新发 · $44bn",
+          "headline": "4.708% · BTC 2.43× · Dealer 8.6%",
+          "readings": [
+            {
+              "label": "中标收益率",
+              "valueText": "4.708%",
+              "num": 4.708
+            },
+            {
+              "label": "投标倍数",
+              "valueText": "2.43×",
+              "num": 2.43,
+              "deltaText": "较近5次均值 -0.03×"
+            },
+            {
+              "label": "一级交易商",
+              "valueText": "8.6%",
+              "num": 8.6,
+              "deltaText": "较均值 -2.6pct"
+            },
+            {
+              "label": "间接投标",
+              "valueText": "58.2%",
+              "num": 58.2
+            },
+            {
+              "label": "直接投标",
+              "valueText": "33.2%",
+              "num": 33.2
+            }
+          ],
+          "prevCurve": [
+            4.36,
+            4.59,
+            4.63,
+            4.67,
+            4.69,
+            4.79,
+            4.91,
+            5.33,
+            5.3
+          ],
+          "curve": [
+            4.34,
+            4.56,
+            4.61,
+            4.64,
+            4.65,
+            4.74,
+            4.85,
+            5.28,
+            5.24
+          ],
+          "shiftsBp": [
+            -2,
+            -3,
+            -2,
+            -3,
+            -4,
+            -5,
+            -6,
+            -5,
+            -6
+          ],
+          "real10Bp": -6,
+          "be10Bp": 0,
+          "regimeTag": "牛平 Bull Flat",
+          "regimeTone": "bull",
+          "confounders": [
+            "初请失业金",
+            "美国 GDP",
+            "PCE 物价 / 个人收支",
+            "耐用品订单初值"
+          ],
+          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261125_3.pdf",
+          "sourceName": "TreasuryDirect 拍卖结果 PDF"
+        },
+        {
           "date": "2026-10-29",
           "prevDate": "2026-10-28",
           "period": "新发 · $44bn",
@@ -5841,13 +6006,13 @@
               "label": "投标倍数",
               "valueText": "2.46×",
               "num": 2.46,
-              "deltaText": "较近5次均值 -0.01×"
+              "deltaText": "较近5次均值 0.00×"
             },
             {
               "label": "一级交易商",
               "valueText": "9.4%",
               "num": 9.4,
-              "deltaText": "较均值 -2.6pct"
+              "deltaText": "较均值 -1.8pct"
             },
             {
               "label": "间接投标",
@@ -5920,13 +6085,13 @@
               "label": "投标倍数",
               "valueText": "2.42×",
               "num": 2.42,
-              "deltaText": "较近5次均值 -0.05×"
+              "deltaText": "较近5次均值 -0.04×"
             },
             {
               "label": "一级交易商",
               "valueText": "12.5%",
               "num": 12.5,
-              "deltaText": "较均值 +0.5pct"
+              "deltaText": "较均值 +1.3pct"
             },
             {
               "label": "间接投标",
@@ -5995,13 +6160,13 @@
               "label": "投标倍数",
               "valueText": "2.50×",
               "num": 2.5,
-              "deltaText": "较近5次均值 +0.03×"
+              "deltaText": "较近5次均值 +0.04×"
             },
             {
               "label": "一级交易商",
               "valueText": "12.3%",
               "num": 12.3,
-              "deltaText": "较均值 +0.3pct"
+              "deltaText": "较均值 +1.1pct"
             },
             {
               "label": "间接投标",
@@ -6070,13 +6235,13 @@
               "label": "投标倍数",
               "valueText": "2.49×",
               "num": 2.49,
-              "deltaText": "较近5次均值 +0.02×"
+              "deltaText": "较近5次均值 +0.03×"
             },
             {
               "label": "一级交易商",
               "valueText": "13.0%",
               "num": 13,
-              "deltaText": "较均值 +1.0pct"
+              "deltaText": "较均值 +1.8pct"
             },
             {
               "label": "间接投标",
@@ -6129,84 +6294,6 @@
           "confounders": [],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20260728_2.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
-        },
-        {
-          "date": "2026-06-25",
-          "prevDate": "2026-06-24",
-          "period": "新发 · $44bn",
-          "headline": "4.260% · BTC 2.50× · Dealer 12.8%",
-          "readings": [
-            {
-              "label": "中标收益率",
-              "valueText": "4.260%",
-              "num": 4.26
-            },
-            {
-              "label": "投标倍数",
-              "valueText": "2.50×",
-              "num": 2.5,
-              "deltaText": "较近5次均值 +0.03×"
-            },
-            {
-              "label": "一级交易商",
-              "valueText": "12.8%",
-              "num": 12.8,
-              "deltaText": "较均值 +0.8pct"
-            },
-            {
-              "label": "间接投标",
-              "valueText": "57.6%",
-              "num": 57.6
-            },
-            {
-              "label": "直接投标",
-              "valueText": "29.7%",
-              "num": 29.7
-            }
-          ],
-          "prevCurve": [
-            3.85,
-            3.99,
-            4.11,
-            4.15,
-            4.17,
-            4.28,
-            4.41,
-            4.87,
-            4.86
-          ],
-          "curve": [
-            3.84,
-            3.96,
-            4.09,
-            4.13,
-            4.15,
-            4.26,
-            4.4,
-            4.87,
-            4.86
-          ],
-          "shiftsBp": [
-            -1,
-            -3,
-            -2,
-            -2,
-            -2,
-            -2,
-            -1,
-            0,
-            0
-          ],
-          "real10Bp": -4,
-          "be10Bp": 3,
-          "regimeTag": "窄幅震荡",
-          "regimeTone": "mixed",
-          "confounders": [
-            "PCE 物价 / 个人收支",
-            "耐用品订单初值"
-          ],
-          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20260625_3.pdf",
-          "sourceName": "TreasuryDirect 拍卖结果 PDF"
         }
       ]
     },
@@ -6215,6 +6302,87 @@
       "name": "8 周 T-bill 拍卖",
       "methodology": "中标收益率、投标倍数与一/二/三级获配占比直采 TreasuryDirect 官方拍卖结果；市场反应取财政部日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
+        {
+          "date": "2026-11-25",
+          "prevDate": "2026-11-24",
+          "period": "续发 · $100bn",
+          "headline": "4.120% · BTC 2.86× · Dealer 24.3%",
+          "readings": [
+            {
+              "label": "最高贴现率",
+              "valueText": "4.120%",
+              "num": 4.12
+            },
+            {
+              "label": "投标倍数",
+              "valueText": "2.86×",
+              "num": 2.86,
+              "deltaText": "较近5次均值 +0.18×"
+            },
+            {
+              "label": "一级交易商",
+              "valueText": "24.3%",
+              "num": 24.3,
+              "deltaText": "较均值 -6.5pct"
+            },
+            {
+              "label": "间接投标",
+              "valueText": "70.4%",
+              "num": 70.4
+            },
+            {
+              "label": "直接投标",
+              "valueText": "5.3%",
+              "num": 5.3
+            }
+          ],
+          "prevCurve": [
+            4.36,
+            4.59,
+            4.63,
+            4.67,
+            4.69,
+            4.79,
+            4.91,
+            5.33,
+            5.3
+          ],
+          "curve": [
+            4.34,
+            4.56,
+            4.61,
+            4.64,
+            4.65,
+            4.74,
+            4.85,
+            5.28,
+            5.24
+          ],
+          "shiftsBp": [
+            -2,
+            -3,
+            -2,
+            -3,
+            -4,
+            -5,
+            -6,
+            -5,
+            -6
+          ],
+          "real10Bp": -6,
+          "be10Bp": 0,
+          "regimeTag": "超短端下行",
+          "regimeTone": "bull",
+          "confounders": [
+            "初请失业金",
+            "美国 GDP",
+            "PCE 物价 / 个人收支",
+            "耐用品订单初值",
+            "7 年期国债拍卖"
+          ],
+          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261125_2.pdf",
+          "sourceName": "TreasuryDirect 拍卖结果 PDF"
+        },
         {
           "date": "2026-11-19",
           "prevDate": "2026-11-18",
@@ -6230,13 +6398,13 @@
               "label": "投标倍数",
               "valueText": "2.72×",
               "num": 2.72,
-              "deltaText": "较近5次均值 +0.10×"
+              "deltaText": "较近5次均值 +0.04×"
             },
             {
               "label": "一级交易商",
               "valueText": "27.9%",
               "num": 27.9,
-              "deltaText": "较均值 -5.4pct"
+              "deltaText": "较均值 -2.9pct"
             },
             {
               "label": "间接投标",
@@ -6308,13 +6476,13 @@
               "label": "投标倍数",
               "valueText": "2.50×",
               "num": 2.5,
-              "deltaText": "较近5次均值 -0.12×"
+              "deltaText": "较近5次均值 -0.18×"
             },
             {
               "label": "一级交易商",
               "valueText": "39.2%",
               "num": 39.2,
-              "deltaText": "较均值 +5.9pct"
+              "deltaText": "较均值 +8.4pct"
             },
             {
               "label": "间接投标",
@@ -6386,13 +6554,13 @@
               "label": "投标倍数",
               "valueText": "2.68×",
               "num": 2.68,
-              "deltaText": "较近5次均值 +0.06×"
+              "deltaText": "较近5次均值 0.00×"
             },
             {
               "label": "一级交易商",
               "valueText": "31.3%",
               "num": 31.3,
-              "deltaText": "较均值 -2.0pct"
+              "deltaText": "较均值 +0.5pct"
             },
             {
               "label": "间接投标",
@@ -6464,13 +6632,13 @@
               "label": "投标倍数",
               "valueText": "2.63×",
               "num": 2.63,
-              "deltaText": "较近5次均值 +0.01×"
+              "deltaText": "较近5次均值 -0.05×"
             },
             {
               "label": "一级交易商",
               "valueText": "31.5%",
               "num": 31.5,
-              "deltaText": "较均值 -1.8pct"
+              "deltaText": "较均值 +0.7pct"
             },
             {
               "label": "间接投标",
@@ -6528,84 +6696,6 @@
           ],
           "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261029_2.pdf",
           "sourceName": "TreasuryDirect 拍卖结果 PDF"
-        },
-        {
-          "date": "2026-10-22",
-          "prevDate": "2026-10-21",
-          "period": "续发 · $105bn",
-          "headline": "4.015% · BTC 2.57× · Dealer 36.7%",
-          "readings": [
-            {
-              "label": "最高贴现率",
-              "valueText": "4.015%",
-              "num": 4.015
-            },
-            {
-              "label": "投标倍数",
-              "valueText": "2.57×",
-              "num": 2.57,
-              "deltaText": "较近5次均值 -0.05×"
-            },
-            {
-              "label": "一级交易商",
-              "valueText": "36.7%",
-              "num": 36.7,
-              "deltaText": "较均值 +3.4pct"
-            },
-            {
-              "label": "间接投标",
-              "valueText": "57.8%",
-              "num": 57.8
-            },
-            {
-              "label": "直接投标",
-              "valueText": "5.5%",
-              "num": 5.5
-            }
-          ],
-          "prevCurve": [
-            4.25,
-            4.52,
-            4.81,
-            4.89,
-            4.95,
-            5.03,
-            5.13,
-            5.47,
-            5.42
-          ],
-          "curve": [
-            4.22,
-            4.41,
-            4.65,
-            4.72,
-            4.78,
-            4.86,
-            4.96,
-            5.32,
-            5.29
-          ],
-          "shiftsBp": [
-            -3,
-            -11,
-            -16,
-            -17,
-            -17,
-            -17,
-            -17,
-            -15,
-            -13
-          ],
-          "real10Bp": -12,
-          "be10Bp": -5,
-          "regimeTag": "超短端下行",
-          "regimeTone": "bull",
-          "confounders": [
-            "初请失业金",
-            "5 年期 TIPS 拍卖"
-          ],
-          "sourceUrl": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261022_2.pdf",
-          "sourceName": "TreasuryDirect 拍卖结果 PDF"
         }
       ]
     },
@@ -6614,6 +6704,70 @@
       "name": "初请失业金",
       "methodology": "每周初请/续请均经 ALFRED 发布当日快照核验（严格剔除事后修正）；市场反应取美国财政部官方日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
+        {
+          "date": "2026-11-25",
+          "prevDate": "2026-11-24",
+          "period": "截至 11-21 周",
+          "headline": "初请 189k (-13k)",
+          "readings": [
+            {
+              "label": "初请失业金",
+              "valueText": "189 千人",
+              "num": 189,
+              "deltaText": "较前周 -13千"
+            },
+            {
+              "label": "续请失业金",
+              "valueText": "1697 千人",
+              "num": 1697
+            }
+          ],
+          "prevCurve": [
+            4.36,
+            4.59,
+            4.63,
+            4.67,
+            4.69,
+            4.79,
+            4.91,
+            5.33,
+            5.3
+          ],
+          "curve": [
+            4.34,
+            4.56,
+            4.61,
+            4.64,
+            4.65,
+            4.74,
+            4.85,
+            5.28,
+            5.24
+          ],
+          "shiftsBp": [
+            -2,
+            -3,
+            -2,
+            -3,
+            -4,
+            -5,
+            -6,
+            -5,
+            -6
+          ],
+          "real10Bp": -6,
+          "be10Bp": 0,
+          "regimeTag": "牛平 Bull Flat",
+          "regimeTone": "bull",
+          "confounders": [
+            "美国 GDP",
+            "PCE 物价 / 个人收支",
+            "耐用品订单初值",
+            "7 年期国债拍卖"
+          ],
+          "sourceUrl": "https://www.dol.gov/ui/data.pdf",
+          "sourceName": "DOL / ALFRED 原始口径"
+        },
         {
           "date": "2026-11-19",
           "prevDate": "2026-11-18",
@@ -6856,67 +7010,6 @@
             "美国 GDP",
             "PCE 物价 / 个人收支",
             "7 年期国债拍卖"
-          ],
-          "sourceUrl": "https://www.dol.gov/ui/data.pdf",
-          "sourceName": "DOL / ALFRED 原始口径"
-        },
-        {
-          "date": "2026-10-22",
-          "prevDate": "2026-10-21",
-          "period": "截至 10-17 周",
-          "headline": "初请 194k (-6k)",
-          "readings": [
-            {
-              "label": "初请失业金",
-              "valueText": "194 千人",
-              "num": 194,
-              "deltaText": "较前周 -6千"
-            },
-            {
-              "label": "续请失业金",
-              "valueText": "1728 千人",
-              "num": 1728
-            }
-          ],
-          "prevCurve": [
-            4.25,
-            4.52,
-            4.81,
-            4.89,
-            4.95,
-            5.03,
-            5.13,
-            5.47,
-            5.42
-          ],
-          "curve": [
-            4.22,
-            4.41,
-            4.65,
-            4.72,
-            4.78,
-            4.86,
-            4.96,
-            5.32,
-            5.29
-          ],
-          "shiftsBp": [
-            -3,
-            -11,
-            -16,
-            -17,
-            -17,
-            -17,
-            -17,
-            -15,
-            -13
-          ],
-          "real10Bp": -12,
-          "be10Bp": -5,
-          "regimeTag": "全线牛市下行",
-          "regimeTone": "bull",
-          "confounders": [
-            "5 年期 TIPS 拍卖"
           ],
           "sourceUrl": "https://www.dol.gov/ui/data.pdf",
           "sourceName": "DOL / ALFRED 原始口径"
@@ -7299,6 +7392,70 @@
       "methodology": "月率基于圣路易斯联储 ALFRED 发布当日原始快照计算（核心资本品为剔除国防与飞机口径）；反应取财政部日终曲线 T-1 → T。",
       "items": [
         {
+          "date": "2026-11-25",
+          "prevDate": "2026-11-24",
+          "period": "2026年10月",
+          "headline": "耐用品 +0.2% · 核心资本品 +1.2%",
+          "readings": [
+            {
+              "label": "耐用品订单月率",
+              "valueText": "+0.2%",
+              "num": 0.2
+            },
+            {
+              "label": "核心资本品订单",
+              "valueText": "+1.2%",
+              "num": 1.2,
+              "deltaText": "较前次 +0.7pct"
+            }
+          ],
+          "prevCurve": [
+            4.36,
+            4.59,
+            4.63,
+            4.67,
+            4.69,
+            4.79,
+            4.91,
+            5.33,
+            5.3
+          ],
+          "curve": [
+            4.34,
+            4.56,
+            4.61,
+            4.64,
+            4.65,
+            4.74,
+            4.85,
+            5.28,
+            5.24
+          ],
+          "shiftsBp": [
+            -2,
+            -3,
+            -2,
+            -3,
+            -4,
+            -5,
+            -6,
+            -5,
+            -6
+          ],
+          "real10Bp": -6,
+          "be10Bp": 0,
+          "regimeTag": "牛平 Bull Flat",
+          "regimeTone": "bull",
+          "confounders": [
+            "初请失业金",
+            "美国 GDP",
+            "PCE 物价 / 个人收支",
+            "7 年期国债拍卖"
+          ],
+          "sourceUrl": "https://www.census.gov/manufacturing/m3/index.html",
+          "sourceName": "Census / ALFRED 原始口径"
+        },
+        {
           "date": "2026-10-27",
           "prevDate": "2026-10-26",
           "period": "2026年9月",
@@ -7492,8 +7649,7 @@
             {
               "label": "核心资本品订单",
               "valueText": "+0.9%",
-              "num": 0.9,
-              "deltaText": "较前次 -0.7pct"
+              "num": 0.9
             }
           ],
           "prevCurve": [
@@ -7534,67 +7690,6 @@
           "regimeTag": "牛平 Bull Flat",
           "regimeTone": "bull",
           "confounders": [],
-          "sourceUrl": "https://www.census.gov/manufacturing/m3/index.html",
-          "sourceName": "Census / ALFRED 原始口径"
-        },
-        {
-          "date": "2026-06-25",
-          "prevDate": "2026-06-24",
-          "period": "2026年5月",
-          "headline": "耐用品 -4.5% · 核心资本品 +1.6%",
-          "readings": [
-            {
-              "label": "耐用品订单月率",
-              "valueText": "-4.5%",
-              "num": -4.5
-            },
-            {
-              "label": "核心资本品订单",
-              "valueText": "+1.6%",
-              "num": 1.6
-            }
-          ],
-          "prevCurve": [
-            3.85,
-            3.99,
-            4.11,
-            4.15,
-            4.17,
-            4.28,
-            4.41,
-            4.87,
-            4.86
-          ],
-          "curve": [
-            3.84,
-            3.96,
-            4.09,
-            4.13,
-            4.15,
-            4.26,
-            4.4,
-            4.87,
-            4.86
-          ],
-          "shiftsBp": [
-            -1,
-            -3,
-            -2,
-            -2,
-            -2,
-            -2,
-            -1,
-            0,
-            0
-          ],
-          "real10Bp": -4,
-          "be10Bp": 3,
-          "regimeTag": "窄幅震荡",
-          "regimeTone": "mixed",
-          "confounders": [
-            "PCE 物价 / 个人收支",
-            "7 年期国债拍卖"
-          ],
           "sourceUrl": "https://www.census.gov/manufacturing/m3/index.html",
           "sourceName": "Census / ALFRED 原始口径"
         }
@@ -7939,6 +8034,75 @@
       "methodology": "数据采自 BEA 发布当日官方原始新闻稿（保留初值/修正原始口径）；市场反应取美国财政部官方日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
         {
+          "date": "2026-11-25",
+          "prevDate": "2026-11-24",
+          "period": "2026 Q3 修正",
+          "headline": "实际 GDP +4.3% · 私人国内最终销售 +5.8%",
+          "readings": [
+            {
+              "label": "实际 GDP 季环比折年率",
+              "valueText": "+4.3%",
+              "num": 4.3,
+              "deltaText": "较前次 +0.9pct"
+            },
+            {
+              "label": "私人国内最终销售折年率",
+              "valueText": "+5.8%",
+              "num": 5.8
+            },
+            {
+              "label": "季度核心 PCE 折年率",
+              "valueText": "+2.5%",
+              "num": 2.5
+            }
+          ],
+          "prevCurve": [
+            4.36,
+            4.59,
+            4.63,
+            4.67,
+            4.69,
+            4.79,
+            4.91,
+            5.33,
+            5.3
+          ],
+          "curve": [
+            4.34,
+            4.56,
+            4.61,
+            4.64,
+            4.65,
+            4.74,
+            4.85,
+            5.28,
+            5.24
+          ],
+          "shiftsBp": [
+            -2,
+            -3,
+            -2,
+            -3,
+            -4,
+            -5,
+            -6,
+            -5,
+            -6
+          ],
+          "real10Bp": -6,
+          "be10Bp": 0,
+          "regimeTag": "牛平 Bull Flat",
+          "regimeTone": "bull",
+          "confounders": [
+            "初请失业金",
+            "PCE 物价 / 个人收支",
+            "耐用品订单初值",
+            "7 年期国债拍卖"
+          ],
+          "sourceUrl": "https://www.bea.gov/news/2026/gdp-second-estimate-and-corporate-profits-3rd-quarter-2026",
+          "sourceName": "BEA 官方新闻稿"
+        },
+        {
           "date": "2026-10-29",
           "prevDate": "2026-10-28",
           "period": "2026 Q3 初值",
@@ -8148,8 +8312,7 @@
             {
               "label": "实际 GDP 季环比折年率",
               "valueText": "+1.6%",
-              "num": 1.6,
-              "deltaText": "较前次 -0.4pct"
+              "num": 1.6
             },
             {
               "label": "私人国内最终销售折年率",
@@ -8205,72 +8368,6 @@
             "7 年期国债拍卖"
           ],
           "sourceUrl": "https://www.bea.gov/news/2026/gdp-second-estimate-and-corporate-profits-1st-quarter-2026",
-          "sourceName": "BEA 官方新闻稿"
-        },
-        {
-          "date": "2026-04-30",
-          "prevDate": "2026-04-29",
-          "period": "2026 Q1 初值",
-          "headline": "实际 GDP +2.0% · 私人国内最终销售 +2.5%",
-          "readings": [
-            {
-              "label": "实际 GDP 季环比折年率",
-              "valueText": "+2.0%",
-              "num": 2
-            },
-            {
-              "label": "私人国内最终销售折年率",
-              "valueText": "+2.5%",
-              "num": 2.5
-            },
-            {
-              "label": "季度核心 PCE 折年率",
-              "valueText": "+4.3%",
-              "num": 4.3
-            }
-          ],
-          "prevCurve": [
-            3.68,
-            3.75,
-            3.92,
-            3.94,
-            4.05,
-            4.23,
-            4.42,
-            4.97,
-            4.98
-          ],
-          "curve": [
-            3.68,
-            3.72,
-            3.88,
-            3.91,
-            4.02,
-            4.2,
-            4.4,
-            4.97,
-            4.98
-          ],
-          "shiftsBp": [
-            0,
-            -3,
-            -4,
-            -3,
-            -3,
-            -3,
-            -2,
-            0,
-            0
-          ],
-          "real10Bp": -2,
-          "be10Bp": 0,
-          "regimeTag": "牛陡 Bull Steep",
-          "regimeTone": "bull",
-          "confounders": [
-            "就业成本指数（ECI）",
-            "PCE 物价 / 个人收支"
-          ],
-          "sourceUrl": "https://www.bea.gov/news/2026/gdp-advance-estimate-1st-quarter-2026",
           "sourceName": "BEA 官方新闻稿"
         }
       ]
@@ -9275,6 +9372,85 @@
       "methodology": "数据采自 BEA 发布当日官方原始新闻稿（保留初值/修正原始口径）；市场反应取美国财政部官方日终平价与 TIPS 曲线 T-1 → T 变动。",
       "items": [
         {
+          "date": "2026-11-25",
+          "prevDate": "2026-11-24",
+          "period": "2026年10月",
+          "headline": "核心 PCE 月率 +0.3% · 整体 PCE 月率 +0.3%",
+          "readings": [
+            {
+              "label": "核心 PCE 月率",
+              "valueText": "+0.3%",
+              "num": 0.3,
+              "deltaText": "持平前次"
+            },
+            {
+              "label": "整体 PCE 月率",
+              "valueText": "+0.3%",
+              "num": 0.3
+            },
+            {
+              "label": "核心 PCE 同比",
+              "valueText": "3.3%",
+              "num": 3.3
+            },
+            {
+              "label": "整体 PCE 同比",
+              "valueText": "3.8%",
+              "num": 3.8
+            },
+            {
+              "label": "实际消费月率",
+              "valueText": "0.0%",
+              "num": 0
+            }
+          ],
+          "prevCurve": [
+            4.36,
+            4.59,
+            4.63,
+            4.67,
+            4.69,
+            4.79,
+            4.91,
+            5.33,
+            5.3
+          ],
+          "curve": [
+            4.34,
+            4.56,
+            4.61,
+            4.64,
+            4.65,
+            4.74,
+            4.85,
+            5.28,
+            5.24
+          ],
+          "shiftsBp": [
+            -2,
+            -3,
+            -2,
+            -3,
+            -4,
+            -5,
+            -6,
+            -5,
+            -6
+          ],
+          "real10Bp": -6,
+          "be10Bp": 0,
+          "regimeTag": "牛平 Bull Flat",
+          "regimeTone": "bull",
+          "confounders": [
+            "初请失业金",
+            "美国 GDP",
+            "耐用品订单初值",
+            "7 年期国债拍卖"
+          ],
+          "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-october-2026",
+          "sourceName": "BEA 官方新闻稿"
+        },
+        {
           "date": "2026-10-29",
           "prevDate": "2026-10-28",
           "period": "2026年9月",
@@ -9512,8 +9688,7 @@
             {
               "label": "核心 PCE 月率",
               "valueText": "+0.1%",
-              "num": 0.1,
-              "deltaText": "较前次 -0.2pct"
+              "num": 0.1
             },
             {
               "label": "整体 PCE 月率",
@@ -9577,82 +9752,6 @@
             "美国 GDP"
           ],
           "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-june-2026",
-          "sourceName": "BEA 官方新闻稿"
-        },
-        {
-          "date": "2026-06-25",
-          "prevDate": "2026-06-24",
-          "period": "2026年5月",
-          "headline": "核心 PCE 月率 +0.3% · 整体 PCE 月率 +0.4%",
-          "readings": [
-            {
-              "label": "核心 PCE 月率",
-              "valueText": "+0.3%",
-              "num": 0.3
-            },
-            {
-              "label": "整体 PCE 月率",
-              "valueText": "+0.4%",
-              "num": 0.4
-            },
-            {
-              "label": "核心 PCE 同比",
-              "valueText": "3.4%",
-              "num": 3.4
-            },
-            {
-              "label": "整体 PCE 同比",
-              "valueText": "4.1%",
-              "num": 4.1
-            },
-            {
-              "label": "实际消费月率",
-              "valueText": "+0.3%",
-              "num": 0.3
-            }
-          ],
-          "prevCurve": [
-            3.85,
-            3.99,
-            4.11,
-            4.15,
-            4.17,
-            4.28,
-            4.41,
-            4.87,
-            4.86
-          ],
-          "curve": [
-            3.84,
-            3.96,
-            4.09,
-            4.13,
-            4.15,
-            4.26,
-            4.4,
-            4.87,
-            4.86
-          ],
-          "shiftsBp": [
-            -1,
-            -3,
-            -2,
-            -2,
-            -2,
-            -2,
-            -1,
-            0,
-            0
-          ],
-          "real10Bp": -4,
-          "be10Bp": 3,
-          "regimeTag": "窄幅震荡",
-          "regimeTone": "mixed",
-          "confounders": [
-            "耐用品订单初值",
-            "7 年期国债拍卖"
-          ],
-          "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-may-2026",
           "sourceName": "BEA 官方新闻稿"
         }
       ]
