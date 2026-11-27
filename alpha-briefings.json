@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0_cloud_daily_briefings",
-  "updatedAtUtc": "2026-11-26T19:43:46.999594+00:00",
+  "updatedAtUtc": "2026-11-27T19:33:11.848791+00:00",
   "totalCatalogIdeas": 12,
   "latestAsOfDate": "2026-11-25",
   "entries": [
@@ -8,7 +8,7 @@
       "asOfDate": "2026-11-25",
       "execDate": "2026-11-27",
       "valuationEndDate": "2026-11-30",
-      "generatedAtUtc": "2026-11-26T19:43:46.999564+00:00",
+      "generatedAtUtc": "2026-11-27T19:33:11.848736+00:00",
       "g1AllPassed": true,
       "g1Count": "4/4",
       "marketSnapshot": {
@@ -33,34 +33,126 @@
       },
       "reviews": {
         "ultra": {
-          "hasSettlement": false,
-          "summary": "前瞻锁箱已于 2026-11-25 正式冻结启动（当前 0 / 20 日已结算）。首笔冻结单（执行日 2026-11-27 → 结算日 2026-11-30）将在 2026-11-30 收盘后由云端自动完成首次 Auto CME H27 + 零换月 ETF 双轨结算。",
-          "latestSettled": null,
-          "cumCmeNetUsd": 0.0,
-          "cumCmeNetPct": 0.0,
-          "cumEtfOpenNetUsd": 0.0,
-          "cumEtfCloseNetUsd": 0.0,
-          "cmeVsEtfCloseUsd": null,
-          "g6Settled": 0,
+          "hasSettlement": true,
+          "summary": "最新已结算前瞻期 2026-11-25 → 2026-11-27：Auto CME 净盈亏 -34,804 美元（-0.35%）。最佳腿 FV（+32,031 美元），拖累腿 WN（-34,500 美元）。累计 G6 进度 1 / 20 天，累计净值 -34,804 美元（-0.35%）。",
+          "latestSettled": {
+            "execDate": "2026-11-25",
+            "valuationEndDate": "2026-11-27",
+            "cmeNetUsd": -34803.9,
+            "cmeNetPct": -0.348,
+            "cmeCostUsd": 647.6,
+            "etfOpenNetUsd": null,
+            "etfCloseNetUsd": null,
+            "legs": [
+              {
+                "symbol": "ZTH27.CBT",
+                "leg": "TU",
+                "lots": 50,
+                "entrySettle": 102.152344,
+                "exitSettle": 102.011719,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -14062.5
+              },
+              {
+                "symbol": "ZFH27.CBT",
+                "leg": "FV",
+                "lots": -100,
+                "entrySettle": 105.070312,
+                "exitSettle": 104.75,
+                "exitDate": "2026-11-27",
+                "pnlUsd": 32031.2
+              },
+              {
+                "symbol": "TNH27.CBT",
+                "leg": "UXY",
+                "lots": 24,
+                "entrySettle": 108.75,
+                "exitSettle": 108.015625,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -17625.0
+              },
+              {
+                "symbol": "UBH27.CBT",
+                "leg": "WN",
+                "lots": 23,
+                "entrySettle": 110.1875,
+                "exitSettle": 108.6875,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -34500.0
+              }
+            ]
+          },
+          "cumCmeNetUsd": -34803.9,
+          "cumCmeNetPct": -0.348,
+          "cumEtfOpenNetUsd": 0,
+          "cumEtfCloseNetUsd": 0,
+          "cmeVsEtfCloseUsd": -34803.9,
+          "g6Settled": 1,
           "g6Target": 20,
           "forwardSharpe": null,
-          "forwardHitRatePct": null,
+          "forwardHitRatePct": 0.0,
           "histBenchmarkSr": 1.77,
           "histBenchmarkMaxDd": -4.1
         },
         "enhanced": {
-          "hasSettlement": false,
-          "summary": "前瞻锁箱已于 2026-11-25 正式冻结启动（当前 0 / 20 日已结算）。首笔冻结单（执行日 2026-11-27 → 结算日 2026-11-30）将在 2026-11-30 收盘后由云端自动完成首次 Auto CME H27 + 零换月 ETF 双轨结算。",
-          "latestSettled": null,
-          "cumCmeNetUsd": 0.0,
-          "cumCmeNetPct": 0.0,
-          "cumEtfOpenNetUsd": 0.0,
-          "cumEtfCloseNetUsd": 0.0,
-          "cmeVsEtfCloseUsd": null,
-          "g6Settled": 0,
+          "hasSettlement": true,
+          "summary": "最新已结算前瞻期 2026-11-25 → 2026-11-27：Auto CME 净盈亏 -32,905 美元（-0.33%）。最佳腿 FV（+32,992 美元），拖累腿 WN（-34,500 美元）。累计 G6 进度 1 / 20 天，累计净值 -32,905 美元（-0.33%）。",
+          "latestSettled": {
+            "execDate": "2026-11-25",
+            "valuationEndDate": "2026-11-27",
+            "cmeNetUsd": -32905.0,
+            "cmeNetPct": -0.3291,
+            "cmeCostUsd": 647.1,
+            "etfOpenNetUsd": null,
+            "etfCloseNetUsd": null,
+            "legs": [
+              {
+                "symbol": "ZTH27.CBT",
+                "leg": "TU",
+                "lots": 51,
+                "entrySettle": 102.152344,
+                "exitSettle": 102.011719,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -14343.8
+              },
+              {
+                "symbol": "ZFH27.CBT",
+                "leg": "FV",
+                "lots": -103,
+                "entrySettle": 105.070312,
+                "exitSettle": 104.75,
+                "exitDate": "2026-11-27",
+                "pnlUsd": 32992.1
+              },
+              {
+                "symbol": "ZNH27.CBT",
+                "leg": "TY",
+                "lots": 30,
+                "entrySettle": 107.078125,
+                "exitSettle": 106.53125,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -16406.2
+              },
+              {
+                "symbol": "UBH27.CBT",
+                "leg": "WN",
+                "lots": 23,
+                "entrySettle": 110.1875,
+                "exitSettle": 108.6875,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -34500.0
+              }
+            ]
+          },
+          "cumCmeNetUsd": -32905.0,
+          "cumCmeNetPct": -0.329,
+          "cumEtfOpenNetUsd": 0,
+          "cumEtfCloseNetUsd": 0,
+          "cmeVsEtfCloseUsd": -32905.0,
+          "g6Settled": 1,
           "g6Target": 20,
           "forwardSharpe": null,
-          "forwardHitRatePct": null,
+          "forwardHitRatePct": 0.0,
           "histBenchmarkSr": 1.68,
           "histBenchmarkMaxDd": -4.5
         }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "4.1_web_paper_glassbox",
-  "generatedAtUtc": "2026-11-26T19:43:46.995542+00:00",
+  "generatedAtUtc": "2026-11-27T19:33:11.844464+00:00",
   "defaultMode": "ultra",
   "freezeDate": "2026-11-25",
   "panelAsOfDate": "2026-11-25",
@@ -799,18 +799,25 @@
   "forward": {
     "ultra": {
       "totalSessionsLogged": 2,
-      "settledSessions": 0,
+      "settledSessions": 1,
       "g6TargetSessions": 20,
-      "g6ProgressPct": 0,
+      "g6ProgressPct": 5,
       "g6Status": "IN_PROGRESS",
-      "cumCmeNetUsd": 0,
-      "cumCmeNetPct": 0.0,
+      "cumCmeNetUsd": -34803.9,
+      "cumCmeNetPct": -0.348,
       "cumEtfOpenNetUsd": 0,
       "cumEtfCloseNetUsd": 0,
       "forwardSharpe": null,
       "forwardMaxDdPct": 0.0,
-      "forwardHitRatePct": null,
-      "equityCurve": [],
+      "forwardHitRatePct": 0.0,
+      "equityCurve": [
+        {
+          "date": "2026-11-25",
+          "cmeCumUsd": -34803.9,
+          "etfOpenCumUsd": 0.0,
+          "etfCloseCumUsd": 0.0
+        }
+      ],
       "ledgerRows": [
         {
           "mode": "ultra",
@@ -1083,25 +1090,80 @@
           },
           "netDv01Usd": 3869.5,
           "grossDv01Usd": 12078.7,
-          "status": "IN_SESSION",
-          "settlement": null
+          "status": "SETTLED_VERIFIED",
+          "settlement": {
+            "settledAtUtc": "2026-11-27T19:33:08.587836+00:00",
+            "cmeGrossUsd": -34156.3,
+            "cmeCostUsd": 647.6,
+            "cmeNetUsd": -34803.9,
+            "cmeNetPct": -0.348,
+            "etfOpenNetUsd": null,
+            "etfOpenNetPct": null,
+            "etfCloseNetUsd": null,
+            "etfCloseNetPct": null,
+            "legs": [
+              {
+                "symbol": "ZTH27.CBT",
+                "leg": "TU",
+                "lots": 50,
+                "entrySettle": 102.152344,
+                "exitSettle": 102.011719,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -14062.5
+              },
+              {
+                "symbol": "ZFH27.CBT",
+                "leg": "FV",
+                "lots": -100,
+                "entrySettle": 105.070312,
+                "exitSettle": 104.75,
+                "exitDate": "2026-11-27",
+                "pnlUsd": 32031.2
+              },
+              {
+                "symbol": "TNH27.CBT",
+                "leg": "UXY",
+                "lots": 24,
+                "entrySettle": 108.75,
+                "exitSettle": 108.015625,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -17625.0
+              },
+              {
+                "symbol": "UBH27.CBT",
+                "leg": "WN",
+                "lots": 23,
+                "entrySettle": 110.1875,
+                "exitSettle": 108.6875,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -34500.0
+              }
+            ]
+          }
         }
       ]
     },
     "enhanced": {
       "totalSessionsLogged": 2,
-      "settledSessions": 0,
+      "settledSessions": 1,
       "g6TargetSessions": 20,
-      "g6ProgressPct": 0,
+      "g6ProgressPct": 5,
       "g6Status": "IN_PROGRESS",
-      "cumCmeNetUsd": 0,
-      "cumCmeNetPct": 0.0,
+      "cumCmeNetUsd": -32905.0,
+      "cumCmeNetPct": -0.329,
       "cumEtfOpenNetUsd": 0,
       "cumEtfCloseNetUsd": 0,
       "forwardSharpe": null,
       "forwardMaxDdPct": 0.0,
-      "forwardHitRatePct": null,
-      "equityCurve": [],
+      "forwardHitRatePct": 0.0,
+      "equityCurve": [
+        {
+          "date": "2026-11-25",
+          "cmeCumUsd": -32905.0,
+          "etfOpenCumUsd": 0.0,
+          "etfCloseCumUsd": 0.0
+        }
+      ],
       "ledgerRows": [
         {
           "mode": "enhanced",
@@ -1374,8 +1436,56 @@
           },
           "netDv01Usd": 3615.8,
           "grossDv01Usd": 12071.2,
-          "status": "IN_SESSION",
-          "settlement": null
+          "status": "SETTLED_VERIFIED",
+          "settlement": {
+            "settledAtUtc": "2026-11-27T19:33:08.587929+00:00",
+            "cmeGrossUsd": -32257.9,
+            "cmeCostUsd": 647.1,
+            "cmeNetUsd": -32905.0,
+            "cmeNetPct": -0.3291,
+            "etfOpenNetUsd": null,
+            "etfOpenNetPct": null,
+            "etfCloseNetUsd": null,
+            "etfCloseNetPct": null,
+            "legs": [
+              {
+                "symbol": "ZTH27.CBT",
+                "leg": "TU",
+                "lots": 51,
+                "entrySettle": 102.152344,
+                "exitSettle": 102.011719,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -14343.8
+              },
+              {
+                "symbol": "ZFH27.CBT",
+                "leg": "FV",
+                "lots": -103,
+                "entrySettle": 105.070312,
+                "exitSettle": 104.75,
+                "exitDate": "2026-11-27",
+                "pnlUsd": 32992.1
+              },
+              {
+                "symbol": "ZNH27.CBT",
+                "leg": "TY",
+                "lots": 30,
+                "entrySettle": 107.078125,
+                "exitSettle": 106.53125,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -16406.2
+              },
+              {
+                "symbol": "UBH27.CBT",
+                "leg": "WN",
+                "lots": 23,
+                "entrySettle": 110.1875,
+                "exitSettle": 108.6875,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -34500.0
+              }
+            ]
+          }
         }
       ]
     }
@@ -1410,7 +1520,7 @@
         "2026-11-23": 102.164062,
         "2026-11-24": 102.152344,
         "2026-11-25": 102.222656,
-        "2026-11-26": 102.214844
+        "2026-11-27": 102.109375
       }
     },
     "ZTH27.CBT": {
@@ -1442,7 +1552,7 @@
         "2026-11-23": 102.09375,
         "2026-11-24": 102.082031,
         "2026-11-25": 102.152344,
-        "2026-11-26": 102.132812
+        "2026-11-27": 102.011719
       }
     },
     "ZFZ26.CBT": {
@@ -1474,7 +1584,7 @@
         "2026-11-23": 104.914062,
         "2026-11-24": 104.976562,
         "2026-11-25": 105.179688,
-        "2026-11-26": 105.132812
+        "2026-11-27": 104.859375
       }
     },
     "ZFH27.CBT": {
@@ -1506,7 +1616,7 @@
         "2026-11-23": 104.796875,
         "2026-11-24": 104.867188,
         "2026-11-25": 105.070312,
-        "2026-11-26": 105.023438
+        "2026-11-27": 104.75
       }
     },
     "ZNZ26.CBT": {
@@ -1538,7 +1648,7 @@
         "2026-11-23": 106.75,
         "2026-11-24": 106.859375,
         "2026-11-25": 107.1875,
-        "2026-11-26": 107.078125
+        "2026-11-27": 106.65625
       }
     },
     "ZNH27.CBT": {
@@ -1570,7 +1680,7 @@
         "2026-11-23": 106.625,
         "2026-11-24": 106.734375,
         "2026-11-25": 107.078125,
-        "2026-11-26": 106.96875
+        "2026-11-27": 106.53125
       }
     },
     "TNZ26.CBT": {
@@ -1602,7 +1712,7 @@
         "2026-11-23": 108.359375,
         "2026-11-24": 108.46875,
         "2026-11-25": 108.96875,
-        "2026-11-26": 108.859375
+        "2026-11-27": 108.234375
       }
     },
     "TNH27.CBT": {
@@ -1634,7 +1744,7 @@
         "2026-11-23": 108.140625,
         "2026-11-24": 108.265625,
         "2026-11-25": 108.75,
-        "2026-11-26": 108.625
+        "2026-11-27": 108.015625
       }
     },
     "ZBZ26.CBT": {
@@ -1666,7 +1776,7 @@
         "2026-11-23": 107.90625,
         "2026-11-24": 107.9375,
         "2026-11-25": 108.625,
-        "2026-11-26": 108.5
+        "2026-11-27": 107.46875
       }
     },
     "ZBH27.CBT": {
@@ -1698,7 +1808,7 @@
         "2026-11-23": 107.375,
         "2026-11-24": 107.4375,
         "2026-11-25": 108.125,
-        "2026-11-26": 108.03125
+        "2026-11-27": 106.9375
       }
     },
     "UBZ26.CBT": {
@@ -1730,7 +1840,7 @@
         "2026-11-23": 109.5,
         "2026-11-24": 109.46875,
         "2026-11-25": 110.5,
-        "2026-11-26": 110.40625
+        "2026-11-27": 109.0
       }
     },
     "UBH27.CBT": {
@@ -1762,7 +1872,7 @@
         "2026-11-23": 109.1875,
         "2026-11-24": 109.15625,
         "2026-11-25": 110.1875,
-        "2026-11-26": 110.0625
+        "2026-11-27": 108.6875
       }
     }
   },
@@ -2058,7 +2168,7 @@
         "yearly": {
           "2017": {
             "retPct": 6.27,
-            "sr": 1.58
+            "sr": 1.59
           },
           "2018": {
             "retPct": 12.07,
@@ -2136,7 +2246,7 @@
             "sr": 1.07
           },
           "2023": {
-            "retPct": 4.69,
+            "retPct": 4.68,
             "sr": 0.95
           },
           "2024": {
@@ -2144,7 +2254,7 @@
             "sr": 0.84
           },
           "2025": {
-            "retPct": 10.71,
+            "retPct": 10.72,
             "sr": 2.72
           },
           "2026": {
@@ -2209,7 +2319,7 @@
         "ultra": 1.0134,
         "enhanced": 1.0104,
         "etfOpen": 1.0138,
-        "etfClose": 1.0121
+        "etfClose": 1.0122
       },
       {
         "date": "2017-06-30",
@@ -2222,8 +2332,8 @@
         "date": "2017-07-31",
         "ultra": 1.0244,
         "enhanced": 1.021,
-        "etfOpen": 0.9861,
-        "etfClose": 0.9909
+        "etfOpen": 0.9862,
+        "etfClose": 0.991
       },
       {
         "date": "2017-08-31",
@@ -2236,7 +2346,7 @@
         "date": "2017-09-30",
         "ultra": 1.0413,
         "enhanced": 1.0353,
-        "etfOpen": 1.0084,
+        "etfOpen": 1.0085,
         "etfClose": 1.0053
       },
       {
@@ -2244,7 +2354,7 @@
         "ultra": 1.0686,
         "enhanced": 1.0609,
         "etfOpen": 1.0213,
-        "etfClose": 1.0245
+        "etfClose": 1.0246
       },
       {
         "date": "2017-11-30",
@@ -2264,15 +2374,15 @@
         "date": "2018-01-31",
         "ultra": 1.1036,
         "enhanced": 1.0893,
-        "etfOpen": 1.0469,
-        "etfClose": 1.0761
+        "etfOpen": 1.047,
+        "etfClose": 1.0762
       },
       {
         "date": "2018-02-28",
         "ultra": 1.1114,
         "enhanced": 1.0937,
         "etfOpen": 1.0586,
-        "etfClose": 1.082
+        "etfClose": 1.0821
       },
       {
         "date": "2018-03-31",
@@ -2292,21 +2402,21 @@
         "date": "2018-05-31",
         "ultra": 1.1435,
         "enhanced": 1.1197,
-        "etfOpen": 1.0895,
-        "etfClose": 1.1141
+        "etfOpen": 1.0896,
+        "etfClose": 1.1142
       },
       {
         "date": "2018-06-30",
         "ultra": 1.1509,
         "enhanced": 1.1275,
         "etfOpen": 1.0934,
-        "etfClose": 1.119
+        "etfClose": 1.1191
       },
       {
         "date": "2018-07-31",
         "ultra": 1.1571,
         "enhanced": 1.1318,
-        "etfOpen": 1.0957,
+        "etfOpen": 1.0958,
         "etfClose": 1.1265
       },
       {
@@ -2314,7 +2424,7 @@
         "ultra": 1.16,
         "enhanced": 1.1352,
         "etfOpen": 1.1011,
-        "etfClose": 1.1298
+        "etfClose": 1.1299
       },
       {
         "date": "2018-09-30",
@@ -2335,20 +2445,20 @@
         "ultra": 1.1814,
         "enhanced": 1.1534,
         "etfOpen": 1.1295,
-        "etfClose": 1.1609
+        "etfClose": 1.161
       },
       {
         "date": "2018-12-31",
         "ultra": 1.211,
         "enhanced": 1.1821,
-        "etfOpen": 1.1381,
+        "etfOpen": 1.1382,
         "etfClose": 1.191
       },
       {
         "date": "2019-01-31",
         "ultra": 1.2503,
         "enhanced": 1.2224,
-        "etfOpen": 1.1795,
+        "etfOpen": 1.1796,
         "etfClose": 1.2321
       },
       {
@@ -2390,7 +2500,7 @@
         "date": "2019-07-31",
         "ultra": 1.2945,
         "enhanced": 1.2569,
-        "etfOpen": 1.2055,
+        "etfOpen": 1.2054,
         "etfClose": 1.271
       },
       {
@@ -2432,7 +2542,7 @@
         "date": "2020-01-31",
         "ultra": 1.3094,
         "enhanced": 1.2741,
-        "etfOpen": 1.2026,
+        "etfOpen": 1.2025,
         "etfClose": 1.3083
       },
       {
@@ -2523,8 +2633,8 @@
         "date": "2021-02-28",
         "ultra": 1.4631,
         "enhanced": 1.3727,
-        "etfOpen": 1.4073,
-        "etfClose": 1.4692
+        "etfOpen": 1.4072,
+        "etfClose": 1.4693
       },
       {
         "date": "2021-03-31",
@@ -2614,7 +2724,7 @@
         "date": "2022-03-31",
         "ultra": 1.6073,
         "enhanced": 1.5253,
-        "etfOpen": 1.5121,
+        "etfOpen": 1.512,
         "etfClose": 1.5548
       },
       {
@@ -2629,7 +2739,7 @@
         "ultra": 1.6236,
         "enhanced": 1.5395,
         "etfOpen": 1.5118,
-        "etfClose": 1.5631
+        "etfClose": 1.5632
       },
       {
         "date": "2022-06-30",
@@ -2657,13 +2767,13 @@
         "ultra": 1.6816,
         "enhanced": 1.5996,
         "etfOpen": 1.5318,
-        "etfClose": 1.5982
+        "etfClose": 1.5983
       },
       {
         "date": "2022-10-31",
         "ultra": 1.6967,
         "enhanced": 1.6133,
-        "etfOpen": 1.5533,
+        "etfOpen": 1.5532,
         "etfClose": 1.6163
       },
       {
@@ -2817,7 +2927,7 @@
         "date": "2024-08-31",
         "ultra": 1.8779,
         "enhanced": 1.7998,
-        "etfOpen": 1.7022,
+        "etfOpen": 1.7021,
         "etfClose": 1.7533
       },
       {
@@ -2831,7 +2941,7 @@
         "date": "2024-10-31",
         "ultra": 1.8216,
         "enhanced": 1.7438,
-        "etfOpen": 1.6625,
+        "etfOpen": 1.6624,
         "etfClose": 1.703
       },
       {
@@ -2845,14 +2955,14 @@
         "date": "2024-12-31",
         "ultra": 1.8103,
         "enhanced": 1.7276,
-        "etfOpen": 1.673,
+        "etfOpen": 1.6729,
         "etfClose": 1.698
       },
       {
         "date": "2025-01-31",
         "ultra": 1.8291,
         "enhanced": 1.7419,
-        "etfOpen": 1.698,
+        "etfOpen": 1.6979,
         "etfClose": 1.7168
       },
       {
@@ -2901,7 +3011,7 @@
         "date": "2025-08-31",
         "ultra": 1.924,
         "enhanced": 1.8283,
-        "etfOpen": 1.8651,
+        "etfOpen": 1.865,
         "etfClose": 1.8642
       },
       {
@@ -2936,7 +3046,7 @@
         "date": "2026-01-31",
         "ultra": 1.9255,
         "enhanced": 1.8386,
-        "etfOpen": 1.8727,
+        "etfOpen": 1.8726,
         "etfClose": 1.8739
       },
       {
@@ -2964,8 +3074,8 @@
         "date": "2026-05-31",
         "ultra": 1.9541,
         "enhanced": 1.8666,
-        "etfOpen": 1.8816,
-        "etfClose": 1.8924
+        "etfOpen": 1.8815,
+        "etfClose": 1.8925
       },
       {
         "date": "2026-06-30",

@@ -94,8 +94,56 @@
       },
       "netDv01Usd": 3869.5,
       "grossDv01Usd": 12078.7,
-      "status": "IN_SESSION",
-      "settlement": null
+      "status": "SETTLED_VERIFIED",
+      "settlement": {
+        "settledAtUtc": "2026-11-27T19:33:08.587836+00:00",
+        "cmeGrossUsd": -34156.3,
+        "cmeCostUsd": 647.6,
+        "cmeNetUsd": -34803.9,
+        "cmeNetPct": -0.348,
+        "etfOpenNetUsd": null,
+        "etfOpenNetPct": null,
+        "etfCloseNetUsd": null,
+        "etfCloseNetPct": null,
+        "legs": [
+          {
+            "symbol": "ZTH27.CBT",
+            "leg": "TU",
+            "lots": 50,
+            "entrySettle": 102.152344,
+            "exitSettle": 102.011719,
+            "exitDate": "2026-11-27",
+            "pnlUsd": -14062.5
+          },
+          {
+            "symbol": "ZFH27.CBT",
+            "leg": "FV",
+            "lots": -100,
+            "entrySettle": 105.070312,
+            "exitSettle": 104.75,
+            "exitDate": "2026-11-27",
+            "pnlUsd": 32031.2
+          },
+          {
+            "symbol": "TNH27.CBT",
+            "leg": "UXY",
+            "lots": 24,
+            "entrySettle": 108.75,
+            "exitSettle": 108.015625,
+            "exitDate": "2026-11-27",
+            "pnlUsd": -17625.0
+          },
+          {
+            "symbol": "UBH27.CBT",
+            "leg": "WN",
+            "lots": 23,
+            "entrySettle": 110.1875,
+            "exitSettle": 108.6875,
+            "exitDate": "2026-11-27",
+            "pnlUsd": -34500.0
+          }
+        ]
+      }
     },
     {
       "mode": "enhanced",
@@ -189,8 +237,56 @@
       },
       "netDv01Usd": 3615.8,
       "grossDv01Usd": 12071.2,
-      "status": "IN_SESSION",
-      "settlement": null
+      "status": "SETTLED_VERIFIED",
+      "settlement": {
+        "settledAtUtc": "2026-11-27T19:33:08.587929+00:00",
+        "cmeGrossUsd": -32257.9,
+        "cmeCostUsd": 647.1,
+        "cmeNetUsd": -32905.0,
+        "cmeNetPct": -0.3291,
+        "etfOpenNetUsd": null,
+        "etfOpenNetPct": null,
+        "etfCloseNetUsd": null,
+        "etfCloseNetPct": null,
+        "legs": [
+          {
+            "symbol": "ZTH27.CBT",
+            "leg": "TU",
+            "lots": 51,
+            "entrySettle": 102.152344,
+            "exitSettle": 102.011719,
+            "exitDate": "2026-11-27",
+            "pnlUsd": -14343.8
+          },
+          {
+            "symbol": "ZFH27.CBT",
+            "leg": "FV",
+            "lots": -103,
+            "entrySettle": 105.070312,
+            "exitSettle": 104.75,
+            "exitDate": "2026-11-27",
+            "pnlUsd": 32992.1
+          },
+          {
+            "symbol": "ZNH27.CBT",
+            "leg": "TY",
+            "lots": 30,
+            "entrySettle": 107.078125,
+            "exitSettle": 106.53125,
+            "exitDate": "2026-11-27",
+            "pnlUsd": -16406.2
+          },
+          {
+            "symbol": "UBH27.CBT",
+            "leg": "WN",
+            "lots": 23,
+            "entrySettle": 110.1875,
+            "exitSettle": 108.6875,
+            "exitDate": "2026-11-27",
+            "pnlUsd": -34500.0
+          }
+        ]
+      }
     },
     {
       "mode": "ultra",
@@ -551,5 +647,5 @@
       "settlement": null
     }
   ],
-  "updatedAtUtc": "2026-11-26T19:43:43.724403+00:00"
+  "updatedAtUtc": "2026-11-27T19:33:08.588000+00:00"
 }
