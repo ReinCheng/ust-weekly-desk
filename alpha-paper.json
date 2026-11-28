@@ -1,11 +1,11 @@
 {
   "schemaVersion": "4.1_web_paper_glassbox",
-  "generatedAtUtc": "2026-11-27T19:33:11.844464+00:00",
+  "generatedAtUtc": "2026-11-28T03:23:40.619100+00:00",
   "defaultMode": "ultra",
   "freezeDate": "2026-11-25",
-  "panelAsOfDate": "2026-11-25",
-  "panelSha256": "40e7108ece2d468c",
-  "tradingDaysInHistory": 3226,
+  "panelAsOfDate": "2026-11-27",
+  "panelSha256": "bb6a5e5cd7581cbb",
+  "tradingDaysInHistory": 3227,
   "auctionsTracked": 312,
   "g1Verification": {
     "allPassed": true,
@@ -19,43 +19,43 @@
     }
   },
   "marketSnapshot": {
-    "date": "2026-11-25",
-    "ust2y": 4.61,
-    "ust5y": 4.65,
-    "ust10y": 4.85,
-    "ust30y": 5.24,
-    "s2s10sBp": 24.0,
+    "date": "2026-11-27",
+    "ust2y": 4.69,
+    "ust5y": 4.74,
+    "ust10y": 4.94,
+    "ust30y": 5.33,
+    "s2s10sBp": 25.0,
     "s5s30sBp": 59.0,
-    "move": 97.54
+    "move": 95.3
   },
   "todayTickets": {
     "ultra": {
       "mode": "ultra",
       "venue": "cme_ultra",
-      "frozenAtUtc": "2026-11-26T03:40:27.253655+00:00",
-      "panelSha256": "40e7108ece2d468c",
+      "frozenAtUtc": "2026-11-28T03:23:36.361406+00:00",
+      "panelSha256": "bb6a5e5cd7581cbb",
       "g1Passed": true,
       "riskNavUsd": 10000000.0,
-      "signalAsOfDate": "2026-11-25",
-      "execDate": "2026-11-27",
-      "valuationEndDate": "2026-11-30",
-      "orderWindowEt": "2026-11-27 07:00-17:00 ET",
+      "signalAsOfDate": "2026-11-27",
+      "execDate": "2026-11-30",
+      "valuationEndDate": "2026-12-01",
+      "orderWindowEt": "2026-11-30 07:00-17:00 ET",
       "signals": {
-        "eom": 1,
-        "eomBdaysLeftOnExec": 1,
+        "eom": 0,
+        "eomBdaysLeftOnExec": 0,
         "preAuction": 0,
         "curve2s10s": 0,
         "curve5s30s": -1,
-        "z2s10s": 0.14,
-        "z5s30s": -1.29,
-        "damper": 0.761,
-        "move": 97.54,
+        "z2s10s": 0.19,
+        "z5s30s": -0.97,
+        "damper": 0.767,
+        "move": 95.3,
         "calRollWindow": true
       },
       "rpWeights": {
-        "P2_Flow": 0.615,
-        "P5a_2s10s": 0.501,
-        "P5c_5s30s": 0.407
+        "P2_Flow": 0.606,
+        "P5a_2s10s": 0.512,
+        "P5c_5s30s": 0.417
       },
       "contracts": [
         {
@@ -63,98 +63,94 @@
           "symbol": "ZTH27.CBT",
           "contractCode": "TUH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 102.152344,
-          "refDate": "2026-11-25",
+          "refPrice": 102.011719,
+          "refDate": "2026-11-27",
           "pointValueUsd": 2000.0,
-          "dv01PerLotUsd": 34.1,
-          "prevTargetLots": 50,
-          "targetLots": 52,
-          "deltaLots": 2,
-          "actionCode": "HOLD_NOISE",
-          "targetDv01Usd": 1773.1,
-          "owners": [
-            "EOM"
-          ],
-          "unwindHint": "EOM \u7b2c3/3\u5929 \u00b7 11-30\u5e73\u4ed3"
+          "dv01PerLotUsd": 34.07,
+          "prevTargetLots": 52,
+          "targetLots": 0,
+          "deltaLots": -52,
+          "actionCode": "UNWIND",
+          "targetDv01Usd": 0.0,
+          "owners": [],
+          "unwindHint": "\u5f53\u524d\u65e0\u6d3b\u8dc3\u652f\u67f1\uff08\u7a7a\u4ed3\uff09"
         },
         {
           "leg": "FV",
           "symbol": "ZFH27.CBT",
           "contractCode": "FVH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 105.070312,
-          "refDate": "2026-11-25",
+          "refPrice": 104.75,
+          "refDate": "2026-11-27",
           "pointValueUsd": 1000.0,
-          "dv01PerLotUsd": 41.02,
-          "prevTargetLots": -100,
-          "targetLots": -104,
-          "deltaLots": -4,
+          "dv01PerLotUsd": 40.96,
+          "prevTargetLots": -105,
+          "targetLots": -108,
+          "deltaLots": -3,
           "actionCode": "HOLD_NOISE",
-          "targetDv01Usd": -4266.2,
+          "targetDv01Usd": -4423.4,
           "owners": [
             "5s30s"
           ],
-          "unwindHint": "5s30s \u7b2c5/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+          "unwindHint": "5s30s \u7b2c6/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
         },
         {
           "leg": "UXY",
           "symbol": "TNH27.CBT",
           "contractCode": "UXYH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 108.75,
-          "refDate": "2026-11-25",
+          "refPrice": 108.015625,
+          "refDate": "2026-11-27",
           "pointValueUsd": 1000.0,
-          "dv01PerLotUsd": 88.05,
+          "dv01PerLotUsd": 87.71,
           "prevTargetLots": 24,
-          "targetLots": 24,
-          "deltaLots": 0,
-          "actionCode": "HOLD_NOISE",
-          "targetDv01Usd": 2113.2,
-          "owners": [
-            "EOM"
-          ],
-          "unwindHint": "EOM \u7b2c3/3\u5929 \u00b7 11-30\u5e73\u4ed3"
+          "targetLots": 0,
+          "deltaLots": -24,
+          "actionCode": "UNWIND",
+          "targetDv01Usd": 0.0,
+          "owners": [],
+          "unwindHint": "\u5f53\u524d\u65e0\u6d3b\u8dc3\u652f\u67f1\uff08\u7a7a\u4ed3\uff09"
         },
         {
           "leg": "WN",
           "symbol": "UBH27.CBT",
           "contractCode": "WNH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 110.1875,
-          "refDate": "2026-11-25",
+          "refPrice": 108.6875,
+          "refDate": "2026-11-27",
           "pointValueUsd": 1000.0,
-          "dv01PerLotUsd": 180.98,
-          "prevTargetLots": 23,
-          "targetLots": 24,
+          "dv01PerLotUsd": 179.33,
+          "prevTargetLots": 24,
+          "targetLots": 25,
           "deltaLots": 1,
           "actionCode": "HOLD_NOISE",
-          "targetDv01Usd": 4343.6,
+          "targetDv01Usd": 4483.4,
           "owners": [
             "5s30s"
           ],
-          "unwindHint": "5s30s \u7b2c5/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+          "unwindHint": "5s30s \u7b2c6/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
         }
       ],
       "lifecycle": {
         "actionSummary": {
-          "verdict": "HOLD_MOSTLY",
-          "headline": "\u7eed\u6301\u4e3a\u4e3b\uff08\u4ec5\u5fae\u8c03 8 \u624b\uff0c\u5df2\u5728\u4ed3\u53ef\u5ffd\u7565\u7701\u70b9\u5dee\uff09",
-          "subtext": "\u6d3b\u8dc3\u652f\u67f1\u5ef6\u7eed\uff1aEOM \u505a\u591a(\u7b2c3/3\u5929) + 5s30s \u505a\u5e73(\u7b2c5/10\u5929)\u3002\u5982\u679c\u4f60\u6628\u65e5\u5df2\u5728\u4ed3\uff0c\u4eca\u65e5\u53ef\u6309\u5175\u4e0d\u52a8\uff1b\u82e5\u4eca\u5929\u9996\u6b21\u5efa\u4ed3\uff0c\u76f4\u63a5\u6309\u300c\u4eca\u65e5\u76ee\u6807\u300d\u5217\u4e0b\u5355\u3002",
-          "totalAbsDeltaLots": 8,
+          "verdict": "TRADE_REQUIRED",
+          "headline": "\u4eca\u65e5\u9700\u8c03\u4ed3\u6267\u884c\uff08\u53d8\u52a8\uff1aTU -52\u624b / UXY -24\u624b\uff09",
+          "subtext": "\u6d3b\u8dc3\u652f\u67f1\uff1a5s30s \u505a\u5e73(\u7b2c6/10\u5929)\u3002\u8bf7\u4e8e\u7ebd\u7ea6\u76d8 08:30\u201311:30 ET \u6d41\u52a8\u6027\u5145\u88d5\u65f6\u6bb5\u6309\u4e0b\u65b9\u300c\u4eca\u65e5\u52a8\u4f5c\u300d\u5217\u5b8c\u6210\u8c03\u4ed3\u3002",
+          "totalAbsDeltaLots": 80,
           "optimalWindowEt": "08:30\u201311:30 ET\uff08\u65e9\u76d8\u6570\u636e\u6d88\u5316\u540e\u3001\u5348\u76d8\u524d\uff09",
           "isPreHolidayThin": false,
           "preHolidayNote": null,
-          "nextUnwindSummary": "EOM \u2192 2026-11-30 \u5e73\u4ed3 \uff5c 5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
+          "nextUnwindSummary": "5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
         },
         "pillars": {
           "eom": {
-            "active": true,
-            "state": 1,
-            "daysHeld": 3,
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
             "maxDays": 3,
-            "entryDate": "2026-11-24",
-            "expectedUnwindDate": "2026-11-30",
-            "unwindText": "\u7b2c 3/3 \u5929 \u00b7 \u9884\u8ba1 2026-11-30 (07:00-17:00 ET) \u5e73\u4ed3"
+            "entryDate": null,
+            "expectedUnwindDate": null,
+            "unwindText": "\u975e\u6708\u672b\u7a97\u53e3\uff08\u8ddd\u6708\u672b\u5269 0 \u4ea4\u6613\u65e5 \u00b7 \u6700\u540e 3 \u65e5\u81ea\u52a8\u89e6\u53d1\uff09"
           },
           "preAuction": {
             "active": false,
@@ -180,61 +176,61 @@
           "curve5s30s": {
             "active": true,
             "state": -1,
-            "daysHeld": 5,
+            "daysHeld": 6,
             "maxDays": 10,
             "entryDate": "2026-11-20",
             "hardStopDate": "2026-12-07",
-            "move5dBp": 7.0,
-            "bpGapToExit": -7.0,
+            "move5dBp": 5.0,
+            "bpGapToExit": -4.7,
             "exitDirection": "flatten",
-            "unwindText": "\u5df2\u6301\u7b2c 5/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~7.0bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
+            "unwindText": "\u5df2\u6301\u7b2c 6/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~4.7bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
           }
         }
       },
       "etfOpenNotional": {
-        "2Y": 0.8527,
-        "5Y": -1.23364,
-        "10Y": 0.21611,
-        "30Y": 0.29943
+        "2Y": 0.0,
+        "5Y": -1.22443,
+        "10Y": 0.0,
+        "30Y": 0.29719
       },
       "etfCloseNotional": {
-        "2Y": 0.93345,
-        "5Y": -0.99364,
-        "10Y": 0.26344,
-        "30Y": 0.24117
+        "2Y": 0.0,
+        "5Y": -1.00542,
+        "10Y": 0.0,
+        "30Y": 0.24403
       },
-      "netDv01Usd": 3963.7,
-      "grossDv01Usd": 12496.2,
+      "netDv01Usd": 60.0,
+      "grossDv01Usd": 8906.7,
       "status": "PENDING",
       "settlement": null
     },
     "enhanced": {
       "mode": "enhanced",
       "venue": "cme_enhanced",
-      "frozenAtUtc": "2026-11-26T03:40:28.008562+00:00",
-      "panelSha256": "40e7108ece2d468c",
+      "frozenAtUtc": "2026-11-28T03:23:37.361910+00:00",
+      "panelSha256": "bb6a5e5cd7581cbb",
       "g1Passed": true,
       "riskNavUsd": 10000000.0,
-      "signalAsOfDate": "2026-11-25",
-      "execDate": "2026-11-27",
-      "valuationEndDate": "2026-11-30",
-      "orderWindowEt": "2026-11-27 07:00-17:00 ET",
+      "signalAsOfDate": "2026-11-27",
+      "execDate": "2026-11-30",
+      "valuationEndDate": "2026-12-01",
+      "orderWindowEt": "2026-11-30 07:00-17:00 ET",
       "signals": {
-        "eom": 1,
-        "eomBdaysLeftOnExec": 1,
+        "eom": 0,
+        "eomBdaysLeftOnExec": 0,
         "preAuction": 0,
         "curve2s10s": 0,
         "curve5s30s": -1,
-        "z2s10s": 0.14,
-        "z5s30s": -1.29,
-        "damper": 0.761,
-        "move": 97.54,
+        "z2s10s": 0.19,
+        "z5s30s": -0.97,
+        "damper": 0.767,
+        "move": 95.3,
         "calRollWindow": true
       },
       "rpWeights": {
-        "P2_Flow": 0.62,
-        "P5a_2s10s": 0.484,
-        "P5c_5s30s": 0.418
+        "P2_Flow": 0.613,
+        "P5a_2s10s": 0.494,
+        "P5c_5s30s": 0.428
       },
       "contracts": [
         {
@@ -242,98 +238,94 @@
           "symbol": "ZTH27.CBT",
           "contractCode": "TUH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 102.152344,
-          "refDate": "2026-11-25",
+          "refPrice": 102.011719,
+          "refDate": "2026-11-27",
           "pointValueUsd": 2000.0,
-          "dv01PerLotUsd": 34.1,
-          "prevTargetLots": 51,
-          "targetLots": 52,
-          "deltaLots": 1,
-          "actionCode": "HOLD_NOISE",
-          "targetDv01Usd": 1773.1,
-          "owners": [
-            "EOM"
-          ],
-          "unwindHint": "EOM \u7b2c3/3\u5929 \u00b7 11-30\u5e73\u4ed3"
+          "dv01PerLotUsd": 34.07,
+          "prevTargetLots": 52,
+          "targetLots": 0,
+          "deltaLots": -52,
+          "actionCode": "UNWIND",
+          "targetDv01Usd": 0.0,
+          "owners": [],
+          "unwindHint": "\u5f53\u524d\u65e0\u6d3b\u8dc3\u652f\u67f1\uff08\u7a7a\u4ed3\uff09"
         },
         {
           "leg": "FV",
           "symbol": "ZFH27.CBT",
           "contractCode": "FVH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 105.070312,
-          "refDate": "2026-11-25",
+          "refPrice": 104.75,
+          "refDate": "2026-11-27",
           "pointValueUsd": 1000.0,
-          "dv01PerLotUsd": 41.02,
-          "prevTargetLots": -103,
-          "targetLots": -107,
-          "deltaLots": -4,
+          "dv01PerLotUsd": 40.96,
+          "prevTargetLots": -108,
+          "targetLots": -110,
+          "deltaLots": -2,
           "actionCode": "HOLD_NOISE",
-          "targetDv01Usd": -4389.3,
+          "targetDv01Usd": -4505.3,
           "owners": [
             "5s30s"
           ],
-          "unwindHint": "5s30s \u7b2c5/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+          "unwindHint": "5s30s \u7b2c6/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
         },
         {
           "leg": "TY",
           "symbol": "ZNH27.CBT",
           "contractCode": "TYH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 107.078125,
-          "refDate": "2026-11-25",
+          "refPrice": 106.53125,
+          "refDate": "2026-11-27",
           "pointValueUsd": 1000.0,
-          "dv01PerLotUsd": 64.96,
+          "dv01PerLotUsd": 64.77,
           "prevTargetLots": 30,
-          "targetLots": 30,
-          "deltaLots": 0,
-          "actionCode": "HOLD_NOISE",
-          "targetDv01Usd": 1948.8,
-          "owners": [
-            "EOM"
-          ],
-          "unwindHint": "EOM \u7b2c3/3\u5929 \u00b7 11-30\u5e73\u4ed3"
+          "targetLots": 0,
+          "deltaLots": -30,
+          "actionCode": "UNWIND",
+          "targetDv01Usd": 0.0,
+          "owners": [],
+          "unwindHint": "\u5f53\u524d\u65e0\u6d3b\u8dc3\u652f\u67f1\uff08\u7a7a\u4ed3\uff09"
         },
         {
           "leg": "WN",
           "symbol": "UBH27.CBT",
           "contractCode": "WNH27",
           "rolledAheadOfFnd": true,
-          "refPrice": 110.1875,
-          "refDate": "2026-11-25",
+          "refPrice": 108.6875,
+          "refDate": "2026-11-27",
           "pointValueUsd": 1000.0,
-          "dv01PerLotUsd": 180.98,
-          "prevTargetLots": 23,
-          "targetLots": 24,
+          "dv01PerLotUsd": 179.33,
+          "prevTargetLots": 24,
+          "targetLots": 25,
           "deltaLots": 1,
           "actionCode": "HOLD_NOISE",
-          "targetDv01Usd": 4343.6,
+          "targetDv01Usd": 4483.4,
           "owners": [
             "5s30s"
           ],
-          "unwindHint": "5s30s \u7b2c5/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+          "unwindHint": "5s30s \u7b2c6/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
         }
       ],
       "lifecycle": {
         "actionSummary": {
-          "verdict": "HOLD_MOSTLY",
-          "headline": "\u7eed\u6301\u4e3a\u4e3b\uff08\u4ec5\u5fae\u8c03 7 \u624b\uff0c\u5df2\u5728\u4ed3\u53ef\u5ffd\u7565\u7701\u70b9\u5dee\uff09",
-          "subtext": "\u6d3b\u8dc3\u652f\u67f1\u5ef6\u7eed\uff1aEOM \u505a\u591a(\u7b2c3/3\u5929) + 5s30s \u505a\u5e73(\u7b2c5/10\u5929)\u3002\u5982\u679c\u4f60\u6628\u65e5\u5df2\u5728\u4ed3\uff0c\u4eca\u65e5\u53ef\u6309\u5175\u4e0d\u52a8\uff1b\u82e5\u4eca\u5929\u9996\u6b21\u5efa\u4ed3\uff0c\u76f4\u63a5\u6309\u300c\u4eca\u65e5\u76ee\u6807\u300d\u5217\u4e0b\u5355\u3002",
-          "totalAbsDeltaLots": 7,
+          "verdict": "TRADE_REQUIRED",
+          "headline": "\u4eca\u65e5\u9700\u8c03\u4ed3\u6267\u884c\uff08\u53d8\u52a8\uff1aTU -52\u624b / TY -30\u624b\uff09",
+          "subtext": "\u6d3b\u8dc3\u652f\u67f1\uff1a5s30s \u505a\u5e73(\u7b2c6/10\u5929)\u3002\u8bf7\u4e8e\u7ebd\u7ea6\u76d8 08:30\u201311:30 ET \u6d41\u52a8\u6027\u5145\u88d5\u65f6\u6bb5\u6309\u4e0b\u65b9\u300c\u4eca\u65e5\u52a8\u4f5c\u300d\u5217\u5b8c\u6210\u8c03\u4ed3\u3002",
+          "totalAbsDeltaLots": 85,
           "optimalWindowEt": "08:30\u201311:30 ET\uff08\u65e9\u76d8\u6570\u636e\u6d88\u5316\u540e\u3001\u5348\u76d8\u524d\uff09",
           "isPreHolidayThin": false,
           "preHolidayNote": null,
-          "nextUnwindSummary": "EOM \u2192 2026-11-30 \u5e73\u4ed3 \uff5c 5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
+          "nextUnwindSummary": "5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
         },
         "pillars": {
           "eom": {
-            "active": true,
-            "state": 1,
-            "daysHeld": 3,
+            "active": false,
+            "state": 0,
+            "daysHeld": 0,
             "maxDays": 3,
-            "entryDate": "2026-11-24",
-            "expectedUnwindDate": "2026-11-30",
-            "unwindText": "\u7b2c 3/3 \u5929 \u00b7 \u9884\u8ba1 2026-11-30 (07:00-17:00 ET) \u5e73\u4ed3"
+            "entryDate": null,
+            "expectedUnwindDate": null,
+            "unwindText": "\u975e\u6708\u672b\u7a97\u53e3\uff08\u8ddd\u6708\u672b\u5269 0 \u4ea4\u6613\u65e5 \u00b7 \u6700\u540e 3 \u65e5\u81ea\u52a8\u89e6\u53d1\uff09"
           },
           "preAuction": {
             "active": false,
@@ -359,31 +351,31 @@
           "curve5s30s": {
             "active": true,
             "state": -1,
-            "daysHeld": 5,
+            "daysHeld": 6,
             "maxDays": 10,
             "entryDate": "2026-11-20",
             "hardStopDate": "2026-12-07",
-            "move5dBp": 7.0,
-            "bpGapToExit": -7.0,
+            "move5dBp": 5.0,
+            "bpGapToExit": -4.7,
             "exitDirection": "flatten",
-            "unwindText": "\u5df2\u6301\u7b2c 5/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~7.0bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
+            "unwindText": "\u5df2\u6301\u7b2c 6/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~4.7bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
           }
         }
       },
       "etfOpenNotional": {
-        "2Y": 0.8527,
-        "5Y": -1.23364,
-        "10Y": 0.21611,
-        "30Y": 0.29943
+        "2Y": 0.0,
+        "5Y": -1.22443,
+        "10Y": 0.0,
+        "30Y": 0.29719
       },
       "etfCloseNotional": {
-        "2Y": 0.93345,
-        "5Y": -0.99364,
-        "10Y": 0.26344,
-        "30Y": 0.24117
+        "2Y": 0.0,
+        "5Y": -1.00542,
+        "10Y": 0.0,
+        "30Y": 0.24403
       },
-      "netDv01Usd": 3676.3,
-      "grossDv01Usd": 12454.8,
+      "netDv01Usd": -21.9,
+      "grossDv01Usd": 8988.7,
       "status": "PENDING",
       "settlement": null
     }
@@ -391,24 +383,17 @@
   "explain": {
     "curves": {
       "s2s10s": {
-        "latestLevelBp": 24.0,
+        "latestLevelBp": 25.0,
         "move5dBp": -3.0,
-        "mu60DailyBp": -0.383,
-        "sd60DailyBp": 3.55,
-        "expected5dSdBp": 7.93,
-        "latestZ": 0.14,
+        "mu60DailyBp": -0.3,
+        "sd60DailyBp": 3.52,
+        "expected5dSdBp": 7.87,
+        "latestZ": 0.19,
         "activeState": 0,
         "entryThreshold": 1.25,
         "exitThreshold": 0.35,
         "maxHoldDays": 10,
         "history15d": [
-          {
-            "date": "2026-11-04",
-            "levelBp": 32.0,
-            "move5dBp": -6.0,
-            "z": 0.73,
-            "stateNext": 0
-          },
           {
             "date": "2026-11-05",
             "levelBp": 38.0,
@@ -506,28 +491,28 @@
             "move5dBp": -3.0,
             "z": 0.14,
             "stateNext": 0
+          },
+          {
+            "date": "2026-11-27",
+            "levelBp": 25.0,
+            "move5dBp": -3.0,
+            "z": 0.19,
+            "stateNext": 0
           }
         ]
       },
       "s5s30s": {
         "latestLevelBp": 59.0,
-        "move5dBp": 7.0,
-        "mu60DailyBp": -0.533,
-        "sd60DailyBp": 3.36,
-        "expected5dSdBp": 7.51,
-        "latestZ": -1.29,
+        "move5dBp": 5.0,
+        "mu60DailyBp": -0.467,
+        "sd60DailyBp": 3.37,
+        "expected5dSdBp": 7.53,
+        "latestZ": -0.97,
         "activeState": -1,
         "entryThreshold": 1.25,
         "exitThreshold": 0.35,
         "maxHoldDays": 10,
         "history15d": [
-          {
-            "date": "2026-11-04",
-            "levelBp": 59.0,
-            "move5dBp": 7.0,
-            "z": -1.42,
-            "stateNext": -1
-          },
           {
             "date": "2026-11-05",
             "levelBp": 66.0,
@@ -625,19 +610,18 @@
             "move5dBp": 7.0,
             "z": -1.29,
             "stateNext": -1
+          },
+          {
+            "date": "2026-11-27",
+            "levelBp": 59.0,
+            "move5dBp": 5.0,
+            "z": -0.97,
+            "stateNext": -1
           }
         ]
       }
     },
     "auctionsWindow": [
-      {
-        "termYears": 10,
-        "auctionDate": "2026-11-10",
-        "announcementDate": "2026-11-04",
-        "bdaysAheadFromExec": 0,
-        "isAnnounced": true,
-        "triggersShort": false
-      },
       {
         "termYears": 30,
         "auctionDate": "2026-11-12",
@@ -656,40 +640,40 @@
           "WN"
         ],
         "vols_252_ann": [
-          2.78,
+          2.88,
           3.4,
           4.18
         ],
         "raw_w": [
-          0.4029,
-          0.3291,
-          0.2679
+          0.3949,
+          0.3336,
+          0.2715
         ],
-        "est_port_vol_ann": 2.24,
+        "est_port_vol_ann": 2.27,
         "port_scale": 2.0,
-        "damper": 0.761,
+        "damper": 0.767,
         "w_eff": [
-          0.6136,
-          0.5012,
-          0.408
+          0.606,
+          0.512,
+          0.4167
         ],
         "vol_scales": {
-          "leg2": 3.446,
-          "leg10": 0.839,
-          "c2s": 1.657,
-          "c5s": 1.734
+          "leg2": 3.356,
+          "leg10": 0.817,
+          "c2s": 1.673,
+          "c5s": 1.739
         },
         "inst_vols_60_ann": {
-          "leg2": 1.74,
-          "leg10": 7.15,
-          "c2s": 3.62,
-          "c5s": 3.46
+          "leg2": 1.79,
+          "leg10": 7.35,
+          "c2s": 3.59,
+          "c5s": 3.45
         },
         "pillar_leg_dv01": {
           "P2_EOM": [
-            1765.3,
             0.0,
-            2089.4,
+            0.0,
+            0.0,
             0.0
           ],
           "P2_PreAuction": [
@@ -706,19 +690,19 @@
           ],
           "P5c_5s30s": [
             0.0,
-            -4301.0,
+            -4406.0,
             0.0,
-            4301.0
+            4406.0
           ]
         },
         "damper_details": {
-          "move": 97.54,
-          "move_p75": 83.29,
-          "move_ratio": 0.789,
-          "rv10y_ann_pct": 6.72,
-          "rv10y_p75_ann_pct": 5.47,
-          "rv_ratio": 0.735,
-          "damper": 0.761
+          "move": 95.3,
+          "move_p75": 83.76,
+          "move_ratio": 0.824,
+          "rv10y_ann_pct": 6.85,
+          "rv10y_p75_ann_pct": 5.48,
+          "rv_ratio": 0.715,
+          "damper": 0.767
         }
       },
       "enhanced": {
@@ -729,40 +713,40 @@
           "WN"
         ],
         "vols_252_ann": [
-          2.83,
+          2.91,
           3.62,
           4.18
         ],
         "raw_w": [
-          0.4064,
-          0.3181,
-          0.2755
+          0.3997,
+          0.3217,
+          0.2786
         ],
-        "est_port_vol_ann": 2.26,
+        "est_port_vol_ann": 2.28,
         "port_scale": 2.0,
-        "damper": 0.761,
+        "damper": 0.767,
         "w_eff": [
-          0.6189,
-          0.4844,
-          0.4195
+          0.6134,
+          0.4938,
+          0.4276
         ],
         "vol_scales": {
-          "leg2": 3.446,
-          "leg10": 1.035,
-          "c2s": 1.85,
-          "c5s": 1.734
+          "leg2": 3.356,
+          "leg10": 1.014,
+          "c2s": 1.861,
+          "c5s": 1.739
         },
         "inst_vols_60_ann": {
-          "leg2": 1.74,
-          "leg10": 5.8,
-          "c2s": 3.24,
-          "c5s": 3.46
+          "leg2": 1.79,
+          "leg10": 5.92,
+          "c2s": 3.22,
+          "c5s": 3.45
         },
         "pillar_leg_dv01": {
           "P2_EOM": [
-            1780.6,
             0.0,
-            1946.3,
+            0.0,
+            0.0,
             0.0
           ],
           "P2_PreAuction": [
@@ -779,34 +763,34 @@
           ],
           "P5c_5s30s": [
             0.0,
-            -4422.3,
+            -4520.8,
             0.0,
-            4422.3
+            4520.8
           ]
         },
         "damper_details": {
-          "move": 97.54,
-          "move_p75": 83.29,
-          "move_ratio": 0.789,
-          "rv10y_ann_pct": 6.72,
-          "rv10y_p75_ann_pct": 5.47,
-          "rv_ratio": 0.735,
-          "damper": 0.761
+          "move": 95.3,
+          "move_p75": 83.76,
+          "move_ratio": 0.824,
+          "rv10y_ann_pct": 6.85,
+          "rv10y_p75_ann_pct": 5.48,
+          "rv_ratio": 0.715,
+          "damper": 0.767
         }
       }
     }
   },
   "forward": {
     "ultra": {
-      "totalSessionsLogged": 2,
+      "totalSessionsLogged": 3,
       "settledSessions": 1,
       "g6TargetSessions": 20,
       "g6ProgressPct": 5,
       "g6Status": "IN_PROGRESS",
       "cumCmeNetUsd": -34803.9,
       "cumCmeNetPct": -0.348,
-      "cumEtfOpenNetUsd": 0,
-      "cumEtfCloseNetUsd": 0,
+      "cumEtfOpenNetUsd": -4396.3,
+      "cumEtfCloseNetUsd": -22281.6,
       "forwardSharpe": null,
       "forwardMaxDdPct": 0.0,
       "forwardHitRatePct": 0.0,
@@ -814,11 +798,186 @@
         {
           "date": "2026-11-25",
           "cmeCumUsd": -34803.9,
-          "etfOpenCumUsd": 0.0,
-          "etfCloseCumUsd": 0.0
+          "etfOpenCumUsd": -4396.3,
+          "etfCloseCumUsd": -22281.6
         }
       ],
       "ledgerRows": [
+        {
+          "mode": "ultra",
+          "venue": "cme_ultra",
+          "frozenAtUtc": "2026-11-28T03:23:36.361406+00:00",
+          "panelSha256": "bb6a5e5cd7581cbb",
+          "g1Passed": true,
+          "riskNavUsd": 10000000.0,
+          "signalAsOfDate": "2026-11-27",
+          "execDate": "2026-11-30",
+          "valuationEndDate": "2026-12-01",
+          "orderWindowEt": "2026-11-30 07:00-17:00 ET",
+          "signals": {
+            "eom": 0,
+            "eomBdaysLeftOnExec": 0,
+            "preAuction": 0,
+            "curve2s10s": 0,
+            "curve5s30s": -1,
+            "z2s10s": 0.19,
+            "z5s30s": -0.97,
+            "damper": 0.767,
+            "move": 95.3,
+            "calRollWindow": true
+          },
+          "rpWeights": {
+            "P2_Flow": 0.606,
+            "P5a_2s10s": 0.512,
+            "P5c_5s30s": 0.417
+          },
+          "contracts": [
+            {
+              "leg": "TU",
+              "symbol": "ZTH27.CBT",
+              "contractCode": "TUH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 102.011719,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 2000.0,
+              "dv01PerLotUsd": 34.07,
+              "prevTargetLots": 52,
+              "targetLots": 0,
+              "deltaLots": -52,
+              "actionCode": "UNWIND",
+              "targetDv01Usd": 0.0,
+              "owners": [],
+              "unwindHint": "\u5f53\u524d\u65e0\u6d3b\u8dc3\u652f\u67f1\uff08\u7a7a\u4ed3\uff09"
+            },
+            {
+              "leg": "FV",
+              "symbol": "ZFH27.CBT",
+              "contractCode": "FVH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 104.75,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 40.96,
+              "prevTargetLots": -105,
+              "targetLots": -108,
+              "deltaLots": -3,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": -4423.4,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s \u7b2c6/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+            },
+            {
+              "leg": "UXY",
+              "symbol": "TNH27.CBT",
+              "contractCode": "UXYH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 108.015625,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 87.71,
+              "prevTargetLots": 24,
+              "targetLots": 0,
+              "deltaLots": -24,
+              "actionCode": "UNWIND",
+              "targetDv01Usd": 0.0,
+              "owners": [],
+              "unwindHint": "\u5f53\u524d\u65e0\u6d3b\u8dc3\u652f\u67f1\uff08\u7a7a\u4ed3\uff09"
+            },
+            {
+              "leg": "WN",
+              "symbol": "UBH27.CBT",
+              "contractCode": "WNH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 108.6875,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 179.33,
+              "prevTargetLots": 24,
+              "targetLots": 25,
+              "deltaLots": 1,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 4483.4,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s \u7b2c6/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+            }
+          ],
+          "lifecycle": {
+            "actionSummary": {
+              "verdict": "TRADE_REQUIRED",
+              "headline": "\u4eca\u65e5\u9700\u8c03\u4ed3\u6267\u884c\uff08\u53d8\u52a8\uff1aTU -52\u624b / UXY -24\u624b\uff09",
+              "subtext": "\u6d3b\u8dc3\u652f\u67f1\uff1a5s30s \u505a\u5e73(\u7b2c6/10\u5929)\u3002\u8bf7\u4e8e\u7ebd\u7ea6\u76d8 08:30\u201311:30 ET \u6d41\u52a8\u6027\u5145\u88d5\u65f6\u6bb5\u6309\u4e0b\u65b9\u300c\u4eca\u65e5\u52a8\u4f5c\u300d\u5217\u5b8c\u6210\u8c03\u4ed3\u3002",
+              "totalAbsDeltaLots": 80,
+              "optimalWindowEt": "08:30\u201311:30 ET\uff08\u65e9\u76d8\u6570\u636e\u6d88\u5316\u540e\u3001\u5348\u76d8\u524d\uff09",
+              "isPreHolidayThin": false,
+              "preHolidayNote": null,
+              "nextUnwindSummary": "5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
+            },
+            "pillars": {
+              "eom": {
+                "active": false,
+                "state": 0,
+                "daysHeld": 0,
+                "maxDays": 3,
+                "entryDate": null,
+                "expectedUnwindDate": null,
+                "unwindText": "\u975e\u6708\u672b\u7a97\u53e3\uff08\u8ddd\u6708\u672b\u5269 0 \u4ea4\u6613\u65e5 \u00b7 \u6700\u540e 3 \u65e5\u81ea\u52a8\u89e6\u53d1\uff09"
+              },
+              "preAuction": {
+                "active": false,
+                "state": 0,
+                "daysHeld": 0,
+                "maxDays": 3,
+                "entryDate": null,
+                "expectedUnwindDate": null,
+                "unwindText": "\u901a\u5e38\u6bcf\u6708 8\u201313 \u53f7 10Y/30Y \u62cd\u5356\uff0c\u516c\u544a\u540e\u81ea\u52a8\u8fdb\u5165 A-4..A-2 \u505a\u7a7a"
+              },
+              "curve2s10s": {
+                "active": false,
+                "state": 0,
+                "daysHeld": 0,
+                "maxDays": 10,
+                "entryDate": null,
+                "hardStopDate": null,
+                "move5dBp": -3.0,
+                "bpGapToExit": null,
+                "exitDirection": null,
+                "unwindText": "Z \u5728\u6b7b\u533a\u5185\uff08\u9700\u7a81\u7834 \u00b11.25 \u5165\u573a\uff09"
+              },
+              "curve5s30s": {
+                "active": true,
+                "state": -1,
+                "daysHeld": 6,
+                "maxDays": 10,
+                "entryDate": "2026-11-20",
+                "hardStopDate": "2026-12-07",
+                "move5dBp": 5.0,
+                "bpGapToExit": -4.7,
+                "exitDirection": "flatten",
+                "unwindText": "\u5df2\u6301\u7b2c 6/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~4.7bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
+              }
+            }
+          },
+          "etfOpenNotional": {
+            "2Y": 0.0,
+            "5Y": -1.22443,
+            "10Y": 0.0,
+            "30Y": 0.29719
+          },
+          "etfCloseNotional": {
+            "2Y": 0.0,
+            "5Y": -1.00542,
+            "10Y": 0.0,
+            "30Y": 0.24403
+          },
+          "netDv01Usd": 60.0,
+          "grossDv01Usd": 8906.7,
+          "status": "PENDING",
+          "settlement": null
+        },
         {
           "mode": "ultra",
           "venue": "cme_ultra",
@@ -995,7 +1154,7 @@
           },
           "netDv01Usd": 3963.7,
           "grossDv01Usd": 12496.2,
-          "status": "PENDING",
+          "status": "IN_SESSION",
           "settlement": null
         },
         {
@@ -1097,10 +1256,10 @@
             "cmeCostUsd": 647.6,
             "cmeNetUsd": -34803.9,
             "cmeNetPct": -0.348,
-            "etfOpenNetUsd": null,
-            "etfOpenNetPct": null,
-            "etfCloseNetUsd": null,
-            "etfCloseNetPct": null,
+            "etfOpenNetUsd": -4396.3,
+            "etfOpenNetPct": -0.044,
+            "etfCloseNetUsd": -22281.6,
+            "etfCloseNetPct": -0.2228,
             "legs": [
               {
                 "symbol": "ZTH27.CBT",
@@ -1144,15 +1303,15 @@
       ]
     },
     "enhanced": {
-      "totalSessionsLogged": 2,
+      "totalSessionsLogged": 3,
       "settledSessions": 1,
       "g6TargetSessions": 20,
       "g6ProgressPct": 5,
       "g6Status": "IN_PROGRESS",
       "cumCmeNetUsd": -32905.0,
       "cumCmeNetPct": -0.329,
-      "cumEtfOpenNetUsd": 0,
-      "cumEtfCloseNetUsd": 0,
+      "cumEtfOpenNetUsd": -4396.3,
+      "cumEtfCloseNetUsd": -22281.6,
       "forwardSharpe": null,
       "forwardMaxDdPct": 0.0,
       "forwardHitRatePct": 0.0,
@@ -1160,11 +1319,186 @@
         {
           "date": "2026-11-25",
           "cmeCumUsd": -32905.0,
-          "etfOpenCumUsd": 0.0,
-          "etfCloseCumUsd": 0.0
+          "etfOpenCumUsd": -4396.3,
+          "etfCloseCumUsd": -22281.6
         }
       ],
       "ledgerRows": [
+        {
+          "mode": "enhanced",
+          "venue": "cme_enhanced",
+          "frozenAtUtc": "2026-11-28T03:23:37.361910+00:00",
+          "panelSha256": "bb6a5e5cd7581cbb",
+          "g1Passed": true,
+          "riskNavUsd": 10000000.0,
+          "signalAsOfDate": "2026-11-27",
+          "execDate": "2026-11-30",
+          "valuationEndDate": "2026-12-01",
+          "orderWindowEt": "2026-11-30 07:00-17:00 ET",
+          "signals": {
+            "eom": 0,
+            "eomBdaysLeftOnExec": 0,
+            "preAuction": 0,
+            "curve2s10s": 0,
+            "curve5s30s": -1,
+            "z2s10s": 0.19,
+            "z5s30s": -0.97,
+            "damper": 0.767,
+            "move": 95.3,
+            "calRollWindow": true
+          },
+          "rpWeights": {
+            "P2_Flow": 0.613,
+            "P5a_2s10s": 0.494,
+            "P5c_5s30s": 0.428
+          },
+          "contracts": [
+            {
+              "leg": "TU",
+              "symbol": "ZTH27.CBT",
+              "contractCode": "TUH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 102.011719,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 2000.0,
+              "dv01PerLotUsd": 34.07,
+              "prevTargetLots": 52,
+              "targetLots": 0,
+              "deltaLots": -52,
+              "actionCode": "UNWIND",
+              "targetDv01Usd": 0.0,
+              "owners": [],
+              "unwindHint": "\u5f53\u524d\u65e0\u6d3b\u8dc3\u652f\u67f1\uff08\u7a7a\u4ed3\uff09"
+            },
+            {
+              "leg": "FV",
+              "symbol": "ZFH27.CBT",
+              "contractCode": "FVH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 104.75,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 40.96,
+              "prevTargetLots": -108,
+              "targetLots": -110,
+              "deltaLots": -2,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": -4505.3,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s \u7b2c6/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+            },
+            {
+              "leg": "TY",
+              "symbol": "ZNH27.CBT",
+              "contractCode": "TYH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 106.53125,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 64.77,
+              "prevTargetLots": 30,
+              "targetLots": 0,
+              "deltaLots": -30,
+              "actionCode": "UNWIND",
+              "targetDv01Usd": 0.0,
+              "owners": [],
+              "unwindHint": "\u5f53\u524d\u65e0\u6d3b\u8dc3\u652f\u67f1\uff08\u7a7a\u4ed3\uff09"
+            },
+            {
+              "leg": "WN",
+              "symbol": "UBH27.CBT",
+              "contractCode": "WNH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 108.6875,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 179.33,
+              "prevTargetLots": 24,
+              "targetLots": 25,
+              "deltaLots": 1,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 4483.4,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s \u7b2c6/10\u5929 \u00b7 Z\u56de\u00b10.35\u621612-07\u5e73"
+            }
+          ],
+          "lifecycle": {
+            "actionSummary": {
+              "verdict": "TRADE_REQUIRED",
+              "headline": "\u4eca\u65e5\u9700\u8c03\u4ed3\u6267\u884c\uff08\u53d8\u52a8\uff1aTU -52\u624b / TY -30\u624b\uff09",
+              "subtext": "\u6d3b\u8dc3\u652f\u67f1\uff1a5s30s \u505a\u5e73(\u7b2c6/10\u5929)\u3002\u8bf7\u4e8e\u7ebd\u7ea6\u76d8 08:30\u201311:30 ET \u6d41\u52a8\u6027\u5145\u88d5\u65f6\u6bb5\u6309\u4e0b\u65b9\u300c\u4eca\u65e5\u52a8\u4f5c\u300d\u5217\u5b8c\u6210\u8c03\u4ed3\u3002",
+              "totalAbsDeltaLots": 85,
+              "optimalWindowEt": "08:30\u201311:30 ET\uff08\u65e9\u76d8\u6570\u636e\u6d88\u5316\u540e\u3001\u5348\u76d8\u524d\uff09",
+              "isPreHolidayThin": false,
+              "preHolidayNote": null,
+              "nextUnwindSummary": "5s30s \u2192 Z\u56de\u00b10.35 \u6216\u6700\u665a 2026-12-07"
+            },
+            "pillars": {
+              "eom": {
+                "active": false,
+                "state": 0,
+                "daysHeld": 0,
+                "maxDays": 3,
+                "entryDate": null,
+                "expectedUnwindDate": null,
+                "unwindText": "\u975e\u6708\u672b\u7a97\u53e3\uff08\u8ddd\u6708\u672b\u5269 0 \u4ea4\u6613\u65e5 \u00b7 \u6700\u540e 3 \u65e5\u81ea\u52a8\u89e6\u53d1\uff09"
+              },
+              "preAuction": {
+                "active": false,
+                "state": 0,
+                "daysHeld": 0,
+                "maxDays": 3,
+                "entryDate": null,
+                "expectedUnwindDate": null,
+                "unwindText": "\u901a\u5e38\u6bcf\u6708 8\u201313 \u53f7 10Y/30Y \u62cd\u5356\uff0c\u516c\u544a\u540e\u81ea\u52a8\u8fdb\u5165 A-4..A-2 \u505a\u7a7a"
+              },
+              "curve2s10s": {
+                "active": false,
+                "state": 0,
+                "daysHeld": 0,
+                "maxDays": 10,
+                "entryDate": null,
+                "hardStopDate": null,
+                "move5dBp": -3.0,
+                "bpGapToExit": null,
+                "exitDirection": null,
+                "unwindText": "Z \u5728\u6b7b\u533a\u5185\uff08\u9700\u7a81\u7834 \u00b11.25 \u5165\u573a\uff09"
+              },
+              "curve5s30s": {
+                "active": true,
+                "state": -1,
+                "daysHeld": 6,
+                "maxDays": 10,
+                "entryDate": "2026-11-20",
+                "hardStopDate": "2026-12-07",
+                "move5dBp": 5.0,
+                "bpGapToExit": -4.7,
+                "exitDirection": "flatten",
+                "unwindText": "\u5df2\u6301\u7b2c 6/10 \u5929 (11-20\u5165\u573a) \u00b7 Z\u56de\u00b10.35\uff08\u518d\u8d8b\u5e73~4.7bp\uff09\u6216\u6700\u665a 12-07 \u786c\u6b62\u635f"
+              }
+            }
+          },
+          "etfOpenNotional": {
+            "2Y": 0.0,
+            "5Y": -1.22443,
+            "10Y": 0.0,
+            "30Y": 0.29719
+          },
+          "etfCloseNotional": {
+            "2Y": 0.0,
+            "5Y": -1.00542,
+            "10Y": 0.0,
+            "30Y": 0.24403
+          },
+          "netDv01Usd": -21.9,
+          "grossDv01Usd": 8988.7,
+          "status": "PENDING",
+          "settlement": null
+        },
         {
           "mode": "enhanced",
           "venue": "cme_enhanced",
@@ -1341,7 +1675,7 @@
           },
           "netDv01Usd": 3676.3,
           "grossDv01Usd": 12454.8,
-          "status": "PENDING",
+          "status": "IN_SESSION",
           "settlement": null
         },
         {
@@ -1443,10 +1777,10 @@
             "cmeCostUsd": 647.1,
             "cmeNetUsd": -32905.0,
             "cmeNetPct": -0.3291,
-            "etfOpenNetUsd": null,
-            "etfOpenNetPct": null,
-            "etfCloseNetUsd": null,
-            "etfCloseNetPct": null,
+            "etfOpenNetUsd": -4396.3,
+            "etfOpenNetPct": -0.044,
+            "etfCloseNetUsd": -22281.6,
+            "etfCloseNetPct": -0.2228,
             "legs": [
               {
                 "symbol": "ZTH27.CBT",
@@ -1877,17 +2211,17 @@
     }
   },
   "historical10yOos": {
-    "sampleRange": "2017-01-03 -> 2026-11-25 (T\u2192T+1 \u7ed3\u7b97)",
+    "sampleRange": "2017-01-03 -> 2026-11-27 (T\u2192T+1 \u7ed3\u7b97)",
     "models": {
       "ultra_50k": {
-        "n": 2474,
-        "sharpe": 1.77,
-        "cagr_pct": 7.4,
+        "n": 2475,
+        "sharpe": 1.76,
+        "cagr_pct": 7.36,
         "max_dd_pct": -4.1,
         "worst_day_pct": -1.8,
-        "calmar": 1.82,
-        "hac_t": 6.12,
-        "r4Sr": 1.09,
+        "calmar": 1.81,
+        "hac_t": 6.08,
+        "r4Sr": 1.05,
         "posYears": 10,
         "totalYears": 10,
         "yearly": {
@@ -1928,21 +2262,21 @@
             "sr": 1.48
           },
           "2026": {
-            "retPct": 5.61,
-            "sr": 1.38
+            "retPct": 5.16,
+            "sr": 1.26
           }
         },
         "nEff": 2.77
       },
       "enhanced_50k": {
-        "n": 2474,
-        "sharpe": 1.68,
-        "cagr_pct": 6.93,
+        "n": 2475,
+        "sharpe": 1.67,
+        "cagr_pct": 6.89,
         "max_dd_pct": -4.5,
         "worst_day_pct": -1.94,
-        "calmar": 1.54,
-        "hac_t": 5.77,
-        "r4Sr": 1.15,
+        "calmar": 1.53,
+        "hac_t": 5.74,
+        "r4Sr": 1.11,
         "posYears": 10,
         "totalYears": 10,
         "yearly": {
@@ -1983,21 +2317,21 @@
             "sr": 1.54
           },
           "2026": {
-            "retPct": 6.04,
-            "sr": 1.49
+            "retPct": 5.63,
+            "sr": 1.39
           }
         },
         "nEff": 2.86
       },
       "ultra_3x": {
-        "n": 2474,
-        "sharpe": 1.45,
-        "cagr_pct": 5.99,
+        "n": 2475,
+        "sharpe": 1.44,
+        "cagr_pct": 5.94,
         "max_dd_pct": -4.4,
         "worst_day_pct": -1.81,
-        "calmar": 1.36,
-        "hac_t": 5.06,
-        "r4Sr": 0.79,
+        "calmar": 1.35,
+        "hac_t": 5.02,
+        "r4Sr": 0.75,
         "posYears": 10,
         "totalYears": 10,
         "yearly": {
@@ -2038,21 +2372,21 @@
             "sr": 1.17
           },
           "2026": {
-            "retPct": 4.13,
-            "sr": 1.03
+            "retPct": 3.69,
+            "sr": 0.91
           }
         },
         "nEff": 2.77
       },
       "enhanced_3x": {
-        "n": 2474,
-        "sharpe": 1.33,
-        "cagr_pct": 5.45,
+        "n": 2475,
+        "sharpe": 1.32,
+        "cagr_pct": 5.41,
         "max_dd_pct": -4.9,
         "worst_day_pct": -1.95,
-        "calmar": 1.12,
-        "hac_t": 4.64,
-        "r4Sr": 0.82,
+        "calmar": 1.11,
+        "hac_t": 4.61,
+        "r4Sr": 0.78,
         "posYears": 10,
         "totalYears": 10,
         "yearly": {
@@ -2093,16 +2427,16 @@
             "sr": 1.2
           },
           "2026": {
-            "retPct": 4.46,
-            "sr": 1.11
+            "retPct": 4.05,
+            "sr": 1.01
           }
         },
         "nEff": 2.86
       },
       "ultra_flat_roll": {
-        "n": 2474,
+        "n": 2475,
         "sharpe": 1.68,
-        "cagr_pct": 6.8,
+        "cagr_pct": 6.79,
         "max_dd_pct": -4.3,
         "worst_day_pct": -1.8,
         "calmar": 1.58,
@@ -2148,27 +2482,27 @@
             "sr": 1.43
           },
           "2026": {
-            "retPct": 5.99,
+            "retPct": 5.98,
             "sr": 1.53
           }
         },
         "nEff": 2.77
       },
       "etf_close_50k": {
-        "n": 2474,
+        "n": 2475,
         "sharpe": 1.54,
-        "cagr_pct": 6.76,
+        "cagr_pct": 6.74,
         "max_dd_pct": -4.5,
         "worst_day_pct": -1.77,
-        "calmar": 1.52,
-        "hac_t": 5.42,
-        "r4Sr": 1.08,
+        "calmar": 1.51,
+        "hac_t": 5.41,
+        "r4Sr": 1.06,
         "posYears": 10,
         "totalYears": 10,
         "yearly": {
           "2017": {
             "retPct": 6.27,
-            "sr": 1.59
+            "sr": 1.58
           },
           "2018": {
             "retPct": 12.07,
@@ -2203,20 +2537,20 @@
             "sr": 2.27
           },
           "2026": {
-            "retPct": 2.49,
-            "sr": 0.64
+            "retPct": 2.27,
+            "sr": 0.58
           }
         },
         "nEff": 2.76
       },
       "etf_open_50k": {
-        "n": 2474,
+        "n": 2475,
         "sharpe": 1.53,
         "cagr_pct": 6.64,
         "max_dd_pct": -4.9,
         "worst_day_pct": -1.95,
-        "calmar": 1.36,
-        "hac_t": 4.91,
+        "calmar": 1.35,
+        "hac_t": 4.9,
         "r4Sr": 1.3,
         "posYears": 10,
         "totalYears": 10,
@@ -2230,7 +2564,7 @@
             "sr": 2.52
           },
           "2019": {
-            "retPct": 5.68,
+            "retPct": 5.69,
             "sr": 1.33
           },
           "2020": {
@@ -2258,8 +2592,8 @@
             "sr": 2.72
           },
           "2026": {
-            "retPct": 1.52,
-            "sr": 0.4
+            "retPct": 1.48,
+            "sr": 0.39
           }
         },
         "nEff": 2.7
@@ -2267,22 +2601,22 @@
     },
     "bootstraps": {
       "ultra": {
-        "p05": 1.28,
-        "p50": 1.77,
-        "p95": 2.21,
+        "p05": 1.3,
+        "p50": 1.79,
+        "p95": 2.24,
         "prob_above_100": 99.8
       },
       "enhanced": {
-        "p05": 1.2,
-        "p50": 1.68,
-        "p95": 2.11,
-        "prob_above_100": 99.1
+        "p05": 1.21,
+        "p50": 1.69,
+        "p95": 2.14,
+        "prob_above_100": 99.4
       },
       "etfOpen": {
-        "p05": 1.03,
-        "p50": 1.54,
-        "p95": 2.01,
-        "prob_above_100": 96.2
+        "p05": 1.05,
+        "p50": 1.53,
+        "p95": 2.03,
+        "prob_above_100": 96.5
       }
     },
     "monthlyEquity": [
@@ -2319,48 +2653,48 @@
         "ultra": 1.0134,
         "enhanced": 1.0104,
         "etfOpen": 1.0138,
-        "etfClose": 1.0122
+        "etfClose": 1.0121
       },
       {
         "date": "2017-06-30",
         "ultra": 1.0231,
         "enhanced": 1.0192,
         "etfOpen": 0.9967,
-        "etfClose": 0.9956
+        "etfClose": 0.9955
       },
       {
         "date": "2017-07-31",
         "ultra": 1.0244,
         "enhanced": 1.021,
-        "etfOpen": 0.9862,
-        "etfClose": 0.991
+        "etfOpen": 0.9861,
+        "etfClose": 0.9909
       },
       {
         "date": "2017-08-31",
         "ultra": 1.0334,
         "enhanced": 1.0284,
-        "etfOpen": 0.9966,
-        "etfClose": 1.0038
+        "etfOpen": 0.9965,
+        "etfClose": 1.0037
       },
       {
         "date": "2017-09-30",
         "ultra": 1.0413,
         "enhanced": 1.0353,
-        "etfOpen": 1.0085,
-        "etfClose": 1.0053
+        "etfOpen": 1.0084,
+        "etfClose": 1.0052
       },
       {
         "date": "2017-10-31",
         "ultra": 1.0686,
         "enhanced": 1.0609,
         "etfOpen": 1.0213,
-        "etfClose": 1.0246
+        "etfClose": 1.0245
       },
       {
         "date": "2017-11-30",
         "ultra": 1.0709,
         "enhanced": 1.0628,
-        "etfOpen": 1.0078,
+        "etfOpen": 1.0077,
         "etfClose": 1.0272
       },
       {
@@ -2374,15 +2708,15 @@
         "date": "2018-01-31",
         "ultra": 1.1036,
         "enhanced": 1.0893,
-        "etfOpen": 1.047,
-        "etfClose": 1.0762
+        "etfOpen": 1.0469,
+        "etfClose": 1.0761
       },
       {
         "date": "2018-02-28",
         "ultra": 1.1114,
         "enhanced": 1.0937,
         "etfOpen": 1.0586,
-        "etfClose": 1.0821
+        "etfClose": 1.082
       },
       {
         "date": "2018-03-31",
@@ -2403,20 +2737,20 @@
         "ultra": 1.1435,
         "enhanced": 1.1197,
         "etfOpen": 1.0896,
-        "etfClose": 1.1142
+        "etfClose": 1.1141
       },
       {
         "date": "2018-06-30",
         "ultra": 1.1509,
         "enhanced": 1.1275,
         "etfOpen": 1.0934,
-        "etfClose": 1.1191
+        "etfClose": 1.119
       },
       {
         "date": "2018-07-31",
         "ultra": 1.1571,
         "enhanced": 1.1318,
-        "etfOpen": 1.0958,
+        "etfOpen": 1.0957,
         "etfClose": 1.1265
       },
       {
@@ -2424,7 +2758,7 @@
         "ultra": 1.16,
         "enhanced": 1.1352,
         "etfOpen": 1.1011,
-        "etfClose": 1.1299
+        "etfClose": 1.1298
       },
       {
         "date": "2018-09-30",
@@ -2445,20 +2779,20 @@
         "ultra": 1.1814,
         "enhanced": 1.1534,
         "etfOpen": 1.1295,
-        "etfClose": 1.161
+        "etfClose": 1.1609
       },
       {
         "date": "2018-12-31",
         "ultra": 1.211,
         "enhanced": 1.1821,
-        "etfOpen": 1.1382,
+        "etfOpen": 1.1381,
         "etfClose": 1.191
       },
       {
         "date": "2019-01-31",
         "ultra": 1.2503,
         "enhanced": 1.2224,
-        "etfOpen": 1.1796,
+        "etfOpen": 1.1795,
         "etfClose": 1.2321
       },
       {
@@ -2500,14 +2834,14 @@
         "date": "2019-07-31",
         "ultra": 1.2945,
         "enhanced": 1.2569,
-        "etfOpen": 1.2054,
+        "etfOpen": 1.2055,
         "etfClose": 1.271
       },
       {
         "date": "2019-08-31",
         "ultra": 1.2711,
         "enhanced": 1.241,
-        "etfOpen": 1.182,
+        "etfOpen": 1.1821,
         "etfClose": 1.2541
       },
       {
@@ -2542,14 +2876,14 @@
         "date": "2020-01-31",
         "ultra": 1.3094,
         "enhanced": 1.2741,
-        "etfOpen": 1.2025,
+        "etfOpen": 1.2026,
         "etfClose": 1.3083
       },
       {
         "date": "2020-02-29",
         "ultra": 1.3136,
         "enhanced": 1.2779,
-        "etfOpen": 1.1957,
+        "etfOpen": 1.1958,
         "etfClose": 1.3226
       },
       {
@@ -2633,8 +2967,8 @@
         "date": "2021-02-28",
         "ultra": 1.4631,
         "enhanced": 1.3727,
-        "etfOpen": 1.4072,
-        "etfClose": 1.4693
+        "etfOpen": 1.4073,
+        "etfClose": 1.4692
       },
       {
         "date": "2021-03-31",
@@ -2724,7 +3058,7 @@
         "date": "2022-03-31",
         "ultra": 1.6073,
         "enhanced": 1.5253,
-        "etfOpen": 1.512,
+        "etfOpen": 1.5121,
         "etfClose": 1.5548
       },
       {
@@ -2739,7 +3073,7 @@
         "ultra": 1.6236,
         "enhanced": 1.5395,
         "etfOpen": 1.5118,
-        "etfClose": 1.5632
+        "etfClose": 1.5631
       },
       {
         "date": "2022-06-30",
@@ -2773,14 +3107,14 @@
         "date": "2022-10-31",
         "ultra": 1.6967,
         "enhanced": 1.6133,
-        "etfOpen": 1.5532,
+        "etfOpen": 1.5533,
         "etfClose": 1.6163
       },
       {
         "date": "2022-11-30",
         "ultra": 1.7033,
         "enhanced": 1.614,
-        "etfOpen": 1.5596,
+        "etfOpen": 1.5597,
         "etfClose": 1.6217
       },
       {
@@ -2829,7 +3163,7 @@
         "date": "2023-06-30",
         "ultra": 1.7732,
         "enhanced": 1.6825,
-        "etfOpen": 1.5975,
+        "etfOpen": 1.5976,
         "etfClose": 1.6715
       },
       {
@@ -2872,7 +3206,7 @@
         "ultra": 1.7748,
         "enhanced": 1.6934,
         "etfOpen": 1.6231,
-        "etfClose": 1.6705
+        "etfClose": 1.6704
       },
       {
         "date": "2024-01-31",
@@ -2892,7 +3226,7 @@
         "date": "2024-03-31",
         "ultra": 1.8326,
         "enhanced": 1.746,
-        "etfOpen": 1.6709,
+        "etfOpen": 1.671,
         "etfClose": 1.7332
       },
       {
@@ -2927,21 +3261,21 @@
         "date": "2024-08-31",
         "ultra": 1.8779,
         "enhanced": 1.7998,
-        "etfOpen": 1.7021,
+        "etfOpen": 1.7022,
         "etfClose": 1.7533
       },
       {
         "date": "2024-09-30",
         "ultra": 1.8599,
         "enhanced": 1.7806,
-        "etfOpen": 1.699,
+        "etfOpen": 1.6991,
         "etfClose": 1.742
       },
       {
         "date": "2024-10-31",
         "ultra": 1.8216,
         "enhanced": 1.7438,
-        "etfOpen": 1.6624,
+        "etfOpen": 1.6625,
         "etfClose": 1.703
       },
       {
@@ -2949,27 +3283,27 @@
         "ultra": 1.82,
         "enhanced": 1.7418,
         "etfOpen": 1.6798,
-        "etfClose": 1.701
+        "etfClose": 1.7011
       },
       {
         "date": "2024-12-31",
         "ultra": 1.8103,
         "enhanced": 1.7276,
-        "etfOpen": 1.6729,
+        "etfOpen": 1.673,
         "etfClose": 1.698
       },
       {
         "date": "2025-01-31",
         "ultra": 1.8291,
         "enhanced": 1.7419,
-        "etfOpen": 1.6979,
+        "etfOpen": 1.698,
         "etfClose": 1.7168
       },
       {
         "date": "2025-02-28",
         "ultra": 1.8549,
         "enhanced": 1.7675,
-        "etfOpen": 1.7192,
+        "etfOpen": 1.7193,
         "etfClose": 1.7467
       },
       {
@@ -2977,14 +3311,14 @@
         "ultra": 1.8775,
         "enhanced": 1.7858,
         "etfOpen": 1.7561,
-        "etfClose": 1.7803
+        "etfClose": 1.7804
       },
       {
         "date": "2025-04-30",
         "ultra": 1.9091,
         "enhanced": 1.8193,
-        "etfOpen": 1.812,
-        "etfClose": 1.8353
+        "etfOpen": 1.8121,
+        "etfClose": 1.8354
       },
       {
         "date": "2025-05-31",
@@ -2997,7 +3331,7 @@
         "date": "2025-06-30",
         "ultra": 1.905,
         "enhanced": 1.8152,
-        "etfOpen": 1.8237,
+        "etfOpen": 1.8238,
         "etfClose": 1.8378
       },
       {
@@ -3011,7 +3345,7 @@
         "date": "2025-08-31",
         "ultra": 1.924,
         "enhanced": 1.8283,
-        "etfOpen": 1.865,
+        "etfOpen": 1.8651,
         "etfClose": 1.8642
       },
       {
@@ -3039,28 +3373,28 @@
         "date": "2025-12-31",
         "ultra": 1.9093,
         "enhanced": 1.8209,
-        "etfOpen": 1.8522,
+        "etfOpen": 1.8523,
         "etfClose": 1.855
       },
       {
         "date": "2026-01-31",
         "ultra": 1.9255,
         "enhanced": 1.8386,
-        "etfOpen": 1.8726,
-        "etfClose": 1.8739
+        "etfOpen": 1.8727,
+        "etfClose": 1.874
       },
       {
         "date": "2026-02-28",
         "ultra": 1.9013,
         "enhanced": 1.8175,
-        "etfOpen": 1.8456,
-        "etfClose": 1.8564
+        "etfOpen": 1.8457,
+        "etfClose": 1.8565
       },
       {
         "date": "2026-03-31",
         "ultra": 1.9263,
         "enhanced": 1.8405,
-        "etfOpen": 1.863,
+        "etfOpen": 1.8631,
         "etfClose": 1.8824
       },
       {
@@ -3074,22 +3408,22 @@
         "date": "2026-05-31",
         "ultra": 1.9541,
         "enhanced": 1.8666,
-        "etfOpen": 1.8815,
+        "etfOpen": 1.8816,
         "etfClose": 1.8925
       },
       {
         "date": "2026-06-30",
         "ultra": 1.979,
         "enhanced": 1.8855,
-        "etfOpen": 1.8972,
+        "etfOpen": 1.8973,
         "etfClose": 1.9026
       },
       {
         "date": "2026-07-31",
         "ultra": 2.0034,
         "enhanced": 1.9073,
-        "etfOpen": 1.9253,
-        "etfClose": 1.9305
+        "etfOpen": 1.9254,
+        "etfClose": 1.9306
       },
       {
         "date": "2026-08-31",
@@ -3102,7 +3436,7 @@
         "date": "2026-09-30",
         "ultra": 1.9789,
         "enhanced": 1.8956,
-        "etfOpen": 1.8526,
+        "etfOpen": 1.8527,
         "etfClose": 1.8652
       },
       {
@@ -3114,17 +3448,17 @@
       },
       {
         "date": "2026-11-30",
-        "ultra": 2.0163,
-        "enhanced": 1.9309,
-        "etfOpen": 1.8804,
-        "etfClose": 1.9012
+        "ultra": 2.0078,
+        "enhanced": 1.9235,
+        "etfOpen": 1.8797,
+        "etfClose": 1.8971
       },
       {
-        "date": "2026-11-24",
-        "ultra": 2.0163,
-        "enhanced": 1.9309,
-        "etfOpen": 1.8804,
-        "etfClose": 1.9012
+        "date": "2026-11-25",
+        "ultra": 2.0078,
+        "enhanced": 1.9235,
+        "etfOpen": 1.8797,
+        "etfClose": 1.8971
       }
     ]
   }

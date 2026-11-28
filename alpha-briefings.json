@@ -1,9 +1,443 @@
 {
   "schemaVersion": "1.0_cloud_daily_briefings",
-  "updatedAtUtc": "2026-11-27T19:33:11.848791+00:00",
+  "updatedAtUtc": "2026-11-28T03:23:40.623909+00:00",
   "totalCatalogIdeas": 12,
-  "latestAsOfDate": "2026-11-25",
+  "latestAsOfDate": "2026-11-27",
   "entries": [
+    {
+      "asOfDate": "2026-11-27",
+      "execDate": "2026-11-30",
+      "valuationEndDate": "2026-12-01",
+      "generatedAtUtc": "2026-11-28T03:23:40.623849+00:00",
+      "g1AllPassed": true,
+      "g1Count": "4/4",
+      "marketSnapshot": {
+        "date": "2026-11-27",
+        "ust2y": 4.69,
+        "ust5y": 4.74,
+        "ust10y": 4.94,
+        "ust30y": 5.33,
+        "s2s10sBp": 25.0,
+        "s5s30sBp": 59.0,
+        "move": 95.3
+      },
+      "regimeDiagnosis": {
+        "volRegime": "偏高波动温和降仓",
+        "volTone": "warn",
+        "volNote": "^MOVE=95.3 高于 252d 75 分位 (83.8)，系统自动按 0.77× 轻度降仓，兼顾收益与回撤控制。",
+        "curveShape": "正斜率陡峭",
+        "dailyMoveSummary": "上一交易日美债收线：2Y 4.69% (+8.0bp) · 10Y 4.94% (+9.0bp) · 30Y 5.33% (+9.0bp)，2s10s=+25.0bp (+1.0bp) / 5s30s=+59.0bp（正斜率陡峭）。",
+        "d2yBp": 8.0,
+        "d10yBp": 9.0,
+        "d30yBp": 9.0
+      },
+      "reviews": {
+        "ultra": {
+          "hasSettlement": true,
+          "summary": "最新已结算前瞻期 2026-11-25 → 2026-11-27：Auto CME 净盈亏 -34,804 美元（-0.35%），同期零换月 ETF 早盘 -4,396 / 收盘 -22,282 美元。最佳腿 FV（+32,031 美元），拖累腿 WN（-34,500 美元）。累计 G6 进度 1 / 20 天，累计净值 -34,804 美元（-0.35%）。",
+          "latestSettled": {
+            "execDate": "2026-11-25",
+            "valuationEndDate": "2026-11-27",
+            "cmeNetUsd": -34803.9,
+            "cmeNetPct": -0.348,
+            "cmeCostUsd": 647.6,
+            "etfOpenNetUsd": -4396.3,
+            "etfCloseNetUsd": -22281.6,
+            "legs": [
+              {
+                "symbol": "ZTH27.CBT",
+                "leg": "TU",
+                "lots": 50,
+                "entrySettle": 102.152344,
+                "exitSettle": 102.011719,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -14062.5
+              },
+              {
+                "symbol": "ZFH27.CBT",
+                "leg": "FV",
+                "lots": -100,
+                "entrySettle": 105.070312,
+                "exitSettle": 104.75,
+                "exitDate": "2026-11-27",
+                "pnlUsd": 32031.2
+              },
+              {
+                "symbol": "TNH27.CBT",
+                "leg": "UXY",
+                "lots": 24,
+                "entrySettle": 108.75,
+                "exitSettle": 108.015625,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -17625.0
+              },
+              {
+                "symbol": "UBH27.CBT",
+                "leg": "WN",
+                "lots": 23,
+                "entrySettle": 110.1875,
+                "exitSettle": 108.6875,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -34500.0
+              }
+            ]
+          },
+          "cumCmeNetUsd": -34803.9,
+          "cumCmeNetPct": -0.348,
+          "cumEtfOpenNetUsd": -4396.3,
+          "cumEtfCloseNetUsd": -22281.6,
+          "cmeVsEtfCloseUsd": -12522.3,
+          "g6Settled": 1,
+          "g6Target": 20,
+          "forwardSharpe": null,
+          "forwardHitRatePct": 0.0,
+          "histBenchmarkSr": 1.76,
+          "histBenchmarkMaxDd": -4.1
+        },
+        "enhanced": {
+          "hasSettlement": true,
+          "summary": "最新已结算前瞻期 2026-11-25 → 2026-11-27：Auto CME 净盈亏 -32,905 美元（-0.33%），同期零换月 ETF 早盘 -4,396 / 收盘 -22,282 美元。最佳腿 FV（+32,992 美元），拖累腿 WN（-34,500 美元）。累计 G6 进度 1 / 20 天，累计净值 -32,905 美元（-0.33%）。",
+          "latestSettled": {
+            "execDate": "2026-11-25",
+            "valuationEndDate": "2026-11-27",
+            "cmeNetUsd": -32905.0,
+            "cmeNetPct": -0.3291,
+            "cmeCostUsd": 647.1,
+            "etfOpenNetUsd": -4396.3,
+            "etfCloseNetUsd": -22281.6,
+            "legs": [
+              {
+                "symbol": "ZTH27.CBT",
+                "leg": "TU",
+                "lots": 51,
+                "entrySettle": 102.152344,
+                "exitSettle": 102.011719,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -14343.8
+              },
+              {
+                "symbol": "ZFH27.CBT",
+                "leg": "FV",
+                "lots": -103,
+                "entrySettle": 105.070312,
+                "exitSettle": 104.75,
+                "exitDate": "2026-11-27",
+                "pnlUsd": 32992.1
+              },
+              {
+                "symbol": "ZNH27.CBT",
+                "leg": "TY",
+                "lots": 30,
+                "entrySettle": 107.078125,
+                "exitSettle": 106.53125,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -16406.2
+              },
+              {
+                "symbol": "UBH27.CBT",
+                "leg": "WN",
+                "lots": 23,
+                "entrySettle": 110.1875,
+                "exitSettle": 108.6875,
+                "exitDate": "2026-11-27",
+                "pnlUsd": -34500.0
+              }
+            ]
+          },
+          "cumCmeNetUsd": -32905.0,
+          "cumCmeNetPct": -0.329,
+          "cumEtfOpenNetUsd": -4396.3,
+          "cumEtfCloseNetUsd": -22281.6,
+          "cmeVsEtfCloseUsd": -10623.4,
+          "g6Settled": 1,
+          "g6Target": 20,
+          "forwardSharpe": null,
+          "forwardHitRatePct": 0.0,
+          "histBenchmarkSr": 1.67,
+          "histBenchmarkMaxDd": -4.5
+        }
+      },
+      "nextAction": {
+        "ultra": {
+          "actionSummary": {
+            "verdict": "TRADE_REQUIRED",
+            "headline": "今日需调仓执行（变动：TU -52手 / UXY -24手）",
+            "subtext": "活跃支柱：5s30s 做平(第6/10天)。请于纽约盘 08:30–11:30 ET 流动性充裕时段按下方「今日动作」列完成调仓。",
+            "totalAbsDeltaLots": 80,
+            "optimalWindowEt": "08:30–11:30 ET（早盘数据消化后、午盘前）",
+            "isPreHolidayThin": false,
+            "preHolidayNote": null,
+            "nextUnwindSummary": "5s30s → Z回±0.35 或最晚 2026-12-07"
+          },
+          "pillars": {
+            "eom": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 3,
+              "entryDate": null,
+              "expectedUnwindDate": null,
+              "unwindText": "非月末窗口（距月末剩 0 交易日 · 最后 3 日自动触发）"
+            },
+            "preAuction": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 3,
+              "entryDate": null,
+              "expectedUnwindDate": null,
+              "unwindText": "通常每月 8–13 号 10Y/30Y 拍卖，公告后自动进入 A-4..A-2 做空"
+            },
+            "curve2s10s": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 10,
+              "entryDate": null,
+              "hardStopDate": null,
+              "move5dBp": -3.0,
+              "bpGapToExit": null,
+              "exitDirection": null,
+              "unwindText": "Z 在死区内（需突破 ±1.25 入场）"
+            },
+            "curve5s30s": {
+              "active": true,
+              "state": -1,
+              "daysHeld": 6,
+              "maxDays": 10,
+              "entryDate": "2026-11-20",
+              "hardStopDate": "2026-12-07",
+              "move5dBp": 5.0,
+              "bpGapToExit": -4.7,
+              "exitDirection": "flatten",
+              "unwindText": "已持第 6/10 天 (11-20入场) · Z回±0.35（再趋平~4.7bp）或最晚 12-07 硬止损"
+            }
+          },
+          "netDv01Usd": 60.0,
+          "grossDv01Usd": 8906.7,
+          "contracts": [
+            {
+              "leg": "TU",
+              "symbol": "ZTH27.CBT",
+              "contractCode": "TUH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 102.011719,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 2000.0,
+              "dv01PerLotUsd": 34.07,
+              "prevTargetLots": 52,
+              "targetLots": 0,
+              "deltaLots": -52,
+              "actionCode": "UNWIND",
+              "targetDv01Usd": 0.0,
+              "owners": [],
+              "unwindHint": "当前无活跃支柱（空仓）"
+            },
+            {
+              "leg": "FV",
+              "symbol": "ZFH27.CBT",
+              "contractCode": "FVH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 104.75,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 40.96,
+              "prevTargetLots": -105,
+              "targetLots": -108,
+              "deltaLots": -3,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": -4423.4,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s 第6/10天 · Z回±0.35或12-07平"
+            },
+            {
+              "leg": "UXY",
+              "symbol": "TNH27.CBT",
+              "contractCode": "UXYH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 108.015625,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 87.71,
+              "prevTargetLots": 24,
+              "targetLots": 0,
+              "deltaLots": -24,
+              "actionCode": "UNWIND",
+              "targetDv01Usd": 0.0,
+              "owners": [],
+              "unwindHint": "当前无活跃支柱（空仓）"
+            },
+            {
+              "leg": "WN",
+              "symbol": "UBH27.CBT",
+              "contractCode": "WNH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 108.6875,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 179.33,
+              "prevTargetLots": 24,
+              "targetLots": 25,
+              "deltaLots": 1,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 4483.4,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s 第6/10天 · Z回±0.35或12-07平"
+            }
+          ]
+        },
+        "enhanced": {
+          "actionSummary": {
+            "verdict": "TRADE_REQUIRED",
+            "headline": "今日需调仓执行（变动：TU -52手 / TY -30手）",
+            "subtext": "活跃支柱：5s30s 做平(第6/10天)。请于纽约盘 08:30–11:30 ET 流动性充裕时段按下方「今日动作」列完成调仓。",
+            "totalAbsDeltaLots": 85,
+            "optimalWindowEt": "08:30–11:30 ET（早盘数据消化后、午盘前）",
+            "isPreHolidayThin": false,
+            "preHolidayNote": null,
+            "nextUnwindSummary": "5s30s → Z回±0.35 或最晚 2026-12-07"
+          },
+          "pillars": {
+            "eom": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 3,
+              "entryDate": null,
+              "expectedUnwindDate": null,
+              "unwindText": "非月末窗口（距月末剩 0 交易日 · 最后 3 日自动触发）"
+            },
+            "preAuction": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 3,
+              "entryDate": null,
+              "expectedUnwindDate": null,
+              "unwindText": "通常每月 8–13 号 10Y/30Y 拍卖，公告后自动进入 A-4..A-2 做空"
+            },
+            "curve2s10s": {
+              "active": false,
+              "state": 0,
+              "daysHeld": 0,
+              "maxDays": 10,
+              "entryDate": null,
+              "hardStopDate": null,
+              "move5dBp": -3.0,
+              "bpGapToExit": null,
+              "exitDirection": null,
+              "unwindText": "Z 在死区内（需突破 ±1.25 入场）"
+            },
+            "curve5s30s": {
+              "active": true,
+              "state": -1,
+              "daysHeld": 6,
+              "maxDays": 10,
+              "entryDate": "2026-11-20",
+              "hardStopDate": "2026-12-07",
+              "move5dBp": 5.0,
+              "bpGapToExit": -4.7,
+              "exitDirection": "flatten",
+              "unwindText": "已持第 6/10 天 (11-20入场) · Z回±0.35（再趋平~4.7bp）或最晚 12-07 硬止损"
+            }
+          },
+          "netDv01Usd": -21.9,
+          "grossDv01Usd": 8988.7,
+          "contracts": [
+            {
+              "leg": "TU",
+              "symbol": "ZTH27.CBT",
+              "contractCode": "TUH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 102.011719,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 2000.0,
+              "dv01PerLotUsd": 34.07,
+              "prevTargetLots": 52,
+              "targetLots": 0,
+              "deltaLots": -52,
+              "actionCode": "UNWIND",
+              "targetDv01Usd": 0.0,
+              "owners": [],
+              "unwindHint": "当前无活跃支柱（空仓）"
+            },
+            {
+              "leg": "FV",
+              "symbol": "ZFH27.CBT",
+              "contractCode": "FVH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 104.75,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 40.96,
+              "prevTargetLots": -108,
+              "targetLots": -110,
+              "deltaLots": -2,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": -4505.3,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s 第6/10天 · Z回±0.35或12-07平"
+            },
+            {
+              "leg": "TY",
+              "symbol": "ZNH27.CBT",
+              "contractCode": "TYH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 106.53125,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 64.77,
+              "prevTargetLots": 30,
+              "targetLots": 0,
+              "deltaLots": -30,
+              "actionCode": "UNWIND",
+              "targetDv01Usd": 0.0,
+              "owners": [],
+              "unwindHint": "当前无活跃支柱（空仓）"
+            },
+            {
+              "leg": "WN",
+              "symbol": "UBH27.CBT",
+              "contractCode": "WNH27",
+              "rolledAheadOfFnd": true,
+              "refPrice": 108.6875,
+              "refDate": "2026-11-27",
+              "pointValueUsd": 1000.0,
+              "dv01PerLotUsd": 179.33,
+              "prevTargetLots": 24,
+              "targetLots": 25,
+              "deltaLots": 1,
+              "actionCode": "HOLD_NOISE",
+              "targetDv01Usd": 4483.4,
+              "owners": [
+                "5s30s"
+              ],
+              "unwindHint": "5s30s 第6/10天 · Z回±0.35或12-07平"
+            }
+          ]
+        }
+      },
+      "researchSpotlight": {
+        "id": "IDEA-004",
+        "title": "20Y 期限流动性折价 × 10s20s30s 超长端蝶式均值回归",
+        "instruments": "10Y / 20Y / 30Y OTR 现券（或 CME UXY / US / WN 组合逼近）",
+        "category": "期限结构 × 流动性溢价",
+        "horizon": "4–8 交易日",
+        "priorConfidencePct": 56,
+        "mechanism": "20Y 美债自 2020 年重启发行以来缺乏对应活跃期货合约，天然是全曲线流动性最弱的「孤儿期限」（常年显著高于 10Y–30Y 线性插值）。每逢 20Y 月度拍卖或机构去杠杆，20Y 会被过度砸深，随后保险与养老金 LDI 资金进场吃高息修复 10s20s30s Fly。",
+        "publicFeeds": "美国财政部每日官方 10Y/20Y/30Y 平价曲线 + FiscalData 20Y 拍卖公告与发行额（100% 公开）。",
+        "orthogonality": "专注超长端 20Y 孤儿点曲率，与 Core3 的 2s10s/5s30s 斜率几乎独立。",
+        "costAndFalsification": "20Y 现券点差比 10Y/30Y 宽（50k DV01 约 0.08–0.12bp），且 2020 年前无 20Y 历史数据导致样本仅 ~6.5 年，统计功效受限，需严防过拟合。",
+        "validationPlan": "基于 2020-05 至今财政部 10Y/20Y/30Y 曲线 + 20Y 拍卖日程检验 10s20s30s Fly 滞回回归与拍后修复，重点做 3× 现券滑点压测。"
+      },
+      "pmConfidencePct": 86
+    },
     {
       "asOfDate": "2026-11-25",
       "execDate": "2026-11-27",
